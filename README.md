@@ -1,5 +1,5 @@
 # Final Project
-This is the repository for **Harvard's CS50x Final Project** part
+This is the repository for the **Harvard's CS50x Final Project** 
 
 
 ### Getting Started
