@@ -3,16 +3,21 @@ import { ref, computed, watch } from 'vue'
 import dayjs from 'dayjs';
 
 const MINUTES25 = dayjs().set('minutes', 25).set('seconds', 0)
+const MOCK = dayjs().set('minutes', 0).set('seconds', 4)
+const MINUTESINSECONDS = 1500
 
 let timerId: number
 const timerMinutes = ref(MINUTES25)
 let done = ref(false)
 let ongoing = ref(false)
-
+let percent = ref(10)
 
 watch(timerMinutes, (newMinutes) => {
   const minutes = newMinutes.minute()
   const seconds = newMinutes.second()
+
+  const diff = MINUTES25.diff(newMinutes, 'seconds')
+  percent.value = ((diff / MINUTESINSECONDS) * 80) + 5
 
   if (minutes === 0 && seconds === 0) {
     done.value = true
@@ -37,7 +42,7 @@ function startTimer() {
 
   // Check if the timer is done
   if (done.value) {
-    timerMinutes.value = MINUTES25
+    timerMinutes.value = MOCK
     done.value = false
   }
 
@@ -54,12 +59,15 @@ function stopTimer() {
 <template>
   <div id="timer-container">
     <!-- Progress -->
-    <div id="red-line"></div>
+    <div 
+      id="red-line"
+      :style="{ 'width': percent + '%' }"
+    ></div>
     <!-- Time -->
     <div>
       <h1 id="timer-count">{{ timerMinutes.format("mm:ss") }}</h1>
-      <button @click="startTimer" v-if="!ongoing" id="start-timer-btn">Start</button>
-      <button @click="stopTimer" v-else id="stop-timer-btn">Stop</button>
+      <button @click="startTimer" v-if="!ongoing" id="start-timer-btn">Start!</button>
+      <button @click="stopTimer" v-else id="stop-timer-btn">Stop!</button>
       <h2 v-if="done">DONEEE</h2>
     </div>
   </div>
@@ -67,10 +75,10 @@ function stopTimer() {
 
 <style lang="scss">
 #red-line {
-  width: 40%;
   height: 15px;
   border-radius: 18px;
   background-color: var(--vivid-red);
+  transition: width 0.2s ease-in-out;
 }
 
 #timer-count {
@@ -91,6 +99,10 @@ function stopTimer() {
   &:hover {
     cursor: pointer;
   }
+}
+
+h2 {
+  margin: 2rem;
 }
 
 

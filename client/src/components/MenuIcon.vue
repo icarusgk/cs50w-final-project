@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .item {
   display: flex;
   flex-direction: column;
@@ -21,10 +21,12 @@
   border-radius: 10px;
   color: white;
   transition: background-color 0.1s ease-in-out;
+
+  &:hover {
+    background-color: var(--vivid-red);
+    cursor: pointer;
+  }
 }
 
-.item:hover {
-  background-color: var(--vivid-red);
-  cursor: pointer;
-}
+
 </style>
