@@ -31,5 +31,6 @@ import SideBar from '@/components/Sidebar.vue'
 
 .body {
   background-color: #212121;
+  display: flex;
 }
 </style>

@@ -11,24 +11,30 @@ import MenuIcon from './MenuIcon.vue'
       <img src="../assets/tomato-logo.png" class="logo-img" />
     </div>
     <div class="menu-container">
-      <MenuIcon>
-        <template #icon>
-          <HomeIcon />
-        </template>
-        <template #heading>Home</template>
-      </MenuIcon>
-      <MenuIcon>
-        <template #icon>
-          <StatsIcon />
-        </template>
-        <template #heading>Stats</template>
-      </MenuIcon>
-      <MenuIcon>
-        <template #icon>
-          <AboutIcon />
-        </template>
-        <template #heading>About</template>
-      </MenuIcon>
+      <router-link to="/">
+        <MenuIcon>
+          <template #icon>
+            <HomeIcon />
+          </template>
+          <template #heading>Home</template>
+        </MenuIcon>
+      </router-link>
+      <router-link to="/stats">
+        <MenuIcon>
+          <template #icon>
+            <StatsIcon />
+          </template>
+          <template #heading>Stats</template>
+        </MenuIcon>
+      </router-link>
+      <router-link to="/about">
+        <MenuIcon>
+          <template #icon>
+            <AboutIcon />
+          </template>
+          <template #heading>About</template>
+        </MenuIcon>
+      </router-link>
     </div>
   </div>
 </template>
