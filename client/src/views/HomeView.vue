@@ -1,94 +1,47 @@
 <script setup lang="ts">
-import LightingIcon from '../components/icons/LightingIcon.vue'
+import LightingIcon from '@/components/icons/LightingIcon.vue'
+import TaskButton from '@/components/TaskButton.vue'
+import Timer from '@/components/Timer.vue'
+import Projects from '@/components/Projects.vue'
+import SingleTasks from '@/components/SingleTasks.vue'
+import UpperMenu from '@/components/UpperMenu.vue'
 </script>
 <template>
   <div id="home">
     <!-- Upper Icons -->
-    <div id="icons">
-      <ul>
-        <!-- Four icons -->
-        <!-- Streaks -->
-        <li>Streaks</li>
-        <!-- Dark Theme -->
-        <li>Theme</li>
-        <!-- User -->
-        <li>User</li>
-        <!-- Settings -->
-        <li>Settings</li>
-      </ul>
-    </div>
+    <UpperMenu />
     <!-- Pomo Title -->
-    <div id="pomodoro-container">
+    <div id="pomodoro-title-container">
       <!-- Icon -->
       <LightingIcon />
       <!-- Title -->
       <h1>Pomodoro Timer</h1>
     </div>
     <!-- Third box -->
-    <div id="third-box">
+    <div id="timer-and-tasks">
       <!-- Timer -->
-      <div id="timer-container">
-        <!-- Progress -->
-        <div id="red-line"></div>
-        <!-- Time -->
-        <div>
-          <h1 id="timer-count">25:00</h1>
-          <button id="start-timer-btn">Start</button>
-        </div>
+      <div id="main-timer">
+        <Timer />
       </div>
       <!-- Add Tasks -->
-      <div id="tasks-container">
+      <div id="main-tasks-container">
         <!-- Buttons -->
-        <div>
-          <button>Add new project</button>
-          <button>Add new task</button>
+        <div id="task-btn-container">
+          <TaskButton>
+            <template #type>
+              Add new project
+            </template>
+          </TaskButton>
+          <TaskButton>
+            <template #type>
+              Add new task
+            </template>
+          </TaskButton>
         </div>
         <!-- Projects -->
-        <div>
-          <!-- Title -->
-          <div>
-            <!-- Icon -->
-            <!-- Title -->
-            <h3>Projects</h3>
-            <!-- List of projects -->
-            <div>
-              <div>
-                <!-- Checkbox -->
-                <!-- Name -->
-                <h2>Learn Vue.js</h2>
-              </div>
-              <div>
-                <!-- Checkbox -->
-                <!-- Name -->
-                <h2>Study Rails Basics</h2>
-              </div>
-            </div>
-          </div>
-          <div>
-            <!-- Icon -->
-          </div>
-        </div>
+        <Projects />
         <!-- Tasks -->
-        <div>
-          <div>
-            <!-- Icon -->
-            <!-- Title -->
-            <h3>Tasks</h3>
-            <!-- List of tasks -->
-            <div>
-              <div>
-                <!-- Checkbox -->
-                <!-- Name -->
-                <h2>Learn Refs from Vue.js</h2>
-              </div>
-              <div>
-                <!-- Checkbox -->
-                <!-- Name -->
-                <h2>Learn Controller from Rails</h2>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SingleTasks />
       </div>
     </div>
   </div>
@@ -99,62 +52,31 @@ import LightingIcon from '../components/icons/LightingIcon.vue'
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 4rem;
+  padding: 2rem 4rem;
   width: 100%;
 }
 
-#icons {
-  ul {
-    text-align: right;
-    li {
-      display: inline-block;
-    }
-  }
-}
-
-#third-box {
-  display: flex;
-  flex-direction: row;
-  margin-top: 4rem;
-}
-
-#pomodoro-container {
+#pomodoro-title-container {
   display: flex;
   align-items: center;
-  
 }
 
-#red-line {
-  width: 40%;
-  height: 15px;
-  border-radius: 18px;
-  background-color: var(--vivid-red);
+#timer-and-tasks {
+  display: flex;
+  flex-direction: row;
 }
 
-#timer-container {
+#main-timer {
   width: 50%;
-  margin: 2rem 0 0 1rem;
+  margin: 4rem 0 0 1rem;
+} 
+
+#main-tasks-container {
+  width: 40%
 }
 
-#tasks-container {
-  width: 50%
-}
-
-#timer-count {
-  font-size: 8rem;
-}
-
-#start-timer-btn {
-  padding: 1rem;
-  width: 20%;
-  border-radius: 18px;
-  font-size: 120%;
-  font-family: sans-serif;
-  background-color: var(--vivid-red);
-  color: white;
-  font-weight: 900;
-  border: none;
-  margin-top: 1rem;
+#task-btn-container {
+  display: flex;  
 }
 
 </style>

@@ -39,7 +39,7 @@ import MenuIcon from './MenuIcon.vue'
   </div>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .container {
   background-color: #2f2f2f;
   width: 130px;
@@ -47,19 +47,27 @@ import MenuIcon from './MenuIcon.vue'
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .logo-container {
+    margin-top: 2rem;
+  }
+
+  .menu-container {
+      display: flex;
+      flex-direction: column;
+      height: 60%;
+      justify-content: space-evenly;
+      margin-top: 4rem;
+      align-items: center;
+
+      a {
+        text-decoration: none;
+      }
+    }
 }
 
-.menu-container {
-  display: flex;
-  flex-direction: column;
-  height: 60%;
-  justify-content: space-evenly;
-  margin-top: 4rem;
-  align-items: center;
-}
 
-.logo-container {
-  margin-top: 2rem;
-}
+
+
 </style>
 
