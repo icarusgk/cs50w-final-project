@@ -5,6 +5,8 @@ import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
 import UpperMenu from '@/components/UpperMenu.vue'
+import NewProjectModal from '../components/NewProjectModal.vue'
+import NewTaskModal from '../components/NewTaskModal.vue'
 </script>
 <template>
   <div id="home">
@@ -27,16 +29,25 @@ import UpperMenu from '@/components/UpperMenu.vue'
       <div id="main-tasks-container">
         <!-- Buttons -->
         <div id="task-btn-container">
+
           <TaskButton>
             <template #type>
               Add new project
             </template>
+            <template #modal-content>
+              <NewProjectModal />
+            </template>
           </TaskButton>
+
           <TaskButton>
             <template #type>
               Add new task
             </template>
+            <template #modal-content>
+              <NewTaskModal />
+            </template>
           </TaskButton>
+          
         </div>
         <!-- Projects -->
         <Projects />
