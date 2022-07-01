@@ -1,58 +1,44 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import dayjs from 'dayjs';
+import { watch } from 'vue'
+import { useTimerStore } from '@/stores/timer';
 
-const MINUTES25 = dayjs().set('minutes', 25).set('seconds', 0)
-const MOCK = dayjs().set('minutes', 0).set('seconds', 4)
-const MINUTESINSECONDS = 1500
+const timer = useTimerStore()
 
-let timerId: number
-const timerMinutes = ref(MINUTES25)
-let done = ref(false)
-let ongoing = ref(false)
-let percent = ref(10)
+watch(() => timer.timer, () => {
+  // Change the red line percent
+  timer.incrementLine()
 
-watch(timerMinutes, (newMinutes) => {
-  const minutes = newMinutes.minute()
-  const seconds = newMinutes.second()
-
-  const diff = MINUTES25.diff(newMinutes, 'seconds')
-  percent.value = ((diff / MINUTESINSECONDS) * 80) + 5
-
-  if (minutes === 0 && seconds === 0) {
-    done.value = true
+  if (timer.minutes === 0 && timer.seconds === 0) {
+    timer.markDone()
     stopTimer()
   }
 })
 
-const toggleOngoing = () => ongoing.value = !ongoing.value
-
-function timer() {
+function timerInitializer() {
   // Clear an existing ID
-  if (timerId) { clearInterval(timerId) }
+  if (timer.timerId) { clearInterval(timer.timerId) }
   // Create new ID
-  timerId = setInterval(() => {
-    timerMinutes.value = timerMinutes.value.subtract(1, 'second')
+  timer.timerId = setInterval(() => {
+    timer.decrementSecond()
   }, 1000)
 }
 
 function startTimer() {
   // Toggle status
-  toggleOngoing()
+  timer.toggleOngoing()
 
   // Check if the timer is done
-  if (done.value) {
-    timerMinutes.value = MOCK
-    done.value = false
+  if (timer.done) {
+    timer.setInitialValue()
   }
 
   // Start the timer
-  timer()
+  timerInitializer()
 }
 
 function stopTimer() {
-  toggleOngoing()
-  clearInterval(timerId)
+  timer.toggleOngoing()
+  clearInterval(timer.timerId)
 }
 </script>
 
@@ -61,14 +47,14 @@ function stopTimer() {
     <!-- Progress -->
     <div 
       id="red-line"
-      :style="{ 'width': percent + '%' }"
+      :style="{ 'width': timer.percent + '%' }"
     ></div>
     <!-- Time -->
     <div>
-      <h1 id="timer-count">{{ timerMinutes.format("mm:ss") }}</h1>
-      <button @click="startTimer" v-if="!ongoing" id="start-timer-btn">Start!</button>
+      <h1 id="timer-count">{{ timer.timer.format("mm:ss") }}</h1>
+      <button @click="startTimer" v-if="!timer.ongoing" id="start-timer-btn">Start!</button>
       <button @click="stopTimer" v-else id="stop-timer-btn">Stop!</button>
-      <h2 v-if="done">DONEEE</h2>
+      <h2 v-if="timer.done">DONEEE</h2>
     </div>
   </div>
 </template>
