@@ -8,7 +8,7 @@ __pycache__
 db.sqlite3
 media
 
-pomodo/settings.py
+main/settings.py
 
 local_settings.py
 
