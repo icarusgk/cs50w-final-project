@@ -16,12 +16,21 @@ class Task(models.Model):
   subtasks = models.ManyToManyField('Task', blank=True)
   tags = models.ManyToManyField('Tag', blank=True)
 
+  def __str__(self):
+    return f'Task: {self.title}'
+
 
 class Tag(models.Model):
   name = models.CharField(max_length=20)
+
+  def __str__(self):
+    return f'Tag: {self.tag}'
 
 
 class Project(models.Model):
   name = models.CharField(max_length=30)
   user = models.ForeignKey('User', on_delete=models.CASCADE)
   tasks = models.ManyToManyField('Task', blank=True)
+
+  def __str__(self):
+    return f'Project: {self.name}'
