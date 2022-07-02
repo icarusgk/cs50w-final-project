@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import SideBar from '@/components/Sidebar.vue'
+import UpperMenu from './components/UpperMenu.vue'
 </script>
 
 <template>
   <div class="body">
     <SideBar />
-    <router-view></router-view>
+    <div class="menu-and-content">
+      <UpperMenu class="upper-menu" />
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 /* variables */
 :root {
   --white: #fff;
@@ -33,5 +37,16 @@ import SideBar from '@/components/Sidebar.vue'
 .body {
   background-color: #212121;
   display: flex;
+
+  .menu-and-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .upper-menu {
+      padding: 2rem 4em 0 0;
+      color: white;
+    }
+  }
 }
 </style>

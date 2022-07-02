@@ -4,14 +4,11 @@ import TaskButton from '@/components/TaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
-import UpperMenu from '@/components/UpperMenu.vue'
 import NewProjectModal from '../components/NewProjectModal.vue'
 import NewTaskModal from '../components/NewTaskModal.vue'
 </script>
 <template>
   <div id="home">
-    <!-- Upper Icons -->
-    <UpperMenu />
     <!-- Pomo Title -->
     <div id="pomodoro-title-container">
       <!-- Icon -->
@@ -63,7 +60,7 @@ import NewTaskModal from '../components/NewTaskModal.vue'
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 2rem 4rem;
+  padding: 0 4rem 0 4rem;
   width: 100%;
 }
 
