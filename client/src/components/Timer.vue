@@ -40,6 +40,12 @@ function stopTimer() {
   timer.toggleOngoing()
   clearInterval(timer.timerId)
 }
+
+function restartTimer() {
+  stopTimer()
+  timer.setInitialValue()
+}
+
 </script>
 
 <template>
@@ -52,8 +58,9 @@ function stopTimer() {
     <!-- Time -->
     <div>
       <h1 id="timer-count">{{ timer.timer.format("mm:ss") }}</h1>
-      <button @click="startTimer" v-if="!timer.ongoing" id="start-timer-btn">Start!</button>
-      <button @click="stopTimer" v-else id="stop-timer-btn">Stop!</button>
+      <button @click="startTimer()" v-if="!timer.ongoing" id="start-timer-btn">Start!</button>
+      <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
+      <button @click="restartTimer()" v-if="timer.ongoing" id="restart-timer-btn">Restart!</button>
       <h2 v-if="timer.done">DONEEE</h2>
     </div>
   </div>
@@ -73,7 +80,7 @@ function stopTimer() {
 
 %timer-button {
   padding: 1rem;
-  width: 40%;
+  width: 30%;
   border-radius: 18px;
   font-size: 120%;
   font-family: sans-serif;
@@ -100,5 +107,11 @@ h2 {
 #stop-timer-btn {
   @extend %timer-button;
   background-color: var(--light-blue);
+}
+
+#restart-timer-btn {
+  @extend %timer-button;
+  background-color: darkorange;
+  margin-left: 1rem;
 }
 </style>
