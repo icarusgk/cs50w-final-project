@@ -6,9 +6,13 @@ import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
 import NewProjectModal from '../components/NewProjectModal.vue'
 import NewTaskModal from '../components/NewTaskModal.vue'
+import { ref } from 'vue'
+
+const isBlurred = ref(false)
+
 </script>
 <template>
-  <div id="home">
+  <div id="home" :class="{ blur: isBlurred }">
     <!-- Pomo Title -->
     <div id="pomodoro-title-container">
       <!-- Icon -->
@@ -27,7 +31,7 @@ import NewTaskModal from '../components/NewTaskModal.vue'
         <!-- Buttons -->
         <div id="task-btn-container">
 
-          <TaskButton>
+          <TaskButton @blur="blur => isBlurred = blur">
             <template #type>
               Add new project
             </template>
@@ -36,7 +40,7 @@ import NewTaskModal from '../components/NewTaskModal.vue'
             </template>
           </TaskButton>
 
-          <TaskButton>
+          <TaskButton @blur="blur => isBlurred = blur">
             <template #type>
               Add new task
             </template>
@@ -44,7 +48,7 @@ import NewTaskModal from '../components/NewTaskModal.vue'
               <NewTaskModal />
             </template>
           </TaskButton>
-          
+
         </div>
         <!-- Projects -->
         <Projects />
@@ -62,6 +66,11 @@ import NewTaskModal from '../components/NewTaskModal.vue'
   flex-direction: column;
   padding: 0 4rem 0 4rem;
   width: 100%;
+  transition: filter 0.1s ease-out;
+}
+
+.blur {
+  filter: blur(14px);
 }
 
 #pomodoro-title-container {

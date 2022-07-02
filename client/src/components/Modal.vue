@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // Modal is gonna receive the props
-const props = defineProps<{
+defineProps<{
   open: Boolean
 }>()
 
-const emit = defineEmits(['closeModal'])
+const emit = defineEmits(['closeModal', 'unblur'])
 
 const closeModal = () => emit('closeModal', false)
 </script>
@@ -17,7 +17,7 @@ const closeModal = () => emit('closeModal', false)
       <button 
         @click="closeModal()"
         class="close-modal-button"
-      >Close
+      >Save!
       </button>
     </div>
   </Teleport>
@@ -34,19 +34,33 @@ const closeModal = () => emit('closeModal', false)
 
   // Color
   background-color: white;
-  color: black;
+  color: white;
 
   padding: 2rem;
   border-radius: 10px;
 
+  background: rgba(136, 136, 136, 0.30);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(11.2px);
+  -webkit-backdrop-filter: blur(11.2px);
+
   .close-modal-button {
-    background-color: var(--white);
-    color: var(--black);
-    display: flex;
-    align-items: center;
+    background-color: var(--vivid-red);
+    color: var(--white);
+    font: {
+      weight: 900;
+      family: sans-serif;
+    }
+    width: 100%;
+    border: none;
     border-radius: 10px;
-    margin-right: 1rem;
-    padding: 0.5rem 0.5rem;
+    margin-top: 1rem;
+    padding: 0.8rem 0.8rem;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

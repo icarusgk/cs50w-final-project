@@ -3,10 +3,14 @@ import { ref, watch } from 'vue';
 import AddIcon from './icons/AddIcon.vue';
 import Modal from './Modal.vue';
 
-// OPEN HERE!
 const open = ref(false)
 
+const emit = defineEmits(['blur'])
+
 const openModal = () => open.value = true;
+watch(() => open.value, () => {
+  emit('blur', open.value)
+})
 </script>
 
 <template>
@@ -14,7 +18,10 @@ const openModal = () => open.value = true;
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
-    <Modal :open="open" @close-modal="(close) => open = close">
+    <Modal 
+      :open="open" 
+      @close-modal="(close) => open = close"
+    >
       <slot name="modal-content"></slot>
     </Modal>
   </div>
