@@ -3,13 +3,11 @@ import { ref } from 'vue';
 import TaskType from './TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
+import { useFetch } from '@/composables/useFetch';
 
-const tasks = ref<String[]>([
-  'Learn Refs from Vue.js',
-  'Study Controller from Rails',
-  'Read Nuxt.js 3',
-  'Put my strips on'
-]);
+
+const { data, error, retry } = useFetch('http://127.0.0.1:8000/api/tasks/?format=json')
+
 </script>
 
 <template>
@@ -23,8 +21,8 @@ const tasks = ref<String[]>([
       </template>
     </TaskType>
 
-    <div v-for="task in tasks">
-      <Task :task-title="task" />
+    <div v-for="task in data">
+      <Task :task-title="task.title" />
     </div>
   </div>
 </template>
