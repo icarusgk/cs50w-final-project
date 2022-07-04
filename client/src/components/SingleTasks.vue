@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import TaskType from './TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
 import { useFetch } from '@/composables/useFetch';
 
-
-const { data, error, retry } = useFetch('http://127.0.0.1:8000/api/tasks/?format=json')
+const tasksURL = new URL('http://127.0.0.1:8000/api/tasks/?format=json')
+const { data, error, retry } = useFetch(tasksURL)
 
 </script>
 
