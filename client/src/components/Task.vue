@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
+import type TypeTask from "@/types/TaskType"
 defineProps<{
-  taskTitle: String
+  task: TypeTask
 }>()
 </script>
 
@@ -12,7 +13,7 @@ defineProps<{
     <!-- Name -->
     <div class="task-title-container">
       <div>
-        <p>{{ taskTitle }}</p>
+        <p>{{ task.title }}</p>
       </div>
       <div class="task-info-icon">
         <TaskInfoIcon />
