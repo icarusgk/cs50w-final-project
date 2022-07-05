@@ -1,23 +1,40 @@
 <script setup lang="ts">
+import { ref, watch } from "vue";
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
+import Modal from "./Modal.vue";
+import TaskInfoModal from "@/components/TaskInfoModal.vue";
+import type TypeTask from "@/types/TaskType"
+import { useModalStore } from "@/stores/modal";
+
 defineProps<{
-  taskTitle: String
+  task: TypeTask
 }>()
+
+const open = ref(false)
+
+// When open.value changes, toggle
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
+
 </script>
 
 <template>
-  <div class="task-container">
+  <div @click="open = true" class="task-container">
     <!-- Checkbox -->
     <div class="task-checkbox"></div>
     <!-- Name -->
     <div class="task-title-container">
       <div>
-        <p>{{ taskTitle }}</p>
+        <p>{{ task.title }}</p>
       </div>
       <div class="task-info-icon">
         <TaskInfoIcon />
       </div>
     </div>
+    <Modal :open="open" @close-modal="(close) => open = close">
+      <TaskInfoModal />
+    </Modal>
   </div>
 </template>
 
@@ -26,7 +43,10 @@ defineProps<{
   display: flex;
   align-items: center;
   margin: 0 0.2rem 0.5rem 0.2rem;
-  
+
+  &:hover {
+    cursor: pointer;
+  } 
 
   .task-checkbox {
     height: 20px;

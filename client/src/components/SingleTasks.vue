@@ -21,7 +21,7 @@ const { data, error, retry } = useFetch(tasksURL)
     </TaskType>
 
     <div v-for="task in data">
-      <Task :task-title="task.title" />
+      <Task :task="task" />
     </div>
   </div>
 </template>

@@ -1,20 +1,18 @@
 <script setup lang="ts">
+import { useModalStore } from '@/stores/modal';
 import { ref, watch } from 'vue';
 import AddIcon from './icons/AddIcon.vue';
 import Modal from './Modal.vue';
 
 const open = ref(false)
 
-const emit = defineEmits(['blur'])
-
-const openModal = () => open.value = true;
 watch(() => open.value, () => {
-  emit('blur', open.value)
+  useModalStore().toggle()
 })
 </script>
 
 <template>
-  <div @click="openModal" class="add-item-btn">
+  <div @click="open = true" class="add-item-btn">
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
