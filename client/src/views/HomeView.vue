@@ -6,13 +6,15 @@ import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
 import NewProjectModal from '../components/NewProjectModal.vue'
 import NewTaskModal from '../components/NewTaskModal.vue'
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import { useModalStore } from '@/stores/modal'
 
-const isBlurred = ref(false)
+const modal = useModalStore()
+modal.close()
 
 </script>
 <template>
-  <div id="home" :class="{ blur: isBlurred }">
+  <div id="home" :class="{ blur: modal.isOpened }">
     <!-- Pomo Title -->
     <div id="pomodoro-title-container">
       <!-- Icon -->
@@ -31,7 +33,7 @@ const isBlurred = ref(false)
         <!-- Buttons -->
         <div id="task-btn-container">
 
-          <TaskButton @blur="blur => isBlurred = blur">
+          <TaskButton>
             <template #type>
               Add new project
             </template>
@@ -40,7 +42,7 @@ const isBlurred = ref(false)
             </template>
           </TaskButton>
 
-          <TaskButton @blur="blur => isBlurred = blur">
+          <TaskButton>
             <template #type>
               Add new task
             </template>
@@ -71,6 +73,7 @@ const isBlurred = ref(false)
 
 .blur {
   filter: blur(14px);
+  pointer-events: none;
 }
 
 #pomodoro-title-container {
