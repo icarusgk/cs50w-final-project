@@ -26,6 +26,18 @@ import UpperMenu from './components/UpperMenu.vue'
   --light-blue: #02B79F;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* Resets */
 * {
   box-sizing: border-box;

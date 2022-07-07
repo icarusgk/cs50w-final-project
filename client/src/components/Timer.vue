@@ -66,7 +66,7 @@ function restartTimer() {
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #red-line {
   height: 15px;
   border-radius: 18px;
