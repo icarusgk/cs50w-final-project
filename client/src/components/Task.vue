@@ -33,7 +33,7 @@ watch(() => open.value, () => {
       </div>
     </div>
     <Modal :open="open" @close-modal="(close) => open = close">
-      <TaskInfoModal />
+      <TaskInfoModal :task="task" />
     </Modal>
   </div>
 </template>
