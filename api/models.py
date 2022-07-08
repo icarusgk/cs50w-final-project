@@ -13,8 +13,8 @@ class Task(models.Model):
   estimated = models.IntegerField(default=0)
   gone_through = models.IntegerField(default=0)
   minutes = models.IntegerField(default=0)
-  subtasks = models.ManyToManyField('Task', blank=True)
-  tags = models.ManyToManyField('Tag', blank=True)
+  subtasks = models.ManyToManyField('self', blank=True, symmetrical=False, related_name='belongs_to')
+  tags = models.ManyToManyField('Tag', blank=True, related_name='has')
 
   def __str__(self):
     return f'Task: {self.title}'
@@ -30,7 +30,7 @@ class Tag(models.Model):
 class Project(models.Model):
   name = models.CharField(max_length=30)
   user = models.ForeignKey('User', on_delete=models.CASCADE)
-  tasks = models.ManyToManyField('Task', blank=True)
+  tasks = models.ManyToManyField('Task', blank=True, related_name='in_projects')
 
   def __str__(self):
     return f'Project: {self.name}'
