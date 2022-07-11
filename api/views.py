@@ -1,27 +1,39 @@
-from .serializers import TaskSerializer
+from .serializers import *
 from .models import Task
 from django.http import Http404
-from rest_framework import status
+from django.shortcuts import get_object_or_404
+from rest_framework import status, generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# Create your views here.
-class TaskList(APIView):
-  """
-  List all tasks or one, or create a new task
-  """
-  def get(self, request, format=None, id=None):
-    if id:
-      task = Task.objects.get(id=id)
-      return Response(TaskSerializer(task).data)
 
-    tasks = Task.objects.all()
-    serializer = TaskSerializer(tasks, many=True)
+# This viewsets automatically provide `list`, `create`, `retrieve`,
+# `update` and `destroy` actions.
+
+# Create your views here.
+# TODO: Convert to ListApiView for querying
+class UserViewSet(viewsets.ModelViewSet):
+  queryset = User.objects.all()
+  serializer_class = UserSerializer
+
+class TaskViewSet(viewsets.ModelViewSet):
+  queryset = Task.objects.all()
+  serializer_class = TaskSerializer
+
+class TagViewSet(viewsets.ModelViewSet):
+  queryset = Tag.objects.all()
+  serializer_class = TagSerializer
+  
+  def list(self, request):
+    serializer = TagSerializer(self.queryset, many=True)
     return Response(serializer.data)
 
-  def post(self, request, format=None):
-    serializer = TaskSerializer(data=request.data)
-    if serializer.is_valid():
-      serializer.save()
-      return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  def retrieve(self, request, pk=None):
+    tag = get_object_or_404(self.queryset, pk=pk)
+    serializer = TagTasksSerializer(tag)
+    return Response(serializer.data)
+
+
+class ProjectViewSet(viewsets.ModelViewSet):
+  queryset = Project.objects.all()
+  serializer_class = ProjectSerializer
