@@ -12,6 +12,12 @@ class TagSerializer(serializers.ModelSerializer):
     model = Tag
     fields = '__all__'
 
+class TagTasksSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Tag
+    fields = ['id', 'name', 'has']
+    depth = 1
+
 class TaskSerializer(serializers.ModelSerializer):
   tags = TagSerializer(many=True)
   class Meta:
