@@ -5,7 +5,7 @@ import TaskType from './TaskType.vue'
 import ProjectIcon from './icons/ProjectIcon.vue'
 import type TypeTask from '@/types/TaskType'
 
-const mockProjects = ref<TypeTask[]>([
+const mockProjects = ref([
   {
     "id": 1,
     "user": 1,
@@ -22,7 +22,7 @@ const mockProjects = ref<TypeTask[]>([
     "title": "Study Rails Basics",
     "description": "Here’s a brief description of this task. It’ll continue for I don’t know for how long. Vue is a really good front-end framework, it is the first one that I’m learning before React and Svelte.",
     "subtasks": [
-      1
+
     ]
   },
 ])

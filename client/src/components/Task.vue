@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import MiniLabel from './MiniLabel.vue';
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
 import Modal from "./Modal.vue";
 import TaskInfoModal from "@/components/TaskInfoModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
+import AddTagIcon from "./icons/AddTagIcon.vue";
 
-defineProps<{
+const props = defineProps<{
   task: TypeTask
 }>()
 
 const open = ref(false)
+const task = ref(props.task)
+
 
 // When open.value changes, toggle
 watch(() => open.value, () => {
@@ -25,14 +29,36 @@ watch(() => open.value, () => {
     <div class="task-checkbox"></div>
     <!-- Name -->
     <div class="task-title-container">
-      <div>
+      <div class="title-container">
         <p>{{ task.title }}</p>
       </div>
       <div class="task-info-icon">
         <TaskInfoIcon />
       </div>
     </div>
+    <!-- Modal -->
     <Modal :open="open" @close-modal="(close) => open = close">
+      <!-- Tags -->
+      <template #tags>
+        <MiniLabel v-for="tag in task.tags" :is-tag="true">
+          <template #title>
+            #{{ tag.name }}
+          </template>
+        </MiniLabel>
+        <MiniLabel :is-add="true">
+          <template #title>
+            Add Tag
+          </template>
+          <template #icon>
+            <AddTagIcon />
+          </template>
+        </MiniLabel>
+      </template>
+      <!-- Title -->
+      <template #title>
+        <input type="text" name="title" id="task-input-title" v-model="task.title" />
+      </template>
+      <!-- Modal -->
       <TaskInfoModal :task="task" />
     </Modal>
   </div>
@@ -44,7 +70,7 @@ watch(() => open.value, () => {
   align-items: center;
   margin: 0 0.2rem 0.5rem 0.2rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   } 
 
@@ -64,13 +90,30 @@ watch(() => open.value, () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     
     .task-info-icon {
-      &:hover {
+      margin-top: 0.2rem;
+      &:hover, &:focus {
         cursor: pointer;
       }
     }
   }
+}
+
+#task-input-title {
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: sans-serif;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
 }
 
 </style>

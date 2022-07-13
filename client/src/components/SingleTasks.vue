@@ -3,9 +3,10 @@ import TaskType from './TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
 import { useFetch } from '@/composables/useFetch';
+import tasks from '@/mocks/tasks';
 
-const tasksURL = new URL('http://127.0.0.1:8000/api/tasks/?format=json')
-const { data, error, retry } = useFetch(tasksURL)
+// const tasksURL = new URL('http://127.0.0.1:8000/api/tasks/?format=json')
+// const { data, error, retry } = useFetch(tasksURL)
 
 </script>
 
@@ -20,7 +21,7 @@ const { data, error, retry } = useFetch(tasksURL)
       </template>
     </TaskType>
 
-    <div v-for="task in data">
+    <div v-for="task in tasks">
       <Task :task="task" />
     </div>
   </div>
