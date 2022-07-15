@@ -14,6 +14,8 @@ const props = defineProps<{
 
 const open = ref(false)
 const task = ref(props.task)
+const tagVisible = ref(true)
+const newTag = ref("")
 
 
 // When open.value changes, toggle
@@ -21,6 +23,20 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
+const toggleTag = () => tagVisible.value = !tagVisible.value
+
+function addTag() {
+  toggleTag()
+  
+  if (newTag.value) {
+    props.task.tags.push({
+      id: props.task.tags.length + 1,
+      name: newTag.value
+    })
+  }
+
+  newTag.value = ""
+}
 </script>
 
 <template>
@@ -45,7 +61,7 @@ watch(() => open.value, () => {
             #{{ tag.name }}
           </template>
         </MiniLabel>
-        <MiniLabel :is-add="true">
+        <MiniLabel v-if="tagVisible && task.tags.length <= 3" @click="toggleTag()" :is-add="true">
           <template #title>
             Add Tag
           </template>
@@ -53,6 +69,9 @@ watch(() => open.value, () => {
             <AddTagIcon />
           </template>
         </MiniLabel>
+        <div v-else-if="!tagVisible">
+          <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
+        </div>
       </template>
       <!-- Title -->
       <template #title>
@@ -114,6 +133,14 @@ watch(() => open.value, () => {
     outline: none;
   }
 
+}
+
+.new-tag-name {
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  padding: 1px 6px;
+  width: 6rem;
 }
 
 </style>
