@@ -3,6 +3,7 @@ import CloseIcon from "./icons/CloseIcon.vue";
 // Modal is gonna receive the props
 defineProps<{
   open: Boolean
+  isButton?: Boolean
 }>()
 
 const emit = defineEmits(['closeModal', 'unblur'])
@@ -15,7 +16,7 @@ const closeModal = () => emit('closeModal', false)
     <div v-if="open" class="modal">
       <div class="task-upper-menu">
         <div class="tags-and-title-container">
-          <div class="tags-container">
+          <div v-if="!isButton" class="tags-container">
             <slot name="tags"></slot>
           </div>
           <div class="title-container">
@@ -66,10 +67,7 @@ const closeModal = () => emit('closeModal', false)
       .tags-container {
         display: flex;
         height: 25px;
-      }
-
-      .title-container {
-        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
     }
 

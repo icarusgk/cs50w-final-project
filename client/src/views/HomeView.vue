@@ -32,21 +32,21 @@ modal.close()
       <div id="main-tasks-container">
         <!-- Buttons -->
         <div id="task-btn-container">
-
+          <!-- New Project -->
           <TaskButton>
             <template #type>
               Add new project
             </template>
-            <template #modal-content>
+            <template #title>
               <NewProjectModal />
             </template>
           </TaskButton>
-
+          <!-- New Task -->
           <TaskButton>
             <template #type>
               Add new task
             </template>
-            <template #modal-content>
+            <template #title>
               <NewTaskModal />
             </template>
           </TaskButton>
