@@ -13,7 +13,6 @@ const props = defineProps<{
 }>()
 
 const open = ref(false)
-const task = ref(props.task)
 const tagVisible = ref(true)
 const newTag = ref("")
 
@@ -46,7 +45,7 @@ function addTag() {
     <!-- Name -->
     <div class="task-title-container">
       <div class="title-container">
-        <p>{{ task.title }}</p>
+        <p>{{ props.task.title }}</p>
       </div>
       <div class="task-info-icon">
         <TaskInfoIcon />
@@ -56,12 +55,12 @@ function addTag() {
     <Modal :open="open" @close-modal="(close) => open = close">
       <!-- Tags -->
       <template #tags>
-        <MiniLabel v-for="tag in task.tags" :is-tag="true">
+        <MiniLabel v-for="tag in props.task.tags" :is-tag="true">
           <template #title>
             #{{ tag.name }}
           </template>
         </MiniLabel>
-        <MiniLabel v-if="tagVisible && task.tags.length <= 3" @click="toggleTag()" :is-add="true">
+        <MiniLabel v-if="tagVisible && props.task.tags.length <= 3" @click="toggleTag()" :is-add="true">
           <template #title>
             Add Tag
           </template>
@@ -75,7 +74,7 @@ function addTag() {
       </template>
       <!-- Title -->
       <template #title>
-        <input type="text" name="title" id="task-input-title" v-model="task.title" />
+        <input type="text" name="title" id="task-input-title" v-model="props.task.title" />
       </template>
       <!-- Modal -->
       <TaskInfoModal :task="task" />
