@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import CloseIcon from "./icons/CloseIcon.vue";
 // Modal is gonna receive the props
 defineProps<{
   open: Boolean
+  isButton?: Boolean
 }>()
 
 const emit = defineEmits(['closeModal', 'unblur'])
@@ -12,13 +14,20 @@ const closeModal = () => emit('closeModal', false)
 <template>
   <Teleport to="body">
     <div v-if="open" class="modal">
+      <div class="task-upper-menu">
+        <div class="tags-and-title-container">
+          <div v-if="!isButton" class="tags-container">
+            <slot name="tags"></slot>
+          </div>
+          <div class="title-container">
+            <slot name="title"></slot>
+          </div>
+        </div>
+        <div @click="closeModal()" class="close-icon">
+          <CloseIcon />
+        </div>
+      </div>
       <slot></slot>
-      <!-- Close modal -->
-      <button 
-        @click="closeModal()"
-        class="close-modal-button"
-      >Save!
-      </button>
     </div>
   </Teleport>
 </template>
@@ -45,21 +54,27 @@ const closeModal = () => emit('closeModal', false)
   backdrop-filter: blur(11.2px);
   -webkit-backdrop-filter: blur(11.2px);
 
-  .close-modal-button {
-    background-color: var(--vivid-red);
-    color: var(--white);
-    font: {
-      weight: 900;
-      family: sans-serif;
-    }
-    width: 100%;
-    border: none;
-    border-radius: 10px;
-    margin-top: 1rem;
-    padding: 0.8rem 0.8rem;
+  .task-upper-menu {
+    display: flex;
+    justify-content: space-between;
+    
 
-    &:hover {
-      cursor: pointer;
+    .tags-and-title-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .tags-container {
+        display: flex;
+        height: 25px;
+        margin-bottom: 1rem;
+      }
+    }
+
+    .close-icon {
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

@@ -16,10 +16,14 @@ watch(() => open.value, () => {
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
-    <Modal 
+    <Modal
+      :is-button="true"
       :open="open" 
       @close-modal="(close) => open = close"
     >
+      <template #title>
+        <slot name="title"></slot>
+      </template>
       <slot name="modal-content"></slot>
     </Modal>
   </div>
