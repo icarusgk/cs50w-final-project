@@ -15,19 +15,22 @@ const closeModal = () => emit('closeModal', false)
   <Teleport to="body">
     <div v-if="open" class="modal">
       <div class="task-upper-menu">
+      
         <div class="tags-and-title-container">
-          <div v-if="!isButton" class="tags-container">
+          <div class="tags-container">
             <slot name="tags"></slot>
           </div>
           <div class="title-container">
             <slot name="title"></slot>
           </div>
         </div>
+
         <div @click="closeModal()" class="close-icon">
           <CloseIcon />
         </div>
       </div>
       <slot></slot>
+      <slot name="save-button"></slot>
     </div>
   </Teleport>
 </template>

@@ -16,15 +16,17 @@ watch(() => open.value, () => {
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
-    <Modal
-      :is-button="true"
-      :open="open" 
-      @close-modal="(close) => open = close"
-    >
+    <Modal :is-button="true" :open="open" @close-modal="(close) => open = close">
+      <template #tags>
+        <slot name="tags"></slot>
+      </template>
       <template #title>
         <slot name="title"></slot>
       </template>
-      <slot name="modal-content"></slot>
+      <slot></slot>
+      <template #save-button>
+        <slot name="save-button"></slot>
+      </template>
     </Modal>
   </div>
 </template>
@@ -38,6 +40,7 @@ watch(() => open.value, () => {
   border-radius: 10px;
   margin-right: 1rem;
   padding: 0.1rem 0.5rem;
+
   &:hover {
     cursor: pointer;
   }
@@ -58,6 +61,4 @@ watch(() => open.value, () => {
   color: black;
   padding: 2rem;
 }
-
-
 </style>

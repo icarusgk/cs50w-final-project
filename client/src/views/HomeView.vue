@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import LightingIcon from '@/components/icons/LightingIcon.vue'
-import TaskButton from '@/components/TaskButton.vue'
+import NewTaskButton from '@/components/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
-import NewProjectModal from '../components/NewProjectModal.vue'
-import NewTaskModal from '../components/NewTaskModal.vue'
 // import { ref } from 'vue'
 import { useModalStore } from '@/stores/modal'
+import NewProjectButton from '../components/NewProjectButton.vue'
 
 const modal = useModalStore()
 modal.close()
@@ -32,25 +31,10 @@ modal.close()
       <div id="main-tasks-container">
         <!-- Buttons -->
         <div id="task-btn-container">
-          <!-- New Project -->
-          <TaskButton>
-            <template #type>
-              Add new project
-            </template>
-            <template #title>
-              <NewProjectModal />
-            </template>
-          </TaskButton>
           <!-- New Task -->
-          <TaskButton>
-            <template #type>
-              Add new task
-            </template>
-            <template #title>
-              <NewTaskModal />
-            </template>
-          </TaskButton>
-
+          <NewTaskButton />
+          <!-- New Project -->
+          <NewProjectButton />
         </div>
         <!-- Projects -->
         <Projects />
