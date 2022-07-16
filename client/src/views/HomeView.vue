@@ -4,7 +4,6 @@ import NewTaskButton from '@/components/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
-// import { ref } from 'vue'
 import { useModalStore } from '@/stores/modal'
 import NewProjectButton from '../components/NewProjectButton.vue'
 
