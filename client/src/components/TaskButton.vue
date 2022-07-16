@@ -27,6 +27,7 @@ watch(() => open.value, () => {
       <template #save-button>
         <slot name="save-button"></slot>
       </template>
+
     </Modal>
   </div>
 </template>
