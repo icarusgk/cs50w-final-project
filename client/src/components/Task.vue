@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import MiniLabel from './MiniLabel.vue';
+import MiniLabel from './slots/MiniLabel.vue';
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
-import Modal from "./Modal.vue";
-import TaskInfoModal from "@/components/TaskInfoModal.vue";
+import Modal from "./modals/Modal.vue";
+import TaskInfoModal from "@/components/modals/TaskInfoModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
 import AddTagIcon from "./icons/AddTagIcon.vue";

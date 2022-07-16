@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Task from './Task.vue'
-import TaskType from './TaskType.vue'
+import TaskType from './slots/TaskType.vue'
 import ProjectIcon from './icons/ProjectIcon.vue'
 import type TypeTask from '@/types/TaskType'
 

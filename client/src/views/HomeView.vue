@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import LightingIcon from '@/components/icons/LightingIcon.vue'
-import NewTaskButton from '@/components/NewTaskButton.vue'
+import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import SingleTasks from '@/components/SingleTasks.vue'
 import { useModalStore } from '@/stores/modal'
-import NewProjectButton from '../components/NewProjectButton.vue'
+import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
 
 const modal = useModalStore()
 modal.close()

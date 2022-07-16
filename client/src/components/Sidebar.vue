@@ -2,7 +2,7 @@
 import HomeIcon from './icons/HomeIcon.vue'
 import StatsIcon from './icons/StatsIcon.vue'
 import AboutIcon from './icons/AboutIcon.vue'
-import MenuIcon from './MenuIcon.vue'
+import MenuIcon from './slots/MenuIcon.vue'
 </script>
 
 <template>

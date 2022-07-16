@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import MiniLabel from './MiniLabel.vue';
-import TaskInfoIconVue from './icons/TaskInfoIcon.vue';
+import MiniLabel from '../slots/MiniLabel.vue';
+import TaskInfoIconVue from '../icons/TaskInfoIcon.vue';
 import type TypeTask from '@/types/TaskType'
-import AddTagIcon from './icons/AddTagIcon.vue'
+import AddTagIcon from '../icons/AddTagIcon.vue'
 
 const props = defineProps<{
   task: TypeTask

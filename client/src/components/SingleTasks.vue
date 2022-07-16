@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TaskType from './TaskType.vue';
+import TaskType from './slots/TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
 import { useFetch } from '@/composables/useFetch';

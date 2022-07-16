@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TaskButton from './TaskButton.vue';
-import NewTaskModal from './NewTaskModal.vue';
-import MiniLabel from './MiniLabel.vue';
 import { ref } from 'vue';
-import AddTagIcon from './icons/AddTagIcon.vue';
+import TaskButton from '../TaskButton.vue';
+import NewTaskModal from '../../modals/new-modals/NewTaskModal.vue';
+import MiniLabel from '../../slots/MiniLabel.vue';
+import AddTagIcon from '../../icons/AddTagIcon.vue';
 
 const initialTask = ref<{
   tags: string[]

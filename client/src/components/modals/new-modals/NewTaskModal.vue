@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import MiniLabel from './MiniLabel.vue';
-import AddTagIcon from './icons/AddTagIcon.vue';
+import MiniLabel from '../../slots/MiniLabel.vue';
+import AddTagIcon from '../../icons/AddTagIcon.vue';
 
 const props = defineProps(['task'])
 

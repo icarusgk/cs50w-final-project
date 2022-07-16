@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modal';
 import { ref, watch } from 'vue';
-import AddIcon from './icons/AddIcon.vue';
-import Modal from './Modal.vue';
+import AddIcon from '../icons/AddIcon.vue';
+import Modal from '../modals/Modal.vue';
 
 const open = ref(false)
 
