@@ -39,7 +39,7 @@ function addTag() {
 }
 
 function saveTask() {
-
+  console.log(initialTask)
 }
 </script>
 
@@ -69,7 +69,7 @@ function saveTask() {
         <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
       </div>
     </template>
-    <!-- New task title -->
+    <!-- New task title input -->
     <template #title>
       <input 
         type="text" 
@@ -79,7 +79,9 @@ function saveTask() {
         v-model="initialTask.title" 
       />
     </template>
+    <!-- Rest of modal -->
     <NewTaskModal :task="initialTask" />
+    <!-- Button -->
     <template #save-button>
       <button
         @click="saveTask()" 

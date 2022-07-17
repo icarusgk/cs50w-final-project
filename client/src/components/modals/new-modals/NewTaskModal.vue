@@ -2,14 +2,54 @@
 import { ref } from 'vue'
 import MiniLabel from '../../slots/MiniLabel.vue';
 import AddTagIcon from '../../icons/AddTagIcon.vue';
+import Subtask from '@/components/Subtask.vue';
+import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
 
 const props = defineProps(['task'])
 
+const subtask = ref({
+  title: '',
+  description: '',
+  estimated: 0
+})
+
 const selected = ref('')
 const pomoLimits = ref({ min: 1, max: 99 })
+const newSubtaskOpened = ref(false)
 
-function saveTask() {
-  console.log('saved!')
+const subtaskDetails = ref({
+  opened: false,
+  subtask: null
+})
+
+function openNewSubtask() {
+  if (subtaskDetails.value.opened) {
+    subtaskDetails.value.opened = false
+  }
+  newSubtaskOpened.value = true
+}
+
+function openDetails(subtask: any) {
+  subtaskDetails.value.subtask = subtask
+  if (newSubtaskOpened.value) {
+    newSubtaskOpened.value = false
+  }
+  subtaskDetails.value.opened = true
+}
+
+// TODO: Replace any with type
+function addSubtask() {
+  props.task.subtasks.push(subtask.value)
+  subtask.value = {
+    title: '',
+    description: '',
+    estimated: 0
+  }
+}
+
+function closeDetails() {
+  subtaskDetails.value.opened = false
+  subtaskDetails.value.subtask = null
 }
 </script>
 
@@ -26,7 +66,17 @@ function saveTask() {
       <h2>Subtasks</h2>
       <!-- Add subtask button -->
       <div class="new-task-minitask-container">
-        <MiniLabel :is-task="true">
+        <!-- Subtasks list -->
+        <MiniLabel @click="openDetails(subtask)" v-for="subtask in props.task.subtasks" :is-task="true">
+          <template #title>
+            {{ subtask.title }}
+          </template>
+          <template #icon>
+            <TaskInfoIconVue class="icon" />
+          </template>
+        </MiniLabel>
+        <!-- Add subtask -->
+        <MiniLabel @click="openNewSubtask" :is-task="true">
           <template #title>
             Add subtask
           </template>
@@ -34,6 +84,13 @@ function saveTask() {
             <AddTagIcon class="new-subtask" />
           </template>
         </MiniLabel>
+      </div>
+      <div v-if="newSubtaskOpened">
+        <!-- Listen to the event emitter -->
+        <Subtask @close="newSubtaskOpened = false" @save="addSubtask" :subtask="subtask" />
+      </div>
+      <div v-if="subtaskDetails.opened">
+        <Subtask @close="closeDetails()" :subtask="subtaskDetails.subtask" />
       </div>
     </div>
     <!-- Bottom container -->
@@ -105,6 +162,11 @@ function saveTask() {
     flex-wrap: wrap;
     margin: 0.5rem 0;
     height: 33px;
+    
+    .icon {
+      margin-left: 1rem;
+      margin-top: 2px;
+    }
 
     .new-subtask {
       width: 15px;

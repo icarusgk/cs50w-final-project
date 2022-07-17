@@ -18,6 +18,7 @@ import UpperMenu from './components/UpperMenu.vue'
 :root {
   --white: #fff;
   --black: #000;
+  --gray: #636363;
   --lighter-gray: #4a4a4a;
   --vivid-red: #FF4B4C;
   --light-red: #FF4F5F;
