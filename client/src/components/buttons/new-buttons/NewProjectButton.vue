@@ -4,11 +4,19 @@ import TaskButton from '../TaskButton.vue';
 import NewProjectModal from '../../modals/new-modals/NewProjectModal.vue';
 
 const project = ref({
-  title: ''
+  title: '',
+  tasks: [
+    {
+      title: "first task"
+    },
+    {
+      title: "second task"
+    }
+  ]
 })
 
 function saveProject() {
-  console.log(project)
+  console.log(project.value)
 }
 </script>
 
@@ -26,9 +34,8 @@ function saveProject() {
         v-model="project.title" 
       />
     </template>
-    <template #modal-content>
-      <NewProjectModal />
-    </template>
+    <!-- Rest of modal -->
+    <NewProjectModal :tasks="project.tasks" />
     <template #save-button>
       <button
         @click="saveProject()" 
