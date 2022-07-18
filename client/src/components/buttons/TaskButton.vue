@@ -4,6 +4,10 @@ import { ref, watch } from 'vue';
 import AddIcon from '../icons/AddIcon.vue';
 import Modal from '../modals/Modal.vue';
 
+defineProps<{
+  isProject?: Boolean
+}>()
+
 const open = ref(false)
 
 watch(() => open.value, () => {
@@ -16,7 +20,7 @@ watch(() => open.value, () => {
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
-    <Modal :is-button="true" :open="open" @close-modal="(close) => open = close">
+    <Modal :is-project="isProject" :is-button="true" :open="open" @close-modal="(close) => open = close">
       <template #tags>
         <slot name="tags"></slot>
       </template>
