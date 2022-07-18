@@ -2,8 +2,7 @@
 import { ref } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import NewTaskModal from '../../modals/new-modals/NewTaskModal.vue';
-import MiniLabel from '../../slots/MiniLabel.vue';
-import AddTagIcon from '../../icons/AddTagIcon.vue';
+import Tags from '../Tags.vue';
 
 const initialTask = ref<{
   tags: string[]
@@ -23,21 +22,6 @@ const initialTask = ref<{
   subtasks: []
 })
 
-const tagVisible = ref(true)
-const newTag = ref('')
-
-const toggleTag = () => tagVisible.value = !tagVisible.value
-
-function addTag() {
-  toggleTag()
-
-  if (newTag.value) {
-    initialTask.value.tags.push(newTag.value)
-    console.log(initialTask.value.tags)
-  }
-  newTag.value = ""
-}
-
 function saveTask() {
   console.log(initialTask)
 }
@@ -49,25 +33,7 @@ function saveTask() {
       Add new task
     </template>
     <template #tags>
-      <!-- Tags that have been added previously -->
-      <MiniLabel v-for="tag in initialTask.tags" :is-tag="true">
-        <template #title>
-          #{{ tag }}
-        </template>
-      </MiniLabel>
-      <!-- Add tag -->
-      <MiniLabel v-if="tagVisible" :is-add="true" @click="toggleTag()">
-        <template #title>
-          Add tag
-        </template>
-        <template #icon>
-          <AddTagIcon />
-        </template>
-      </MiniLabel>
-      <!-- Form for adding the tag -->
-      <div v-else-if="!tagVisible">
-        <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
-      </div>
+      <Tags :tags="initialTask.tags" />
     </template>
     <!-- New task title input -->
     <template #title>

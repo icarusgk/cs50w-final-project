@@ -1,41 +1,23 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import MiniLabel from './slots/MiniLabel.vue';
+import Tags from "./buttons/Tags.vue";
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
 import Modal from "./modals/Modal.vue";
 import NewTaskModal from "./modals/new-modals/NewTaskModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
-import AddTagIcon from "./icons/AddTagIcon.vue";
 
 const props = defineProps<{
   task: TypeTask
 }>()
 
 const open = ref(false)
-const tagVisible = ref(true)
-const newTag = ref("")
-
 
 // When open.value changes, toggle
 watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
-const toggleTag = () => tagVisible.value = !tagVisible.value
-
-function addTag() {
-  toggleTag()
-  
-  if (newTag.value) {
-    props.task.tags.push({
-      id: props.task.tags.length + 1,
-      name: newTag.value
-    })
-  }
-
-  newTag.value = ""
-}
 </script>
 
 <template>
@@ -55,22 +37,7 @@ function addTag() {
     <Modal :open="open" @close-modal="(close) => open = close">
       <!-- Tags -->
       <template #tags>
-        <MiniLabel v-for="tag in props.task.tags" :is-tag="true">
-          <template #title>
-            #{{ tag.name }}
-          </template>
-        </MiniLabel>
-        <MiniLabel v-if="tagVisible && props.task.tags.length <= 3" @click="toggleTag()" :is-add="true">
-          <template #title>
-            Add Tag
-          </template>
-          <template #icon>
-            <AddTagIcon />
-          </template>
-        </MiniLabel>
-        <div v-else-if="!tagVisible">
-          <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
-        </div>
+        <Tags :tags="task.tags" />
       </template>
       <!-- Title -->
       <template #title>
@@ -134,12 +101,6 @@ function addTag() {
 
 }
 
-.new-tag-name {
-  outline: none;
-  border: none;
-  border-radius: 6px;
-  padding: 1px 6px;
-  width: 6rem;
-}
+
 
 </style>
