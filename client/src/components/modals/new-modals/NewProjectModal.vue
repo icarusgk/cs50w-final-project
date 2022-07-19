@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Subtasks from "../../Subtasks.vue";
 
-const props = defineProps(['tasks'])
+const props = defineProps(['project'])
 
-const sayProps = () => console.log(props.tasks)
+const sayProps = () => console.log(props.project.tasks)
 
 </script>
 
@@ -15,7 +15,7 @@ const sayProps = () => console.log(props.tasks)
     </div>
     <!-- Add tasks button -->
     <div>
-      <Subtasks :is-project="true" :subtasks="tasks" />
+      <Subtasks :is-project="true" :subtasks="project.tasks" />
     </div>
   </div>
 </template>

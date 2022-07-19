@@ -28,7 +28,7 @@ function saveProject() {
       />
     </template>
     <!-- Rest of modal -->
-    <NewProjectModal :tasks="project.tasks" />
+    <NewProjectModal :project="project" />
     <template #save-button>
       <button
         @click="saveProject()" 
