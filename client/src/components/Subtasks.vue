@@ -5,7 +5,7 @@ import AddTagIcon from './icons/AddTagIcon.vue';
 import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
 
-const props = defineProps(['task'])
+const props = defineProps(['subtasks'])
 
 const subtask = ref({
   title: '',
@@ -37,7 +37,8 @@ function openDetails(subtask: any) {
 
 // TODO: Replace any with type
 function addSubtask() {
-  props.task.subtasks.push(subtask.value)
+  props.subtasks.push(subtask.value)
+  
   subtask.value = {
     title: '',
     description: '',
@@ -54,7 +55,7 @@ function closeDetails() {
 <template>
   <div class="new-task-minitask-container">
     <!-- Subtasks list -->
-    <MiniLabel @click="openDetails(subtask)" v-for="subtask in props.task.subtasks" :is-task="true">
+    <MiniLabel @click="openDetails(subtask)" v-for="subtask in subtasks" :is-task="true">
       <template #title>
         {{ subtask.title }}
       </template>

@@ -5,14 +5,7 @@ import NewProjectModal from '../../modals/new-modals/NewProjectModal.vue';
 
 const project = ref({
   title: '',
-  tasks: [
-    {
-      title: "first task"
-    },
-    {
-      title: "second task"
-    }
-  ]
+  tasks: []
 })
 
 function saveProject() {

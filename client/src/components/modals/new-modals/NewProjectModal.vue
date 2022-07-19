@@ -3,6 +3,8 @@ import Subtasks from "../../Subtasks.vue";
 
 const props = defineProps(['tasks'])
 
+const sayProps = () => console.log(props.tasks)
+
 </script>
 
 <template>
@@ -13,7 +15,7 @@ const props = defineProps(['tasks'])
     </div>
     <!-- Add tasks button -->
     <div>
-      <Subtasks :task="tasks" />
+      <Subtasks :subtasks="tasks" />
     </div>
   </div>
 </template>

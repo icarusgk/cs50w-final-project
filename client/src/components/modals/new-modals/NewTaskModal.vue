@@ -23,7 +23,7 @@ const pomoLimits = ref({ min: 1, max: 99 })
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks :task="task" />
+        <Subtasks :subtasks="task.subtasks" />
       </div>
     </div>
     <!-- Bottom container -->
