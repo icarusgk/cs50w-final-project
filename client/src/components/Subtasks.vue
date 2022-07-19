@@ -45,8 +45,10 @@ function resetSubtask() {
 
 // TODO: Replace any with type
 function addSubtask() {
-  props.subtasks.push(subtask.value)
-  resetSubtask()  
+  if (subtask.value.title) {
+    props.subtasks.push(subtask.value)
+    resetSubtask()
+  }
 }
 
 function closeDetails() {
