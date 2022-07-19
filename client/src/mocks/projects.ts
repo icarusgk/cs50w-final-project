@@ -55,6 +55,29 @@ export default [
         "gone_through": 0,
         "minutes": 0,
         "subtasks": []
+      },
+      {
+        "id": 10,
+        "tags": [
+          {
+            "id": 1,
+            "name": "vue"
+          },
+          {
+            "id": 2,
+            "name": "programming"
+          },
+          {
+            "id": 6,
+            "name": "front-end"
+          },
+        ],
+        "title": "Have a look at composables",
+        "description": "Use the most common composables as useFetch()",
+        "estimated": 3,
+        "gone_through": 0,
+        "minutes": 0,
+        "subtasks": []
       }
     ]
   },

@@ -73,7 +73,7 @@ function closeNewSubtask() {
         <TaskInfoIconVue class="icon" />
       </template>
     </MiniLabel>
-    <!-- Add subtask -->
+    <!-- Add new subtask -->
     <MiniLabel @click="openNewSubtask" :is-task="true">
       <template #title>
         {{ isProject ? 'Add task' : 'Add subtask' }}
@@ -97,7 +97,8 @@ function closeNewSubtask() {
   display: flex;
   flex-wrap: wrap;
   margin: 0.5rem 0;
-  height: 33px;
+  height: 100%;
+  gap: 10px;
 
   .icon {
     margin-left: 1rem;

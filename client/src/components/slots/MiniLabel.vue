@@ -54,6 +54,7 @@ defineProps<{
   margin-right: 0.5rem;
   background-color: var(--lighter-gray);
   color: var(--white);
+  height: 33px;
 }
 
 .add {

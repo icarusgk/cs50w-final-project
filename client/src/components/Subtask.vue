@@ -72,6 +72,7 @@ const props = defineProps(['subtask'])
     .title-and-description-container {
       display: flex;
       flex-direction: column;
+      width: 70%;
 
       .new-subtask-title {
         border: none;
