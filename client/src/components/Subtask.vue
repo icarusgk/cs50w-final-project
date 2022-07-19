@@ -10,9 +10,18 @@ const props = defineProps(['subtask'])
     <!-- Title and description -->
     <div class="title-and-description-container">
       <!-- Title -->
-      <input v-model.lazy="props.subtask.title" placeholder="Title" type="text" class="new-subtask-title" />
+      <input 
+        v-model.lazy="props.subtask.title" 
+        placeholder="Title" 
+        type="text"
+        class="new-subtask-title"
+      />
       <!-- Description -->
-      <textarea v-model.lazy.trim="props.subtask.description" class="new-subtask-description" placeholder="Description"></textarea>
+      <textarea 
+        v-model.lazy.trim="props.subtask.description" 
+        class="new-subtask-description" 
+        placeholder="Description">
+      </textarea>
     </div>
     <!-- Estimated Timers and save button -->
     <div class="timers-and-buttons-container">
