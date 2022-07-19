@@ -5,7 +5,7 @@ import AddTagIcon from './icons/AddTagIcon.vue';
 import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
 
-const props = defineProps(['subtasks'])
+const props = defineProps(['subtasks', 'isProject'])
 
 const subtask = ref({
   title: '',
@@ -66,7 +66,7 @@ function closeDetails() {
     <!-- Add subtask -->
     <MiniLabel @click="openNewSubtask" :is-task="true">
       <template #title>
-        Add subtask
+        {{ isProject ? 'Add task' : 'Add subtask' }}
       </template>
       <template #icon>
         <AddTagIcon class="new-subtask" />

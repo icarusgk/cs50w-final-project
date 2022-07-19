@@ -15,7 +15,7 @@ const sayProps = () => console.log(props.tasks)
     </div>
     <!-- Add tasks button -->
     <div>
-      <Subtasks :subtasks="tasks" />
+      <Subtasks :is-project="true" :subtasks="tasks" />
     </div>
   </div>
 </template>
