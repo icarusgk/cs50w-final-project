@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import EstimatedIcon from './icons/EstimatedIcon.vue';
+
 const props = defineProps(['subtask'])
 </script>
 
@@ -25,11 +27,11 @@ const props = defineProps(['subtask'])
     </div>
     <!-- Estimated Timers and save button -->
     <div class="timers-and-buttons-container">
-      <div>
+      <div class="timers">
         <!-- Icon -->
-        <span></span>
+        <EstimatedIcon />
         <!-- Number -->
-        <span></span>
+        <input type="number" class="estimated-timers" :value="subtask.estimated" />
       </div>
       <!-- Buttons -->
       <div class="buttons">
@@ -72,7 +74,7 @@ const props = defineProps(['subtask'])
     .title-and-description-container {
       display: flex;
       flex-direction: column;
-      width: 70%;
+      width: 80%;
 
       .new-subtask-title {
         border: none;
@@ -105,8 +107,24 @@ const props = defineProps(['subtask'])
       flex-direction: column;
       justify-content: space-between;
 
+      .timers {
+        display: flex;
+        justify-content: flex-end;
+
+        .estimated-timers {
+          background: transparent;
+          border: none;
+          color: white;
+          width: 10%;
+          outline: none;
+          font-weight: 700;
+          margin-left: 1rem;
+        }
+      }
+
       .buttons {
-        // padding: 0.5rem 0.7rem;
+        display: flex;
+        justify-content: flex-end;
         .cancel-button {
           @include btn(--gray);
           margin-right: 0.5rem;
