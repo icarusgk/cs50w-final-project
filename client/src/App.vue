@@ -27,6 +27,9 @@ import UpperMenu from './components/UpperMenu.vue'
   --light-blue: #02B79F;
 }
 
+/* Popper theme */
+@import './assets/popper-theme.css';
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
