@@ -28,7 +28,7 @@ const props = defineProps(['subtask'])
         <!-- Cancel -->
         <button @click="$emit('close')" class="cancel-button">Cancel</button>
         <!-- Save -->
-        <button @click="$emit('save'); $emit('close')" class="save-button">Save!</button>
+        <button @click="$emit('save')" class="save-button">Save!</button>
       </div>
     </div>
   </div>

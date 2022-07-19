@@ -35,10 +35,7 @@ function openDetails(subtask: any) {
   subtaskDetails.value.opened = true
 }
 
-// TODO: Replace any with type
-function addSubtask() {
-  props.subtasks.push(subtask.value)
-  
+function resetSubtask() {
   subtask.value = {
     title: '',
     description: '',
@@ -46,9 +43,20 @@ function addSubtask() {
   }
 }
 
+// TODO: Replace any with type
+function addSubtask() {
+  props.subtasks.push(subtask.value)
+  resetSubtask()  
+}
+
 function closeDetails() {
   subtaskDetails.value.opened = false
   subtaskDetails.value.subtask = null
+}
+
+function closeNewSubtask() {
+  newSubtaskOpened.value = false
+  resetSubtask()
 }
 </script>
 
@@ -75,7 +83,7 @@ function closeDetails() {
   </div>
   <div v-if="newSubtaskOpened">
     <!-- Listen to the event emitter -->
-    <Subtask @close="newSubtaskOpened = false" @save="addSubtask" :subtask="subtask" />
+    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="subtask" />
   </div>
   <div v-if="subtaskDetails.opened">
     <Subtask @close="closeDetails()" :subtask="subtaskDetails.subtask" />
