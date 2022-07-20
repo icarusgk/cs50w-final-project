@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import EstimatedIcon from './icons/EstimatedIcon.vue';
+import TimerSetter from './TimerSetter.vue';
 
 const props = defineProps(['subtask'])
+
+function addPomo() {
+  props.subtask.estimated++;
+}
+
+function subtractPomo() {
+  props.subtask.estimated--;
+}
 </script>
 
 <template>
@@ -27,12 +36,11 @@ const props = defineProps(['subtask'])
     </div>
     <!-- Estimated Timers and save button -->
     <div class="timers-and-buttons-container">
-      <div class="timers">
-        <!-- Icon -->
-        <EstimatedIcon />
-        <!-- Number -->
-        <input type="number" class="estimated-timers" :value="subtask.estimated" />
-      </div>
+        <div class="estimated">
+          <EstimatedIcon class="icon" />
+          <span class="text">Pomos</span>
+          <TimerSetter @add="addPomo" @subtract="subtractPomo" :subtask="subtask" />
+        </div>
       <!-- Buttons -->
       <div class="buttons">
         <!-- Emit the close event -->
@@ -105,20 +113,22 @@ const props = defineProps(['subtask'])
     .timers-and-buttons-container {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-end;
+      width: 150px;
 
-      .timers {
+      .estimated {
         display: flex;
-        justify-content: flex-end;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 0.5rem;
 
-        .estimated-timers {
-          background: transparent;
-          border: none;
-          color: white;
-          width: 10%;
-          outline: none;
-          font-weight: 700;
-          margin-left: 1rem;
+        .icon {
+          padding-top: 3px;
+          width: 75px;
+        }
+
+        .text {
+          font-size: 0.75rem;
         }
       }
 
