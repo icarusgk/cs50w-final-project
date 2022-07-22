@@ -22,7 +22,7 @@ function increasePomos() {
     <!-- Number -->
     <input 
       type="number" 
-      class="estimated-timers" 
+      class="estimated-timers"
       :min="pomoLimits.min"
       :max="pomoLimits.max"
       v-model="subtask.estimated" />
