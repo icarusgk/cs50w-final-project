@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import MiniLabel from '../slots/MiniLabel.vue';
 import AddTagIcon from "../icons/AddTagIcon.vue";
+import tags from "@/mocks/tags"
 
 const props = defineProps(['tags'])
 
@@ -9,9 +10,7 @@ const tagVisible = ref(true)
 const newTag = ref("")
 const toggleTag = () => tagVisible.value = !tagVisible.value
 
-function addTag() {
-  toggleTag()
-  
+function addTag() {  
   if (newTag.value) {
     props.tags.push({
       id: props.tags.length + 1,
@@ -30,24 +29,29 @@ function addTag() {
       #{{ tag.name }}
     </template>
   </MiniLabel>
-  <MiniLabel v-if="tagVisible && props.tags.length <= 3" @click="toggleTag()" :is-add="true">
-    <template #title>
-      Add Tag
+  <Popper arrow placement="right">
+    <MiniLabel v-if="tagVisible && props.tags.length <= 3" :is-add="true">
+      <template #title>
+        Add Tag
+      </template>
+      <template #icon>
+        <AddTagIcon />
+      </template>
+    </MiniLabel>
+    <template #content>
+      <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
     </template>
-    <template #icon>
-      <AddTagIcon />
-    </template>
-  </MiniLabel>
-  <div v-else-if="!tagVisible">
+  </Popper>
+  <!-- <div v-else-if="!tagVisible">
     <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
-  </div>
+  </div> -->
 </template>
 
 <style scoped lang="scss">
 .new-tag-name {
   outline: none;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 1px 6px;
   width: 6rem;
 }
