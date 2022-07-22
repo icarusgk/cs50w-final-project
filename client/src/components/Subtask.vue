@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import EstimatedIcon from './icons/EstimatedIcon.vue';
+import TimerSetter from './TimerSetter.vue';
+
 const props = defineProps(['subtask'])
 </script>
 
@@ -10,25 +13,33 @@ const props = defineProps(['subtask'])
     <!-- Title and description -->
     <div class="title-and-description-container">
       <!-- Title -->
-      <input v-model.lazy="props.subtask.title" placeholder="Title" type="text" class="new-subtask-title" />
+      <input 
+        v-model.lazy="props.subtask.title" 
+        placeholder="Title" 
+        type="text"
+        class="new-subtask-title"
+      />
       <!-- Description -->
-      <textarea v-model.lazy.trim="props.subtask.description" class="new-subtask-description" placeholder="Description"></textarea>
+      <textarea 
+        v-model.lazy.trim="props.subtask.description" 
+        class="new-subtask-description" 
+        placeholder="Description">
+      </textarea>
     </div>
     <!-- Estimated Timers and save button -->
     <div class="timers-and-buttons-container">
-      <div>
-        <!-- Icon -->
-        <span></span>
-        <!-- Number -->
-        <span></span>
-      </div>
+        <div class="estimated">
+          <EstimatedIcon class="icon" />
+          <span class="text">Pomos</span>
+          <TimerSetter :subtask="subtask" />
+        </div>
       <!-- Buttons -->
       <div class="buttons">
         <!-- Emit the close event -->
         <!-- Cancel -->
         <button @click="$emit('close')" class="cancel-button">Cancel</button>
         <!-- Save -->
-        <button @click="$emit('save'); $emit('close')" class="save-button">Save!</button>
+        <button @click="$emit('save')" class="save-button">Save!</button>
       </div>
     </div>
   </div>
@@ -63,6 +74,7 @@ const props = defineProps(['subtask'])
     .title-and-description-container {
       display: flex;
       flex-direction: column;
+      width: 80%;
 
       .new-subtask-title {
         border: none;
@@ -93,10 +105,28 @@ const props = defineProps(['subtask'])
     .timers-and-buttons-container {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-end;
+      width: 150px;
+
+      .estimated {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 0.5rem;
+
+        .icon {
+          padding-top: 3px;
+          width: 25px;
+        }
+
+        .text {
+          font-size: 0.75rem;
+        }
+      }
 
       .buttons {
-        // padding: 0.5rem 0.7rem;
+        display: flex;
+        justify-content: flex-end;
         .cancel-button {
           @include btn(--gray);
           margin-right: 0.5rem;

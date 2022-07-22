@@ -51,9 +51,9 @@ defineProps<{
 .task {
   padding: 0.01rem 0.7rem;
   border-radius: 8px;
-  margin-right: 0.5rem;
   background-color: var(--lighter-gray);
   color: var(--white);
+  height: 33px;
 }
 
 .add {

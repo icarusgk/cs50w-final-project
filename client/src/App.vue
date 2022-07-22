@@ -17,6 +17,9 @@ import UpperMenu from './components/UpperMenu.vue'
 /* variables */
 @import './assets/base.css';
 
+/* Popper theme */
+@import './assets/popper-theme.css';
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
