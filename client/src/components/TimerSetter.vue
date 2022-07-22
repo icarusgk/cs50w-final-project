@@ -1,17 +1,33 @@
 <script setup lang="ts">
-import EstimatedIcon from './icons/EstimatedIcon.vue';
-import AddPomoIcon from './icons/AddPomoIcon.vue';
-import MinusPomoIcon from './icons/MinusPomoIcon.vue';
+import { ref } from 'vue'
+
 const props = defineProps(['subtask'])
+
+const pomoLimits = ref({ min: 1, max: 99 })
+
+function decreasePomos() {
+  if (props.subtask.estimated > pomoLimits.value.min) props.subtask.estimated--
+}
+
+function increasePomos() {
+  props.subtask.estimated < pomoLimits.value.max
+    ? props.subtask.estimated++
+    : props.subtask.estimated = pomoLimits.value.max
+}
 </script>
 
 
 <template>
   <div class="timers">
     <!-- Number -->
-    <input type="number" class="estimated-timers" :value="subtask.estimated" />
-    <MinusPomoIcon @click="$emit('subtract')" class="minus-icon pomo-icon" />
-    <AddPomoIcon @click="$emit('add')" class="pomo-icon" />
+    <input 
+      type="number" 
+      class="estimated-timers" 
+      :min="pomoLimits.min"
+      :max="pomoLimits.max"
+      v-model="subtask.estimated" />
+    <button @click="decreasePomos" class="minus-icon pomo-icon">-</button>
+    <button @click="increasePomos" class="pomo-icon">+</button>
   </div>
 </template>
 
@@ -36,6 +52,13 @@ const props = defineProps(['subtask'])
   }
 
   .pomo-icon {
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: white;
+    
     &:hover, &:focus {
       cursor: pointer;
     }

@@ -3,14 +3,6 @@ import EstimatedIcon from './icons/EstimatedIcon.vue';
 import TimerSetter from './TimerSetter.vue';
 
 const props = defineProps(['subtask'])
-
-function addPomo() {
-  props.subtask.estimated++;
-}
-
-function subtractPomo() {
-  props.subtask.estimated--;
-}
 </script>
 
 <template>
@@ -39,7 +31,7 @@ function subtractPomo() {
         <div class="estimated">
           <EstimatedIcon class="icon" />
           <span class="text">Pomos</span>
-          <TimerSetter @add="addPomo" @subtract="subtractPomo" :subtask="subtask" />
+          <TimerSetter :subtask="subtask" />
         </div>
       <!-- Buttons -->
       <div class="buttons">
@@ -124,7 +116,7 @@ function subtractPomo() {
 
         .icon {
           padding-top: 3px;
-          width: 75px;
+          width: 25px;
         }
 
         .text {
