@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Subtasks from '../../Subtasks.vue';
+import TimerSetter from '../../TimerSetter.vue';
 
 const props = defineProps(['task'])
 
-
+// For v-model select
 const selected = ref('')
-const pomoLimits = ref({ min: 1, max: 99 })
 </script>
 
 <template>
@@ -35,12 +35,7 @@ const pomoLimits = ref({ min: 1, max: 99 })
         </div>
 
         <!-- Counter -->
-        <div class="counter-container">
-          <input type="number" class="estimated-pomos-input" :min="pomoLimits.min" :max="pomoLimits.max"
-            v-model="props.task.estimated" />
-          <button @click="props.task.estimated--" class="counter-button">-</button>
-          <button @click="props.task.estimated++" class="counter-button">+</button>
-        </div>
+        <TimerSetter :subtask="task" />
       </div>
 
       <!-- Add to project -->
@@ -145,6 +140,7 @@ const pomoLimits = ref({ min: 1, max: 99 })
   .add-to-project-dropdown {
     display: flex;
     position: relative;
+    margin-left: 1rem;
 
     .project-select {
       margin-left: 1rem;
