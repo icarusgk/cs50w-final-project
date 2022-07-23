@@ -10,7 +10,7 @@ const props = defineProps(['subtasks', 'isProject'])
 const subtask = ref({
   title: '',
   description: '',
-  estimated: 0
+  estimated: 1
 })
 
 const newSubtaskOpened = ref(false)
