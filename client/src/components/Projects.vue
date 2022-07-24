@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Project from './Project.vue'
 import TaskType from './slots/TaskType.vue'
 import ProjectIcon from './icons/ProjectIcon.vue'
-import type TypeTask from '@/types/TaskType'
-import projects from '@/mocks/projects'
+import { useFetch } from '@/composables/useFetch'
+
+const { data, error, retry } = useFetch('/projects')
 
 </script>
 
@@ -21,7 +21,7 @@ import projects from '@/mocks/projects'
     </TaskType>
     <div>
       <!-- List of projects -->
-      <div v-for="project in projects">
+      <div v-for="project in data">
         <Project :project="project" />
       </div>
     </div>
