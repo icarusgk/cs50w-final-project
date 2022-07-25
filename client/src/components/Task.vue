@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from 'axios'
 import { ref, watch } from "vue";
 import Tags from "./buttons/Tags.vue";
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
@@ -6,6 +7,7 @@ import Modal from "./modals/Modal.vue";
 import NewTaskModal from "./modals/new-modals/NewTaskModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
+import SaveButton from "./SaveButton.vue";
 
 const props = defineProps<{
   task: TypeTask
@@ -17,6 +19,17 @@ const open = ref(false)
 watch(() => open.value, () => {
   useModalStore().toggle()
 })
+
+
+async function saveTask() {
+  const response = await axios.put(
+    `http://127.0.0.1:3001/tasks/${props.task.id}`,
+    props.task
+  )
+  if (response.status === 200) {
+    console.log("Saved!")
+  }
+}
 
 </script>
 
@@ -45,6 +58,7 @@ watch(() => open.value, () => {
       </template>
       <!-- Modal -->
       <NewTaskModal :task="task" />
+      <SaveButton @click="saveTask()" />
     </Modal>
   </div>
 </template>

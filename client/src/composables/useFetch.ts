@@ -13,7 +13,7 @@ export function useFetch(url: string) {
     const urlValue = unref(url)
 
     try {
-      const response = await axios.get(`http://127.0.0.1:3001${url}`)
+      const response = await axios.get(`http://127.0.0.1:3001${urlValue}`)
       data.value = await response.data
     } catch (err) {
       error.value = err
