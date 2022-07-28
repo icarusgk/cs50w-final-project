@@ -23,7 +23,7 @@ const selected = ref('')
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks :subtasks="task.subtasks" />
+        <Subtasks :is-project="false" :subtasks="task.subtasks" :task="task" />
       </div>
     </div>
     <!-- Bottom container -->

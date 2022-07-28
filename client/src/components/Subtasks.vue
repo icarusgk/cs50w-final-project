@@ -4,8 +4,9 @@ import MiniLabel from './slots/MiniLabel.vue';
 import AddTagIcon from './icons/AddTagIcon.vue';
 import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
+import axios from 'axios';
 
-const props = defineProps(['subtasks', 'isProject'])
+const props = defineProps(['subtasks', 'isProject', 'task', 'project'])
 
 const subtask = ref({
   title: '',
@@ -44,9 +45,23 @@ function resetSubtask() {
 }
 
 // TODO: Replace any with type
-function addSubtask() {
+async function addSubtask() {
   if (subtask.value.title) {
     props.subtasks.push(subtask.value)
+    let response
+
+    if (props.isProject) {
+      response = await axios.put(
+        `http://127.0.0.1:3001/projects/${props.project.id}`,
+        props.project
+      )
+    } else {
+        response = await axios.put(
+        `http://127.0.0.1:3001/tasks/${props.task.id}`,
+        props.task
+      )
+    }
+    console.log(response)
     resetSubtask()
   }
 }
