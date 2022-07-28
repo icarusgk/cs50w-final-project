@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import EstimatedIcon from './icons/EstimatedIcon.vue';
+import DeleteIcon from './icons/DeleteIcon.vue';
 import TimerSetter from './TimerSetter.vue';
 
-const props = defineProps(['subtask'])
+const props = defineProps(['subtask', 'newSub'])
 </script>
 
 <template>
@@ -28,11 +29,14 @@ const props = defineProps(['subtask'])
     </div>
     <!-- Estimated Timers and save button -->
     <div class="timers-and-buttons-container">
-        <div class="estimated">
-          <EstimatedIcon class="icon" />
-          <span class="text">Pomos</span>
-          <TimerSetter :subtask="subtask" />
-        </div>
+      <div class="delete-container">
+        <DeleteIcon class="delete-button" v-if="!newSub" @click="$emit('delete')" />
+      </div>
+      <div class="estimated">
+        <EstimatedIcon class="icon" />
+        <span class="text">Pomos</span>
+        <TimerSetter :subtask="subtask" />
+      </div>
       <!-- Buttons -->
       <div class="buttons">
         <!-- Emit the close event -->
@@ -107,6 +111,17 @@ const props = defineProps(['subtask'])
       flex-direction: column;
       justify-content: flex-end;
       width: 150px;
+
+      .delete-container {
+        align-self: flex-end;
+        margin-bottom: 1rem;
+        
+        .delete-button {
+          &:hover, &:focus {
+            cursor: pointer;
+          }
+        }
+      }
 
       .estimated {
         display: flex;
