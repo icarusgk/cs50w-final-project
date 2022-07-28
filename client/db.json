@@ -80,11 +80,6 @@
           "gone_through": 0,
           "minutes": 0,
           "subtasks": []
-        },
-        {
-          "title": "r",
-          "description": "r",
-          "estimated": 1
         }
       ]
     },
@@ -140,13 +135,7 @@
       "estimated": 1,
       "gone_through": 0,
       "minutes": 0,
-      "subtasks": [
-        {
-          "title": "a",
-          "description": "a",
-          "estimated": 1
-        }
-      ]
+      "subtasks": []
     },
     {
       "id": 2,

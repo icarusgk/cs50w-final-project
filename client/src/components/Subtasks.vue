@@ -8,6 +8,9 @@ import axios from 'axios';
 
 const props = defineProps(['subtasks', 'isProject', 'task', 'project'])
 
+const task = ref(props.task)
+const project = ref(props.project)
+
 const subtask = ref({
   title: '',
   description: '',
@@ -47,15 +50,17 @@ function resetSubtask() {
 // TODO: Replace any with type
 async function addSubtask() {
   if (subtask.value.title) {
-    props.subtasks.push(subtask.value)
+    
     let response
 
     if (props.isProject) {
+      project.value.tasks.push(subtask.value)
       response = await axios.put(
         `http://127.0.0.1:3001/projects/${props.project.id}`,
         props.project
       )
     } else {
+        task.value.subtasks.push(subtask.value)
         response = await axios.put(
         `http://127.0.0.1:3001/tasks/${props.task.id}`,
         props.task
@@ -64,6 +69,18 @@ async function addSubtask() {
     console.log(response)
     resetSubtask()
   }
+}
+
+function deleteTask() {
+  if (props.isProject) {
+    project.value.tasks = project.value.tasks.filter((task: any) => task !== subtaskDetails.value.subtask)
+    axios.put(`http://127.0.0.1:3001/projects/${props.project.id}`, project.value)
+  } else {
+    task.value.subtasks = task.value.subtasks.filter((sub: any) => sub !== subtaskDetails.value.subtask)
+    axios.put(`http://127.0.0.1:3001/tasks/${props.task.id}`, task.value)
+  }
+
+  subtaskDetails.value.opened = false
 }
 
 function closeDetails() {
@@ -100,10 +117,11 @@ function closeNewSubtask() {
   </div>
   <div v-if="newSubtaskOpened">
     <!-- Listen to the event emitter -->
-    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="subtask" />
+    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="subtask" :newSub="true" />
   </div>
+  <!-- Existing task -->
   <div v-if="subtaskDetails.opened">
-    <Subtask @close="closeDetails()" :subtask="subtaskDetails.subtask" />
+    <Subtask @close="closeDetails()" @delete="deleteTask()" :subtask="subtaskDetails.subtask" />
   </div>
 </template>
 
