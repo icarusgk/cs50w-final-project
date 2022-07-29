@@ -9,6 +9,8 @@ import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
 import SaveButton from "./SaveButton.vue";
 import DeleteIcon from "./icons/DeleteIcon.vue";
+import DoneIcon from "./icons/DoneIcon.vue";
+import MarkedDoneIcon from "./icons/MarkedDoneIcon.vue";
 
 const props = defineProps<{
   task: TypeTask
@@ -16,6 +18,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['deleteTask'])
 
+const task = ref(props.task)
 const open = ref(false)
 
 // When open.value changes, toggle
@@ -41,14 +44,23 @@ async function deleteTask() {
   emit('deleteTask', props.task.id)
 }
 
+async function toggleDone() {
+  task.value.done = !task.value.done
+  const response = await axios.put(`http://127.0.0.1:3001/tasks/${props.task.id}`, task.value)
+  console.log(response)
+}
+
 </script>
 
 <template>
-  <div @click="open = true" class="task-container">
+  <div class="task-container">
     <!-- Checkbox -->
-    <div class="task-checkbox"></div>
+    <div @click="toggleDone()" class="task-checkbox">
+      <DoneIcon v-if="!task.done" />
+      <MarkedDoneIcon v-else />
+    </div>
     <!-- Name -->
-    <div class="task-title-container">
+    <div @click="open = true" class="task-title-container" :class="{ done: task.done }">
       <div class="title-container">
         <p>{{ props.task.title }}</p>
       </div>
@@ -85,10 +97,6 @@ async function deleteTask() {
   } 
 
   .task-checkbox {
-    height: 20px;
-    width: 20px;
-    background-color: var(--white);
-    border-radius: 10px;
     margin-right: 1rem;
   }
   
@@ -108,6 +116,11 @@ async function deleteTask() {
         cursor: pointer;
       }
     }
+  }
+
+  .done {
+    background-color: var(--vivid-red);
+    opacity: 0.4;
   }
 }
 

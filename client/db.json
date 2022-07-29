@@ -29,6 +29,7 @@
           "estimated": 1,
           "gone_through": 0,
           "minutes": 0,
+          "done": false,
           "subtasks": []
         },
         {
@@ -56,6 +57,7 @@
           "estimated": 3,
           "gone_through": 0,
           "minutes": 0,
+          "done": false,
           "subtasks": []
         },
         {
@@ -79,6 +81,7 @@
           "estimated": 3,
           "gone_through": 0,
           "minutes": 0,
+          "done": false,
           "subtasks": []
         }
       ]
@@ -104,6 +107,7 @@
           "estimated": 2,
           "gone_through": 0,
           "minutes": 0,
+          "done": false,
           "subtasks": []
         }
       ]
@@ -135,7 +139,14 @@
       "estimated": 1,
       "gone_through": 0,
       "minutes": 0,
-      "subtasks": []
+      "done": false,
+      "subtasks": [
+        {
+          "title": "computed values",
+          "description": "Learn what computed values are!",
+          "estimated": 1
+        }
+      ]
     },
     {
       "id": 2,
@@ -154,6 +165,7 @@
       "estimated": 4,
       "gone_through": 0,
       "minutes": 0,
+      "done": false,
       "subtasks": [
         {
           "id": 1,
@@ -180,6 +192,7 @@
           "estimated": 1,
           "gone_through": 0,
           "minutes": 0,
+          "done": false,
           "subtasks": []
         }
       ]
@@ -205,6 +218,7 @@
       "estimated": 2,
       "gone_through": 0,
       "minutes": 0,
+      "done": false,
       "subtasks": []
     },
     {
@@ -232,6 +246,7 @@
       "estimated": 3,
       "gone_through": 0,
       "minutes": 0,
+      "done": false,
       "subtasks": []
     }
   ],

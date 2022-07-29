@@ -8,6 +8,7 @@ type Task = {
   estimated: Number,
   gone_through: Number,
   minutes: Number,
+  done: boolean,
   subtasks: Task[]
 }
 
