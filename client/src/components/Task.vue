@@ -8,10 +8,13 @@ import NewTaskModal from "./modals/new-modals/NewTaskModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
 import SaveButton from "./SaveButton.vue";
+import DeleteIcon from "./icons/DeleteIcon.vue";
 
 const props = defineProps<{
   task: TypeTask
 }>()
+
+const emit = defineEmits(['deleteTask'])
 
 const open = ref(false)
 
@@ -29,6 +32,13 @@ async function saveTask() {
   if (response.status === 200) {
     console.log("Saved!")
   }
+}
+
+async function deleteTask() {
+  const response = await axios.delete(`http://127.0.0.1:3001/tasks/${props.task.id}`)
+  console.log(response)
+  open.value = false;
+  emit('deleteTask', props.task.id)
 }
 
 </script>
@@ -51,6 +61,7 @@ async function saveTask() {
       <!-- Tags -->
       <template #tags>
         <Tags :tags="task.tags" />
+        <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->
       <template #title>
@@ -97,6 +108,13 @@ async function saveTask() {
         cursor: pointer;
       }
     }
+  }
+}
+
+.delete-icon {
+  margin: 0.1rem 0.5rem;
+  &:hover, &:focus {
+    cursor: pointer;
   }
 }
 

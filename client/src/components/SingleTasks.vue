@@ -6,6 +6,11 @@ import { useFetch } from '@/composables/useFetch';
 
 const { data, error, retry } = useFetch('/tasks')
 
+function deleteTask(task: any) {
+  data.value = data.value.filter((t: any) => t.id !== task)
+}
+
+
 </script>
 
 <template>
@@ -20,7 +25,7 @@ const { data, error, retry } = useFetch('/tasks')
     </TaskType>
 
     <div v-for="task in data">
-      <Task :task="task" />
+      <Task @delete-task="deleteTask" :task="task" />
     </div>
   </div>
 </template>
