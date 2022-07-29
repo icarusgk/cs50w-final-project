@@ -4,7 +4,10 @@ import TaskButton from '../TaskButton.vue';
 import NewTaskModal from '../../modals/new-modals/NewTaskModal.vue';
 import Tags from '../Tags.vue';
 
+import axios from 'axios'
+
 const initialTask = ref<{
+  id: number,
   tags: string[]
   title: string,
   description: string
@@ -15,6 +18,7 @@ const initialTask = ref<{
     estimated: number
   }[]
 }>({
+  id: 8,
   tags: [],
   title: '',
   description: '',
@@ -23,7 +27,7 @@ const initialTask = ref<{
 })
 
 function saveTask() {
-  console.log(initialTask)
+  axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
 }
 </script>
 
