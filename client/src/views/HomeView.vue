@@ -3,7 +3,7 @@ import LightingIcon from '@/components/icons/LightingIcon.vue'
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
-import SingleTasks from '@/components/SingleTasks.vue'
+import Tasks from '@/components/Tasks.vue'
 import { useModalStore } from '@/stores/modal'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
 
@@ -38,7 +38,7 @@ modal.close()
         <!-- Projects -->
         <Projects />
         <!-- Tasks -->
-        <SingleTasks />
+        <Tasks />
       </div>
     </div>
   </div>
