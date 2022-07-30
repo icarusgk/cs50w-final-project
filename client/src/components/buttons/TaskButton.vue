@@ -1,38 +1,13 @@
 <script setup lang="ts">
-import { useModalStore } from '@/stores/modal';
-import { ref, watch } from 'vue';
 import AddIcon from '../icons/AddIcon.vue';
-import Modal from '../modals/Modal.vue';
 
-defineProps<{
-  isProject?: Boolean
-}>()
-
-const open = ref(false)
-
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
 </script>
 
 <template>
-  <div @click="open = true" class="add-item-btn">
+  <div class="add-item-btn">
     <!-- Icon -->
     <AddIcon class="add-icon" />
     <slot name="type"></slot>
-    <Modal :is-project="isProject" :is-button="true" :open="open" @close-modal="(close) => open = close">
-      <template #tags>
-        <slot name="tags"></slot>
-      </template>
-      <template #title>
-        <slot name="title"></slot>
-      </template>
-      <slot></slot>
-      <template #save-button>
-        <slot name="save-button"></slot>
-      </template>
-
-    </Modal>
   </div>
 </template>
 

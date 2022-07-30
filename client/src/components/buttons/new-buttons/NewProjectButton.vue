@@ -1,29 +1,42 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useModalStore } from '@/stores/modal';
+import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import NewProjectModal from '../../modals/new-modals/NewProjectModal.vue';
+import Modal from '@/components/modals/Modal.vue';
 
 const project = ref({
   title: '',
   tasks: []
 })
 
+const open = ref(false)
+
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
+
 function saveProject() {
+  // TODO: Save with axios
   console.log(project.value)
+  open.value = false
 }
 </script>
 
 <template>
-  <TaskButton :is-project="true">
+  <TaskButton @click="open = true">
     <template #type>
       Add new project
     </template>
+  </TaskButton>
+
+  <Modal :is-project="true" :is-button="true" :open="open" @exit-modal="open = false">
     <template #title>
       <input 
         type="text" 
         name="title" 
         id="new-task-input-title" 
-        placeholder="New project name" 
+        placeholder="New project name"
         v-model="project.title" 
       />
     </template>
@@ -36,7 +49,8 @@ function saveProject() {
       >Save!
       </button>
     </template>
-  </TaskButton>
+  </Modal>
+
 </template>
 
 <style scoped lang="scss">

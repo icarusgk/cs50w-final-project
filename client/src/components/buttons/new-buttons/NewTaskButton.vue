@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useModalStore } from '@/stores/modal';
+import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import NewTaskModal from '../../modals/new-modals/NewTaskModal.vue';
 import Tags from '../Tags.vue';
+import Modal from '@/components/modals/Modal.vue';
 
 import axios from 'axios'
+
+const open = ref(false)
 
 const initialTask = ref<{
   id: number,
@@ -26,16 +30,25 @@ const initialTask = ref<{
   subtasks: []
 })
 
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
+
 function saveTask() {
-  axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
+  if (initialTask.value.title) {
+    axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
+  }
+  open.value = false;
 }
 </script>
 
 <template>
-  <TaskButton>
+  <TaskButton @click="open = true">
     <template #type>
       Add new task
     </template>
+  </TaskButton>
+  <Modal :is-button="true" :open="open" @exit-modal="open = false">
     <template #tags>
       <Tags :tags="initialTask.tags" />
     </template>
@@ -54,12 +67,12 @@ function saveTask() {
     <!-- Button -->
     <template #save-button>
       <button
-        @click="saveTask()" 
+        @click="saveTask()"
         class="close-modal-button"
       >Save!
       </button>
     </template>
-  </TaskButton>
+  </Modal>
 </template>
 
 <style scoped lang="scss">
