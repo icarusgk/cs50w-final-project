@@ -29,7 +29,7 @@ watch(() => open.value, () => {
       </div>
     </div>
     <!-- Modal -->
-    <Modal :is-project="true" :open="open" @close-modal="(close) => open = close">
+    <Modal :is-project="true" :open="open" @exit-modal="open = false">
       <!-- Title -->
       <template #title>
         <input type="text" name="title" id="task-input-title" v-model="props.project.title" />

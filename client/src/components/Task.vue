@@ -69,7 +69,7 @@ async function toggleDone() {
       </div>
     </div>
     <!-- Modal -->
-    <Modal :open="open" @close-modal="(close) => open = close">
+    <Modal :open="open" @exit-modal="open = false">
       <!-- Tags -->
       <template #tags>
         <Tags :tags="task.tags" />

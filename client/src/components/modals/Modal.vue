@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CloseIcon from "../icons/CloseIcon.vue";
+
 // Modal is gonna receive the props
 defineProps<{
   open: Boolean
@@ -7,9 +8,6 @@ defineProps<{
   isProject?: Boolean
 }>()
 
-const emit = defineEmits(['closeModal', 'unblur'])
-
-const closeModal = () => emit('closeModal', false)
 </script>
 
 <template>
@@ -24,7 +22,7 @@ const closeModal = () => emit('closeModal', false)
             <slot name="title"></slot>
           </div>
         </div>
-        <div @click="closeModal()" class="close-icon">
+        <div @click="$emit('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
       </div>
