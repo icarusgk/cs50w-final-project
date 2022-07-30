@@ -8,6 +8,8 @@ defineProps<{
   isProject?: Boolean
 }>()
 
+const emits = defineEmits(['exitModal'])
+
 </script>
 
 <template>
@@ -22,7 +24,7 @@ defineProps<{
             <slot name="title"></slot>
           </div>
         </div>
-        <div @click="$emit('exitModal')" class="close-icon">
+        <div @click="emits('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
       </div>
