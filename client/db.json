@@ -76,7 +76,7 @@
               "name": "front-end"
             }
           ],
-          "title": "Have a look at composables!",
+          "title": "Have a look at composables",
           "description": "Use the most common composables as useFetch()",
           "estimated": 3,
           "gone_through": 0,
@@ -109,6 +109,17 @@
           "minutes": 0,
           "done": false,
           "subtasks": []
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "New project!",
+      "tasks": [
+        {
+          "title": "asdf",
+          "description": "asdf",
+          "estimated": 1
         }
       ]
     }

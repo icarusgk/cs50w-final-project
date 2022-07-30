@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Modal from './modals/Modal.vue';
-import NewProjectModal from './modals/new-modals/NewProjectModal.vue';
+import ProjectModal from './modals/ProjectModal.vue';
 
 const props = defineProps(['project'])
 
@@ -35,7 +35,7 @@ watch(() => open.value, () => {
         <input type="text" name="title" id="task-input-title" v-model="props.project.title" />
       </template>
       <!-- Modal -->
-      <NewProjectModal :project="project" />
+      <ProjectModal :project="project" />
     </Modal>
   </div>
 </template>

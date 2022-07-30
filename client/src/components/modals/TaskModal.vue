@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Subtasks from '../../Subtasks.vue';
-import TimerSetter from '../../TimerSetter.vue';
+import Subtasks from '../Subtasks.vue';
+import TimerSetter from '../TimerSetter.vue';
 
-const props = defineProps(['task'])
+const props = defineProps<{
+  task: any,
+  isNew?: boolean
+}>()
 
 // For v-model select
 const selected = ref('')
@@ -23,7 +26,7 @@ const selected = ref('')
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks :is-project="false" :subtasks="task.subtasks" :task="task" />
+        <Subtasks :is-project="false" :subtasks="task.subtasks" :task="task" :isNew="isNew" />
       </div>
     </div>
     <!-- Bottom container -->

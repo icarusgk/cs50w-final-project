@@ -2,7 +2,7 @@
 import { useModalStore } from '@/stores/modal';
 import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
-import NewTaskModal from '../../modals/new-modals/NewTaskModal.vue';
+import TaskModal from '../../modals/TaskModal.vue';
 import Tags from '../Tags.vue';
 import Modal from '@/components/modals/Modal.vue';
 
@@ -34,10 +34,12 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
-function saveTask() {
+async function saveTask() {
   if (initialTask.value.title) {
-    axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
+    const response = await axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
+    if (response.status === 200) { console.log("Saved!") }
   }
+
   open.value = false;
 }
 </script>
@@ -63,7 +65,7 @@ function saveTask() {
       />
     </template>
     <!-- Rest of modal -->
-    <NewTaskModal :task="initialTask" />
+    <TaskModal :task="initialTask" :isNew="true" />
     <!-- Button -->
     <template #save-button>
       <button

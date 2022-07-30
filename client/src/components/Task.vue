@@ -4,7 +4,7 @@ import { ref, watch } from "vue";
 import Tags from "./buttons/Tags.vue";
 import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
 import Modal from "./modals/Modal.vue";
-import NewTaskModal from "./modals/new-modals/NewTaskModal.vue";
+import TaskModal from "./modals/TaskModal.vue";
 import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
 import SaveButton from "./SaveButton.vue";
@@ -80,7 +80,7 @@ async function toggleDone() {
         <input type="text" name="title" id="task-input-title" v-model="props.task.title" />
       </template>
       <!-- Modal -->
-      <NewTaskModal :task="task" />
+      <TaskModal :task="task" />
       <SaveButton @click="saveTask()" />
     </Modal>
   </div>

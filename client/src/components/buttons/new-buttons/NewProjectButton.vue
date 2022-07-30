@@ -2,12 +2,14 @@
 import { useModalStore } from '@/stores/modal';
 import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
-import NewProjectModal from '../../modals/new-modals/NewProjectModal.vue';
+import ProjectModal from '../../modals/ProjectModal.vue';
 import Modal from '@/components/modals/Modal.vue';
+import axios from 'axios'
 
-const project = ref({
+const newProject = ref({
+  id: 10,
   title: '',
-  tasks: []
+  tasks: [],
 })
 
 const open = ref(false)
@@ -16,9 +18,11 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
-function saveProject() {
-  // TODO: Save with axios
-  console.log(project.value)
+async function saveProject() {
+  const response = await axios.post(`http://127.0.0.1:3001/projects`, newProject.value)
+  console.log(response.status === 200 ? "Saved" : "Error")
+
+  console.log("Saving...", newProject.value)
   open.value = false
 }
 </script>
@@ -37,11 +41,12 @@ function saveProject() {
         name="title" 
         id="new-task-input-title" 
         placeholder="New project name"
-        v-model="project.title" 
+        v-model="newProject.title" 
       />
     </template>
+    
     <!-- Rest of modal -->
-    <NewProjectModal :project="project" />
+    <ProjectModal :project="newProject" :isNew="true" />
     <template #save-button>
       <button
         @click="saveProject()" 

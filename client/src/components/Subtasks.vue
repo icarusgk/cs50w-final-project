@@ -6,10 +6,11 @@ import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
 import axios from 'axios';
 
-const props = defineProps(['subtasks', 'isProject', 'task', 'project'])
+const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
 const task = ref(props.task)
 const project = ref(props.project)
+
 
 const newSubtask = ref({
   title: '',
@@ -50,23 +51,33 @@ function resetSubtask() {
 async function addSubtask() {
   if (newSubtask.value.title) {
 
-    if (props.isProject) {
+    // Push subtasks to new project
+    if (props.isProject && props.isNew) {
+      project.value.tasks.push(newSubtask.value)
+    }
+    // Add subtasks to an existing project
+    else if (props.isProject && !props.isNew) {
       project.value.tasks.push(newSubtask.value)
       modify('projects', props.project.id, props.project)
-    } else {
-        task.value.subtasks.push(newSubtask.value)
-        modify('tasks', props.task.id, props.task)
+    }
+    // Push subtasks to the new task
+    else if (!props.isProject && props.isNew) {
+      task.value.subtasks.push(newSubtask.value)
+    }
+    // Add subtasks to an existing task
+    else if (!props.isProject && !props.isNew) {
+      task.value.subtasks.push(newSubtask.value)
+      modify('tasks', props.task.id, props.task)
     }
   }
 
+  // Modify existing subtask
   else if (subtaskDetails.value.subtask && !newSubtaskOpened.value) {
-    if (props.isProject) {
+    props.isProject ?
       modify('projects', props.project.id, props.project)
-    } else {
-        modify('tasks', props.task.id, props.task)
-    }
-    
+    : modify('tasks', props.task.id, props.task)
   }
+  
   subtaskDetails.value.opened = false
   resetSubtask()
 }
