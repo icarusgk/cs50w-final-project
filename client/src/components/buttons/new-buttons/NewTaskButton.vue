@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modal';
+import { useTaskStore } from '@/stores/task';
 import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import TaskModal from '../../modals/TaskModal.vue';
@@ -7,21 +8,12 @@ import Tags from '../Tags.vue';
 import Modal from '@/components/modals/Modal.vue';
 
 import axios from 'axios'
+import type Task from '@/types/TaskType';
 
 const open = ref(false)
+const taskStore = useTaskStore()
 
-const initialTask = ref<{
-  id: number,
-  tags: string[]
-  title: string,
-  description: string
-  estimated: number,
-  subtasks: {
-    title: string,
-    description: string,
-    estimated: number
-  }[]
-}>({
+const initialTask = ref<Task>({
   id: 8,
   tags: [],
   title: '',
@@ -39,7 +31,7 @@ async function saveTask() {
     const response = await axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
     if (response.status === 200) { console.log("Saved!") }
   }
-
+  taskStore.add(initialTask.value)
   open.value = false;
 }
 </script>

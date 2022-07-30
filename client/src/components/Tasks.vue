@@ -1,15 +1,18 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
+import { useTaskStore } from '@/stores/task';
+
 import TaskType from './slots/TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
-import { useFetch } from '@/composables/useFetch';
 
-const { data, error, retry } = useFetch('/tasks')
+const taskStore = useTaskStore()
 
-function deleteTask(task: any) {
-  data.value = data.value.filter((t: any) => t.id !== task)
-}
+const tasks = computed(() => taskStore.tasks)
 
+onMounted(() => {
+  taskStore.fetchTasks()  
+})
 
 </script>
 
@@ -24,8 +27,8 @@ function deleteTask(task: any) {
       </template>
     </TaskType>
 
-    <div v-for="task in data">
-      <Task @delete-task="deleteTask" :task="task" />
+    <div v-for="task in tasks">
+      <Task :task="task" />
     </div>
   </div>
 </template>

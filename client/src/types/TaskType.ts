@@ -1,14 +1,14 @@
 import type Tag from './TagType'
 
 type Task = {
-  id: Number,
+  id: number,
   tags: Tag[],
   title: string,
   description: string,
-  estimated: Number,
-  gone_through: Number,
-  minutes: Number,
-  done: boolean,
+  estimated: number,
+  gone_through?: number,
+  minutes?: number,
+  done?: boolean,
   subtasks: Task[]
 }
 
