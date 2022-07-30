@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { useTaskStore } from '@/stores/task';
+import { useChoreStore } from '@/stores/chore';
 
 import TaskType from './slots/TaskType.vue';
 import SingleTaskIcon from './icons/SingleTaskIcon.vue';
 import Task from './Task.vue';
 
-const taskStore = useTaskStore()
+const choreStore = useChoreStore()
 
-const tasks = computed(() => taskStore.tasks)
+const tasks = computed(() => choreStore.tasks)
 
-onMounted(() => {
-  taskStore.fetchTasks()  
-})
+onMounted(() => choreStore.fetchTasks())
 
 </script>
 

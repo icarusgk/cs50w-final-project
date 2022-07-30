@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modal';
+import { useChoreStore } from '@/stores/chore';
 import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import ProjectModal from '../../modals/ProjectModal.vue';
 import Modal from '@/components/modals/Modal.vue';
 import axios from 'axios'
+import type Project from '@/types/ProjectType';
 
-const newProject = ref({
-  id: 10,
+const newProject = ref<Project>({
+  id: 11,
   title: '',
   tasks: [],
 })
@@ -22,7 +24,7 @@ async function saveProject() {
   const response = await axios.post(`http://127.0.0.1:3001/projects`, newProject.value)
   console.log(response.status === 200 ? "Saved" : "Error")
 
-  console.log("Saving...", newProject.value)
+  useChoreStore().addProject(newProject.value)
   open.value = false
 }
 </script>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useModalStore } from '@/stores/modal';
-import { useTaskStore } from '@/stores/task';
+import { useChoreStore } from '@/stores/chore';
 import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import TaskModal from '../../modals/TaskModal.vue';
@@ -11,7 +11,7 @@ import axios from 'axios'
 import type Task from '@/types/TaskType';
 
 const open = ref(false)
-const taskStore = useTaskStore()
+const taskStore = useChoreStore()
 
 const initialTask = ref<Task>({
   id: 8,

@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
+import { useChoreStore } from '@/stores/chore';
+
 import Project from './Project.vue'
 import TaskType from './slots/TaskType.vue'
 import ProjectIcon from './icons/ProjectIcon.vue'
-import { useFetch } from '@/composables/useFetch'
 
-const { data, error, retry } = useFetch('/projects')
+const choreStore = useChoreStore()
+
+const projects = computed(() => choreStore.projects)
+
+onMounted(() => choreStore.fetchProjects())
 
 </script>
 
@@ -21,7 +27,7 @@ const { data, error, retry } = useFetch('/projects')
     </TaskType>
     <div>
       <!-- List of projects -->
-      <div v-for="project in data">
+      <div v-for="project in projects">
         <Project :project="project" />
       </div>
     </div>

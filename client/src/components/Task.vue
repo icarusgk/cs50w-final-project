@@ -11,7 +11,7 @@ import SaveButton from "./SaveButton.vue";
 import DeleteIcon from "./icons/DeleteIcon.vue";
 import DoneIcon from "./icons/DoneIcon.vue";
 import MarkedDoneIcon from "./icons/MarkedDoneIcon.vue";
-import { useTaskStore } from '@/stores/task';
+import { useChoreStore } from '@/stores/chore';
 
 const props = defineProps<{
   task: TypeTask
@@ -43,7 +43,7 @@ async function deleteTask() {
   const response = await axios.delete(`http://127.0.0.1:3001/tasks/${props.task.id}`)
   console.log(response)
   open.value = false;
-  useTaskStore().delete(props.task.id)
+  useChoreStore().deleteTask(props.task.id)
 }
 
 async function toggleDone() {
