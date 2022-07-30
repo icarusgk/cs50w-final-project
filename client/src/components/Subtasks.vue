@@ -11,7 +11,7 @@ const props = defineProps(['subtasks', 'isProject', 'task', 'project'])
 const task = ref(props.task)
 const project = ref(props.project)
 
-const subtask = ref({
+const newSubtask = ref({
   title: '',
   description: '',
   estimated: 1
@@ -40,36 +40,43 @@ function openDetails(subtask: any) {
 }
 
 function resetSubtask() {
-  subtask.value = {
+  newSubtask.value = {
     title: '',
     description: '',
-    estimated: 0
+    estimated: 1
   }
 }
 
-// TODO: Replace any with type
 async function addSubtask() {
-  if (subtask.value.title) {
-    
-    let response
+  if (newSubtask.value.title) {
 
     if (props.isProject) {
-      project.value.tasks.push(subtask.value)
-      response = await axios.put(
-        `http://127.0.0.1:3001/projects/${props.project.id}`,
-        props.project
-      )
+      project.value.tasks.push(newSubtask.value)
+      modify('projects', props.project.id, props.project)
     } else {
-        task.value.subtasks.push(subtask.value)
-        response = await axios.put(
-        `http://127.0.0.1:3001/tasks/${props.task.id}`,
-        props.task
-      )
+        task.value.subtasks.push(newSubtask.value)
+        modify('tasks', props.task.id, props.task)
     }
-    console.log(response)
-    resetSubtask()
   }
+
+  else if (subtaskDetails.value.subtask && !newSubtaskOpened.value) {
+    if (props.isProject) {
+      modify('projects', props.project.id, props.project)
+    } else {
+        modify('tasks', props.task.id, props.task)
+    }
+    
+  }
+  subtaskDetails.value.opened = false
+  resetSubtask()
 }
+
+// TODO: Replace with subtask type
+async function modify(type: string, id: number, data: any) {
+  const response = await axios.put(`http://127.0.0.1:3001/${type}/${id}`, data)
+  console.log(response)
+}
+
 
 function deleteTask() {
   if (props.isProject) {
@@ -117,11 +124,11 @@ function closeNewSubtask() {
   </div>
   <div v-if="newSubtaskOpened">
     <!-- Listen to the event emitter -->
-    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="subtask" :newSub="true" />
+    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="newSubtask" :newSub="true" />
   </div>
   <!-- Existing task -->
   <div v-if="subtaskDetails.opened">
-    <Subtask @close="closeDetails()" @delete="deleteTask()" :subtask="subtaskDetails.subtask" />
+    <Subtask @save="addSubtask"  @close="closeDetails()" @delete="deleteTask()" :subtask="subtaskDetails.subtask" />
   </div>
 </template>
 
