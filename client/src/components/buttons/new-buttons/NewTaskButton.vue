@@ -31,7 +31,7 @@ async function saveTask() {
     const response = await axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
     if (response.status === 200) { console.log("Saved!") }
   }
-  taskStore.add(initialTask.value)
+  taskStore.addTask(initialTask.value)
   open.value = false;
 }
 </script>

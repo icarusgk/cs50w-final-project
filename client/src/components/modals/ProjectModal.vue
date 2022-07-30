@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import Subtasks from "../Subtasks.vue";
+import Subtasks from "../Subtasks.vue"
+import { useChoreStore } from '@/stores/chore';
+import DeleteIcon from '../icons/DeleteIcon.vue';
 
-defineProps<{
+const props = defineProps<{
   project: any,
   isNew?: boolean
 }>()
+
+const emits = defineEmits(['closeModal'])
+
+function deleteProject() {
+  useChoreStore().deleteProject(props.project.id)
+  emits('closeModal')
+}
 </script>
 
 <template>
   <div class="project-modal">
     <!-- Tasks heading -->
     <div>
+      <DeleteIcon @click="deleteProject()" class="delete-icon" />
+    </div>
+    <div>
       <p class="task-heading">Tasks</p>
     </div>
+    
     <!-- Add tasks button -->
     <div>
       <Subtasks :is-project="true" :subtasks="project.tasks" :project="project" :isNew="isNew" />
@@ -23,6 +36,12 @@ defineProps<{
 <style lang="scss" scoped>
 .project-modal {
   margin-top: 1rem;
+
+  .delete-icon {
+    &:hover, &:focus {
+      cursor: pointer;
+    }
+  }
   .task-container {
     display: flex;
     flex-wrap: wrap;
