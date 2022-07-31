@@ -29,16 +29,24 @@ export const useChoreStore = defineStore({
       }
     },
     addTask(task: Task) {
+      axios.post(`http://127.0.0.1:3001/tasks/`, task)
       this.tasks.push(task)
     },
-    deleteTask(taskId: number) {
-      this.tasks = this.tasks.filter((task: Task) => task.id !== taskId)
+    async deleteTask(taskId: number) {
+      const response = await axios.delete(`http://127.0.0.1:3001/tasks/${taskId}`)
+      if (response.status === 200) {
+        this.tasks = this.tasks.filter((task: Task) => task.id !== taskId)
+      }
     },
     addProject(project: Project) {
+      axios.post(`http://127.0.0.1:3001/projects/`, project)
       this.projects.push(project)
     },
-    deleteProject(projectId: number) {
-      this.projects = this.projects.filter((project: Project) => project.id !== projectId)
+    async deleteProject(projectId: number) {
+      const response = await axios.delete(`http://127.0.0.1:3001/projects/${projectId}`) 
+      if (response.status === 200) {
+        this.projects = this.projects.filter((project: Project) => project.id !== projectId)
+      }
     }
   }
 })

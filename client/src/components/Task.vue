@@ -40,10 +40,8 @@ async function saveTask() {
 }
 
 async function deleteTask() {
-  const response = await axios.delete(`http://127.0.0.1:3001/tasks/${props.task.id}`)
-  console.log(response)
-  open.value = false;
   useChoreStore().deleteTask(props.task.id)
+  open.value = false;
 }
 
 async function toggleDone() {

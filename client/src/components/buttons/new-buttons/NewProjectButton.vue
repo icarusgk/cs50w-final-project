@@ -20,10 +20,7 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
-async function saveProject() {
-  const response = await axios.post(`http://127.0.0.1:3001/projects`, newProject.value)
-  console.log(response.status === 200 ? "Saved" : "Error")
-
+function saveProject() {
   useChoreStore().addProject(newProject.value)
   open.value = false
 }

@@ -7,14 +7,13 @@ import TaskModal from '../../modals/TaskModal.vue';
 import Tags from '../Tags.vue';
 import Modal from '@/components/modals/Modal.vue';
 
-import axios from 'axios'
 import type Task from '@/types/TaskType';
 
 const open = ref(false)
 const taskStore = useChoreStore()
 
 const initialTask = ref<Task>({
-  id: 8,
+  id: 12,
   tags: [],
   title: '',
   description: '',
@@ -26,12 +25,10 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
-async function saveTask() {
+function saveTask() {
   if (initialTask.value.title) {
-    const response = await axios.post(`http://127.0.0.1:3001/tasks/`, initialTask.value)
-    if (response.status === 200) { console.log("Saved!") }
+    taskStore.addTask(initialTask.value)
   }
-  taskStore.addTask(initialTask.value)
   open.value = false;
 }
 </script>

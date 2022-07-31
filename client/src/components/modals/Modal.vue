@@ -24,6 +24,9 @@ const emits = defineEmits(['exitModal'])
             <slot name="title"></slot>
           </div>
         </div>
+        <div>
+          <slot name="delete-icon"></slot>
+        </div>
         <div @click="emits('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
