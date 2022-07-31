@@ -4,13 +4,14 @@ import MiniLabel from './slots/MiniLabel.vue';
 import AddTagIcon from './icons/AddTagIcon.vue';
 import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
-import axios from 'axios';
+import type { Task } from '@/types'
+import { useFetch } from '@/composables/useFetch';
 
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
 const task = ref(props.task)
 const project = ref(props.project)
-
+const type = props.isProject ? 'projects' : 'tasks' 
 
 const newSubtask = ref({
   title: '',
@@ -84,20 +85,20 @@ async function addSubtask() {
 
 // TODO: Replace with subtask type
 async function modify(type: string, id: number, data: any) {
-  const response = await axios.put(`http://127.0.0.1:3001/${type}/${id}`, data)
+  const response = await useFetch(`/${type}/${id}`, { method: 'put', data: data })
   console.log(response)
 }
 
 
-function deleteTask() {
+function deleteSubtask() {
   if (props.isProject) {
-    project.value.tasks = project.value.tasks.filter((task: any) => task !== subtaskDetails.value.subtask)
-    axios.put(`http://127.0.0.1:3001/projects/${props.project.id}`, project.value)
+    project.value.tasks = project.value.tasks.filter(
+      (task: Task) => task !== subtaskDetails.value.subtask)
   } else {
-    task.value.subtasks = task.value.subtasks.filter((sub: any) => sub !== subtaskDetails.value.subtask)
-    axios.put(`http://127.0.0.1:3001/tasks/${props.task.id}`, task.value)
+    task.value.subtasks = task.value.subtasks.filter(
+      (sub: Task) => sub !== subtaskDetails.value.subtask)
   }
-
+  useFetch(`/${type}/${props.task.id}`, { method: 'put', data: task.value })
   subtaskDetails.value.opened = false
 }
 
@@ -139,7 +140,7 @@ function closeNewSubtask() {
   </div>
   <!-- Existing task -->
   <div v-if="subtaskDetails.opened">
-    <Subtask @save="addSubtask"  @close="closeDetails()" @delete="deleteTask()" :subtask="subtaskDetails.subtask" />
+    <Subtask @save="addSubtask"  @close="closeDetails()" @delete="deleteSubtask()" :subtask="subtaskDetails.subtask" />
   </div>
 </template>
 

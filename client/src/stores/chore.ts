@@ -1,7 +1,6 @@
-import type Project from "@/types/ProjectType";
-import type Task from "@/types/TaskType";
-import axios from "axios";
+import type { Project, Task } from '@/types'
 import { defineStore } from "pinia";
+import { useFetch } from '@/composables/useFetch';
 
 
 export const useChoreStore = defineStore({
@@ -13,39 +12,31 @@ export const useChoreStore = defineStore({
   actions: {
     // fetchers
     async fetchTasks() {
-      try {
-        const response = await axios.get(`http://127.0.0.1:3001/tasks`)
-        this.tasks = response.data
-      } catch (err) {
-        console.log(err)
-      }
+      const response = await useFetch('/tasks')
+      this.tasks = response?.data
     },
     async fetchProjects() {
-      try {
-        const response = await axios.get(`http://127.0.0.1:3001/projects`)
-        this.projects = response.data
-      } catch (err) {
-        console.log(err)
-      }
+      const response = await useFetch('/projects')
+      this.projects = response?.data
     },
     addTask(task: Task) {
-      axios.post(`http://127.0.0.1:3001/tasks/`, task)
+      useFetch('/tasks', { method: 'post', data: task })
       this.tasks.push(task)
     },
-    async deleteTask(taskId: number) {
-      const response = await axios.delete(`http://127.0.0.1:3001/tasks/${taskId}`)
-      if (response.status === 200) {
-        this.tasks = this.tasks.filter((task: Task) => task.id !== taskId)
+    async deleteTask(id: number) {
+      const response = await useFetch(`/tasks/${id}`, { method: 'delete'})
+      if (response?.status === 200) {
+        this.tasks = this.tasks.filter((task: Task) => task.id !== id)
       }
     },
     addProject(project: Project) {
-      axios.post(`http://127.0.0.1:3001/projects/`, project)
+      useFetch('/projects', { method: 'post', data: project })
       this.projects.push(project)
     },
-    async deleteProject(projectId: number) {
-      const response = await axios.delete(`http://127.0.0.1:3001/projects/${projectId}`) 
-      if (response.status === 200) {
-        this.projects = this.projects.filter((project: Project) => project.id !== projectId)
+    async deleteProject(id: number) {
+      const response = await useFetch(`/projects/${id}`, { method: 'delete'})
+      if (response?.status === 200) {
+        this.projects = this.projects.filter((project: Project) => project.id !== id)
       }
     }
   }

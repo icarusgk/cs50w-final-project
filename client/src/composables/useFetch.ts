@@ -1,33 +1,30 @@
 import { ref, isRef, unref, watchEffect } from 'vue'
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
+import type { Project, Task, Tag } from '@/types'
 
-export function useFetch(url: string) {
-  const data = ref()
-  const error = ref()
-  
-  async function doFetch() {
-    data.value = null
-    error.value = null
+type Options = {
+  method?: string,
+  data?: Project | Task | Tag
+}
 
-    // Unwrapp potential refs
-    const urlValue = unref(url)
+const fetch = axios.create({
+  baseURL: 'http://127.0.0.1:3001',
+  headers: { 'Content-Type': 'application/json' }
+})
 
-    try {
-      const response = await axios.get(`http://127.0.0.1:3001${urlValue}`)
-      data.value = await response.data
-    } catch (err) {
-      error.value = err
-    }
+export async function useFetch(path: string, options?: Options) {
+  const data = ref<AxiosResponse>()
+
+  try {
+    const response = await fetch({
+      url: path,
+      method: options?.method,
+      data: options?.data
+    })
+    data.value = response
+  } catch (err) {
+    console.log(err)
   }
 
-  if (isRef(url)) {
-    // setup reactive re-fetch if input URL is a ref
-    watchEffect(doFetch)
-  } else {
-    // otherwise, just fetch once
-    doFetch()
-  }
-
-  return { data, error, retry: doFetch }
-
+  return data.value
 }
