@@ -5,7 +5,6 @@ import { ref, watch } from 'vue';
 import TaskButton from '../TaskButton.vue';
 import ProjectModal from '../../modals/ProjectModal.vue';
 import Modal from '@/components/modals/Modal.vue';
-import axios from 'axios'
 import type Project from '@/types/ProjectType';
 
 const newProject = ref<Project>({
@@ -20,9 +19,18 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
+function resetProject() {
+  newProject.value = {
+    id: 12,
+    title: '',
+    tasks: []
+  }
+  open.value = false
+}
+
 function saveProject() {
   useChoreStore().addProject(newProject.value)
-  open.value = false
+  resetProject()
 }
 </script>
 
@@ -33,7 +41,7 @@ function saveProject() {
     </template>
   </TaskButton>
 
-  <Modal :is-project="true" :is-button="true" :open="open" @exit-modal="open = false">
+  <Modal :is-project="true" :is-button="true" :open="open" @exit-modal="resetProject()">
     <template #title>
       <input 
         type="text" 
@@ -87,7 +95,7 @@ function saveProject() {
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 }

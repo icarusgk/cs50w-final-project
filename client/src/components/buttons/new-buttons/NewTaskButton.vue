@@ -17,7 +17,7 @@ const initialTask = ref<Task>({
   tags: [],
   title: '',
   description: '',
-  estimated: 0,
+  estimated: 1,
   subtasks: []
 })
 
@@ -25,11 +25,23 @@ watch(() => open.value, () => {
   useModalStore().toggle()
 })
 
+function resetTask() {
+  initialTask.value = {
+    id: 13,
+    tags: [],
+    title: '',
+    description: '',
+    estimated: 1,
+    subtasks: []
+  }
+  open.value = false
+}
+
 function saveTask() {
   if (initialTask.value.title) {
     taskStore.addTask(initialTask.value)
   }
-  open.value = false;
+  resetTask()
 }
 </script>
 
@@ -39,7 +51,7 @@ function saveTask() {
       Add new task
     </template>
   </TaskButton>
-  <Modal :is-button="true" :open="open" @exit-modal="open = false">
+  <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
       <Tags :tags="initialTask.tags" />
     </template>
@@ -96,7 +108,7 @@ function saveTask() {
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 }
