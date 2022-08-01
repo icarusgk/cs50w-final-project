@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import { useModalStore } from '@/stores/modal'
 import LightingIcon from '@/components/icons/LightingIcon.vue'
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import Tasks from '@/components/Tasks.vue'
-import { useModalStore } from '@/stores/modal'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
 
-const modal = useModalStore()
-modal.close()
-
+useModalStore().close()
 </script>
 <template>
-  <div id="home" :class="{ blur: modal.isOpened }">
+  <div id="home" :class="{ blur: useModalStore().isOpened }">
     <!-- Pomo Title -->
     <div id="pomodoro-title-container">
       <!-- Icon -->

@@ -24,12 +24,11 @@ export const useChoreStore = defineStore({
       const response = await useFetch('/tags')
       this.tags = response?.data
     },
-    // For future use?
-    // fetchAll() {
-    //   this.fetchProjects()
-    //   this.fetchTags()
-    //   this.fetchTasks()
-    // },
+    fetchAll() {
+      this.fetchProjects()
+      this.fetchTags()
+      this.fetchTasks()
+    },
     addTask(task: Task) {
       useFetch('/tasks', { method: 'post', data: task })
       this.tasks.push(task)

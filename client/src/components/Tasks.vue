@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import TaskType from '@/components/slots/TaskType.vue';
@@ -9,8 +9,6 @@ import Task from '@/components/Task.vue';
 const choreStore = useChoreStore()
 
 const tasks = computed(() => choreStore.tasks)
-
-onMounted(() => choreStore.fetchTasks())
 </script>
 
 <template>

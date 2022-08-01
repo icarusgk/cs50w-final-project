@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import SideBar from '@/components/Sidebar.vue'
 import UpperMenu from '@/components/UpperMenu.vue'
+import { useChoreStore } from '@/stores/chore'
+
+useChoreStore().fetchAll()
 </script>
 
 <template>

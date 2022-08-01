@@ -9,9 +9,6 @@ import ProjectIcon from '@/components/icons/ProjectIcon.vue'
 const choreStore = useChoreStore()
 
 const projects = computed(() => choreStore.projects)
-
-onMounted(() => choreStore.fetchProjects())
-
 </script>
 
 <template>
