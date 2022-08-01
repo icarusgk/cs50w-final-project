@@ -251,7 +251,12 @@
     },
     {
       "id": 13,
-      "tags": [],
+      "tags": [
+        {
+          "id": 14,
+          "name": "history"
+        }
+      ],
       "title": "my history class",
       "description": "study for the finals!",
       "estimated": 4,
@@ -259,7 +264,7 @@
         {
           "title": "page 1-8",
           "description": "The declaration of independence",
-          "estimated": 3
+          "estimated": 2
         }
       ]
     }
@@ -284,6 +289,14 @@
     {
       "id": 100,
       "name": "Nitro"
+    },
+    {
+      "id": 14,
+      "name": "history"
+    },
+    {
+      "id": 21,
+      "name": "dev"
     }
   ]
 }

@@ -53,7 +53,7 @@ function saveTask() {
   </TaskButton>
   <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
-      <Tags :tags="initialTask.tags" />
+      <Tags :taskTags="initialTask.tags" :allTags="taskStore.tags" />
     </template>
     <!-- New task title input -->
     <template #title>

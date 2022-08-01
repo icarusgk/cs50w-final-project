@@ -17,8 +17,6 @@ const props = defineProps<{
   task: TypeTask
 }>()
 
-const emit = defineEmits(['deleteTask'])
-
 const task = ref(props.task)
 const open = ref(false)
 
@@ -72,7 +70,7 @@ async function toggleDone() {
     <Modal :open="open" @exit-modal="open = false">
       <!-- Tags -->
       <template #tags>
-        <Tags :tags="task.tags" />
+        <Tags :taskTags="task.tags" :allTags="useChoreStore().tags" />
         <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->

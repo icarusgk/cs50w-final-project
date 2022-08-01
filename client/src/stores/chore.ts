@@ -1,4 +1,4 @@
-import type { Project, Task } from '@/types'
+import type { Project, Tag, Task } from '@/types'
 import { defineStore } from "pinia";
 import { useFetch } from '@/composables/useFetch';
 
@@ -7,7 +7,8 @@ export const useChoreStore = defineStore({
   id: 'chores',
   state: () => ({
     tasks: [] as Task[],
-    projects: [] as Project[]
+    projects: [] as Project[],
+    tags: [] as Tag[]
   }),
   actions: {
     // fetchers
@@ -19,6 +20,16 @@ export const useChoreStore = defineStore({
       const response = await useFetch('/projects')
       this.projects = response?.data
     },
+    async fetchTags() {
+      const response = await useFetch('/tags')
+      this.tags = response?.data
+    },
+    // For future use?
+    // fetchAll() {
+    //   this.fetchProjects()
+    //   this.fetchTags()
+    //   this.fetchTasks()
+    // },
     addTask(task: Task) {
       useFetch('/tasks', { method: 'post', data: task })
       this.tasks.push(task)
@@ -38,6 +49,10 @@ export const useChoreStore = defineStore({
       if (response?.status === 200) {
         this.projects = this.projects.filter((project: Project) => project.id !== id)
       }
+    },
+    addTag(tag: Tag) {
+      useFetch('/tags', { method: 'post', data: tag })
+      this.tags.push(tag)
     }
   }
 })

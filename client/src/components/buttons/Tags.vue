@@ -1,38 +1,51 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import MiniLabel from '../slots/MiniLabel.vue';
 import AddTagIcon from "../icons/AddTagIcon.vue";
-import tags from "@/mocks/tags"
+import type { Tag } from '@/types';
+import { useChoreStore } from '@/stores/chore';
 
-const props = defineProps(['tags'])
+const props = defineProps<{
+  taskTags: Tag[]
+  allTags?: Tag[]
+}>()
 
 const tagVisible = ref(true)
 const newTag = ref("")
 
-function addTag() {  
+// To newly created or existing task
+function addTag() {
   if (newTag.value) {
-    props.tags.push({
-      id: props.tags.length + 1,
-      name: newTag.value
-    })
-  }
+    const existingTag = props.allTags?.find((tag: Tag) => tag.name === newTag.value)
 
+    if (existingTag) {
+      props.taskTags.push(existingTag)
+    } else {
+      const tag = {
+        id: 21,
+        name: newTag.value
+      }
+      useChoreStore().addTag(tag)
+      props.taskTags.push(tag)
+    }
+  }
+  
   newTag.value = ""
 }
 
 const selectedTags = computed(() => {
-  return tags.filter(t => t.includes(newTag.value))
+  return props.allTags?.filter((tag: Tag) => tag.name.includes(newTag.value))
 })
 </script>
 
 <template>
-  <MiniLabel v-for="tag in props.tags" :is-tag="true">
+  <MiniLabel v-for="tag in props.taskTags" :is-tag="true">
     <template #title>
       #{{ tag.name }}
     </template>
   </MiniLabel>
   <Popper arrow placement="right">
-    <MiniLabel v-if="tagVisible && props.tags.length <= 3" :is-add="true">
+    <MiniLabel v-if="tagVisible && props.taskTags.length <= 3" :is-add="true">
       <template #title>
         Add Tag
       </template>
@@ -43,8 +56,8 @@ const selectedTags = computed(() => {
     <template #content="{ close }">
       <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" autofocus />
       <div class="tag-results">
-        <div class="tag-result" @click="newTag = tag; addTag(); close()" v-if="newTag" v-for="tag in selectedTags">
-          <span>{{ tag }}</span>
+        <div class="tag-result" @click="newTag = name; addTag(); close()" v-if="newTag" v-for="{ name } in selectedTags">
+          <span>{{ name }}</span>
         </div>
       </div>
     </template>

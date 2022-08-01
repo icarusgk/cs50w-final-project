@@ -11,7 +11,6 @@ const choreStore = useChoreStore()
 const tasks = computed(() => choreStore.tasks)
 
 onMounted(() => choreStore.fetchTasks())
-
 </script>
 
 <template>

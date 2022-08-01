@@ -1,6 +1,6 @@
 type Tag = {
-  id: Number,
-  name: String
+  id: number,
+  name: string
 }
 
 export default Tag
