@@ -36,7 +36,7 @@ import SettingsIcon from '@/components/icons/SettingsIcon.vue';
       display: inline-block;
       margin-right: 0.1rem;
 
-      &:hover {
+      &:hover, &:focus {
         cursor: pointer;
       }
 

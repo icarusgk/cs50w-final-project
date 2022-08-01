@@ -132,7 +132,7 @@ const selected = ref('')
         border: none;
         margin: 0 4px;
 
-        &:hover {
+        &:hover, &:focus {
           cursor: pointer;
         }
       }

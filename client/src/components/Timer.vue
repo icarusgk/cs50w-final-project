@@ -89,7 +89,7 @@ function restartTimer() {
   border: none;
   margin-top: 1rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 }

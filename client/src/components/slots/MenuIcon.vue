@@ -22,7 +22,7 @@
   color: white;
   transition: background-color 0.1s ease-in-out;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: var(--vivid-red);
     cursor: pointer;
   }

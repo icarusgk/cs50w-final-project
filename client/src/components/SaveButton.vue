@@ -22,7 +22,7 @@
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 }

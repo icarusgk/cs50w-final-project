@@ -167,7 +167,7 @@ function saveTask() {
         border: none;
         margin: 0 4px;
 
-        &:hover {
+        &:hover, &:focus {
           cursor: pointer;
         }
       }
@@ -201,7 +201,7 @@ function saveTask() {
     margin-top: 1rem;
     padding: 0.8rem 0.8rem;
 
-    &:hover {
+    &:hover, &:focus {
       cursor: pointer;
     }
   }

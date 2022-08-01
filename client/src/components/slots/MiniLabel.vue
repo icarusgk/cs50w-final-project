@@ -26,7 +26,7 @@ defineProps<{
   display: flex;
   align-items: center;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 

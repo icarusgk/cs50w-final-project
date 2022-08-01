@@ -77,7 +77,7 @@ function saveProject() {
   font-family: sans-serif;
   width: 100%;
 
-  &:focus {
+  &:focus, &:hover {
     outline: none;
   }
 }
