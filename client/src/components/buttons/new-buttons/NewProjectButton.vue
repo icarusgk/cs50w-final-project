@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
-import { ref, watch } from 'vue';
-import TaskButton from '../TaskButton.vue';
-import ProjectModal from '../../modals/ProjectModal.vue';
-import Modal from '@/components/modals/Modal.vue';
 import type Project from '@/types/ProjectType';
+
+import ProjectModal from '@/components/modals/ProjectModal.vue';
+import Modal from '@/components/modals/Modal.vue';
+import TaskButton from '@/components/buttons/TaskButton.vue';
+
 
 const newProject = ref<Project>({
   id: 11,

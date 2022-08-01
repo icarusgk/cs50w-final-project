@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
-import { ref, watch } from 'vue';
-import TaskButton from '../TaskButton.vue';
-import TaskModal from '../../modals/TaskModal.vue';
-import Tags from '../Tags.vue';
+
+import TaskModal from '@/components/modals/TaskModal.vue';
 import Modal from '@/components/modals/Modal.vue';
+import Tags from '@/components/buttons/Tags.vue';
+import TaskButton from '@/components/buttons/TaskButton.vue';
+
 
 import type Task from '@/types/TaskType';
 

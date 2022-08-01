@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import EstimatedIcon from './icons/EstimatedIcon.vue';
-import DeleteIcon from './icons/DeleteIcon.vue';
-import TimerSetter from './TimerSetter.vue';
+import EstimatedIcon from '@/components/icons/EstimatedIcon.vue';
+import DeleteIcon from '@/components/icons/DeleteIcon.vue';
+import TimerSetter from '@/components/TimerSetter.vue';
 
 const props = defineProps(['subtask', 'newSub'])
 </script>

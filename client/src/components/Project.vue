@@ -2,10 +2,11 @@
 import { ref, watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import { useModalStore } from '@/stores/modal';
-import TaskInfoIcon from './icons/TaskInfoIcon.vue';
-import Modal from './modals/Modal.vue';
-import ProjectModal from './modals/ProjectModal.vue';
-import DeleteIcon from './icons/DeleteIcon.vue';
+
+import Modal from '@/components/modals/Modal.vue';
+import ProjectModal from '@/components/modals/ProjectModal.vue';
+import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
+import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const props = defineProps(['project'])
 

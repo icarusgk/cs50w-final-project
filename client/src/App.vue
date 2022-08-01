@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SideBar from '@/components/Sidebar.vue'
-import UpperMenu from './components/UpperMenu.vue'
+import UpperMenu from '@/components/UpperMenu.vue'
 </script>
 
 <template>

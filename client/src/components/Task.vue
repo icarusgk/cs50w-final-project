@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { ref, watch } from "vue";
-import Tags from "./buttons/Tags.vue";
-import TaskInfoIcon from "./icons/TaskInfoIcon.vue";
-import Modal from "./modals/Modal.vue";
-import TaskModal from "./modals/TaskModal.vue";
-import type TypeTask from "@/types/TaskType"
 import { useModalStore } from "@/stores/modal";
-import SaveButton from "./SaveButton.vue";
-import DeleteIcon from "./icons/DeleteIcon.vue";
-import DoneIcon from "./icons/DoneIcon.vue";
-import MarkedDoneIcon from "./icons/MarkedDoneIcon.vue";
 import { useChoreStore } from '@/stores/chore';
+import type TypeTask from "@/types/TaskType"
+
+import axios from 'axios'
+
+import Tags from "@/components/buttons/Tags.vue";
+import TaskInfoIcon from "@/components/icons/TaskInfoIcon.vue";
+import Modal from "@/components/modals/Modal.vue";
+import TaskModal from "@/components/modals/TaskModal.vue";
+import SaveButton from "@/components/SaveButton.vue";
+import DeleteIcon from "@/components/icons/DeleteIcon.vue";
+import DoneIcon from "@/components/icons/DoneIcon.vue";
+import MarkedDoneIcon from "@/components/icons/MarkedDoneIcon.vue";
 
 const props = defineProps<{
   task: TypeTask

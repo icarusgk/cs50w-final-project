@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import Subtasks from "../Subtasks.vue"
-import DeleteIcon from '../icons/DeleteIcon.vue';
+import Subtasks from "@/components/Subtasks.vue"
 
 defineProps<{
   project: any,
@@ -14,7 +13,6 @@ defineProps<{
     <div>
       <p class="task-heading">Tasks</p>
     </div>
-    
     <!-- Add tasks button -->
     <div>
       <Subtasks :is-project="true" :subtasks="project.tasks" :project="project" :isNew="isNew" />

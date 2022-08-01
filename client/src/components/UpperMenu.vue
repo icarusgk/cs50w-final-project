@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import StreaksIcon from './icons/StreaksIcon.vue';
-import ThemeIcon from './icons/ThemeIcon.vue';
-import UserIcon from './icons/UserIcon.vue';
-import SettingsIcon from './icons/SettingsIcon.vue';
+import StreaksIcon from '@/components/icons/StreaksIcon.vue';
+import ThemeIcon from '@/components/icons/ThemeIcon.vue';
+import UserIcon from '@/components/icons/UserIcon.vue';
+import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 </script>
 
 <template>

@@ -2,9 +2,9 @@
 import { computed, onMounted } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
-import TaskType from './slots/TaskType.vue';
-import SingleTaskIcon from './icons/SingleTaskIcon.vue';
-import Task from './Task.vue';
+import TaskType from '@/components/slots/TaskType.vue';
+import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
+import Task from '@/components/Task.vue';
 
 const choreStore = useChoreStore()
 

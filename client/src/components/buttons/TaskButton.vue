@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AddIcon from '../icons/AddIcon.vue';
+import AddIcon from '@/components/icons/AddIcon.vue';
 
 </script>
 

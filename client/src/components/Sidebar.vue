@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import HomeIcon from './icons/HomeIcon.vue'
-import StatsIcon from './icons/StatsIcon.vue'
-import AboutIcon from './icons/AboutIcon.vue'
-import MenuIcon from './slots/MenuIcon.vue'
+import HomeIcon from '@/components/icons/HomeIcon.vue'
+import StatsIcon from '@/components/icons/StatsIcon.vue'
+import AboutIcon from '@/components/icons/AboutIcon.vue'
+import MenuIcon from '@/components/slots/MenuIcon.vue'
 </script>
 
 <template>

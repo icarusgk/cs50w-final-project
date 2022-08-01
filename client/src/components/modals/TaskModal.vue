@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Subtasks from '../Subtasks.vue';
-import TimerSetter from '../TimerSetter.vue';
+import Subtasks from '@/components/Subtasks.vue';
+import TimerSetter from '@/components/TimerSetter.vue';
 
 const props = defineProps<{
   task: any,

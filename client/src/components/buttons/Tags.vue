@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
-import MiniLabel from '../slots/MiniLabel.vue';
-import AddTagIcon from "../icons/AddTagIcon.vue";
-import type { Tag } from '@/types';
+import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import type { Tag } from '@/types';
+
+import MiniLabel from '@/components/slots/MiniLabel.vue';
+import AddTagIcon from "@/components/icons/AddTagIcon.vue";
+
 
 const props = defineProps<{
   taskTags: Tag[]

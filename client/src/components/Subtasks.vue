@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import MiniLabel from './slots/MiniLabel.vue';
-import AddTagIcon from './icons/AddTagIcon.vue';
+import { useFetch } from '@/composables/useFetch';
+import type { Task } from '@/types'
+
 import Subtask from '@/components/Subtask.vue';
 import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
-import type { Task } from '@/types'
-import { useFetch } from '@/composables/useFetch';
+import MiniLabel from '@/components/slots/MiniLabel.vue';
+import AddTagIcon from '@/components/icons/AddTagIcon.vue';
+
+
 
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
