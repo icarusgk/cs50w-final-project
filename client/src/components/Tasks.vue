@@ -13,7 +13,7 @@ const tasks = computed(() => choreStore.tasks)
 
 <template>
   <div>
-    <TaskType @click="$router.push('/tasks')">
+    <TaskType class="button" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
       </template>
@@ -29,5 +29,9 @@ const tasks = computed(() => choreStore.tasks)
 </template>
 
 <style lang="scss" scoped>
-
+.button {
+  &:hover, &:focus {
+    cursor: pointer;
+  }
+}
 </style>

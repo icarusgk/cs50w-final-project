@@ -28,10 +28,12 @@ defineProps<{
     </div>
   </div>
   
-  <div class="task-info">
-    <span class="title">{{ task.title }}</span>
-    <span>{{ task.description }}</span>
-  </div>
+
+    <div class="task-info">
+      <span class="title">{{ task.title }}</span>
+      <span>{{ task.description }}</span>
+    </div>
+
 </div>
 </template>
 
@@ -40,12 +42,9 @@ defineProps<{
   width: 500px;
   background-color: #3D3D3D;
   color: white;
-  margin: 0 1rem 1rem 0rem;
+  margin: 0 1rem 1rem 0;
   padding: 1rem;
   border-radius: 8px;
-
-  margin: 0 1rem 1rem 0;
-  flex: 1 0 auto;
   
   .tags-and-counters {
     display: flex;
@@ -68,13 +67,17 @@ defineProps<{
     }
   }
 
-  .task-info {
-    display: flex;
-    flex-direction: column;
-    .title {
-      font-weight: 700;
-      font-size: larger;
+
+    .task-info {
+      display: flex;
+      flex-direction: column;
+      height: 85%;
+      justify-content: center;
+      .title {
+        font-weight: 700;
+        font-size: larger;
+      }
     }
-  }
+  
 }
 </style>
