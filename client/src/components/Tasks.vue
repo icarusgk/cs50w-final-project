@@ -13,7 +13,7 @@ const tasks = computed(() => choreStore.tasks)
 
 <template>
   <div>
-    <TaskType>
+    <TaskType @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
       </template>

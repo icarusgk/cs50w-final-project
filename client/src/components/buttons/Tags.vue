@@ -10,6 +10,7 @@ import AddTagIcon from "@/components/icons/AddTagIcon.vue";
 const props = defineProps<{
   taskTags: Tag[]
   allTags?: Tag[]
+  info?: boolean
 }>()
 
 const tagVisible = ref(true)
@@ -46,7 +47,7 @@ const selectedTags = computed(() => {
       #{{ tag.name }}
     </template>
   </MiniLabel>
-  <Popper arrow placement="right">
+  <Popper arrow placement="right" v-if="!info">
     <MiniLabel v-if="tagVisible && props.taskTags.length <= 3" :is-add="true">
       <template #title>
         Add Tag

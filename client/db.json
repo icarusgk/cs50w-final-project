@@ -111,6 +111,62 @@
           "subtasks": []
         }
       ]
+    },
+    {
+      "id": 11,
+      "title": "rest of pomo.do",
+      "tasks": [
+        {
+          "title": "Work on TaskInfoComponent",
+          "description": "",
+          "estimated": 3
+        },
+        {
+          "title": "asdf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "adsf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "adsf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "dsaf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "asdfasdf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "asdfadsf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "asdfasdf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "adsfasdf",
+          "description": "",
+          "estimated": 1
+        },
+        {
+          "title": "asdfasdf",
+          "description": "",
+          "estimated": 1
+        }
+      ]
     }
   ],
   "tasks": [
@@ -260,6 +316,9 @@
       "title": "my history class",
       "description": "study for the finals!",
       "estimated": 4,
+      "gone_through": 2,
+      "minutes": 0,
+      "done": false,
       "subtasks": [
         {
           "title": "page 1-8",
@@ -267,14 +326,6 @@
           "estimated": 2
         }
       ]
-    },
-    {
-      "id": 12,
-      "tags": [],
-      "title": "asdf",
-      "description": "adsf",
-      "estimated": 1,
-      "subtasks": []
     }
   ],
   "tags": [
