@@ -3,10 +3,10 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 
-import TaskModal from '@/components/modals/TaskModal.vue';
+import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
 import Tags from '@/components/buttons/Tags.vue';
-import TaskButton from '@/components/buttons/TaskButton.vue';
+import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
 
 import type Task from '@/types/TaskType';
@@ -48,11 +48,11 @@ function saveTask() {
 </script>
 
 <template>
-  <TaskButton @click="open = true">
+  <ChoreButton @click="open = true">
     <template #type>
       Add new task
     </template>
-  </TaskButton>
+  </ChoreButton>
   <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
       <Tags :taskTags="initialTask.tags" :allTags="taskStore.tags" />
@@ -68,7 +68,7 @@ function saveTask() {
       />
     </template>
     <!-- Rest of modal -->
-    <TaskModal :task="initialTask" :isNew="true" />
+    <TaskModalInfo :task="initialTask" :isNew="true" />
     <!-- Button -->
     <template #save-button>
       <button

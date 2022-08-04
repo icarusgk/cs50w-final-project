@@ -7,10 +7,9 @@ import Projects from '@/components/Projects.vue'
 import Tasks from '@/components/Tasks.vue'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
 
-useModalStore().close()
 </script>
 <template>
-  <div id="home" :class="{ blur: useModalStore().isOpened }">
+  <div id="home" >
     <!-- Pomo Title -->
     <div id="pomodoro-title-container">
       <!-- Icon -->
@@ -49,12 +48,6 @@ useModalStore().close()
   flex-direction: column;
   padding: 0 4rem 0 4rem;
   width: 100%;
-  transition: filter 0.1s ease-out;
-}
-
-.blur {
-  filter: blur(14px);
-  pointer-events: none;
 }
 
 #pomodoro-title-container {

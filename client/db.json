@@ -250,6 +250,11 @@
           "minutes": 0,
           "done": false,
           "subtasks": []
+        },
+        {
+          "title": "dsafasdf",
+          "description": "asdf",
+          "estimated": 1
         }
       ]
     },
@@ -271,7 +276,7 @@
       ],
       "title": "Connect API with frontend",
       "description": "Solve the CORS issue and implement the api into Vue",
-      "estimated": 2,
+      "estimated": 4,
       "gone_through": 0,
       "minutes": 0,
       "done": false,

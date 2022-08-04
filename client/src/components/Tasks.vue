@@ -4,7 +4,7 @@ import { useChoreStore } from '@/stores/chore';
 
 import TaskType from '@/components/slots/TaskType.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
-import Task from '@/components/Task.vue';
+import Task from '@/components/buttons/Task.vue';
 
 const choreStore = useChoreStore()
 

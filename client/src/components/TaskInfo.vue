@@ -1,17 +1,28 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useModalStore  } from '@/stores/modal';
 import type { Task } from '@/types';
 
-import Tags from './buttons/Tags.vue';
-import TasksDoneIcon from './icons/TasksDoneIcon.vue';
-import TotalTasksIcon from './icons/TotalTasksIcon.vue';
+import Tags from '@/components/buttons/Tags.vue';
+import TasksDoneIcon from '@/components/icons/TasksDoneIcon.vue';
+import TotalTasksIcon from '@/components/icons/TotalTasksIcon.vue';
+import TaskModal from '@/components/TaskModal.vue'
+
 
 defineProps<{
   task: Task
 }>()
+
+const open = ref(false)
+
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
+
 </script>
 
 <template>
-<div class="single-task-info">
+<div class="single-task-info" @click="open = true">
   <div class="tags-and-counters">
     <div class="tags">
       <Tags :taskTags="task.tags" :info="true"  />
@@ -29,10 +40,12 @@ defineProps<{
   </div>
   
 
-    <div class="task-info">
-      <span class="title">{{ task.title }}</span>
-      <span>{{ task.description }}</span>
-    </div>
+  <div class="task-info">
+    <span class="title">{{ task.title }}</span>
+    <span>{{ task.description }}</span>
+  </div>
+
+  <TaskModal :task="task" :open="open" @exit="open = false" />
 
 </div>
 </template>
@@ -46,6 +59,11 @@ defineProps<{
   padding: 1rem;
   border-radius: 8px;
   
+  &:hover, &:focus {
+    cursor: pointer;
+  }
+
+
   .tags-and-counters {
     display: flex;
     justify-content: space-between;    

@@ -4,9 +4,9 @@ import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import type Project from '@/types/ProjectType';
 
-import ProjectModal from '@/components/modals/ProjectModal.vue';
+import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
-import TaskButton from '@/components/buttons/TaskButton.vue';
+import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
 
 const newProject = ref<Project>({
@@ -37,11 +37,11 @@ function saveProject() {
 </script>
 
 <template>
-  <TaskButton @click="open = true">
+  <ChoreButton @click="open = true">
     <template #type>
       Add new project
     </template>
-  </TaskButton>
+  </ChoreButton>
 
   <Modal :is-project="true" :is-button="true" :open="open" @exit-modal="resetProject()">
     <template #title>
@@ -55,7 +55,7 @@ function saveProject() {
     </template>
     
     <!-- Rest of modal -->
-    <ProjectModal :project="newProject" :isNew="true" />
+    <ProjectModalInfo :project="newProject" :isNew="true" />
     <template #save-button>
       <button
         @click="saveProject()" 

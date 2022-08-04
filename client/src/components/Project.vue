@@ -4,7 +4,7 @@ import { useChoreStore } from '@/stores/chore';
 import { useModalStore } from '@/stores/modal';
 
 import Modal from '@/components/modals/Modal.vue';
-import ProjectModal from '@/components/modals/ProjectModal.vue';
+import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
@@ -46,7 +46,7 @@ function deleteProject() {
         <DeleteIcon @click="deleteProject()" class="delete-icon" />
       </template>
       <!-- Modal Info -->
-      <ProjectModal :project="project" @close-modal="open = false" />
+      <ProjectModalInfo :project="project" @close-modal="open = false" />
     </Modal>
   </div>
 </template>
