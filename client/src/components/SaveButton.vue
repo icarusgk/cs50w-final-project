@@ -1,6 +1,14 @@
+<script setup lang="ts">
+defineProps<{
+  disabled: boolean
+}>()
+</script>
+
 <template>
   <button
     class="close-modal-button"
+    :disabled="disabled"
+    :class="{ disabled: disabled }"
   >Save!
 </button>
 
@@ -25,5 +33,9 @@
   &:hover, &:focus {
     cursor: pointer;
   }
+}
+
+.disabled {
+  opacity: 0.3;
 }
 </style>

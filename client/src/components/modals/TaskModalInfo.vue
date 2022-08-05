@@ -10,12 +10,18 @@ const props = defineProps<{
   isNew?: boolean
 }>()
 
+const emit = defineEmits(['descriptionChange'])
+
 const projects = useChoreStore().projects
-const selectedProjects = ref<Project[]>([])
+
 
 // TODO: Connect to back-end
 function addToProject(project: Project) {
   console.log('added', project.title);
+}
+
+function check(event: any) {
+  emit('descriptionChange', event.target.value)
 }
 </script>
 
@@ -23,7 +29,7 @@ function addToProject(project: Project) {
   <div>
     <!-- Description -->
     <div class="new-task-description">
-      <textarea v-model.lazy.trim="props.task.description" placeholder="Description"
+      <textarea @input="check" v-model.lazy.trim="props.task.description" placeholder="Description"
         class="new-task-textarea-description">
       </textarea>
     </div>

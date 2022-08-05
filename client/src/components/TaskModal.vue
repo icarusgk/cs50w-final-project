@@ -20,6 +20,7 @@ const props = defineProps<{
 const emit = defineEmits(['exit'])
 
 const task = ref(props.task)
+const pristine = ref(true)
 
 
 async function saveTask() {
@@ -38,7 +39,9 @@ async function deleteTask() {
   emit('exit')
 }
 
-
+function checkPristine(description: string) {
+  pristine.value = description === props.task.description
+}
 </script>
 
 <template>
@@ -55,8 +58,8 @@ async function deleteTask() {
         <input type="text" name="title" id="task-input-title" v-model="props.task.title" />
       </template>
       <!-- Modal -->
-      <TaskModalInfo :task="task" />
-      <SaveButton @click="saveTask()" />
+      <TaskModalInfo :task="task" @description-change="checkPristine" />
+      <SaveButton @click="saveTask()" :disabled="pristine" />
     </Modal>
   </div>
 </template>

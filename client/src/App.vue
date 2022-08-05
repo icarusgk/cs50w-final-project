@@ -13,7 +13,7 @@ useModalStore().close()
     <SideBar />
     <div class="menu-and-content" :class="{ blur: useModalStore().isOpened }">
       <UpperMenu class="upper-menu" />
-      <router-view></router-view>
+      <router-view @vnodeUpdated="useModalStore().close()"></router-view>
     </div>
   </div>
 </template>
