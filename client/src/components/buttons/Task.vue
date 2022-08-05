@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal.js';
+import { useModalStore } from '@/stores/modal';
+import { useChoreStore } from '@/stores/chore';
 import type { Task } from '@/types';
 
 
@@ -9,6 +10,7 @@ import DoneIcon from '../icons/DoneIcon.vue';
 import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
 import TaskModal from '../TaskModal.vue';
 import TaskInfoIcon from "@/components/icons/TaskInfoIcon.vue";
+
 
 const props = defineProps<{
   task: Task
@@ -27,20 +29,23 @@ async function toggleDone() {
   console.log(response)
 }
 
+function setCurrent() {
+  useChoreStore().changeCurrentTask(props.task.id)
+}
 </script>
 
 <template>
-  <div class="task-container" @click="open = true">
+  <div class="task-container" @click="setCurrent()">
     <div @click="toggleDone()" class="task-checkbox">
       <DoneIcon v-if="!task.done" />
       <MarkedDoneIcon v-else />
     </div>
     <!-- Name -->
-    <div @click="open = true" class="task-title-container" :class="{ done: task.done }">
+    <div class="task-title-container" :class="{ done: task.done }">
       <div class="title-container">
         <p>{{ props.task.title }}</p>
       </div>
-      <div class="task-info-icon">
+      <div class="task-info-icon" @click="open = true">
         <TaskInfoIcon />
       </div>
     </div>

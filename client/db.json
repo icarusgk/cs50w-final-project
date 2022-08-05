@@ -362,5 +362,8 @@
       "id": 21,
       "name": "dev"
     }
-  ]
+  ],
+  "currentTask": {
+    "id": 3
+  }
 }

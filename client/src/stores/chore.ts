@@ -8,7 +8,8 @@ export const useChoreStore = defineStore({
   state: () => ({
     tasks: [] as Task[],
     projects: [] as Project[],
-    tags: [] as Tag[]
+    tags: [] as Tag[],
+    currentTask: null as { id: number } | null
   }),
   actions: {
     // fetchers
@@ -24,10 +25,15 @@ export const useChoreStore = defineStore({
       const response = await useFetch('/tags')
       this.tags = response?.data
     },
+    async fetchCurrentTask() {
+      const response = await useFetch('/currentTask')
+      this.currentTask = response?.data
+    },
     fetchAll() {
       this.fetchProjects()
       this.fetchTags()
       this.fetchTasks()
+      this.fetchCurrentTask()
     },
     addTask(task: Task) {
       useFetch('/tasks', { method: 'post', data: task })
@@ -52,6 +58,10 @@ export const useChoreStore = defineStore({
     addTag(tag: Tag) {
       useFetch('/tags', { method: 'post', data: tag })
       this.tags.push(tag)
+    },
+    changeCurrentTask(id: number) {
+      useFetch('/currentTask', { method: 'put', data: { id: id } })
+      this.currentTask = { id: id }
     }
   }
 })

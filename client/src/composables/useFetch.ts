@@ -1,10 +1,10 @@
-import { ref, isRef, unref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import axios, { type AxiosResponse } from 'axios'
 import type { Project, Task, Tag } from '@/types'
 
 type Options = {
   method?: string,
-  data?: Project | Task | Tag
+  data?: Project | Task | Tag | { id: number }
 }
 
 const fetch = axios.create({

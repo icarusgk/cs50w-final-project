@@ -2,6 +2,8 @@
 import { watch } from 'vue'
 import { useTimerStore } from '@/stores/timer';
 
+import CurrentTask from './CurrentTask.vue';
+
 const timer = useTimerStore()
 
 watch(() => timer.timer, () => {
@@ -45,7 +47,6 @@ function restartTimer() {
   stopTimer()
   timer.setInitialValue()
 }
-
 </script>
 
 <template>
@@ -62,6 +63,7 @@ function restartTimer() {
       <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
       <button @click="restartTimer()" v-if="timer.ongoing" id="restart-timer-btn">Restart!</button>
       <h2 v-if="timer.done">DONEEE</h2>
+      <CurrentTask />
     </div>
   </div>
 </template>
