@@ -65,9 +65,6 @@ const selectedTags = computed(() => {
       </div>
     </template>
   </Popper>
-  <!-- <div v-else-if="!tagVisible">
-    <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" />
-  </div> -->
 </template>
 
 <style scoped lang="scss">

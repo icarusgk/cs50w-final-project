@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Subtasks from '@/components/Subtasks.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
+import { useChoreStore } from '@/stores/chore';
+import type Project from '@/types/ProjectType';
 
 const props = defineProps<{
   task: any,
   isNew?: boolean
 }>()
 
-// For v-model select
-const selected = ref('')
+const projects = useChoreStore().projects
+const selectedProjects = ref<Project[]>([])
+
+// TODO: Connect to back-end
+function addToProject(project: Project) {
+  console.log('added', project.title);
+}
 </script>
 
 <template>
@@ -43,17 +50,18 @@ const selected = ref('')
 
       <!-- Add to project -->
       <div class="add-to-project-dropdown">
+        <Popper arrow placement="bottom">
         <div>
-          <span style="font-weight: 800;">Project</span>
+          <span class="text"> Add to Project</span>
         </div>
-        <div>
-          <select class="project-select" v-model="selected">
-            <option disabled value="">Select one</option>
-            <option v-for="project in ['vue learning', 'pomo.do']" :value="project">
-              {{ project }}
-            </option>
-          </select>
-        </div>
+        <template #content="{ close }">
+          <div class="project-select">
+            <div class="project" v-for="project in projects" @click="addToProject(project)">
+              {{ project.title }}
+            </div>
+          </div>
+        </template>
+        </Popper>
       </div>
 
     </div>
@@ -145,13 +153,26 @@ const selected = ref('')
     position: relative;
     margin-left: 1rem;
 
-    .project-select {
-      margin-left: 1rem;
-      border: none;
-      outline: none;
-      padding: 2px;
-      border-radius: 4px;
+    &:hover, &:focus {
       cursor: pointer;
+    }
+
+    .text {
+      font-weight: 800;
+    }
+
+    .project-select { 
+      width: 10rem;
+
+      .project {
+        background-color: rgb(92, 92, 92);
+        padding: 0.5rem;
+        border-radius: 8px;
+        margin-bottom: 0.4rem;
+        &:last-child {
+          margin: 0;
+        }
+      }
     }
   }
 }
