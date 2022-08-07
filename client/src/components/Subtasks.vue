@@ -14,7 +14,6 @@ const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
 const task = ref(props.task)
 const project = ref(props.project)
-const type = props.isProject ? 'projects' : 'tasks' 
 
 const newSubtask = ref({
   title: '',
@@ -94,14 +93,16 @@ async function modify(type: string, id: number, data: any) {
 
 
 function deleteSubtask() {
-  if (props.isProject) {
+  if (props.isProject) {    
     project.value.tasks = project.value.tasks.filter(
       (task: Task) => task !== subtaskDetails.value.subtask)
+    useFetch(`/projects/${props.project.id}`, { method: 'put', data: project.value })
   } else {
     task.value.subtasks = task.value.subtasks.filter(
       (sub: Task) => sub !== subtaskDetails.value.subtask)
+    useFetch(`/tasks/${props.task.id}`, { method: 'put', data: task.value })
   }
-  useFetch(`/${type}/${props.task.id}`, { method: 'put', data: task.value })
+  
   subtaskDetails.value.opened = false
 }
 
