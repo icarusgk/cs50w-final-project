@@ -24,10 +24,6 @@ const projects = computed(() => useChoreStore().projects)
 </template>
 
 <style scoped lang="scss">
-* {
-  color: white;
-}
-
 .projects-view {
   padding: 1.5rem;
   .go-back {
@@ -53,6 +49,8 @@ const projects = computed(() => useChoreStore().projects)
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    color: white;
+    margin-top: 1rem;
   }
 }
 </style>

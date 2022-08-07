@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue'
 import { useChoreStore } from '@/stores/chore';
-import { useModalStore } from '@/stores/modal';
 import type { Project } from '@/types';
 
 import Modal from '@/components/modals/Modal.vue';
