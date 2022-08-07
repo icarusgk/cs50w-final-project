@@ -14,7 +14,10 @@ const projects = computed(() => choreStore.projects)
 <template>
   <div>
     <!-- Title -->
-    <TaskType>
+    <TaskType 
+      class="projects-button"
+      @click="$router.push('/projects')"
+    >
       <template #icon>
         <ProjectIcon />
       </template>
@@ -34,8 +37,12 @@ const projects = computed(() => choreStore.projects)
   </div>
 </template>
 
-<style>
-
+<style scoped lang="scss">
+.projects-button {
+  &:hover, &:focus {
+    cursor: pointer;
+  }
+}
 
 
 

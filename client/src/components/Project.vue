@@ -1,30 +1,24 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useChoreStore } from '@/stores/chore';
+import { ref, watch } from 'vue'
 import { useModalStore } from '@/stores/modal';
+import type { Project } from '@/types';
 
-import Modal from '@/components/modals/Modal.vue';
-import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
+import ProjectModal from './ProjectModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
-const props = defineProps(['project'])
+defineProps<{
+  project: Project
+}>()
 
 const open = ref(false)
 
-// When open.value changes, toggle
 watch(() => open.value, () => {
   useModalStore().toggle()
 })
-
-function deleteProject() {
-  useChoreStore().deleteProject(props.project.id)
-  open.value = false
-}
 </script>
 
 <template>
-  <div @click="open = true" class="task-container">
+  <div class="task-container">
     <!-- Checkbox -->
     <div class="task-checkbox"></div>
     <!-- Name -->
@@ -32,22 +26,12 @@ function deleteProject() {
       <div class="title-container">
         <p>{{ project.title }}</p>
       </div>
-      <div class="task-info-icon">
+      <div @click="open = true" class="task-info-icon">
         <TaskInfoIcon />
       </div>
     </div>
-    <!-- Modal -->
-    <Modal :is-project="true" :open="open" @exit-modal="open = false">
-      <!-- Title -->
-      <template #title>
-        <input type="text" name="title" id="task-input-title" v-model="props.project.title" />
-      </template>
-      <template #delete-icon>
-        <DeleteIcon @click="deleteProject()" class="delete-icon" />
-      </template>
-      <!-- Modal Info -->
-      <ProjectModalInfo :project="project" @close-modal="open = false" />
-    </Modal>
+    
+    <ProjectModal :project="project" :open="open" @exit="open = false" />
   </div>
 </template>
 
@@ -88,23 +72,5 @@ function deleteProject() {
   }
 }
 
-#task-input-title {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  font-weight: 900;
-  font-family: sans-serif;
-  width: 100%;
 
-  &:focus {
-    outline: none;
-  }
-}
-
-.delete-icon {
-  &:hover, &:focus {
-    cursor: pointer;
-  }
-}
 </style>
