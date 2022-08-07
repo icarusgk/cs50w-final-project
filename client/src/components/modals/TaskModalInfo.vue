@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue';
 import Subtasks from '@/components/Subtasks.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
 import { useChoreStore } from '@/stores/chore';
@@ -13,11 +13,13 @@ const props = defineProps<{
 const emit = defineEmits(['descriptionChange'])
 
 const projects = useChoreStore().projects
-
+const allMyProjects = ref<Project[]>([])
 
 // TODO: Connect to back-end
 function addToProject(project: Project) {
-  console.log('added', project.title);
+  if (!allMyProjects.value.includes(project)) {
+    allMyProjects.value.push(project)
+  }
 }
 
 function check(event: any) {
@@ -62,7 +64,11 @@ function check(event: any) {
         </div>
         <template #content="{ close }">
           <div class="project-select">
-            <div class="project" v-for="project in projects" @click="addToProject(project)">
+            <div class="project" 
+              :class="{ inside: allMyProjects.includes(project) }" 
+              v-for="project in projects" 
+              @click="addToProject(project)"
+            >
               {{ project.title }}
             </div>
           </div>
@@ -178,6 +184,11 @@ function check(event: any) {
         &:last-child {
           margin: 0;
         }
+      }
+
+      .inside {
+        background-color: rgb(251, 105, 105);
+        transition: background-color 0.3s ease-in-out;
       }
     }
   }
