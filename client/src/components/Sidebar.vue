@@ -43,31 +43,57 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
 .container {
   background-color: #2f2f2f;
   width: 130px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: fixed;
 
   .logo-container {
     margin-top: 2rem;
   }
 
   .menu-container {
-      display: flex;
-      flex-direction: column;
-      height: 60%;
-      justify-content: space-evenly;
-      margin-top: 4rem;
-      align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: space-evenly;
+    margin-top: 4rem;
+    align-items: center;
 
-      a {
-        text-decoration: none;
-      }
+    a {
+      text-decoration: none;
     }
+
+  }
 }
 
 
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    height: 5rem;
+    background-color: #0f0f0f;
+    position: fixed;
+    bottom: 0;
 
+    flex-direction: row;
+    justify-content: space-around;
+    
 
+    .menu-container {
+      flex-direction: row;
+      margin-bottom: 5rem;
+      
+      .item {
+        transform: scale(0.5);
+      }
+    }
+  }
+  
+  .logo-container {
+    display: none;
+  }  
+}
 </style>
 

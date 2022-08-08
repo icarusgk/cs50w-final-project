@@ -1,5 +1,6 @@
 export default [
   {
+    "id": 1,
     "title": "Learn Nuxt v3",
     "tasks": [
       {
@@ -82,6 +83,7 @@ export default [
     ]
   },
   {
+    "id": 2,
     "title": "Review Rails Basics",
     "tasks": [
       {

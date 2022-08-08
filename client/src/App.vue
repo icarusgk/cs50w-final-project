@@ -9,8 +9,8 @@ useModalStore().close()
 </script>
 
 <template>
+  <SideBar />
   <div class="body">
-    <SideBar />
     <div class="menu-and-content" :class="{ blur: useModalStore().isOpened }">
       <UpperMenu class="upper-menu" />
       <router-view @vnodeUpdated="useModalStore().close()"></router-view>
@@ -24,6 +24,12 @@ useModalStore().close()
 
 /* Popper theme */
 @import './assets/popper-theme.css';
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+* {
+  font-family: 'Poppins';
+}
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -42,7 +48,11 @@ input[type=number] {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: filter 0.1s ease-out;
+  transition: filter 0.2s ease-out;
+}
+
+html {
+  background-color: #212121;
 }
 
 .blur {
@@ -52,8 +62,8 @@ input[type=number] {
 
 
 .body {
-  background-color: #212121;
   display: flex;
+  margin-left: 130px;
 
   .menu-and-content {
     width: 100%;
@@ -61,9 +71,20 @@ input[type=number] {
     flex-direction: column;
 
     .upper-menu {
-      padding: 2rem 4em 0 0;
+      padding: 2rem 1rem 0 0;
       color: white;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .body {
+    margin-left: 0;
+    margin-bottom: 140px;
+  }
+
+  * {
+    touch-action: manipulation;
   }
 }
 </style>

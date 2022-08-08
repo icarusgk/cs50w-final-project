@@ -31,14 +31,10 @@ import AddIcon from '@/components/icons/AddIcon.vue';
   }
 }
 
-.modal {
-  position: fixed;
-  z-index: 2;
-  top: 20%;
-  left: 30%;
-  width: 40%;
-  background-color: white;
-  color: black;
-  padding: 2rem;
+@media (max-width: 768px) {
+  .add-item-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
 }
 </style>

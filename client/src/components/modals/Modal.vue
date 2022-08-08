@@ -83,4 +83,11 @@ const emits = defineEmits(['exitModal'])
     }
   }
 }
+
+@media (max-width: 768px) {
+  .modal {
+    left: 5%;
+    width: 90%;
+  }
+}
 </style>

@@ -3,10 +3,12 @@ import StreaksIcon from '@/components/icons/StreaksIcon.vue';
 import ThemeIcon from '@/components/icons/ThemeIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
+import Title from './Title.vue';
 </script>
 
 <template>
   <div id="icons">
+    <Title />
     <ul>
       <!-- Four icons -->
       <!-- Streaks -->
@@ -29,6 +31,9 @@ import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 
 <style lang="scss" scoped>
 #icons {
+  display: flex;
+  justify-content: space-between;
+
   ul {
     text-align: right;
 
@@ -48,6 +53,22 @@ import SettingsIcon from '@/components/icons/SettingsIcon.vue';
         #streaks-days-info {
           margin-left: 1rem;
           font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  #icons {
+    ul {
+      text-align: left;
+      li {
+        transform: scale(0.7);
+        margin-right: -8px;
+
+        #streaks-icon {
+          display: none;
         }
       }
     }

@@ -1,0 +1,38 @@
+<script setup lang="ts">
+import LightingIcon from './icons/LightingIcon.vue';
+</script>
+
+<template>
+  <!-- Pomo Title -->
+  <div id="pomodoro-title-container">
+    <!-- Icon -->
+    <LightingIcon id="pomo-icon" />
+    <!-- Title -->
+    <h1 id="title">Pomodoro Timer</h1>
+  </div>
+</template>
+
+<style scoped lang="scss">
+  #pomodoro-title-container {
+    margin-left: 2rem;
+
+    #title {
+      font-size: 2rem;
+    }
+  }
+
+
+  @media (max-width: 768px) {
+    #pomodoro-title-container {
+      margin: 0;
+
+      #pomo-icon {
+        transform: scale(0.8);
+      }
+      #title {
+        margin-left: -8px;
+        font-size: 1rem;
+      }
+    }
+  }
+</style>

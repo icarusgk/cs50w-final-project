@@ -63,7 +63,6 @@ function restartTimer() {
       <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
       <button @click="restartTimer()" v-if="timer.ongoing" id="restart-timer-btn">Restart!</button>
       <h2 v-if="timer.done">DONEEE</h2>
-      <CurrentTask />
     </div>
   </div>
 </template>
@@ -103,6 +102,7 @@ h2 {
 
 #start-timer-btn {
   @extend %timer-button;
+  width: 50%;
   background-color: var(--vivid-red);
 }
 
@@ -115,5 +115,16 @@ h2 {
   @extend %timer-button;
   background-color: darkorange;
   margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  #timer-count {
+    font-size: 7rem;
+  }
+  
+  #start-timer-btn {
+    margin-top: 0;
+    width: 200px;
+  }
 }
 </style>

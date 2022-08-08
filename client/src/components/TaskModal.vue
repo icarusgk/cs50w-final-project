@@ -11,6 +11,7 @@ import Modal from "@/components/modals/Modal.vue";
 import TaskModalInfo from "@/components/modals/TaskModalInfo.vue";
 import SaveButton from "@/components/SaveButton.vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
+import tags from "@/mocks/tags";
 
 const props = defineProps<{
   task: TypeTask
@@ -50,7 +51,7 @@ function checkPristine(description: string) {
     <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Tags -->
       <template #tags>
-        <Tags :taskTags="task.tags" :allTags="useChoreStore().tags" />
+        <Tags :taskTags="task.tags" :allTags="tags" />
         <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->

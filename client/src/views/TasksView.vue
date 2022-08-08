@@ -4,8 +4,10 @@ import { useChoreStore } from '@/stores/chore';
 
 import TaskInfo from '@/components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
+import tasks from '@/mocks/tasks';
 
-const tasks = computed(() => useChoreStore().tasks)
+
+// const tasks = computed(() => useChoreStore().tasks)
 </script>
 
 <template>

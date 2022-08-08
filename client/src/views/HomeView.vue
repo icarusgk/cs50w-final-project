@@ -9,14 +9,7 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 
 </script>
 <template>
-  <div id="home" >
-    <!-- Pomo Title -->
-    <div id="pomodoro-title-container">
-      <!-- Icon -->
-      <LightingIcon />
-      <!-- Title -->
-      <h1>Pomodoro Timer</h1>
-    </div>
+  <div id="home">
     <!-- Third box -->
     <div id="timer-and-tasks">
       <!-- Timer -->
@@ -58,19 +51,42 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 #timer-and-tasks {
   display: flex;
   flex-direction: row;
+  margin-top: 3rem;
 }
 
-#main-timer {
-  width: 50%;
-  margin: 4rem 0 0 1rem;
-} 
-
 #main-tasks-container {
-  width: 40%
+  margin-left: 12rem;
+  width: 600px;
 }
 
 #task-btn-container {
   display: flex;  
+}
+
+@media (max-width: 768px) {
+  #home {
+    padding: 0 1rem 0 1rem;
+  }
+  #timer-and-tasks {
+    flex-wrap: wrap;
+  }
+
+  #main-timer {
+    margin-left: 0;
+  }
+
+  #title {
+    font-size: 1.5rem;
+  }
+
+  #main-tasks-container {
+    margin: 0;
+    width: 100vw;
+
+    #task-btn-container {
+      margin: 2rem 0 2rem 0;
+    }
+  }
 }
 
 </style>

@@ -5,10 +5,10 @@ import { useChoreStore } from '@/stores/chore';
 import Project from '@/components/Project.vue'
 import TaskType from '@/components/slots/TaskType.vue'
 import ProjectIcon from '@/components/icons/ProjectIcon.vue'
-
+import projects from '@/mocks/projects';
 const choreStore = useChoreStore()
 
-const projects = computed(() => choreStore.projects)
+// const projects = computed(() => choreStore.projects)
 </script>
 
 <template>
@@ -43,7 +43,5 @@ const projects = computed(() => choreStore.projects)
     cursor: pointer;
   }
 }
-
-
 
 </style>
