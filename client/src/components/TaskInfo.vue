@@ -55,7 +55,7 @@ watch(() => open.value, () => {
   width: 500px;
   background-color: #3D3D3D;
   color: white;
-  margin: 0 1rem 1rem 0;
+  height: 250px;
   padding: 1rem;
   border-radius: 8px;
   
@@ -95,7 +95,12 @@ watch(() => open.value, () => {
         font-weight: 700;
         font-size: larger;
       }
-    }
-  
+    } 
+}
+
+@media (max-width: 768px) {
+  .single-task-info {
+    height: min-content;
+  }
 }
 </style>

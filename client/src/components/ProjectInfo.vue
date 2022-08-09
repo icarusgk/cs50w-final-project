@@ -29,7 +29,6 @@ watch(() => open.value, () => {
 .single-project {
   padding: 1rem;
   background-color: #3D3D3D;
-  margin: 0 1rem 1rem 0;
   border-radius: 8px;
 
   &:hover, &:focus {

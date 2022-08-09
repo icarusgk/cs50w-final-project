@@ -14,10 +14,8 @@ import tasks from '@/mocks/tasks';
 <div class="tasks-view">
   <div class="go-back">
     <BackIcon class="button" @click="$router.back()" />
-    <span>Go back</span>
+    <span class="title">Tasks</span>
   </div>
-  <span class="title">Tasks</span>
-
   <div class="all-tasks-container">
     <TaskInfo v-for="task in tasks" :task="task"/>
   </div>
@@ -42,16 +40,20 @@ import tasks from '@/mocks/tasks';
   .title {
     color: white;
     margin-bottom: 1rem;
-    font-size: 6rem;
+    font-size: 3rem;
     font-weight: 800;
   }
   .all-tasks-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    
+    gap: 1rem;
+  }
+}
 
-    // margin-left: 1rem;
+@media (max-width: 768px) {
+  .tasks-view {
+    padding: 0.5rem;
   }
 }
 </style>

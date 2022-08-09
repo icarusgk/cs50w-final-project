@@ -10,11 +10,8 @@ import { useChoreStore } from '@/stores/chore';
 
 <template>
   <div class="projects-view">
-    <div>
-      <div class="go-back">
-        <BackIcon class="button" @click="$router.back()" />
-        <span>Go back</span>
-      </div>
+    <div class="go-back">
+      <BackIcon class="button" @click="$router.back()" />
       <span class="title">All Projects</span>
     </div>
     <div class="all-projects-container">
@@ -41,7 +38,7 @@ import { useChoreStore } from '@/stores/chore';
   .title {
     color: white;
     margin-bottom: 1rem;
-    font-size: 6rem;
+    font-size: 2rem;
     font-weight: 800;
   }
 
@@ -51,6 +48,13 @@ import { useChoreStore } from '@/stores/chore';
     flex-wrap: wrap;
     color: white;
     margin-top: 1rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-view {
+    padding: 0.5rem;
   }
 }
 </style>
