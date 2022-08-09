@@ -13,26 +13,35 @@ const emits = defineEmits(['exitModal'])
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport to="html">
     <div v-if="open" class="modal">
       <div class="task-upper-menu">
+      
         <div class="tags-and-title-container">
+
           <div v-if="!isProject" class="tags-container">
             <slot name="tags"></slot>
           </div>
+
           <div class="title-container">
             <slot name="title"></slot>
           </div>
+
         </div>
+
         <div>
           <slot name="delete-icon"></slot>
         </div>
+
         <div @click="emits('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
+
       </div>
       <slot></slot>
-      <slot name="save-button"></slot>
+      <div class="buttons">
+        <slot name="save-button"></slot>
+      </div>
     </div>
   </Teleport>
 </template>
@@ -82,6 +91,11 @@ const emits = defineEmits(['exitModal'])
       }
     }
   }
+
+  .buttons {
+    display: flex;
+    gap: 1rem;
+  }
 }
 
 @media (max-width: 1160px) {
@@ -98,6 +112,11 @@ const emits = defineEmits(['exitModal'])
     width: 90%;
     height: 80%;
     top: 5%;
+
+    .buttons {
+      flex-direction: column;
+    }
   }
+  
 }
 </style>

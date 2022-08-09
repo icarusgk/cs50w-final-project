@@ -184,22 +184,17 @@
         {
           "id": 5,
           "name": "software"
-        },
-        {
-          "id": 6,
-          "name": "front-end"
         }
       ],
       "title": "Learn ref's",
-      "description": "Vue refs. Updated from drf!",
+      "description": "Vue refs. Updated from drf",
       "estimated": 1,
       "gone_through": 0,
       "minutes": 0,
-      "done": false,
       "subtasks": [
         {
-          "title": "computed values",
-          "description": "Learn what computed values are!",
+          "title": "adsfadsf",
+          "description": "asdfadsf",
           "estimated": 1
         }
       ]
@@ -221,7 +216,6 @@
       "estimated": 4,
       "gone_through": 0,
       "minutes": 0,
-      "done": false,
       "subtasks": [
         {
           "id": 1,
@@ -248,13 +242,7 @@
           "estimated": 1,
           "gone_through": 0,
           "minutes": 0,
-          "done": false,
           "subtasks": []
-        },
-        {
-          "title": "dsafasdf",
-          "description": "asdf",
-          "estimated": 1
         }
       ]
     },
@@ -364,6 +352,6 @@
     }
   ],
   "currentTask": {
-    "id": 2
+    "id": 1
   }
 }

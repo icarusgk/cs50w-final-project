@@ -78,22 +78,24 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
 @media (max-width: 768px) {
   .container {
     width: 100%;
-    height: 5rem;
+    height: 3rem;
     background-color: var(--light-gray);
     position: fixed;
     bottom: 0;
+    z-index: 3;
 
     flex-direction: row;
     justify-content: space-around;
     
 
     .menu-container {
+      
       flex-direction: row;
       margin-bottom: 4rem;
 
       a {
+        transform: scale(0.8);
         margin: 0 -2rem;
-        background-color: var(--light-gray);
       }
 
       .item {
@@ -110,9 +112,7 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
         }
       }
     }
-  }
-
-  
+  }  
   
   .logo-container {
     display: none;

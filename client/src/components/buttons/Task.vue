@@ -43,7 +43,7 @@ function setCurrent() {
     <!-- Name -->
     <div class="task-title-container" :class="{ done: task.done }">
       <div class="title-container">
-        <p>{{ props.task.title }}</p>
+        <span class="title">{{ props.task.title }}</span>
       </div>
       <div class="task-info-icon" @click="open = true">
         <TaskInfoIcon />
@@ -64,7 +64,7 @@ function setCurrent() {
   }
   
   .task-title-container {
-    padding: 0.2rem 1rem;
+    padding: 0.2rem 0.8rem;
     border-radius: 8px;
     background-color: var(--vivid-red);
     width: 100%;

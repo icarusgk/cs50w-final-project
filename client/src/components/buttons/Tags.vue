@@ -47,24 +47,7 @@ const selectedTags = computed(() => {
       #{{ tag.name }}
     </template>
   </MiniLabel>
-  <Popper arrow placement="right" v-if="!info">
-    <MiniLabel v-if="tagVisible && props.taskTags.length <= 3" :is-add="true">
-      <template #title>
-        Add Tag
-      </template>
-      <template #icon>
-        <AddTagIcon />
-      </template>
-    </MiniLabel>
-    <template #content="{ close }">
-      <input v-model="newTag" type="text" @keyup.enter="addTag()" class="new-tag-name" autofocus />
-      <div class="tag-results">
-        <div class="tag-result" @click="newTag = name; addTag(); close()" v-if="newTag" v-for="{ name } in selectedTags">
-          <span>{{ name }}</span>
-        </div>
-      </div>
-    </template>
-  </Popper>
+  
 </template>
 
 <style scoped lang="scss">

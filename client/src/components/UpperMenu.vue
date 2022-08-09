@@ -18,8 +18,6 @@ import Title from './Title.vue';
           <p id="streaks-days-info">78 days</p>
         </div>
       </li>
-      <!-- Dark Theme -->
-      <li><ThemeIcon /></li>
       <!-- User -->
       <li><UserIcon /></li>
       <!-- Settings -->

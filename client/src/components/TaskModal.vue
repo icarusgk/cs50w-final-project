@@ -11,6 +11,8 @@ import Modal from "@/components/modals/Modal.vue";
 import TaskModalInfo from "@/components/modals/TaskModalInfo.vue";
 import SaveButton from "@/components/SaveButton.vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
+import AddToProjectPopup from "./AddToProjectPopup.vue";
+
 import tags from "@/mocks/tags";
 
 const props = defineProps<{
@@ -60,7 +62,10 @@ function checkPristine(description: string) {
       </template>
       <!-- Modal -->
       <TaskModalInfo :task="task" @description-change="checkPristine" />
-      <SaveButton @click="saveTask()" :disabled="pristine" />
+      <template #save-button>
+        <AddToProjectPopup />
+        <SaveButton @click="saveTask()" :disabled="false" />
+      </template>
     </Modal>
   </div>
 </template>

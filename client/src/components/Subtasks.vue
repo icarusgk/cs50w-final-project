@@ -9,7 +9,6 @@ import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 
 
-
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
 const task = ref(props.task)
@@ -129,14 +128,21 @@ function closeNewSubtask() {
       </template>
     </MiniLabel>
     <!-- Add new subtask -->
-    <MiniLabel @click="openNewSubtask" :is-task="true">
+    <MiniLabel v-if="subtasks.length === 0" @click="openNewSubtask" :is-task="true">
       <template #title>
-        {{ isProject ? 'Add task' : 'Add subtask' }}
+        <span class="add-subtask">{{ isProject ? 'Add task' : 'Add subtask' }}</span>
       </template>
       <template #icon>
         <AddTagIcon class="new-subtask" />
       </template>
     </MiniLabel>
+    <div v-else>
+      <MiniLabel @click="openNewSubtask" :is-task="true">
+        <template #icon>
+          <AddTagIcon class="new-subtask" />
+        </template>
+      </MiniLabel>
+    </div>
   </div>
   <div v-if="newSubtaskOpened">
     <!-- Listen to the event emitter -->
@@ -156,6 +162,10 @@ function closeNewSubtask() {
   height: 100%;
   gap: 10px;
 
+  .add-subtask {
+    margin-right: 1rem;
+  }
+
   .icon {
     margin-left: 1rem;
     margin-top: 2px;
@@ -165,7 +175,6 @@ function closeNewSubtask() {
     width: 15px;
     height: 15px;
     margin-top: 2px;
-    margin-left: 0.5rem;
   }
 }
 </style>

@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import Subtasks from '@/components/Subtasks.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
-import { useChoreStore } from '@/stores/chore';
-import type Project from '@/types/ProjectType';
+
 
 const props = defineProps<{
   task: any,
@@ -11,16 +9,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['descriptionChange'])
-
-const projects = useChoreStore().projects
-const allMyProjects = ref<Project[]>([])
-
-// TODO: Connect to back-end
-function addToProject(project: Project) {
-  if (!allMyProjects.value.includes(project)) {
-    allMyProjects.value.push(project)
-  }
-}
 
 function check(event: any) {
   emit('descriptionChange', event.target.value)
@@ -37,7 +25,7 @@ function check(event: any) {
     </div>
     <!-- Subtasks -->
     <div class="new-task-subtasks-container">
-      <h2>Subtasks</h2>
+      <h2 class="title">Subtasks</h2>
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
@@ -51,31 +39,12 @@ function check(event: any) {
         <div>
           <span style="font-weight: 800;">Estimated pomos</span>
         </div>
-
         <!-- Counter -->
         <TimerSetter :subtask="task" />
       </div>
-
-      <!-- Add to project -->
-      <div class="add-to-project-dropdown">
-        <Popper arrow placement="bottom">
-        <div>
-          <span class="text"> Add to Project</span>
-        </div>
-        <template #content="{ close }">
-          <div class="project-select">
-            <div class="project" 
-              :class="{ inside: allMyProjects.includes(project) }" 
-              v-for="project in projects" 
-              @click="addToProject(project)"
-            >
-              {{ project.title }}
-            </div>
-          </div>
-        </template>
-        </Popper>
+      <div>
+        
       </div>
-
     </div>
   </div>
 </template>
@@ -95,7 +64,7 @@ function check(event: any) {
 
   .new-task-textarea-description {
     width: 100%;
-    height: 50px;
+    height: 35px;
     outline: none;
     background-color: transparent;
     color: white;
@@ -130,6 +99,7 @@ function check(event: any) {
 
 .bottom-container {
   display: flex;
+  flex-direction: column;
 
   .estimated-pomos-container {
     display: flex;
@@ -159,38 +129,15 @@ function check(event: any) {
     }
 
   }
+}
 
-  .add-to-project-dropdown {
-    display: flex;
-    position: relative;
-    margin-left: 1rem;
-
-    &:hover, &:focus {
-      cursor: pointer;
-    }
-
-    .text {
-      font-weight: 800;
-    }
-
-    .project-select { 
-      width: 10rem;
-
-      .project {
-        background-color: rgb(92, 92, 92);
-        padding: 0.5rem;
-        border-radius: 8px;
-        margin-bottom: 0.4rem;
-        &:last-child {
-          margin: 0;
-        }
-      }
-
-      .inside {
-        background-color: rgb(251, 105, 105);
-        transition: background-color 0.3s ease-in-out;
-      }
-    }
+@media (max-width: 768px) {
+  .new-task-description {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .new-task-subtasks-container {
+    margin: 0 0 0.5rem 0;
   }
 }
 </style>

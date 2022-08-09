@@ -27,25 +27,28 @@ const props = defineProps(['subtask', 'newSub'])
         placeholder="Description">
       </textarea>
     </div>
-    <!-- Estimated Timers and save button -->
-    <div class="timers-and-buttons-container">
+    <div class="options-and-buttons">
       <div class="delete-container">
         <DeleteIcon class="delete-button" v-if="!newSub" @click="$emit('delete')" />
       </div>
-      <div class="estimated">
-        <EstimatedIcon class="icon" />
-        <span class="text">Pomos</span>
-        <TimerSetter :subtask="subtask" />
-      </div>
-      <!-- Buttons -->
-      <div class="buttons">
-        <!-- Emit the close event -->
-        <!-- Cancel -->
-        <button @click="$emit('close')" class="cancel-button">Cancel</button>
-        <!-- Save -->
-        <button @click="$emit('save')" class="save-button">Save!</button>
+      <!-- Estimated Timers and save button -->
+      <div class="timers-and-buttons-container">
+        <div class="estimated">
+          <EstimatedIcon class="icon" />
+          <span class="text">Pomos</span>
+          <TimerSetter :subtask="subtask" />
+        </div>
+        <!-- Buttons -->
+        <div class="buttons">
+          <!-- Emit the close event -->
+          <!-- Cancel -->
+          <button @click="$emit('close')" class="cancel-button">Cancel</button>
+          <!-- Save -->
+          <button @click="$emit('save')" class="save-button">Save!</button>
+        </div>
       </div>
     </div>
+    
   </div>
 </div>
 </template>
@@ -65,20 +68,19 @@ const props = defineProps(['subtask', 'newSub'])
   padding: 1rem;
   background-color: rgba(58, 58, 58, 0.7);
   border-radius: 10px;
-  height: 8rem;
 
   // Outer container
   .container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     height: 100%;
     
-    // Left inner container
+    // First container
+    // Title and desc
     .title-and-description-container {
       display: flex;
       flex-direction: column;
-      width: 80%;
 
       .new-subtask-title {
         border: none;
@@ -105,52 +107,60 @@ const props = defineProps(['subtask', 'newSub'])
       }
     }
 
-    // Right inner container
-    .timers-and-buttons-container {
+    // Bottom container
+    // Pomos and buttons
+    .options-and-buttons {
       display: flex;
-      flex-direction: column;
+      align-items: flex-end;
       justify-content: flex-end;
-      width: 150px;
-
+      
       .delete-container {
-        align-self: flex-end;
-        margin-bottom: 1rem;
-        
-        .delete-button {
-          &:hover, &:focus {
-            cursor: pointer;
+          margin-right: 1rem;
+          
+          .delete-button {
+            &:hover, &:focus {
+              cursor: pointer;
+            }
           }
         }
-      }
 
-      .estimated {
+      .timers-and-buttons-container {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-bottom: 0.5rem;
+        flex-direction: column;
+        align-self: flex-end;
+        
+        width: 150px;
 
-        .icon {
-          padding-top: 3px;
-          width: 25px;
+        .estimated {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 0.5rem;
+
+          .icon {
+            padding-top: 3px;
+            width: 25px;
+          }
+
+          .text {
+            font-size: 0.75rem;
+          }
         }
 
-        .text {
-          font-size: 0.75rem;
-        }
-      }
-
-      .buttons {
-        display: flex;
-        justify-content: flex-end;
-        .cancel-button {
-          @include btn(--gray);
-          margin-right: 0.5rem;
-        }
-        .save-button {
-          @include btn(--vivid-red);
+        .buttons {
+          display: flex;
+          justify-content: flex-end;
+          .cancel-button {
+            @include btn(--gray);
+            margin-right: 0.5rem;
+          }
+          .save-button {
+            @include btn(--vivid-red);
+          }
         }
       }
     }
   }
 }
+
 </style>

@@ -32,7 +32,6 @@ defineProps<{
 
   .icon {
     margin-top: 2px;
-    margin-left: 0.3rem;
   }
 }
 
@@ -53,7 +52,7 @@ defineProps<{
   border-radius: 8px;
   background-color: var(--lighter-gray);
   color: var(--white);
-  height: 33px;
+  height: 100%;
 }
 
 .add {

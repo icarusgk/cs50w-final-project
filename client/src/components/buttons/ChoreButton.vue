@@ -33,7 +33,7 @@ import AddIcon from '@/components/icons/AddIcon.vue';
 
 @media (max-width: 768px) {
   .add-item-btn {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 600;
   }
 }

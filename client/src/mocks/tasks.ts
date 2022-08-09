@@ -14,10 +14,6 @@ export default [
         "id": 5,
         "name": "software"
       },
-      {
-        "id": 6,
-        "name": "front-end"
-      }
     ],
     "title": "Learn ref's",
     "description": "Vue refs. Updated from drf",
@@ -111,10 +107,6 @@ export default [
         "id": 6,
         "name": "front-end"
       },
-      {
-        "id": 7,
-        "name": "dev"
-      }
     ],
     "title": "Computed values in Vue.js",
     "description": "Review Computed values in Vue.js and how are they used inside a template",

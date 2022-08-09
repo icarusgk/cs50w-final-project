@@ -48,7 +48,7 @@ input[type=number] {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: filter 0.2s ease-out;
+  transition: filter 0.15s ease-out;
 }
 
 html {
@@ -79,17 +79,21 @@ html {
 
 
 @media (max-width: 768px) {
-  .body {
-    margin-left: 0;
-    margin-bottom: 140px;
+.body {
+  margin-left: 0;
+  margin-bottom: 140px;
 
-    .menu-and-content {
-      padding: 0.5rem;
-      .upper-menu {
-        padding: 0;
-      }
+  .menu-and-content {
+    padding: 0.5rem;
+    .upper-menu {
+      padding: 0;
     }
   }
+}
+
+.blur {
+  filter: blur(60px);
+}
 
   * {
     touch-action: manipulation;
