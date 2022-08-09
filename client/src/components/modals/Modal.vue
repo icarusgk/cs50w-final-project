@@ -44,7 +44,7 @@ const emits = defineEmits(['exitModal'])
   z-index: 2;
   top: 20%;
   left: 30%;
-  width: 40%;
+  width: 700px;
 
   // Color
   background-color: white;
@@ -84,10 +84,20 @@ const emits = defineEmits(['exitModal'])
   }
 }
 
+@media (max-width: 1160px) {
+  .modal {
+    left: 23%;
+    width: 600px;
+  }
+}
+
 @media (max-width: 768px) {
   .modal {
     left: 5%;
+    right: 5%;
     width: 90%;
+    height: 80%;
+    top: 5%;
   }
 }
 </style>

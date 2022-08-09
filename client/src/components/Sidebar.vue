@@ -65,6 +65,12 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
       text-decoration: none;
     }
 
+    .router-link-active {
+      background-color: var(--vivid-red);
+      padding: 0 1rem;
+      border-radius: 8px;
+    }
+
   }
 }
 
@@ -73,7 +79,7 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
   .container {
     width: 100%;
     height: 5rem;
-    background-color: #0f0f0f;
+    background-color: var(--light-gray);
     position: fixed;
     bottom: 0;
 
@@ -83,17 +89,37 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
 
     .menu-container {
       flex-direction: row;
-      margin-bottom: 5rem;
-      
+      margin-bottom: 4rem;
+
+      a {
+        margin: 0 -2rem;
+        background-color: var(--light-gray);
+      }
+
       .item {
-        transform: scale(0.5);
+        color: rgb(119, 119, 119);
+      }
+
+      .router-link-active {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 8px;
+        
+        .item {
+          color: white;
+        }
       }
     }
   }
+
+  
   
   .logo-container {
     display: none;
-  }  
+  }
+  
+
+  
 }
 </style>
 

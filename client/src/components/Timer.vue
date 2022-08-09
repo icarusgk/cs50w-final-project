@@ -81,7 +81,7 @@ function restartTimer() {
 
 %timer-button {
   padding: 1rem;
-  width: 30%;
+  width: 180px;
   border-radius: 18px;
   font-size: 120%;
   font-family: sans-serif;
@@ -125,6 +125,14 @@ h2 {
   #start-timer-btn {
     margin-top: 0;
     width: 200px;
+  }
+
+  #stop-timer-btn {
+    width: 100px;
+  }
+
+  #restart-timer-btn {
+    width: 100px;
   }
 }
 </style>

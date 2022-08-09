@@ -59,10 +59,6 @@ function setCurrent() {
   align-items: center;
   margin: 0 0.2rem 0.5rem 0.2rem;
 
-  &:hover, &:focus {
-    cursor: pointer;
-  } 
-
   .task-checkbox {
     margin-right: 1rem;
   }

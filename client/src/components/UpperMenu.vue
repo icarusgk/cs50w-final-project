@@ -59,13 +59,14 @@ import Title from './Title.vue';
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1160px) {
   #icons {
     ul {
       text-align: left;
+      
       li {
         transform: scale(0.7);
-        margin-right: -8px;
+        margin-left: -8px;
 
         #streaks-icon {
           display: none;

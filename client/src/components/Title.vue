@@ -14,8 +14,8 @@ import LightingIcon from './icons/LightingIcon.vue';
 
 <style scoped lang="scss">
   #pomodoro-title-container {
-    margin-left: 2rem;
-
+    display: flex;
+    align-items: center;
     #title {
       font-size: 2rem;
     }
@@ -27,11 +27,11 @@ import LightingIcon from './icons/LightingIcon.vue';
       margin: 0;
 
       #pomo-icon {
-        transform: scale(0.8);
+        transform: scale(0.7);
       }
       #title {
         margin-left: -8px;
-        font-size: 1rem;
+        font-size: 1.2rem;
       }
     }
   }

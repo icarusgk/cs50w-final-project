@@ -16,20 +16,20 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
       <div id="main-timer">
         <Timer />
       </div>
-      <!-- Add Tasks -->
-      <div id="main-tasks-container">
-        <!-- Buttons -->
-        <div id="task-btn-container">
-          <!-- New Task -->
-          <NewTaskButton />
-          <!-- New Project -->
-          <NewProjectButton />
-        </div>
-        <!-- Projects -->
-        <Projects />
-        <!-- Tasks -->
-        <Tasks />
+    </div>
+    <!-- Add Tasks -->
+    <div id="main-tasks-container">
+      <!-- Buttons -->
+      <div id="task-btn-container">
+        <!-- New Task -->
+        <NewTaskButton />
+        <!-- New Project -->
+        <NewProjectButton />
       </div>
+      <!-- Projects -->
+      <Projects />
+      <!-- Tasks -->
+      <Tasks />
     </div>
   </div>
 </template>
@@ -38,7 +38,9 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 #home {
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+
   padding: 0 4rem 0 4rem;
   width: 100%;
 }
@@ -51,24 +53,39 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 #timer-and-tasks {
   display: flex;
   flex-direction: row;
+  width: 550px;
   margin-top: 3rem;
 }
 
 #main-tasks-container {
-  margin-left: 12rem;
-  width: 600px;
+  width: 500px;
 }
 
 #task-btn-container {
-  display: flex;  
+  display: flex;
 }
+
+@media (max-width: 1160px) {
+  #home {
+    flex-direction: column;
+  }
+
+  #main-tasks-container {
+    margin: 2rem 0 2rem 0;
+    width: 600px;
+  }
+}
+
 
 @media (max-width: 768px) {
   #home {
-    padding: 0 1rem 0 1rem;
+    padding: 0 0 0 1rem;
+    align-items: unset;
+    flex-direction: column;
   }
   #timer-and-tasks {
     flex-wrap: wrap;
+    width: 110px;
   }
 
   #main-timer {
@@ -81,7 +98,7 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 
   #main-tasks-container {
     margin: 0;
-    width: 100vw;
+    width: 85vw;
 
     #task-btn-container {
       margin: 2rem 0 2rem 0;

@@ -68,4 +68,10 @@ defineProps<{
   color: var(--white);
 }
 
+@media (max-width: 768px) {
+  .tag {
+    font-size: 0.55rem;
+  }
+}
+
 </style>

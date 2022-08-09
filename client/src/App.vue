@@ -71,16 +71,24 @@ html {
     flex-direction: column;
 
     .upper-menu {
-      padding: 2rem 1rem 0 0;
+      padding: 2rem 3rem;
       color: white;
     }
   }
 }
 
+
 @media (max-width: 768px) {
   .body {
     margin-left: 0;
     margin-bottom: 140px;
+
+    .menu-and-content {
+      padding: 0.5rem;
+      .upper-menu {
+        padding: 0;
+      }
+    }
   }
 
   * {

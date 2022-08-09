@@ -16,17 +16,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 30px;
+  padding: 30px 20px;
   border-radius: 10px;
   color: white;
   transition: background-color 0.1s ease-in-out;
-
-  &:hover, &:focus {
-    background-color: var(--vivid-red);
-    cursor: pointer;
-  }
 }
 
+
+@media (max-width: 768px) {
+  .item {
+    transform: scale(0.5);
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+  }
+  .title {
+    font-size: 2rem;
+    margin-left: 1rem;
+  }
+}
 
 </style>
