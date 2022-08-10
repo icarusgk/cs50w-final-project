@@ -26,8 +26,9 @@ import { useChoreStore } from '@/stores/chore';
   .go-back {
     display: flex;
     align-items: center;
+    gap: 1rem;
     color: white;
-    
+  
     .button {
       &:hover, &:focus {
         cursor: pointer;
@@ -37,7 +38,6 @@ import { useChoreStore } from '@/stores/chore';
 
   .title {
     color: white;
-    margin-bottom: 1rem;
     font-size: 2rem;
     font-weight: 800;
   }

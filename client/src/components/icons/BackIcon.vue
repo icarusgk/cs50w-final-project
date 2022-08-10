@@ -1,20 +1,6 @@
 <template>
-<svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_338_121)">
-<rect x="18" y="8" width="48" height="48" rx="10" fill="white"/>
-</g>
-<path d="M53.1986 31.4827C53.1986 32.3628 52.5322 33.0739 51.6521 33.0739H36.4007L41.642 38.3152C42.2636 38.9368 42.2636 39.9437 41.642 40.5653C41.3287 40.8761 40.9209 41.0303 40.5132 41.0303C40.1054 41.0303 39.6987 40.8749 39.3884 40.5641L31.432 32.6077C30.8104 31.9862 30.8104 30.9792 31.432 30.3576L39.3884 22.4013C40.0099 21.7797 41.0169 21.7797 41.6385 22.4013C42.2601 23.0228 42.2601 24.0298 41.6385 24.6514L36.4007 29.8914H51.6521C52.5322 29.8914 53.1986 30.6025 53.1986 31.4827Z" fill="#424242"/>
-<defs>
-<filter id="filter0_d_338_121" x="0" y="0" width="84" height="84" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="10"/>
-<feGaussianBlur stdDeviation="9"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_338_121"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_338_121" result="shape"/>
-</filter>
-</defs>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="48" height="48" rx="10" fill="white"/>
+<path d="M35.1986 23.4827C35.1986 24.3628 34.5322 25.0739 33.6521 25.0739H18.4007L23.642 30.3152C24.2636 30.9368 24.2636 31.9437 23.642 32.5653C23.3287 32.8761 22.9209 33.0303 22.5132 33.0303C22.1054 33.0303 21.6987 32.8749 21.3884 32.5641L13.432 24.6077C12.8104 23.9862 12.8104 22.9792 13.432 22.3576L21.3884 14.4013C22.0099 13.7797 23.0169 13.7797 23.6385 14.4013C24.2601 15.0228 24.2601 16.0298 23.6385 16.6514L18.4007 21.8914H33.6521C34.5322 21.8914 35.1986 22.6025 35.1986 23.4827Z" fill="#424242"/>
 </svg>
 </template>

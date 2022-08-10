@@ -30,6 +30,7 @@ import tasks from '@/mocks/tasks';
     display: flex;
     align-items: center;
     color: white;
+    gap: 1rem;
     
     .button {
       &:hover, &:focus {
@@ -39,7 +40,6 @@ import tasks from '@/mocks/tasks';
   }
   .title {
     color: white;
-    margin-bottom: 1rem;
     font-size: 3rem;
     font-weight: 800;
   }
