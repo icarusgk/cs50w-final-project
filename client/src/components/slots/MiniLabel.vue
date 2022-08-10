@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div class="minilabel" :class="{ task: isTask, tag: isTag, add: isAdd }" >
     <!-- Title -->
-    <div>
+    <div class="title">
       <slot name="title"></slot>
     </div>
     <!-- Icon -->

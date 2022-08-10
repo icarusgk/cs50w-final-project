@@ -38,8 +38,6 @@ watch(() => open.value, () => {
       </div>
     </div>
   </div>
-  
-
   <div class="task-info">
     <span class="title">{{ task.title }}</span>
     <span>{{ task.description }}</span>
