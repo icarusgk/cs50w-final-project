@@ -49,7 +49,7 @@ function saveProject() {
         type="text" 
         name="title" 
         id="new-task-input-title" 
-        placeholder="New project name"
+        placeholder="New project"
         v-model="newProject.title" 
       />
     </template>
@@ -75,7 +75,7 @@ function saveProject() {
   font-size: 2rem;
   font-weight: 900;
   font-family: sans-serif;
-  width: 100%;
+  width: 90%;
 
   &:focus, &:hover {
     outline: none;
@@ -99,6 +99,12 @@ function saveProject() {
 
   &:hover, &:focus {
     cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  #new-task-input-title {
+    width: 80%;
   }
 }
 </style>

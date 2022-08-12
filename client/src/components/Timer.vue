@@ -194,7 +194,7 @@ function restartTimer() {
     width: $width;
   }
   #timer-container {
-    width: 80vw;
+    width: 82vw;
     #timer-count {  
       font-size: 6rem;
     }
