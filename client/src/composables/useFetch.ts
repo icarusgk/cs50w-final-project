@@ -4,17 +4,19 @@ import type { Project, Task, Tag } from '@/types'
 
 type Options = {
   method?: string,
-  data?: Project | Task | Tag | { id: number }
+  data?: any // TODO: Change to datatypes
 }
 
 const fetch = axios.create({
-  baseURL: 'http://127.0.0.1:3001',
-  headers: { 'Content-Type': 'application/json' }
+  baseURL: 'http://127.0.0.1:8000/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+  }
 })
 
 export async function useFetch(path: string, options?: Options) {
   const data = ref<AxiosResponse>()
-
   try {
     const response = await fetch({
       url: path,
@@ -23,8 +25,7 @@ export async function useFetch(path: string, options?: Options) {
     })
     data.value = response
   } catch (err) {
-    console.log(err)
+    console.log('err in path', path, err)
   }
-
   return data.value
 }

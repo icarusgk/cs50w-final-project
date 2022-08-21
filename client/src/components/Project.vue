@@ -24,7 +24,7 @@ watch(() => open.value, () => {
     <!-- Name -->
     <div class="task-title-container">
       <div class="title-container">
-        <span>{{ project.title }}</span>
+        <span>{{ project.name }}</span>
       </div>
       <div @click="open = true" class="task-info-icon">
         <TaskInfoIcon />

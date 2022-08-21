@@ -1,7 +1,9 @@
 import type Tag from './TagType'
+import type Subtask from './SubtaskType'
+import type Project from './ProjectType'
 
 type Task = {
-  id: number,
+  id?: number,
   tags: Tag[],
   title: string,
   description: string,
@@ -9,7 +11,8 @@ type Task = {
   gone_through?: number,
   minutes?: number,
   done?: boolean,
-  subtasks: Task[]
+  subtasks: Subtask[]
+  project_tasks?: Project[]
 }
 
 export default Task

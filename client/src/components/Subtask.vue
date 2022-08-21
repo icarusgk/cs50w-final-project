@@ -12,7 +12,7 @@ const props = defineProps(['subtask', 'newSub'])
   <!-- Flex row -->
   <div class="container">
     <!-- Title and description -->
-    <div class="title-and-description-container">
+    <div class="title-and-description-container" @keyup.ctrl.enter="$emit('save')">
       <!-- Title -->
       <input 
         v-model.lazy="props.subtask.title" 
@@ -21,8 +21,8 @@ const props = defineProps(['subtask', 'newSub'])
         class="new-subtask-title"
       />
       <!-- Description -->
-      <textarea 
-        v-model.lazy.trim="props.subtask.description" 
+      <textarea
+        v-model.trim="props.subtask.description" 
         class="new-subtask-description" 
         placeholder="Description">
       </textarea>
@@ -33,11 +33,6 @@ const props = defineProps(['subtask', 'newSub'])
       </div>
       <!-- Estimated Timers and save button -->
       <div class="timers-and-buttons-container">
-        <div class="estimated">
-          <EstimatedIcon class="icon" />
-          <span class="text">Pomos</span>
-          <TimerSetter :subtask="subtask" />
-        </div>
         <!-- Buttons -->
         <div class="buttons">
           <!-- Emit the close event -->

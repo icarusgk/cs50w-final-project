@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useModalStore } from "@/stores/modal";
+import { ref } from "vue";
 import { useChoreStore } from '@/stores/chore';
-import type TypeTask from "@/types/TaskType"
-
-import axios from 'axios'
+import type { Tag, Task } from '@/types'
 
 import Tags from "@/components/buttons/Tags.vue";
 import Modal from "@/components/modals/Modal.vue";
@@ -12,39 +9,51 @@ import TaskModalInfo from "@/components/modals/TaskModalInfo.vue";
 import SaveButton from "@/components/SaveButton.vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import AddToProjectPopup from "./AddToProjectPopup.vue";
+import { useFetch } from "@/composables/useFetch";
+import DoneIcon from "./icons/DoneIcon.vue";
+import MarkedDoneIcon from "./icons/MarkedDoneIcon.vue";
 
-import tags from "@/mocks/tags";
 
 const props = defineProps<{
-  task: TypeTask
+  task: Task
   open: boolean
 }>()
 
-const emit = defineEmits(['exit'])
+const emit = defineEmits(['exit', 'toggleDone'])
 
 const task = ref(props.task)
 const pristine = ref(true)
 
 
+// Saves task with PUT method
 async function saveTask() {
-  const response = await axios.put(
-    `http://127.0.0.1:3001/tasks/${props.task.id}`,
-    props.task
-  )
-  if (response.status === 200) {
-    console.log("Saved!")
+  try {
+    const response = await useFetch(`/tasks/${props.task.id}/`, {
+      method: 'put',
+      data: task.value
+    })
+    if (response?.status === 200) {
+      console.log(response)
+    }
+  } catch (err) {
+    console.log('saveTask() err', err)
   }
   emit('exit')
 }
 
 async function deleteTask() {
-  useChoreStore().deleteTask(props.task.id)
+  useChoreStore().deleteTask(task.value?.id)
   emit('exit')
 }
 
 function checkPristine(description: string) {
   pristine.value = description === props.task.description
 }
+
+function deleteTag(tag: any) {
+  task.value.tags = task.value.tags.filter((t: Tag) => t.name !== tag.name)
+}
+
 </script>
 
 <template>
@@ -53,7 +62,9 @@ function checkPristine(description: string) {
     <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Tags -->
       <template #tags>
-        <Tags :taskTags="task.tags" :allTags="tags" />
+        <Tags :taskTags="task.tags" :id="task.id" @deleteTag="deleteTag" />
+        <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
+        <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
         <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->
@@ -63,7 +74,7 @@ function checkPristine(description: string) {
       <!-- Modal -->
       <TaskModalInfo :task="task" @description-change="checkPristine" />
       <template #save-button>
-        <AddToProjectPopup />
+        <AddToProjectPopup :taskId="task.id" />
         <SaveButton @click="saveTask()" :disabled="false" />
       </template>
     </Modal>

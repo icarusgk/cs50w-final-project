@@ -8,14 +8,16 @@ import Modal from '@/components/modals/Modal.vue';
 import Tags from '@/components/buttons/Tags.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
-
 import type Task from '@/types/TaskType';
 
 const open = ref(false)
 const taskStore = useChoreStore()
 
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
+
 const initialTask = ref<Task>({
-  id: 12,
   tags: [],
   title: '',
   description: '',
@@ -23,13 +25,8 @@ const initialTask = ref<Task>({
   subtasks: []
 })
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
-
 function resetTask() {
   initialTask.value = {
-    id: 13,
     tags: [],
     title: '',
     description: '',
@@ -55,7 +52,7 @@ function saveTask() {
   </ChoreButton>
   <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
-      <Tags :taskTags="initialTask.tags" :allTags="taskStore.tags" />
+      <Tags :taskTags="initialTask.tags" :new="true" />
     </template>
     <!-- New task title input -->
     <template #title>

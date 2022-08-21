@@ -17,6 +17,7 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
         <Timer />
       </div>
     </div>
+    
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->

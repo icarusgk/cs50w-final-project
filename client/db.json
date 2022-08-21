@@ -83,11 +83,6 @@
           "minutes": 0,
           "done": false,
           "subtasks": []
-        },
-        {
-          "title": "asdf",
-          "description": "asdf",
-          "estimated": 1
         }
       ]
     },
@@ -195,9 +190,10 @@
         {
           "title": "adsfadsf",
           "description": "asdfadsf",
-          "estimated": 1
+          "done": false
         }
-      ]
+      ],
+      "done": false
     },
     {
       "id": 2,

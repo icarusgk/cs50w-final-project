@@ -10,8 +10,7 @@ import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
 
 const newProject = ref<Project>({
-  id: 11,
-  title: '',
+  name: '',
   tasks: [],
 })
 
@@ -23,14 +22,13 @@ watch(() => open.value, () => {
 
 function resetProject() {
   newProject.value = {
-    id: 12,
-    title: '',
+    name: '',
     tasks: []
   }
   open.value = false
 }
 
-function saveProject() {
+function saveProject() {  
   useChoreStore().addProject(newProject.value)
   resetProject()
 }
@@ -50,7 +48,7 @@ function saveProject() {
         name="title" 
         id="new-task-input-title" 
         placeholder="New project"
-        v-model="newProject.title" 
+        v-model="newProject.name" 
       />
     </template>
     

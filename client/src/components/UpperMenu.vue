@@ -1,9 +1,22 @@
 <script setup lang="ts">
+import { ref, watch, computed } from 'vue';
+import { useModalStore } from '@/stores/modal';
+import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
+
 import StreaksIcon from '@/components/icons/StreaksIcon.vue';
-import ThemeIcon from '@/components/icons/ThemeIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import Title from './Title.vue';
+import Modal from './modals/Modal.vue';
+import Login from '@/components/Login.vue'
+
+const open = ref(false)
+const auth = useAuthStore()
+
+watch(() => open.value, () => {
+  useModalStore().toggle()
+})
 </script>
 
 <template>
@@ -13,17 +26,31 @@ import Title from './Title.vue';
       <!-- Four icons -->
       <!-- Streaks -->
       <li>
-        <div id="streaks-icon">
+        <div v-if="auth.isAuthenticated" id="streaks-icon">
           <StreaksIcon />
-          <p id="streaks-days-info">78 days</p>
+          <p id="streaks-days-info">{{ auth.user?.streak }} days</p>
         </div>
       </li>
       <!-- User -->
-      <li><UserIcon /></li>
+      <li>
+        <div @click="open = true" id="login">
+          <UserIcon />
+          <span v-if="!auth.isAuthenticated">Login</span>
+        </div>
+      </li>
       <!-- Settings -->
-      <li><SettingsIcon /></li>
+      <li v-if="auth.isAuthenticated"><SettingsIcon /></li>
     </ul>
+    <Modal :open="open" @exit-modal="open = false">
+      <Login @back="open = false" v-if="!auth.isAuthenticated" />
+      <div v-else>
+        <h1>Logout</h1>
+        <h2>Hello there {{ auth.user?.username }}</h2>
+        <button @click="auth.logout(); open = false;">Logout</button>
+      </div>
+    </Modal>
   </div>
+  
 </template>
 
 
@@ -41,6 +68,11 @@ import Title from './Title.vue';
 
       &:hover, &:focus {
         cursor: pointer;
+      }
+
+      #login {
+        display: flex;
+        align-items: center;
       }
 
       #streaks-icon {

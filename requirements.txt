@@ -1,1 +1,4 @@
-django_rest_framework
+django
+djangorestframework
+django-cors-headers
+djangorestframework-simplejwt

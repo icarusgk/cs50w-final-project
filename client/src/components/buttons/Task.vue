@@ -10,6 +10,7 @@ import DoneIcon from '../icons/DoneIcon.vue';
 import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
 import TaskModal from '../TaskModal.vue';
 import TaskInfoIcon from "@/components/icons/TaskInfoIcon.vue";
+import { useFetch } from '@/composables/useFetch';
 
 
 const props = defineProps<{
@@ -24,18 +25,25 @@ watch(() => open.value, () => {
 })
 
 async function toggleDone() {
-  task.value.done = !task.value.done
-  const response = await axios.put(`http://127.0.0.1:3001/tasks/${props.task.id}`, task.value)
-  console.log(response)
+  const response = await useFetch(`/tasks/${props.task.id}/`, {
+    method: 'patch',
+    data: {
+      "obj": "task",
+      "action": "done"
+    }
+  })
+  if (response?.status === 200) {
+    task.value.done = response.data?.done
+  }
 }
 
-function setCurrent() {
-  useChoreStore().changeCurrentTask(props.task.id)
-}
+// function setCurrent() {
+//   useChoreStore().changeCurrentTask(props.task.id)
+// }
 </script>
 
 <template>
-  <div class="task-container" @click="setCurrent()">
+  <div class="task-container">
     <div @click="toggleDone()" class="task-checkbox">
       <DoneIcon v-if="!task.done" />
       <MarkedDoneIcon v-else />
@@ -49,7 +57,7 @@ function setCurrent() {
         <TaskInfoIcon />
       </div>
     </div>
-    <TaskModal :task=task :open="open" @exit="open = false" />
+    <TaskModal :task=task :open="open" @exit="open = false" @toggle-done="toggleDone()" />
   </div>
 </template>
 

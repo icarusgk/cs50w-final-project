@@ -2,7 +2,7 @@
 import { watch } from 'vue'
 import { useTimerStore } from '@/stores/timer';
 
-import CurrentTask from './CurrentTask.vue';
+// import CurrentTask from './CurrentTask.vue';
 
 const timer = useTimerStore()
 

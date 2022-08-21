@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useFetch } from '@/composables/useFetch';
-import type { Task } from '@/types'
+import type { Task, SubtaskType } from '@/types'
 
 import Subtask from '@/components/Subtask.vue';
-import TaskInfoIconVue from '@/components/icons/TaskInfoIcon.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
+import DoneIcon from './icons/DoneIcon.vue';
+import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
 
 
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
@@ -14,15 +15,17 @@ const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 const task = ref(props.task)
 const project = ref(props.project)
 
-const newSubtask = ref({
+const newSubtask = ref<SubtaskType>({
   title: '',
-  description: '',
-  estimated: 1
+  description: ''
 })
 
 const newSubtaskOpened = ref(false)
 
-const subtaskDetails = ref({
+const subtaskDetails = ref<{
+  opened: boolean,
+  subtask: SubtaskType | null
+}>({
   opened: false,
   subtask: null
 })
@@ -46,63 +49,146 @@ function resetSubtask() {
   newSubtask.value = {
     title: '',
     description: '',
-    estimated: 1
   }
 }
 
 async function addSubtask() {
+  // Just a title is required
   if (newSubtask.value.title) {
 
     // Push subtasks to new project
     if (props.isProject && props.isNew) {
       project.value.tasks.push(newSubtask.value)
+      close()
     }
     // Add subtasks to an existing project
     else if (props.isProject && !props.isNew) {
-      project.value.tasks.push(newSubtask.value)
-      modify('projects', props.project.id, props.project)
+      // Make API call
+      // Works !!
+      const response = await useFetch(`/projects/${props.project.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "project",
+          "action": "add_new",
+          "task": newSubtask.value
+        }
+      })
+      if (response?.status === 200) {
+        project.value.tasks.push(response.data)
+        close()
+      }
     }
     // Push subtasks to the new task
     else if (!props.isProject && props.isNew) {
+      // !! Works
       task.value.subtasks.push(newSubtask.value)
     }
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
-      task.value.subtasks.push(newSubtask.value)
-      modify('tasks', props.task.id, props.task)
+      // Make the API call
+      const response = await useFetch(`/tasks/${props.task.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "subtask",
+          "action": "add",
+          "subtask": newSubtask.value
+        }
+      })
+      if (response?.status === 200) {
+        task.value.subtasks.push(response.data)
+      }
     }
   }
 
   // Modify existing subtask
   else if (subtaskDetails.value.subtask && !newSubtaskOpened.value) {
-    props.isProject ?
-      modify('projects', props.project.id, props.project)
-    : modify('tasks', props.task.id, props.task)
-  }
+    if (props.isProject) {
+      // Make the api call
+      const response = await useFetch(`/projects/${props.project.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "project",
+          "action": "update_task",
+          "subtask": subtaskDetails.value.subtask
+        }
+      })
+      if (response?.status === 200) {
+        close()
+      }
+      // console.log(subtaskDetails.value.subtask)
+    } else {
+      // Make the api call
+      const response = await useFetch(`/tasks/${props.task.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "subtask",
+          "action": "update",
+          "subtask": subtaskDetails.value.subtask
+        }
+      })
+      if (response?.status === 200) {
+        close()
+      }
+    }
+  }  
   
+}
+
+function close() {
   subtaskDetails.value.opened = false
   resetSubtask()
 }
 
-// TODO: Replace with subtask type
-async function modify(type: string, id: number, data: any) {
-  const response = await useFetch(`/${type}/${id}`, { method: 'put', data: data })
-  console.log(response)
-}
-
-
-function deleteSubtask() {
-  if (props.isProject) {    
-    project.value.tasks = project.value.tasks.filter(
-      (task: Task) => task !== subtaskDetails.value.subtask)
-    useFetch(`/projects/${props.project.id}`, { method: 'put', data: project.value })
+async function deleteSubtask() {
+  if (props.isProject) {
+    // Works !!
+    // Delete task
+    const response = await useFetch(`/projects/${props.project.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "project",
+        "action": "delete_task",
+        "task_id": subtaskDetails.value.subtask?.id
+      }
+    })
+    if (response?.status === 200) {
+      project.value.tasks = project.value.tasks.filter(
+        (task: any) => task.id !== subtaskDetails.value.subtask?.id
+      )
+    }
   } else {
+    // If is task
     task.value.subtasks = task.value.subtasks.filter(
       (sub: Task) => sub !== subtaskDetails.value.subtask)
-    useFetch(`/tasks/${props.task.id}`, { method: 'put', data: task.value })
+
+    // Make the API call
+    const response = await useFetch(`/tasks/${props.task.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "subtask",
+        "action": "remove",
+        "subtask_id": subtaskDetails.value.subtask?.id
+      }
+    })
+    console.log(response?.data)
   }
   
   subtaskDetails.value.opened = false
+}
+
+async function toggleDone(subtask: SubtaskType) {
+  const response = await useFetch(`/tasks/${props.task.id}/`, {
+    method: 'patch',
+    data: {
+      "obj": "subtask",
+      "action": "done",
+      "subtask_id": subtask.id
+    }
+  })
+  if (response?.status === 200) {
+    subtask.done = response.data.done
+    
+  }
 }
 
 function closeDetails() {
@@ -119,13 +205,14 @@ function closeNewSubtask() {
 <template>
   <div class="new-task-minitask-container">
     <!-- Subtasks list -->
-    <MiniLabel @click="openDetails(subtask)" v-for="subtask in subtasks" :is-task="true">
-      <template #title>
-        {{ subtask.title }}
-      </template>
+    <MiniLabel v-for="subtask in subtasks" :is-task="true">
       <template #icon>
-        <TaskInfoIconVue class="icon" />
+        <DoneIcon @click="toggleDone(subtask)" v-if="!subtask.done" class="icon" />
+        <MarkedDoneIcon @click="toggleDone(subtask)" v-else class="icon" />
       </template>
+      <template #title>  
+        <div @click="openDetails(subtask)">{{ subtask.title }}</div>
+      </template>      
     </MiniLabel>
     <!-- Add new subtask -->
     <MiniLabel v-if="subtasks.length === 0" @click="openNewSubtask" :is-task="true">
@@ -150,7 +237,7 @@ function closeNewSubtask() {
   </div>
   <!-- Existing task -->
   <div v-if="subtaskDetails.opened">
-    <Subtask @save="addSubtask"  @close="closeDetails()" @delete="deleteSubtask()" :subtask="subtaskDetails.subtask" />
+    <Subtask  @close="closeDetails()" @save="addSubtask" @delete="deleteSubtask()" :subtask="subtaskDetails.subtask" />
   </div>
 </template>
 
@@ -175,6 +262,10 @@ function closeNewSubtask() {
     width: 15px;
     height: 15px;
     margin-top: 2px;
+  }
+  .done {
+    background-color: var(--vivid-red);
+    opacity: 0.4;
   }
 }
 </style>

@@ -2,15 +2,64 @@
 import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import type { Project } from '@/types';
+import { useFetch } from '@/composables/useFetch';
 
-const projects = useChoreStore().projects
+const props = defineProps<{
+  taskId?: number
+}>()
 
-const allMyProjects = ref<Project[]>([])
+const allProjects = useChoreStore().projects
+
+const taskProjects = ref<Project[]>([])
+
+// Detect if is in project (Not my proudest search)
+// Could be done better in the back end
+allProjects.forEach((project: Project) => {
+  project.tasks?.forEach(task => {
+    if (task.id === props?.taskId) {
+      taskProjects.value.push(project)
+    }
+  })
+})
 
 // TODO: Connect to back-end
-function addToProject(project: Project) {
-  if (!allMyProjects.value.includes(project)) {
-    allMyProjects.value.push(project)
+async function addToProject(project: Project) {
+  if (!taskProjects.value.includes(project)) {
+    // Make API call to add the current task to project
+    const response = await useFetch(`/projects/${project.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "project",
+        "action": "add_to_project",
+        "task_id": props.taskId
+      }
+    })
+
+    if (response?.status === 200) {
+      console.log('added', response.data);
+      
+      // Refetch
+      useChoreStore().fetchProjects()
+      // Visual changes
+      taskProjects.value.push(project)
+    }
+  } else {
+    const response = await useFetch(`/projects/${project.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "project",
+        "action": "remove",
+        "task_id": props.taskId
+      }
+    })
+
+    if (response?.status === 200) {
+      console.log('removed', response.data)
+      // Refetch
+      useChoreStore().fetchProjects()
+      // Visual changes
+      taskProjects.value = taskProjects.value.filter(p => p !== project)
+    }    
   }
 }
 </script>
@@ -25,11 +74,11 @@ function addToProject(project: Project) {
     <template #content="{ close }">
       <div class="project-select">
         <div class="project" 
-          :class="{ inside: allMyProjects.includes(project) }" 
-          v-for="project in projects" 
+          :class="{ inside: taskProjects.includes(project) }" 
+          v-for="project in allProjects" 
           @click="addToProject(project)"
         >
-          {{ project.title }}
+          {{ project.name }}
         </div>
       </div>
     </template>
@@ -64,6 +113,8 @@ function addToProject(project: Project) {
       padding: 0.5rem;
       border-radius: 8px;
       margin-bottom: 0.4rem;
+      transition: background-color 0.3s ease-in-out;
+
       &:last-child {
         margin: 0;
       }
@@ -71,7 +122,6 @@ function addToProject(project: Project) {
 
     .inside {
       background-color: rgb(251, 105, 105);
-      transition: background-color 0.3s ease-in-out;
     }
   }
 }

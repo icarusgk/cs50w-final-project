@@ -74,7 +74,6 @@ export const useTimerStore = defineStore({
         case 'long':
           this.percent = calculatePercent(LONG_REST, this.timer) + 5
       }
-      console.log(this.percent)
     },
     setPomo() {
       this.timer = MINUTES25.minutes

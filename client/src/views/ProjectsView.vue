@@ -2,10 +2,10 @@
 import { computed } from '@vue/reactivity';
 import BackIcon from '@/components/icons/BackIcon.vue';
 import ProjectInfo from '@/components/ProjectInfo.vue';
-import projects from '@/mocks/projects';
+// import projects from '@/mocks/projects';
 import { useChoreStore } from '@/stores/chore';
 
-// const projects = computed(() => useChoreStore().projects)
+const projects = computed(() => useChoreStore().projects)
 </script>
 
 <template>

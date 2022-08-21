@@ -20,7 +20,7 @@ watch(() => open.value, () => {
 
 <template>
 <div class="single-project" @click="open = true">
-  <h1>{{ project.title }}</h1>
+  <h1>{{ project.name }}</h1>
 </div>
 <ProjectModal :project="project" :open="open" @exit="open = false" />
 </template>

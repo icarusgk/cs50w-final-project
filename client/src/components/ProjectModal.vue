@@ -13,9 +13,9 @@ const props = defineProps<{
 
 const emit = defineEmits(['exit'])
 
-
+// Works
 function deleteProject() {
-  useChoreStore().deleteProject(props.project.id)
+  useChoreStore().deleteProject(props.project.id as number)
   emit('exit')
 }
 
@@ -27,7 +27,7 @@ function deleteProject() {
     <Modal :is-project="true" :open="open" @exit-modal="$emit('exit')">
       <!-- Title -->
       <template #title>
-        <input type="text" name="title" id="task-input-title" v-model="props.project.title" />
+        <input type="text" name="title" id="task-input-title" v-model="props.project.name" />
       </template>
       <template #delete-icon>
         <DeleteIcon @click="deleteProject()" class="delete-icon" />

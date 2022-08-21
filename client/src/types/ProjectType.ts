@@ -1,9 +1,10 @@
 import type Task from './TaskType'
 
 type Project = {
-  id: number,
-  title: string,
-  tasks: Task[]
+  id?: number,
+  name: string,
+  tasks?: Task[]
+  user?: number
 }
 
 export default Project

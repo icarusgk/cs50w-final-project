@@ -5,11 +5,11 @@ import { useChoreStore } from '@/stores/chore';
 import TaskType from '@/components/slots/TaskType.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import Task from '@/components/buttons/Task.vue';
-import tasks from '@/mocks/tasks';
+// import tasks from '@/mocks/tasks';
 
 const choreStore = useChoreStore()
 
-// const tasks = computed(() => choreStore.tasks)
+const tasks = computed(() => choreStore.tasks)
 </script>
 
 <template>
@@ -22,7 +22,9 @@ const choreStore = useChoreStore()
         <h1>Single Tasks</h1>
       </template>
     </TaskType>
-
+    <div v-if="!tasks">
+      <h2>No tasks</h2>
+    </div>
     <div v-for="task in tasks">
       <Task :task="task" />
     </div>
