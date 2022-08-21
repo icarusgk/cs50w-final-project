@@ -9,7 +9,6 @@ import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from './icons/DoneIcon.vue';
 import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
 
-
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
 const task = ref(props.task)
@@ -177,18 +176,33 @@ async function deleteSubtask() {
 }
 
 async function toggleDone(subtask: SubtaskType) {
-  const response = await useFetch(`/tasks/${props.task.id}/`, {
-    method: 'patch',
-    data: {
-      "obj": "subtask",
-      "action": "done",
-      "subtask_id": subtask.id
+  if (props.isProject) {
+    const response = await useFetch(`/projects/${props.project.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "project",
+        "action": "task_done",
+        "task_id": subtask.id
+      }
+    })
+    if (response?.status === 200) {
+      subtask.done = response.data.done
     }
-  })
-  if (response?.status === 200) {
-    subtask.done = response.data.done
-    
   }
+  else {
+    const response = await useFetch(`/tasks/${props.task.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "subtask",
+        "action": "done",
+        "subtask_id": subtask.id
+      }
+    })
+    if (response?.status === 200) {
+      subtask.done = response.data.done
+    }
+  }
+  
 }
 
 function closeDetails() {

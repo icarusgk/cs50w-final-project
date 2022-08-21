@@ -139,6 +139,7 @@ class TaskViewSet(viewsets.ModelViewSet):
           task.done = not task.done
           task.save()
           return Response ({"done": task.done})
+
       return Response({'message': 'error'})
 
 
@@ -177,10 +178,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     if 'obj' in data:
       if data['obj'] == 'project':
-        
-        project = Project.objects.get(id=pk)
 
         if data['action'] == 'add_new':
+          project = self.get_object(pk)
           task = Task.objects.create(user=request.user, in_project=True, **data['task'])
           project.tasks.add(task)
           project.save()
@@ -206,6 +206,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
           task.delete()
           return Response("task deleted")
           
+        if data['action'] == 'task_done':
+          project = self.get_object(pk)
+          task = project.tasks.get(id=data['task_id'])
+          print(task)
+          task.done = not task.done
+          task.save()
+          return Response({"done": task.done})
+
         return Response("toggled")
   
   def destroy(self, request, pk=None):
