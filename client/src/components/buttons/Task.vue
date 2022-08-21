@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
-import type { Task } from '@/types';
+import type { Task, Project } from '@/types';
 
 
 import DoneIcon from '../icons/DoneIcon.vue';
@@ -34,6 +34,7 @@ async function toggleDone() {
   })
   if (response?.status === 200) {
     task.value.done = response.data?.done
+    useChoreStore().fetchProjects()
   }
 }
 

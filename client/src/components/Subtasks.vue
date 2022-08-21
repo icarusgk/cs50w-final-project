@@ -8,6 +8,7 @@ import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from './icons/DoneIcon.vue';
 import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
+import { useChoreStore } from '@/stores/chore'
 
 const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
 
@@ -187,6 +188,9 @@ async function toggleDone(subtask: SubtaskType) {
     })
     if (response?.status === 200) {
       subtask.done = response.data.done
+      // Visual changes
+      useChoreStore().tasks.filter(
+        (task: Task) => task.id === subtask.id)[0].done = response.data.done
     }
   }
   else {

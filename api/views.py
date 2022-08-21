@@ -187,6 +187,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
           return Response(TaskSerializer(task).data)
 
         if data['action'] == 'add_to_project':
+          project = self.get_object(pk)
           task = Task.objects.get(id=data['task_id'])
           project.tasks.add(task)
 
