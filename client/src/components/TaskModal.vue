@@ -50,7 +50,7 @@ function checkPristine(description: string) {
   pristine.value = description === props.task.description
 }
 
-function deleteTag(tag: any) {
+function removeTag(tag: Tag) {
   task.value.tags = task.value.tags.filter((t: Tag) => t.name !== tag.name)
 }
 
@@ -62,7 +62,7 @@ function deleteTag(tag: any) {
     <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Tags -->
       <template #tags>
-        <Tags :taskTags="task.tags" :id="task.id" @deleteTag="deleteTag" />
+        <Tags :taskTags="task.tags" :id="task.id" />
         <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
         <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
         <DeleteIcon @click="deleteTask()" class="delete-icon" />

@@ -29,7 +29,7 @@ function check(event: any) {
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks :is-project="false" :subtasks="task.subtasks" :task="task" :isNew="isNew" />
+        <Subtasks :is-project="false" :chores="task.subtasks" :task="task" :isNew="isNew" />
       </div>
     </div>
     <!-- Bottom container -->
@@ -40,7 +40,7 @@ function check(event: any) {
           <span style="font-weight: 800;">Estimated pomos</span>
         </div>
         <!-- Counter -->
-        <TimerSetter :subtask="task" />
+        <TimerSetter :chore="task" />
       </div>
       <div>
         

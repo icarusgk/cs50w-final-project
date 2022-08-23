@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps(['subtask'])
+const props = defineProps(['chore'])
 
 const pomoLimits = ref({ min: 1, max: 99 })
 
 function decreasePomos() {
-  if (props.subtask.estimated > pomoLimits.value.min) props.subtask.estimated--
+  if (props.chore.estimated > pomoLimits.value.min) props.chore.estimated--
 }
 
 function increasePomos() {
-  props.subtask.estimated < pomoLimits.value.max
-    ? props.subtask.estimated++
-    : props.subtask.estimated = pomoLimits.value.max
+  props.chore.estimated < pomoLimits.value.max
+    ? props.chore.estimated++
+    : props.chore.estimated = pomoLimits.value.max
 }
 </script>
 
@@ -25,7 +25,7 @@ function increasePomos() {
       class="estimated-timers"
       :min="pomoLimits.min"
       :max="pomoLimits.max"
-      v-model="subtask.estimated" />
+      v-model="chore.estimated" />
     <button @click="decreasePomos" class="minus-icon pomo-icon">-</button>
     <button @click="increasePomos" class="pomo-icon">+</button>
   </div>
@@ -35,7 +35,7 @@ function increasePomos() {
 <style scoped lang="scss">
 .timers {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 
   .estimated-timers {
     background: transparent;

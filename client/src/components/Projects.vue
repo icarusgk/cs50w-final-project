@@ -12,9 +12,9 @@ const projects = computed(() => choreStore.projects)
 </script>
 
 <template>
-  <div>
+  <div v-if="projects.length > 0">
     <!-- Title -->
-    <TaskType 
+    <TaskType
       class="projects-button"
       @click="$router.push('/projects')"
     >

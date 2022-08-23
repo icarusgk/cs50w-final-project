@@ -22,7 +22,6 @@ allProjects.forEach((project: Project) => {
   })
 })
 
-// TODO: Connect to back-end
 async function addToProject(project: Project) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
@@ -52,7 +51,7 @@ async function addToProject(project: Project) {
         "task_id": props.taskId
       }
     })
-
+    console.log(response)
     if (response?.status === 200) {
       console.log('removed', response.data)
       // Refetch

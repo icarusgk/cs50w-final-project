@@ -160,6 +160,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
     except Project.DoesNotExist:
       raise Http404
 
+  def list(self, request):
+    projects = Project.objects.filter(user=request.user)
+    serializer = ProjectSerializer(projects, many=True)
+    return Response(serializer.data)
+
   def create(self, request):
     """
     Create a new Project with tasks
@@ -167,11 +172,22 @@ class ProjectViewSet(viewsets.ModelViewSet):
     project = Project.objects.create(user=request.user, name=request.data['name'])
     
     for task in request.data['tasks']:
-      task_obj = Task.objects.create(user=request.user, in_project=True, **task)
-      project.tasks.add(task_obj)
-      project.save()
-    return Response(ProjectSerializer(project).data)
-
+      task_serializer = TaskSerializer(data=task)
+      if task_serializer.is_valid():
+        # ts.data is: {'title': 'd', 'description': 'd', 'estimated': 1}
+        task_obj = Task.objects.create(user=request.user, in_project=True, **task_serializer.data)
+        
+        for tag in task['tags']:
+          tag_obj = Tag.objects.filter(name=tag['name']).first()
+          if not tag_obj:
+            # Create tag
+            tag_obj = Tag.objects.create(name=tag['name'])
+          task_obj.tags.add(tag_obj)
+        
+        # Add task to the project
+        project.tasks.add(task_obj)
+        project.save()
+    return Response(ProjectSerializer(project).data, status=status.HTTP_201_CREATED)
 
   def partial_update(self, request, pk=None):
     data = request.data
@@ -179,12 +195,24 @@ class ProjectViewSet(viewsets.ModelViewSet):
     if 'obj' in data:
       if data['obj'] == 'project':
 
+        if data['action'] == 'modify_title':
+          project = self.get_object(pk)
+          project.name = data['name']
+          project.save()
+          return Response("name changed", status=status.HTTP_200_OK)
+
         if data['action'] == 'add_new':
           project = self.get_object(pk)
-          task = Task.objects.create(user=request.user, in_project=True, **data['task'])
-          project.tasks.add(task)
-          project.save()
-          return Response(TaskSerializer(task).data)
+          # task = Task.objects.create(user=request.user, in_project=True, **data['task'])
+          task_serializer = TaskSerializer(data=data['task'])
+          
+          if task_serializer.is_valid():
+            task = Task.objects.create(user=request.user, in_project=True, **task_serializer.data)
+            task.save()
+
+            project.tasks.add(task)
+            project.save()
+          return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
         if data['action'] == 'add_to_project':
           project = self.get_object(pk)

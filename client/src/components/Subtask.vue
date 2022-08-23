@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import EstimatedIcon from '@/components/icons/EstimatedIcon.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
+import Tags from './buttons/Tags.vue';
 
-const props = defineProps(['subtask', 'newSub'])
+const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew'])
+defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
+// const chore = ref(props.chore)
 </script>
 
 <template>
@@ -11,25 +13,32 @@ const props = defineProps(['subtask', 'newSub'])
 <div class="subtask">
   <!-- Flex row -->
   <div class="container">
+    <div v-if="props.isProject" class="subtask-tags">
+      <Tags :id="props.chore.id" :task-tags="props.chore.tags" :new="newChore" />
+    </div>
     <!-- Title and description -->
     <div class="title-and-description-container" @keyup.ctrl.enter="$emit('save')">
       <!-- Title -->
       <input 
-        v-model.lazy="props.subtask.title" 
+        v-model.lazy="props.chore.title" 
         placeholder="Title" 
         type="text"
         class="new-subtask-title"
       />
       <!-- Description -->
       <textarea
-        v-model.trim="props.subtask.description" 
+        v-model.trim="props.chore.description" 
         class="new-subtask-description" 
         placeholder="Description">
       </textarea>
     </div>
     <div class="options-and-buttons">
       <div class="delete-container">
-        <DeleteIcon class="delete-button" v-if="!newSub" @click="$emit('delete')" />
+        <DeleteIcon class="delete-button" v-if="!newChore" @click="$emit('delete')" />
+        <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
+      </div>
+      <div v-if="props.isProject">
+        <TimerSetter :chore="chore" />
       </div>
       <!-- Estimated Timers and save button -->
       <div class="timers-and-buttons-container">
@@ -39,7 +48,8 @@ const props = defineProps(['subtask', 'newSub'])
           <!-- Cancel -->
           <button @click="$emit('close')" class="cancel-button">Cancel</button>
           <!-- Save -->
-          <button @click="$emit('save')" class="save-button">Save!</button>
+          <button v-if="!isProject" @click="$emit('save')" class="save-button">Save!</button>
+          <button v-else class="save-button" @click="$emit('saveTask')">Save!</button>
         </div>
       </div>
     </div>
@@ -71,6 +81,10 @@ const props = defineProps(['subtask', 'newSub'])
     justify-content: space-between;
     height: 100%;
     
+    .subtask-tags {
+      display: flex;
+    }
+
     // First container
     // Title and desc
     .title-and-description-container {
@@ -106,12 +120,11 @@ const props = defineProps(['subtask', 'newSub'])
     // Pomos and buttons
     .options-and-buttons {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: flex-end;
       
       .delete-container {
-          margin-right: 1rem;
-          
+
           .delete-button {
             &:hover, &:focus {
               cursor: pointer;

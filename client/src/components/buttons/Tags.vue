@@ -15,7 +15,9 @@ const props = defineProps<{
   new?: boolean
 }>()
 
-const emit = defineEmits(['deleteTag'])
+// A local manipulable copy of the tags
+// For filtering and pushing
+const taskTags = ref(props.taskTags)
 
 const newTagVisible = ref(true)
 const newTag = ref("")
@@ -61,7 +63,7 @@ async function addTag() {
               useChoreStore().tags.push(response.data?.tag)
             }
             // response.data will be the tag obj {id, name}
-            props.taskTags.push(response.data?.tag)         
+            taskTags.value.push(response.data?.tag)
           }
         } catch (err) {
           console.log('addTag err', err);
@@ -87,8 +89,12 @@ async function deleteTag(tag: Tag) {
   )
   if (response?.status === 200) {
     // emit the deletion of the tag
-    emit('deleteTag', tag)
+    removeTag(tag)
   }
+}
+
+function removeTag(tag: Tag) {
+  taskTags.value = taskTags.value.filter((t: Tag) => t.name !== tag.name)
 }
 
 </script>

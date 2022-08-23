@@ -5,12 +5,14 @@ import { useChoreStore } from '@/stores/chore'
 import { useModalStore } from '@/stores/modal'
 import { useAuthStore } from '@/stores/auth';
 
-useChoreStore().fetchAll()
 useModalStore().close()
 
 const auth = useAuthStore()
 
-if (auth.isAuthenticated) auth.getUser()
+if (auth.isAuthenticated) {
+  useChoreStore().fetchAll()
+  auth.getUser()
+}
 </script>
 
 <template>

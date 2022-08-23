@@ -15,7 +15,7 @@ defineProps<{
     </div>
     <!-- Add tasks button -->
     <div>
-      <Subtasks :is-project="true" :subtasks="project.tasks" :project="project" :isNew="isNew" />
+      <Subtasks :is-project="true" :chores="project.tasks" :project="project" :isNew="isNew" />
     </div>
   </div>
 </template>

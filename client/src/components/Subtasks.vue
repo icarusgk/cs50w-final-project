@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useFetch } from '@/composables/useFetch';
-import type { Task, SubtaskType } from '@/types'
+import type { TaskType, SubtaskType } from '@/types'
 
 import Subtask from '@/components/Subtask.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
@@ -9,79 +9,140 @@ import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from './icons/DoneIcon.vue';
 import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
 import { useChoreStore } from '@/stores/chore'
+import TaskInfoIcon from './icons/TaskInfoIcon.vue'
 
-const props = defineProps(['subtasks', 'isProject', 'task', 'project', 'isNew'])
+const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew'])
 
-const task = ref(props.task)
-const project = ref(props.project)
+const existingTask = ref(props.task)
+const existingProject = ref(props.project)
 
-const newSubtask = ref<SubtaskType>({
+// Initial mold for a task
+const taskModel = ref({
+  tags: [],
+  title: '',
+  description: '',
+  estimated: 1
+})
+
+// Initial mold for a subtask
+const subtaskModel = ref({
   title: '',
   description: ''
 })
 
-const newSubtaskOpened = ref(false)
+// A chore can be either a task in a project
+// or a subtask in a task
+const newChoreOpened = ref(false)
 
-const subtaskDetails = ref<{
+const activeChore = ref<{
   opened: boolean,
-  subtask: SubtaskType | null
+  chore: TaskType | SubtaskType | null
 }>({
   opened: false,
-  subtask: null
+  chore: null
 })
 
-function openNewSubtask() {
-  if (subtaskDetails.value.opened) {
-    subtaskDetails.value.opened = false
-  }
-  newSubtaskOpened.value = true
+// Open the an empty chore
+function openNewChore() {
+  // Toggle the state of the active chore
+  if (activeChore.value.opened) { activeChore.value.opened = false }
+  // Open a new chore
+  newChoreOpened.value = true
 }
 
-function openDetails(subtask: any) {
-  subtaskDetails.value.subtask = subtask
-  if (newSubtaskOpened.value) {
-    newSubtaskOpened.value = false
-  }
-  subtaskDetails.value.opened = true
+// Open chore details
+function openDetails(chore: TaskType | SubtaskType) {
+  // Assign the current task details
+  activeChore.value.chore = chore
+
+  // Close the "details" for a new chore
+  if (newChoreOpened.value) { newChoreOpened.value = false }
+
+  // Mark the chore details as opened
+  activeChore.value.opened = true
 }
 
-function resetSubtask() {
-  newSubtask.value = {
+// Resets the subtask model to its initial value
+function resetSubtaskModel() {
+  subtaskModel.value = {
     title: '',
     description: '',
   }
 }
 
-async function addSubtask() {
-  // Just a title is required
-  if (newSubtask.value.title) {
+// Resets the task model to its initial value
+function resetTaskModel() {
+  taskModel.value = {
+    tags: [],
+    title: '',
+    description: '',
+    estimated: 1
+  }
+}
 
-    // Push subtasks to new project
+// Add task to existing project
+async function addTaskToProject() {
+  // if a new task is being pushed to a new or 
+  // existing project
+  if (taskModel.value.title) {
+
+    // Push new task to new project
     if (props.isProject && props.isNew) {
-      project.value.tasks.push(newSubtask.value)
-      close()
+      existingProject.value.tasks.push(taskModel.value)
+      resetTaskModel()
     }
-    // Add subtasks to an existing project
-    else if (props.isProject && !props.isNew) {
-      // Make API call
+
+    // Add new task to an existing project
+    // LIVE
+    if (props.isProject && !props.isNew) {
       // Works !!
-      const response = await useFetch(`/projects/${props.project.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "project",
-          "action": "add_new",
-          "task": newSubtask.value
+      try {
+        const response = await useFetch(`/projects/${props.project.id}/`, {
+          method: 'patch',
+          data: {
+            "obj": "project",
+            "action": "add_new",
+            "task": taskModel.value
+          }
+        })
+        if (response?.status === 201) {
+          // Returns a task inside the project
+          existingProject.value.tasks.push(response.data)
+          // Reset and close
+          closeNew()
         }
-      })
-      if (response?.status === 200) {
-        project.value.tasks.push(response.data)
-        close()
+      } catch (err) {
+        console.log('err adding task to project', err)
       }
     }
+  }
+
+  // If an existing task has to be updated
+  if (activeChore.value.chore && !newChoreOpened.value) {
+    // Make the api call
+    const response = await useFetch(`/projects/${props.project.id}/`, {
+      method: 'patch',
+      data: {
+        "obj": "project",
+        "action": "update_task",
+        "subtask": activeChore.value.chore
+      }
+    })
+    if (response?.status === 200) {
+      closeDetails()
+    }
+  }
+    
+}
+
+// Add subtask to task or task to project
+async function addSubtaskToTask() {
+  // Just a title is required
+  if (subtaskModel.value.title) {
     // Push subtasks to the new task
-    else if (!props.isProject && props.isNew) {
-      // !! Works
-      task.value.subtasks.push(newSubtask.value)
+    if (!props.isProject && props.isNew) {
+      existingTask.value.subtasks.push(subtaskModel.value)
+      resetSubtaskModel()
     }
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
@@ -91,55 +152,38 @@ async function addSubtask() {
         data: {
           "obj": "subtask",
           "action": "add",
-          "subtask": newSubtask.value
+          "subtask": subtaskModel.value
         }
       })
       if (response?.status === 200) {
-        task.value.subtasks.push(response.data)
+        existingTask.value.subtasks.push(response.data)
+        resetSubtaskModel()
       }
     }
   }
 
   // Modify existing subtask
-  else if (subtaskDetails.value.subtask && !newSubtaskOpened.value) {
-    if (props.isProject) {
-      // Make the api call
-      const response = await useFetch(`/projects/${props.project.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "project",
-          "action": "update_task",
-          "subtask": subtaskDetails.value.subtask
-        }
-      })
-      if (response?.status === 200) {
-        close()
-      }
-      // console.log(subtaskDetails.value.subtask)
-    } else {
+  else if (activeChore.value.chore && !newChoreOpened.value) {
+    if (!props.isProject) {
       // Make the api call
       const response = await useFetch(`/tasks/${props.task.id}/`, {
         method: 'patch',
         data: {
           "obj": "subtask",
           "action": "update",
-          "subtask": subtaskDetails.value.subtask
+          "subtask": activeChore.value.chore
         }
       })
       if (response?.status === 200) {
-        close()
+        closeDetails()
       }
     }
   }  
   
 }
 
-function close() {
-  subtaskDetails.value.opened = false
-  resetSubtask()
-}
-
-async function deleteSubtask() {
+// Delete chore (db) from parent component
+async function deleteChore() {
   if (props.isProject) {
     // Works !!
     // Delete task
@@ -148,18 +192,18 @@ async function deleteSubtask() {
       data: {
         "obj": "project",
         "action": "delete_task",
-        "task_id": subtaskDetails.value.subtask?.id
+        "task_id": activeChore.value.chore?.id
       }
     })
     if (response?.status === 200) {
-      project.value.tasks = project.value.tasks.filter(
-        (task: any) => task.id !== subtaskDetails.value.subtask?.id
+      existingProject.value.tasks = existingProject.value.tasks.filter(
+        (task: TaskType) => task.id !== activeChore.value.chore?.id
       )
     }
   } else {
     // If is task
-    task.value.subtasks = task.value.subtasks.filter(
-      (sub: Task) => sub !== subtaskDetails.value.subtask)
+    existingTask.value.subtasks = existingTask.value.subtasks.filter(
+      (sub: TaskType) => sub !== activeChore.value.chore)
 
     // Make the API call
     const response = await useFetch(`/tasks/${props.task.id}/`, {
@@ -167,73 +211,101 @@ async function deleteSubtask() {
       data: {
         "obj": "subtask",
         "action": "remove",
-        "subtask_id": subtaskDetails.value.subtask?.id
+        "subtask_id": activeChore.value.chore?.id
       }
     })
     console.log(response?.data)
   }
-  
-  subtaskDetails.value.opened = false
+  activeChore.value.opened = false
 }
 
-async function toggleDone(subtask: SubtaskType) {
+// Remove (visually) chore from parent component
+function removeChore() {  
   if (props.isProject) {
-    const response = await useFetch(`/projects/${props.project.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "project",
-        "action": "task_done",
-        "task_id": subtask.id
+    existingProject.value.tasks = existingProject.value.tasks.filter(
+      (task: TaskType) => task.title !== activeChore.value.chore?.title 
+    )
+  } else {
+    existingTask.value.subtasks = existingTask.value.subtasks.filter(
+      (subtask: SubtaskType) => subtask.title !== activeChore.value.chore?.title
+    )
+  }
+  closeDetails()
+}
+
+// Toggle done on Chore
+async function toggleChoreDone(chore: TaskType | SubtaskType) {
+  if (props.isProject) {
+    try {
+      const response = await useFetch(`/projects/${props.project.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "project",
+          "action": "task_done",
+          "task_id": chore.id
+        }
+      })
+      if (response?.status === 200) {
+        chore.done = response.data.done
+        // Visual changes
+        let project_task = useChoreStore().tasks.filter(
+          (task: TaskType) => task.id === chore.id)[0]
+
+        if (project_task) {
+          project_task.done = response.data.done
+        }
       }
-    })
-    if (response?.status === 200) {
-      subtask.done = response.data.done
-      // Visual changes
-      useChoreStore().tasks.filter(
-        (task: Task) => task.id === subtask.id)[0].done = response.data.done
+    } catch (err) {
+      console.log('task done update err', err)
     }
   }
   else {
-    const response = await useFetch(`/tasks/${props.task.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "subtask",
-        "action": "done",
-        "subtask_id": subtask.id
+    try {
+      const response = await useFetch(`/tasks/${props.task.id}/`, {
+        method: 'patch',
+        data: {
+          "obj": "subtask",
+          "action": "done",
+          "subtask_id": chore.id
+        }
+      })
+      if (response?.status === 200) {
+        chore.done = response.data.done
       }
-    })
-    if (response?.status === 200) {
-      subtask.done = response.data.done
+    } catch (err) {
+      console.log('subtask done update err', err)
     }
   }
-  
 }
 
-function closeDetails() {
-  subtaskDetails.value.opened = false
-  subtaskDetails.value.subtask = null
+// Close chore details
+function closeDetails() {  
+  activeChore.value.opened = false
+  activeChore.value.chore = null
 }
 
-function closeNewSubtask() {
-  newSubtaskOpened.value = false
-  resetSubtask()
+// Close new model details and reset it
+function closeNew() {
+  newChoreOpened.value = false
+  props.isProject ? resetTaskModel() : resetSubtaskModel()  
 }
 </script>
 
 <template>
   <div class="new-task-minitask-container">
-    <!-- Subtasks list -->
-    <MiniLabel v-for="subtask in subtasks" :is-task="true">
+    <!-- Display each subtask list -->
+    <MiniLabel v-for="chore in chores" :is-task="true">
       <template #icon>
-        <DoneIcon @click="toggleDone(subtask)" v-if="!subtask.done" class="icon" />
-        <MarkedDoneIcon @click="toggleDone(subtask)" v-else class="icon" />
+        <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="icon" />
+        <DoneIcon @click="toggleChoreDone(chore)" v-if="!chore.done && !isNew" class="icon" />
+        <MarkedDoneIcon @click="toggleChoreDone(chore)" v-if="chore.done" class="icon" />
       </template>
       <template #title>  
-        <div @click="openDetails(subtask)">{{ subtask.title }}</div>
-      </template>      
+        <div @click="openDetails(chore)">{{ chore.title }}</div>
+      </template>
     </MiniLabel>
-    <!-- Add new subtask -->
-    <MiniLabel v-if="subtasks.length === 0" @click="openNewSubtask" :is-task="true">
+    <!-- Add new subtask or task -->
+    <MiniLabel v-if="chores.length === 0" @click="openNewChore" :is-task="true">
       <template #title>
         <span class="add-subtask">{{ isProject ? 'Add task' : 'Add subtask' }}</span>
       </template>
@@ -241,21 +313,40 @@ function closeNewSubtask() {
         <AddTagIcon class="new-subtask" />
       </template>
     </MiniLabel>
+    <!-- Add new subtask or task but just show the icon -->
     <div v-else>
-      <MiniLabel @click="openNewSubtask" :is-task="true">
+      <MiniLabel @click="openNewChore" :is-task="true">
         <template #icon>
           <AddTagIcon class="new-subtask" />
         </template>
       </MiniLabel>
     </div>
   </div>
-  <div v-if="newSubtaskOpened">
+  <!-- If the a new chore is opened -->
+  <div v-if="newChoreOpened">
     <!-- Listen to the event emitter -->
-    <Subtask @close="closeNewSubtask()" @save="addSubtask" :subtask="newSubtask" :newSub="true" />
+    <Subtask
+      @close="closeNew()"
+      @save="addSubtaskToTask()"
+      @saveTask="addTaskToProject()"
+      :chore="isProject ? taskModel : subtaskModel"
+      :newChore="true"
+      :key="isProject ? existingProject.tasks.length : task.subtasks.length"
+      :isProject="isProject" />
   </div>
-  <!-- Existing task -->
-  <div v-if="subtaskDetails.opened">
-    <Subtask  @close="closeDetails()" @save="addSubtask" @delete="deleteSubtask()" :subtask="subtaskDetails.subtask" />
+  <!-- If an existing chore is opened -->
+  <div v-if="activeChore.opened">
+    <Subtask
+      @close="closeDetails()"
+      @save="addSubtaskToTask()"
+      @saveTask="addTaskToProject()"
+      @remove="removeChore()"
+      @delete="deleteChore()"
+      :chore="activeChore.chore"
+      :parentNew="isNew"
+      :newChore="isNew"
+      :key="isNew ? activeChore.chore?.title : activeChore.chore?.id"
+      :isProject="isProject" />
   </div>
 </template>
 

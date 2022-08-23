@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import axios, { type AxiosResponse } from 'axios'
-import type { Project, Task, Tag } from '@/types'
+// import type { Project, TaskType, Tag } from '@/types'
 
 type Options = {
   method?: string,
@@ -25,7 +25,7 @@ export async function useFetch(path: string, options?: Options) {
     })
     data.value = response
   } catch (err) {
-    console.log('err in path', path, err)
+    console.log('useFetch err in path', path, err)
   }
   return data.value
 }
