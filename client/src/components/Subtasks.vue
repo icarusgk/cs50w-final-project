@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useFetch } from '@/composables/useFetch';
 import type { TaskType, SubtaskType } from '@/types'
 
@@ -34,7 +34,7 @@ const subtaskModel = ref({
 // or a subtask in a task
 const newChoreOpened = ref(false)
 
-const activeChore = ref<{
+const activeChore = reactive<{
   opened: boolean,
   chore: TaskType | SubtaskType | null
 }>({
@@ -45,7 +45,7 @@ const activeChore = ref<{
 // Open the an empty chore
 function openNewChore() {
   // Toggle the state of the active chore
-  if (activeChore.value.opened) { activeChore.value.opened = false }
+  if (activeChore.opened) { activeChore.opened = false }
   // Open a new chore
   newChoreOpened.value = true
 }
@@ -53,13 +53,13 @@ function openNewChore() {
 // Open chore details
 function openDetails(chore: TaskType | SubtaskType) {
   // Assign the current task details
-  activeChore.value.chore = chore
+  activeChore.chore = chore
 
   // Close the "details" for a new chore
   if (newChoreOpened.value) { newChoreOpened.value = false }
 
   // Mark the chore details as opened
-  activeChore.value.opened = true
+  activeChore.opened = true
 }
 
 // Resets the subtask model to its initial value
@@ -118,14 +118,14 @@ async function addTaskToProject() {
   }
 
   // If an existing task has to be updated
-  if (activeChore.value.chore && !newChoreOpened.value) {
+  if (activeChore.chore && !newChoreOpened.value) {
     // Make the api call
     const response = await useFetch(`/projects/${props.project.id}/`, {
       method: 'patch',
       data: {
         "obj": "project",
         "action": "update_task",
-        "subtask": activeChore.value.chore
+        "subtask": activeChore.chore
       }
     })
     if (response?.status === 200) {
@@ -163,7 +163,7 @@ async function addSubtaskToTask() {
   }
 
   // Modify existing subtask
-  else if (activeChore.value.chore && !newChoreOpened.value) {
+  else if (activeChore.chore && !newChoreOpened.value) {
     if (!props.isProject) {
       // Make the api call
       const response = await useFetch(`/tasks/${props.task.id}/`, {
@@ -171,7 +171,7 @@ async function addSubtaskToTask() {
         data: {
           "obj": "subtask",
           "action": "update",
-          "subtask": activeChore.value.chore
+          "subtask": activeChore.chore
         }
       })
       if (response?.status === 200) {
@@ -192,18 +192,18 @@ async function deleteChore() {
       data: {
         "obj": "project",
         "action": "delete_task",
-        "task_id": activeChore.value.chore?.id
+        "task_id": activeChore.chore?.id
       }
     })
     if (response?.status === 200) {
       existingProject.value.tasks = existingProject.value.tasks.filter(
-        (task: TaskType) => task.id !== activeChore.value.chore?.id
+        (task: TaskType) => task.id !== activeChore.chore?.id
       )
     }
   } else {
     // If is task
     existingTask.value.subtasks = existingTask.value.subtasks.filter(
-      (sub: TaskType) => sub !== activeChore.value.chore)
+      (sub: TaskType) => sub !== activeChore.chore)
 
     // Make the API call
     const response = await useFetch(`/tasks/${props.task.id}/`, {
@@ -211,23 +211,23 @@ async function deleteChore() {
       data: {
         "obj": "subtask",
         "action": "remove",
-        "subtask_id": activeChore.value.chore?.id
+        "subtask_id": activeChore.chore?.id
       }
     })
     console.log(response?.data)
   }
-  activeChore.value.opened = false
+  activeChore.opened = false
 }
 
 // Remove (visually) chore from parent component
 function removeChore() {  
   if (props.isProject) {
     existingProject.value.tasks = existingProject.value.tasks.filter(
-      (task: TaskType) => task.title !== activeChore.value.chore?.title 
+      (task: TaskType) => task.title !== activeChore.chore?.title 
     )
   } else {
     existingTask.value.subtasks = existingTask.value.subtasks.filter(
-      (subtask: SubtaskType) => subtask.title !== activeChore.value.chore?.title
+      (subtask: SubtaskType) => subtask.title !== activeChore.chore?.title
     )
   }
   closeDetails()
@@ -280,8 +280,8 @@ async function toggleChoreDone(chore: TaskType | SubtaskType) {
 
 // Close chore details
 function closeDetails() {  
-  activeChore.value.opened = false
-  activeChore.value.chore = null
+  activeChore.opened = false
+  activeChore.chore = null
 }
 
 // Close new model details and reset it
