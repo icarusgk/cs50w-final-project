@@ -2,8 +2,6 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth';
 
-const emit = defineEmits(['back'])
-
 const credentials = ref({
   username: '',
   password: ''
@@ -12,7 +10,6 @@ const message = ref('')
 
 function login() {
   useAuthStore().login(credentials.value)
-  emit('back')
 }
 </script>
 

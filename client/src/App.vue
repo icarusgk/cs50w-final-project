@@ -10,8 +10,8 @@ useModalStore().close()
 const auth = useAuthStore()
 
 if (auth.isAuthenticated) {
-  useChoreStore().fetchAll()
   auth.getUser()
+  useChoreStore().fetchAll()
 }
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import Project from '@/components/Project.vue'
@@ -9,6 +9,7 @@ import ProjectIcon from '@/components/icons/ProjectIcon.vue'
 const choreStore = useChoreStore()
 
 const projects = computed(() => choreStore.projects)
+
 </script>
 
 <template>

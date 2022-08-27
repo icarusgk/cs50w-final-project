@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
+import { useAuthStore } from '@/stores/auth';
 
 import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
@@ -12,6 +13,7 @@ import type Task from '@/types/TaskType';
 
 const open = ref(false)
 const taskStore = useChoreStore()
+const auth = useAuthStore()
 
 watch(() => open.value, () => {
   useModalStore().toggle()
@@ -45,7 +47,7 @@ function saveTask() {
 </script>
 
 <template>
-  <ChoreButton @click="open = true">
+  <ChoreButton @click="auth.isAuthenticated ? open = true : open = false">
     <template #type>
       Add new task
     </template>

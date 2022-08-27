@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AddIcon from '@/components/icons/AddIcon.vue';
-
 </script>
 
 <template>
@@ -21,7 +20,7 @@ import AddIcon from '@/components/icons/AddIcon.vue';
   margin-right: 1rem;
   padding: 0.1rem 0.5rem;
 
-  &:hover {
+  &:hover, &:focus {
     cursor: pointer;
   }
 

@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
+import { useAuthStore } from '@/stores/auth';
 import type Project from '@/types/ProjectType';
 
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
@@ -15,6 +16,7 @@ const newProject = ref<Project>({
 })
 
 const open = ref(false)
+const auth = useAuthStore()
 
 watch(() => open.value, () => {
   useModalStore().toggle()
@@ -35,7 +37,7 @@ function saveProject() {
 </script>
 
 <template>
-  <ChoreButton @click="open = true">
+  <ChoreButton @click="auth.isAuthenticated ? open = true : open = false">
     <template #type>
       Add new project
     </template>

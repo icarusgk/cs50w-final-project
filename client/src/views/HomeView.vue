@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { useModalStore } from '@/stores/modal'
+import { useAuthStore } from '@/stores/auth'
+import { useChoreStore } from '@/stores/chore'
 import LightingIcon from '@/components/icons/LightingIcon.vue'
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import Tasks from '@/components/Tasks.vue'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
+import { onMounted } from 'vue'
 
+const auth = useAuthStore()
+
+onMounted(() => {
+  if (auth.isAuthenticated) {
+    useChoreStore().fetchAll()
+  }
+})
 </script>
 <template>
   <div id="home">
@@ -21,16 +30,21 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->
-      <div id="task-btn-container">
+      <div id="task-btn-container" :class="{ opaque: !auth.isAuthenticated }">
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
         <NewProjectButton />
       </div>
-      <!-- Projects -->
-      <Projects />
-      <!-- Tasks -->
-      <Tasks />
+      <div v-if="!auth.isAuthenticated">
+        <p>Login or Sign Up to add tasks and projects</p>
+      </div>
+      <div v-if="auth.isAuthenticated">
+        <!-- Projects -->
+        <Projects />
+        <!-- Tasks -->
+        <Tasks />
+      </div>
     </div>
   </div>
 </template>
@@ -64,6 +78,10 @@ import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.
 
 #task-btn-container {
   display: flex;
+}
+
+.opaque {
+  opacity: 0.1;
 }
 
 @media (max-width: 1160px) {

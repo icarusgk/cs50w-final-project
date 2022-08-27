@@ -20,7 +20,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
     <div class="title-and-description-container" @keyup.ctrl.enter="$emit('save')">
       <!-- Title -->
       <input 
-        v-model.lazy="props.chore.title" 
+        v-model.lazy="props.chore.title"
         placeholder="Title" 
         type="text"
         class="new-subtask-title"

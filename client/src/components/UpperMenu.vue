@@ -2,7 +2,6 @@
 import { ref, watch, computed } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useAuthStore } from '@/stores/auth';
-import axios from 'axios';
 
 import StreaksIcon from '@/components/icons/StreaksIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
@@ -33,17 +32,19 @@ watch(() => open.value, () => {
       </li>
       <!-- User -->
       <li>
-        <div @click="open = true" id="login">
-          <UserIcon />
-          <span v-if="!auth.isAuthenticated">Login</span>
+        <div class="login">
+          <div class="login" @click="open = true">
+            <UserIcon />
+            <span v-if="auth.isAuthenticated">{{ auth.user?.username }}</span>
+          </div>
+          <span v-if="!auth.isAuthenticated" @click="$router.push('/login')">Login</span>
         </div>
       </li>
       <!-- Settings -->
       <li v-if="auth.isAuthenticated"><SettingsIcon /></li>
     </ul>
     <Modal :open="open" @exit-modal="open = false">
-      <Login @back="open = false" v-if="!auth.isAuthenticated" />
-      <div v-else>
+      <div>
         <h1>Logout</h1>
         <h2>Hello there {{ auth.user?.username }}</h2>
         <button @click="auth.logout(); open = false;">Logout</button>
@@ -70,7 +71,7 @@ watch(() => open.value, () => {
         cursor: pointer;
       }
 
-      #login {
+      .login {
         display: flex;
         align-items: center;
       }

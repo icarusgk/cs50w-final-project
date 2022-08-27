@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import router from '@/router';
 
 type User = {
   id: number,
@@ -50,7 +51,8 @@ export const useAuthStore = defineStore({
           localStorage.setItem('jwt', response.data?.access)
           this.isAuthenticated = true
           this.user = await this.getUser()
-        }    
+          router.push('/')
+        }
       } catch (err) {
         console.log(err)
       }
