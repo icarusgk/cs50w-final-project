@@ -13,3 +13,4 @@ main/settings.py
 local_settings.py
 
 .env
+env/

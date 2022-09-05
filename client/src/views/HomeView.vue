@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import { useChoreStore } from '@/stores/chore'
-import LightingIcon from '@/components/icons/LightingIcon.vue'
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
 import Projects from '@/components/Projects.vue'
 import Tasks from '@/components/Tasks.vue'
+import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
 import { onMounted } from 'vue'
 
@@ -37,7 +37,7 @@ onMounted(() => {
         <NewProjectButton />
       </div>
       <div v-if="!auth.isAuthenticated">
-        <p>Login or Sign Up to add tasks and projects</p>
+        <UnauntheticatedLogin />
       </div>
       <div v-if="auth.isAuthenticated">
         <!-- Projects -->

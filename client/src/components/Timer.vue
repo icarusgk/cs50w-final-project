@@ -142,7 +142,7 @@ function restartTimer() {
 
   @mixin timer-button($bg-color) {
     padding: 1rem;
-    width: 160px;
+    width: 210px;
     border-radius: 18px;
     font-size: 1.5rem;
     background-color: $bg-color;

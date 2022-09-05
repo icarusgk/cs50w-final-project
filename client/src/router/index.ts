@@ -24,7 +24,10 @@ const router = createRouter({
     {
       path: '/stats',
       name: 'Stats',
-      component: () => import('../views/StatsView.vue')
+      component: () => import('../views/StatsView.vue'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/about',
@@ -41,5 +44,12 @@ const router = createRouter({
     },
   ]
 })
+
+// Prevent to visit page that requiresAuth
+  router.beforeEach((to) => {
+    if (to.meta.requiresAuth) {
+      return false
+    }
+  })
 
 export default router
