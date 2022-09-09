@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
-import { useFetch } from '@/composables/useFetch';
+import axios from 'axios';
 import type { TaskType, SubtaskType } from '@/types'
 
 import Subtask from '@/components/Subtask.vue';
@@ -97,13 +97,10 @@ async function addTaskToProject() {
     if (props.isProject && !props.isNew) {
       // Works !!
       try {
-        const response = await useFetch(`/projects/${props.project.id}/`, {
-          method: 'patch',
-          data: {
-            "obj": "project",
-            "action": "add_new",
-            "task": taskModel.value
-          }
+        const response = await axios.patch(`projects/${props.project.id}/`, {
+          "obj": "project",
+          "action": "add_new",
+          "task": taskModel.value
         })
         if (response?.status === 201) {
           // Returns a task inside the project
@@ -120,14 +117,11 @@ async function addTaskToProject() {
   // If an existing task has to be updated
   if (activeChore.chore && !newChoreOpened.value) {
     // Make the api call
-    const response = await useFetch(`/projects/${props.project.id}/`, {
-      method: 'patch',
-      data: {
+    const response = await axios.patch(`projects/${props.project.id}/`, {
         "obj": "project",
         "action": "update_task",
         "subtask": activeChore.chore
-      }
-    })
+      })
     if (response?.status === 200) {
       closeDetails()
     }
@@ -147,13 +141,10 @@ async function addSubtaskToTask() {
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
       // Make the API call
-      const response = await useFetch(`/tasks/${props.task.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "subtask",
-          "action": "add",
-          "subtask": subtaskModel.value
-        }
+      const response = await axios.patch(`tasks/${props.task.id}/`, {
+        "obj": "subtask",
+        "action": "add",
+        "subtask": subtaskModel.value
       })
       if (response?.status === 200) {
         existingTask.value.subtasks.push(response.data)
@@ -166,13 +157,10 @@ async function addSubtaskToTask() {
   else if (activeChore.chore && !newChoreOpened.value) {
     if (!props.isProject) {
       // Make the api call
-      const response = await useFetch(`/tasks/${props.task.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "subtask",
-          "action": "update",
-          "subtask": activeChore.chore
-        }
+      const response = await axios.patch(`/tasks/${props.task.id}/`, {
+        "obj": "subtask",
+        "action": "update",
+        "subtask": activeChore.chore
       })
       if (response?.status === 200) {
         closeDetails()
@@ -187,13 +175,10 @@ async function deleteChore() {
   if (props.isProject) {
     // Works !!
     // Delete task
-    const response = await useFetch(`/projects/${props.project.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "project",
-        "action": "delete_task",
-        "task_id": activeChore.chore?.id
-      }
+    const response = await axios.patch(`/projects/${props.project.id}/`, {
+      "obj": "project",
+      "action": "delete_task",
+      "task_id": activeChore.chore?.id
     })
     if (response?.status === 200) {
       existingProject.value.tasks = existingProject.value.tasks.filter(
@@ -206,13 +191,10 @@ async function deleteChore() {
       (sub: TaskType) => sub !== activeChore.chore)
 
     // Make the API call
-    const response = await useFetch(`/tasks/${props.task.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "subtask",
-        "action": "remove",
-        "subtask_id": activeChore.chore?.id
-      }
+    const response = await axios.patch(`/tasks/${props.task.id}/`, {
+      "obj": "subtask",
+      "action": "remove",
+      "subtask_id": activeChore.chore?.id
     })
     console.log(response?.data)
   }
@@ -237,13 +219,10 @@ function removeChore() {
 async function toggleChoreDone(chore: TaskType | SubtaskType) {
   if (props.isProject) {
     try {
-      const response = await useFetch(`/projects/${props.project.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "project",
-          "action": "task_done",
-          "task_id": chore.id
-        }
+      const response = await axios.patch(`projects/${props.project.id}/`, {
+        "obj": "project",
+        "action": "task_done",
+        "task_id": chore.id
       })
       if (response?.status === 200) {
         chore.done = response.data.done
@@ -261,13 +240,10 @@ async function toggleChoreDone(chore: TaskType | SubtaskType) {
   }
   else {
     try {
-      const response = await useFetch(`/tasks/${props.task.id}/`, {
-        method: 'patch',
-        data: {
-          "obj": "subtask",
-          "action": "done",
-          "subtask_id": chore.id
-        }
+      const response = await axios.patch(`tasks/${props.task.id}/`, {
+        "obj": "subtask",
+        "action": "done",
+        "subtask_id": chore.id
       })
       if (response?.status === 200) {
         chore.done = response.data.done

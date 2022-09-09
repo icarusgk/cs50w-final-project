@@ -3,18 +3,17 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
-import type { Task, Project } from '@/types';
+import type { TaskType, Project } from '@/types';
 
 
 import DoneIcon from '../icons/DoneIcon.vue';
 import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
 import TaskModal from '../TaskModal.vue';
 import TaskInfoIcon from "@/components/icons/TaskInfoIcon.vue";
-import { useFetch } from '@/composables/useFetch';
 
 
 const props = defineProps<{
-  task: Task
+  task: TaskType
 }>()
 
 const task = ref(props.task)
@@ -25,12 +24,9 @@ watch(() => open.value, () => {
 })
 
 async function toggleDone() {
-  const response = await useFetch(`/tasks/${props.task.id}/`, {
-    method: 'patch',
-    data: {
-      "obj": "task",
-      "action": "done"
-    }
+  const response = await axios.patch(`tasks/${props.task.id}/`, {
+    "obj": "task",
+    "action": "done"
   })
   if (response?.status === 200) {
     task.value.done = response.data?.done

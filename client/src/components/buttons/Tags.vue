@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import axios from 'axios'
 import type { Tag } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from "@/components/icons/AddTagIcon.vue";
 import DeleteTagIcon from "../icons/DeleteTagIcon.vue";
-import { useFetch } from '@/composables/useFetch';
+
 
 const props = defineProps<{
   id?: number,
@@ -49,13 +50,10 @@ async function addTag() {
         // Make the request
         try {
           // Add the new tag to the existing task
-          const response = await useFetch(`/tasks/${props.id}/`, {
-            method: 'patch',
-            data: {
-              "obj": "tag",
-              "action": "add",
-              "tag_name": newTag.value
-            }
+          const response = await axios.patch(`tasks/${props.id}/`, {
+            "obj": "tag",
+            "action": "add",
+            "tag_name": newTag.value
           })
 
           if (response?.status === 200) {
@@ -77,16 +75,11 @@ async function addTag() {
 
 async function deleteTag(tag: Tag) {
   // TODO: Ask for confirmation  
-  const response = await useFetch(`/tasks/${props.id}/`,
-    {
-      method: 'patch',
-      data: {
-        "obj": "tag",
-        "action": "remove",
-        "tag_id": tag.id
-      }
-    }
-  )
+  const response = await axios.patch(`tasks/${props.id}/`, {
+    "obj": "tag",
+    "action": "remove",
+    "tag_id": tag.id
+  })
   if (response?.status === 200) {
     // emit the deletion of the tag
     removeTag(tag)

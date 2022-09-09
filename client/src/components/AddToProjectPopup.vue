@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import type { Project } from '@/types';
-import { useFetch } from '@/composables/useFetch';
+import axios from 'axios';
 
 const props = defineProps<{
   taskId?: number
@@ -25,13 +25,10 @@ allProjects.forEach((project: Project) => {
 async function addToProject(project: Project) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
-    const response = await useFetch(`/projects/${project.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "project",
-        "action": "add_to_project",
-        "task_id": props.taskId
-      }
+    const response = await axios.patch(`projects/${project.id}/`, {
+      "obj": "project",
+      "action": "add_to_project",
+      "task_id": props.taskId
     })
 
     if (response?.status === 200) {
@@ -43,13 +40,10 @@ async function addToProject(project: Project) {
       taskProjects.value.push(project)
     }
   } else {
-    const response = await useFetch(`/projects/${project.id}/`, {
-      method: 'patch',
-      data: {
-        "obj": "project",
-        "action": "remove",
-        "task_id": props.taskId
-      }
+    const response = await axios.patch(`projects/${project.id}/`, {
+      "obj": "project",
+      "action": "remove",
+      "task_id": props.taskId
     })
     console.log(response)
     if (response?.status === 200) {

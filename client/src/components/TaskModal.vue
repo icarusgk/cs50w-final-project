@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useChoreStore } from '@/stores/chore';
-import type { Tag, Task } from '@/types'
+import type { Tag, TaskType } from '@/types'
+import axios from "axios";
 
 import Tags from "@/components/buttons/Tags.vue";
 import Modal from "@/components/modals/Modal.vue";
@@ -9,13 +10,12 @@ import TaskModalInfo from "@/components/modals/TaskModalInfo.vue";
 import SaveButton from "@/components/SaveButton.vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 import AddToProjectPopup from "./AddToProjectPopup.vue";
-import { useFetch } from "@/composables/useFetch";
 import DoneIcon from "./icons/DoneIcon.vue";
 import MarkedDoneIcon from "./icons/MarkedDoneIcon.vue";
 
 
 const props = defineProps<{
-  task: Task
+  task: TaskType
   open: boolean
 }>()
 
@@ -28,10 +28,7 @@ const pristine = ref(true)
 // Saves task with PUT method
 async function saveTask() {
   try {
-    const response = await useFetch(`/tasks/${props.task.id}/`, {
-      method: 'put',
-      data: task.value
-    })
+    const response = await axios.put(`tasks/${props.task.id}/`, task.value)
     if (response?.status === 200) {
       console.log(response)
     }

@@ -6,7 +6,7 @@ import type { Project } from '@/types';
 import Modal from '@/components/modals/Modal.vue';
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import { useFetch } from '@/composables/useFetch';
+import axios from 'axios';
 
 const props = defineProps<{
   project: Project
@@ -23,14 +23,11 @@ function deleteProject() {
 
 watch(() => props.project.name, (newName, oldName) => {
   if (newName !== oldName) { 
-    useFetch(`/projects/${props.project.id}/`, {
-      method: 'patch',
-      data: {
+    axios.patch(`/projects/${props.project.id}/`, {
         "obj": "project",
         "action": "modify_title",
         "name": newName
-      }
-    })
+      })
   }
 })
 

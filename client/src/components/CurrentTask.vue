@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue'
 import { useChoreStore } from '@/stores/chore';
-import { useFetch } from '@/composables/useFetch';
+import axios from 'axios'
 
 const currentTask = computed(() => useChoreStore().currentTask)
 const task = ref()
 
 async function getTask() {
-  const response = await useFetch(`/tasks/${currentTask.value?.id}`)
+  const response = await axios.get(`tasks/${currentTask.value?.id}/`)
   task.value = response?.data
 }
 
