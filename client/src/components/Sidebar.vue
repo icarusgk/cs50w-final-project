@@ -7,9 +7,11 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
 
 <template>
   <div class="container">
-    <div class="logo-container">
-      <img src="../assets/tomato-logo.png" class="logo-img" />
-    </div>
+    <router-link to="/">
+      <div class="logo-container">
+        <img src="../assets/tomato-logo.png" class="logo-img" />
+      </div>
+    </router-link>
     <div class="menu-container">
       <router-link to="/">
         <MenuIcon>

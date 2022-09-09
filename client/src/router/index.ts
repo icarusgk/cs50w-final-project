@@ -46,10 +46,10 @@ const router = createRouter({
 })
 
 // Prevent to visit page that requiresAuth
-  router.beforeEach((to) => {
-    if (to.meta.requiresAuth) {
-      return false
-    }
-  })
+  // router.beforeEach((to) => {
+  //   if (to.meta.requiresAuth) {
+  //     return false
+  //   }
+  // })
 
 export default router

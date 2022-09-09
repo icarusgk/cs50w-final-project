@@ -19,7 +19,12 @@
   padding: 30px 20px;
   border-radius: 10px;
   color: white;
-  transition: background-color 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background-color: var(--vivid-red);
+    padding: 30px 30px;
+  }
 }
 
 
