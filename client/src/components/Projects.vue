@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import { useAuthStore } from '@/stores/auth';
 
 import Project from '@/components/Project.vue'
 import TaskType from '@/components/slots/TaskType.vue'
 import ProjectIcon from '@/components/icons/ProjectIcon.vue'
-// import projects from '@/mocks/projects';
+
+
+
 const choreStore = useChoreStore()
 
 const projects = computed(() => choreStore.projects)
-
 </script>
 
 <template>
-  <div v-if="projects.length > 0">
+  <div>
     <!-- Title -->
     <TaskType
       class="projects-button"
@@ -27,16 +29,13 @@ const projects = computed(() => choreStore.projects)
       </template>
     </TaskType>
     <div>
-      <div v-if="!projects">
+      <div v-if="projects.length === 0">
         <h2>No Projects</h2>
       </div>
       <!-- List of projects -->
       <div v-for="project in projects">
         <Project :project="project" />
       </div>
-    </div>
-    <div>
-      <!-- Icon -->
     </div>
   </div>
 </template>

@@ -21,7 +21,7 @@ const tasks = computed(() => choreStore.tasks)
         <h1>Single Tasks</h1>
       </template>
     </TaskType>
-    <div v-if="!tasks">
+    <div v-if="tasks.length === 0">
       <h2>No tasks</h2>
     </div>
     <div v-for="task in tasks">

@@ -1,21 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { useChoreStore } from '@/stores/chore'
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
 import Timer from '@/components/Timer.vue'
-import Projects from '@/components/Projects.vue'
-import Tasks from '@/components/Tasks.vue'
 import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue'
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
-import { onMounted } from 'vue'
+import Chores from '../components/Chores.vue'
 
 const auth = useAuthStore()
-
-onMounted(() => {
-  if (auth.isAuthenticated) {
-    useChoreStore().fetchAll()
-  }
-})
 </script>
 <template>
   <div id="home">
@@ -30,7 +21,10 @@ onMounted(() => {
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->
-      <div id="task-btn-container" :class="{ opaque: !auth.isAuthenticated }">
+      <div 
+        id="task-btn-container" 
+        :class="{ opaque: !auth.isAuthenticated }"
+      >
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
@@ -39,12 +33,7 @@ onMounted(() => {
       <div v-if="!auth.isAuthenticated">
         <UnauntheticatedLogin />
       </div>
-      <div v-if="auth.isAuthenticated">
-        <!-- Projects -->
-        <Projects />
-        <!-- Tasks -->
-        <Tasks />
-      </div>
+      <Chores />
     </div>
   </div>
 </template>
