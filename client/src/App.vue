@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
+import { useModalStore } from '@/stores/modal'
+import { useChoreStore } from '@/stores/chore'
 import SideBar from '@/components/Sidebar.vue'
 import UpperMenu from '@/components/UpperMenu.vue'
-import { useChoreStore } from '@/stores/chore'
-import { useModalStore } from '@/stores/modal'
-import { useAuthStore } from '@/stores/auth';
-
 useModalStore().close()
-
 const auth = useAuthStore()
 
 if (auth.isAuthenticated) {
   auth.getUser()
-  useChoreStore().fetchAll()
+  useChoreStore().fetchAll()  
 }
 </script>
 
