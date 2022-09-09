@@ -9,18 +9,18 @@ const credentials = reactive({
 });
 const message = ref("");
 
-function login() {
-  useAuthStore().login(credentials);
+function register() {
+  useAuthStore().register(credentials);
 }
 </script>
 
 <template>
-  <div class="login">
+  <div class="register">
     <h1>Register</h1>
     <div>
       {{ message }}
     </div>
-    <form @submit.prevent="login()">
+    <form @submit.prevent="register()">
       <div>
         <input
           v-model="credentials.username"
@@ -56,6 +56,11 @@ function login() {
         <input type="submit" value="Register" id="submit" />
       </div>
     </form>
+    <div id="route-to-login">
+      <span>Already have an account?
+        <router-link to="/login">Login here!</router-link>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -63,7 +68,7 @@ function login() {
 * {
   color: white;
 }
-.login {
+.register {
   text-align: center;
 
   form {
@@ -85,10 +90,15 @@ function login() {
     background-color: var(--vivid-red);
     color: white;
     border: none;
+    border-radius: 8px;
     &:hover,
     &:focus {
       cursor: pointer;
     }
+  }
+
+  #route-to-login {
+    margin-top: 2rem;
   }
 }
 </style>

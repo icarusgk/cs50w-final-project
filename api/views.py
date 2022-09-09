@@ -260,25 +260,23 @@ class RegisterView(APIView):
   def post(self, request):
     username = request.data['username']
     password = request.data['password']
+    confirmation = request.data['passwordConfirmation']
+    
+    if User.objects.filter(username=username):
+      return Response({'message': 'User already exists'})
 
-    user = User.objects.create_user(username=username, password=password)
-    user.save()
-    return Response({'message': 'success'})
+    if password == confirmation:
+      user = User.objects.create_user(username=username, password=password)
+      user.save()
+      return Response({'message': f'User Created {username}'})
 
+    return Response({'message': 'error creating user'})
+    
 
 class CurrentUserView(APIView):
   permission_classes = [permissions.IsAuthenticated]
   def get(self, request):
     return Response(UserSerializer(request.user).data)
-
-# class TasksView(APIView):
-#   def get(self, request):
-#     """
-#     List tasks specific to the user
-#     """
-#     tasks = Task.objects.filter(user=request.user)
-#     serializer = TaskSerializer(tasks, many=True)
-#     return Response(serializer.data)
 
 # Current Task
 class CurrentTaskView(APIView):

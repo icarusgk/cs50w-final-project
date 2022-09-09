@@ -6,10 +6,19 @@ const credentials = reactive({
   username: "",
   password: "",
 });
-const message = ref("");
 
-function login() {
-  useAuthStore().login(credentials);
+const message = ref("");
+const loading = ref(false);
+
+async function handleLogin() {
+  loading.value = true;
+  try { 
+    await useAuthStore().login(credentials);
+  } catch (err) {
+    console.log('err in handleLogin()', err);
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -19,7 +28,7 @@ function login() {
     <div>
       {{ message }}
     </div>
-    <form @submit.prevent="login()">
+    <form @submit.prevent="handleLogin()">
       <div>
         <input
           v-model="credentials.username"
@@ -45,6 +54,11 @@ function login() {
         <input type="submit" value="Submit" id="submit" />
       </div>
     </form>
+    <div id="route-to-register">
+      <span>Don't have an account?
+        <router-link to="/register">Register here!</router-link>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -73,11 +87,16 @@ function login() {
     padding: 0.6rem 4rem;
     background-color: var(--vivid-red);
     color: white;
+    border-radius: 8px;
     border: none;
     &:hover,
     &:focus {
       cursor: pointer;
     }
+  }
+
+  #route-to-register {
+    margin-top: 2rem;
   }
 }
 </style>

@@ -8,8 +8,6 @@ import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import Title from './Title.vue';
 import Modal from './modals/Modal.vue';
-import Login from '@/components/Login.vue'
-
 const open = ref(false)
 const auth = useAuthStore()
 
@@ -33,9 +31,9 @@ watch(() => open.value, () => {
       <!-- User -->
       <li>
         <div class="login">
-          <div class="login" @click="open = true">
+          <div class="login" @click="auth.isAuthenticated ? open = true : open = false">
             <UserIcon />
-            <span v-if="auth.isAuthenticated">{{ auth.user?.username }}</span>
+            <span v-if="auth.user">{{ auth.user?.username }}</span>
           </div>
           <span v-if="!auth.isAuthenticated" @click="$router.push('/login')">Login</span>
         </div>
@@ -47,7 +45,8 @@ watch(() => open.value, () => {
       <div>
         <h1>Logout</h1>
         <h2>Hello there {{ auth.user?.username }}</h2>
-        <button @click="auth.logout(); open = false;">Logout</button>
+        <h2>Your current streak is of {{ auth.user?.streak }} days</h2>
+        <button id="logout-btn" @click="auth.logout(); open = false;">Logout</button>
       </div>
     </Modal>
   </div>
@@ -87,6 +86,21 @@ watch(() => open.value, () => {
         }
       }
     }
+  }
+}
+
+#logout-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--vivid-red);
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.15s ease-in;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ff4b4b9f
   }
 }
 
