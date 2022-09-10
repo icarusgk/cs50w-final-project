@@ -17,45 +17,41 @@ function register() {
 <template>
   <div class="register">
     <h1>Register</h1>
-    <div>
-      {{ message }}
-    </div>
-    <form @submit.prevent="register()">
-      <div>
-        <input
-          v-model="credentials.username"
-          placeholder="Username"
-          type="username"
+    <div class="wrapper">
+      <FormKit 
+        type="form"
+        submit-label="Register"
+        @submit="register"
+      >
+        <FormKit
+          type="text"
           name="username"
           id="username"
-          class="form-input"
+          input-class="formkit-color-white"
+          message-class="formkit-color-red"
+          placeholder="Username"
+          validation="required"
         />
-      </div>
-      <div>
-        <input
-          v-model="credentials.password"
-          placeholder="Password"
+        <FormKit
           type="password"
           name="password"
           id="password"
-          autocomplete="true"
-          class="form-input"
+          input-class="formkit-color-white"
+          message-class="formkit-color-red"
+          placeholder="Password"
+          validation="required"
         />
-      </div>
-      <div>
-        <input
-          v-model="credentials.passwordConfirmation"
-          placeholder="Confirm Password"
+        <FormKit 
           type="password"
           name="confirm-password"
           id="confirm-password"
-          class="form-input"
+          input-class="formkit-color-white"
+          message-class="formkit-color-red"
+          placeholder="Confirm Password"
+          validation="required"
         />
-      </div>
-      <div>
-        <input type="submit" value="Register" id="submit" />
-      </div>
-    </form>
+      </FormKit>
+    </div>
     <div id="route-to-login">
       <span>Already have an account?
         <router-link to="/login">Login here!</router-link>
@@ -71,34 +67,17 @@ function register() {
 .register {
   text-align: center;
 
-  form {
-    margin-top: 1rem;
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
   }
-
-  .form-input {
-    padding: 1rem;
-    background-color: rgba(92, 92, 92, 0.5);
-    outline: none;
-    border: none;
-    color: white;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-  }
-
-  #submit {
-    padding: 0.6rem 4rem;
-    background-color: var(--vivid-red);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    &:hover,
-    &:focus {
-      cursor: pointer;
-    }
-  }
-
   #route-to-login {
     margin-top: 2rem;
   }
+}
+
+.text-color {
+  color: white;
 }
 </style>

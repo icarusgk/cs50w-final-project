@@ -60,6 +60,14 @@ html {
   background-color: #212121;
 }
 
+.formkit-color-white {
+  color: white !important;
+}
+
+.formkit-color-red {
+  color: var(--vivid-red) !important;
+}
+
 .blur {
   filter: blur(14px);
   pointer-events: none;
