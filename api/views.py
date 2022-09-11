@@ -142,12 +142,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 
       return Response({'message': 'error'})
 
-
 class TagViewSet(viewsets.ModelViewSet):
   queryset = Tag.objects.all()
   permission_classes = [permissions.IsAuthenticated]
   serializer_class = TagSerializer
-
 
 class ProjectViewSet(viewsets.ModelViewSet):
   queryset = Project.objects.all()
@@ -255,7 +253,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
     project.delete()
     return Response({'data': 'project deleted'})
 
-
 class RegisterView(APIView):
   def post(self, request):
     username = request.data['username']
@@ -272,7 +269,6 @@ class RegisterView(APIView):
 
     return Response({'message': 'error creating user'})
     
-
 class CurrentUserView(APIView):
   permission_classes = [permissions.IsAuthenticated]
   def get(self, request):

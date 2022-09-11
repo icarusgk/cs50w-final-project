@@ -2,6 +2,8 @@ import type { Project, Tag, TaskType } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+function tryCatcher() {}
+
 export const useChoreStore = defineStore({
   id: 'chores',
   state: () => ({
@@ -13,22 +15,29 @@ export const useChoreStore = defineStore({
   actions: {
     // fetchers
     async fetchTasks() {
-      try {
-        const response = await axios.get('tasks/');
-        if (response?.status === 200) {
-          this.tasks = response?.data;
-        }
-      } catch (err) {
-        console.log('tasks error', err);
+      const response = await axios
+        .get('tasks/')
+        .catch((err) => console.log('tasks error', err));
+
+      if (response?.status === 200) {
+        this.tasks = response?.data;
       }
     },
     async fetchProjects() {
-      const response = await axios.get('projects/');
-      this.projects = response?.data;
+      const response = await axios
+        .get('projects/')
+        .catch((err) => console.log('projects error', err));
+      if (response?.status === 200) {
+        this.projects = response?.data;
+      }
     },
     async fetchTags() {
-      const response = await axios.get('tags/');
-      this.tags = response?.data;
+      const response = await axios
+        .get('tags/')
+        .catch((err) => console.log('tags error', err));
+      if (response?.status === 200) {
+        this.tags = response?.data;
+      }
     },
     // async fetchCurrentTask() {
     //   const response = await useFetch('/currentTask/')
@@ -43,36 +52,36 @@ export const useChoreStore = defineStore({
     },
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {
-      try {
-        const response = await axios.post('tasks/', task);
+      const response = await axios
+        .post('tasks/', task)
+        .catch((err) => console.log('add task err', err));
 
-        if (response?.status === 200) {
-          this.tasks.push(response.data);
-        }
-      } catch (err) {
-        console.log('add task err', err);
+      if (response?.status === 200) {
+        this.tasks.push(response.data);
       }
     },
     async deleteTask(id: number | undefined) {
-      const response = await axios.delete(`tasks/${id}/`);
-
-      console.log(response);
+      const response = await axios
+        .delete(`tasks/${id}/`)
+        .catch((err) => console.log('delete task err', err));
 
       if (response?.status === 204) {
         this.tasks = this.tasks.filter((task: TaskType) => task.id !== id);
       }
     },
     async addProject(project: Project) {
-      const response = await axios.post('projects/', project);
+      const response = await axios
+        .post('projects/', project)
+        .catch((err) => console.log('add project err', err));
 
       if (response?.status == 201) {
         this.projects.push(response.data);
       }
     },
     async deleteProject(id: number) {
-      const response = await axios.delete(`projects/${id}/`);
-
-      console.log(response);
+      const response = await axios
+        .delete(`projects/${id}/`)
+        .catch((err) => console.log('delete project err', err));
 
       if (response?.status === 200) {
         this.projects = this.projects.filter(
@@ -81,14 +90,12 @@ export const useChoreStore = defineStore({
       }
     },
     async addTag(tag: string) {
-      try {
-        const response = await axios.post('tags/', tag);
+      const response = await axios
+        .post('tags/', tag)
+        .catch((err) => console.log('add tag err', err));
 
-        if (response?.status === 200) {
-          console.log(response.data);
-        }
-      } catch (err) {
-        console.log('addTag err', err);
+      if (response?.status === 200) {
+        console.log(response.data);
       }
     },
     // changeCurrentTask(id: number) {
