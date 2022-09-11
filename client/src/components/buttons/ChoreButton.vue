@@ -20,7 +20,8 @@ import AddIcon from '@/components/icons/AddIcon.vue';
   margin-right: 1rem;
   padding: 0.1rem 0.5rem;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 

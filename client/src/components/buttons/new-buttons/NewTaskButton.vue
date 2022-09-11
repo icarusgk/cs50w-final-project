@@ -11,21 +11,24 @@ import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
 import type Task from '@/types/TaskType';
 
-const open = ref(false)
-const taskStore = useChoreStore()
-const auth = useAuthStore()
+const open = ref(false);
+const taskStore = useChoreStore();
+const auth = useAuthStore();
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 
 const initialTask = ref<Task>({
   tags: [],
   title: '',
   description: '',
   estimated: 1,
-  subtasks: []
-})
+  subtasks: [],
+});
 
 function resetTask() {
   initialTask.value = {
@@ -33,24 +36,22 @@ function resetTask() {
     title: '',
     description: '',
     estimated: 1,
-    subtasks: []
-  }
-  open.value = false
+    subtasks: [],
+  };
+  open.value = false;
 }
 
 function saveTask() {
   if (initialTask.value.title) {
-    taskStore.addTask(initialTask.value)
+    taskStore.addTask(initialTask.value);
   }
-  resetTask()
+  resetTask();
 }
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthenticated ? open = true : open = false">
-    <template #type>
-      Add new task
-    </template>
+  <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
+    <template #type> Add new task </template>
   </ChoreButton>
   <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
@@ -58,23 +59,19 @@ function saveTask() {
     </template>
     <!-- New task title input -->
     <template #title>
-      <input 
-        type="text" 
-        name="title" 
-        id="new-task-input-title" 
-        placeholder="New task title" 
-        v-model="initialTask.title" 
+      <input
+        type="text"
+        name="title"
+        id="new-task-input-title"
+        placeholder="New task title"
+        v-model="initialTask.title"
       />
     </template>
     <!-- Rest of modal -->
     <TaskModalInfo :task="initialTask" :isNew="true" />
     <!-- Button -->
     <template #save-button>
-      <button
-        @click="saveTask()"
-        class="close-modal-button"
-      >Save!
-      </button>
+      <button @click="saveTask()" class="close-modal-button">Save!</button>
     </template>
   </Modal>
 </template>
@@ -89,7 +86,8 @@ function saveTask() {
   font-family: sans-serif;
   width: 100%;
 
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     outline: none;
   }
 }
@@ -109,7 +107,8 @@ function saveTask() {
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

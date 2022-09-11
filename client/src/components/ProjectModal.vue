@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import type { Project } from '@/types';
 
@@ -9,43 +9,45 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import axios from 'axios';
 
 const props = defineProps<{
-  project: Project
-  open: boolean
-}>()
+  project: Project;
+  open: boolean;
+}>();
 
-const emit = defineEmits(['exit'])
+const emit = defineEmits(['exit']);
 
 // Works
 function deleteProject() {
-  useChoreStore().deleteProject(props.project.id as number)
-  emit('exit')
+  useChoreStore().deleteProject(props.project.id as number);
+  emit('exit');
 }
 
-watch(() => props.project.name, (newName, oldName) => {
-  if (newName !== oldName) { 
-    axios.patch(`/projects/${props.project.id}/`, {
-        "obj": "project",
-        "action": "modify_title",
-        "name": newName
-      })
+watch(
+  () => props.project.name,
+  (newName, oldName) => {
+    if (newName !== oldName) {
+      axios.patch(`/projects/${props.project.id}/`, {
+        obj: 'project',
+        action: 'modify_title',
+        name: newName,
+      });
+    }
   }
-})
-
+);
 </script>
 
 <template>
-  <div class="project-container" >
+  <div class="project-container">
     <!-- Modal -->
     <Modal :is-project="true" :open="open" @exit-modal="$emit('exit')">
       <!-- Title -->
       <template #title>
-        <input 
-          type="text" 
-          name="title" 
-          id="task-input-title" 
+        <input
+          type="text"
+          name="title"
+          id="task-input-title"
           v-model.lazy="props.project.name"
           @keyup.ctrl.enter="$emit('exit')"
-         />
+        />
       </template>
       <template #delete-icon>
         <DeleteIcon @click="deleteProject()" class="delete-icon" />
@@ -72,7 +74,8 @@ watch(() => props.project.name, (newName, oldName) => {
 }
 
 .delete-icon {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

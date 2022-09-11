@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
-import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue'
-import Timer from '@/components/Timer.vue'
-import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue'
-import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue'
-import Chores from '../components/Chores.vue'
+import { useAuthStore } from '@/stores/auth';
+import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue';
+import Timer from '@/components/Timer.vue';
+import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue';
+import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue';
+import Chores from '../components/Chores.vue';
 
-const auth = useAuthStore()
+const auth = useAuthStore();
 </script>
 <template>
   <div id="home">
@@ -17,14 +17,10 @@ const auth = useAuthStore()
         <Timer />
       </div>
     </div>
-    
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->
-      <div 
-        id="task-btn-container" 
-        :class="{ opaque: !auth.isAuthenticated }"
-      >
+      <div id="task-btn-container" :class="{ opaque: !auth.isAuthenticated }">
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
@@ -84,7 +80,6 @@ const auth = useAuthStore()
   }
 }
 
-
 @media (max-width: 768px) {
   #home {
     padding: 0 0 0 1rem;
@@ -113,5 +108,4 @@ const auth = useAuthStore()
     }
   }
 }
-
 </style>

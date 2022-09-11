@@ -6,9 +6,9 @@ import TaskType from '@/components/slots/TaskType.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import Task from '@/components/buttons/Task.vue';
 
-const choreStore = useChoreStore()
+const choreStore = useChoreStore();
 
-const tasks = computed(() => choreStore.tasks)
+const tasks = computed(() => choreStore.tasks);
 </script>
 
 <template>
@@ -32,7 +32,8 @@ const tasks = computed(() => choreStore.tasks)
 
 <style lang="scss" scoped>
 .button {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

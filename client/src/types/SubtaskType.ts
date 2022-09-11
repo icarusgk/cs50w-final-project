@@ -1,8 +1,8 @@
 type Subtask = {
-  id?: number,
-  title: string,
-  description: string,
-  done?: boolean
-}
+  id?: number;
+  title: string;
+  description: string;
+  done?: boolean;
+};
 
-export default Subtask
+export default Subtask;

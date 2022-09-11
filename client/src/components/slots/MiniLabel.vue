@@ -1,14 +1,13 @@
 <script setup lang="ts">
 defineProps<{
-  isTask?: Boolean
-  isTag?: Boolean
-  isAdd?: Boolean
-}>()
-
+  isTask?: Boolean;
+  isTag?: Boolean;
+  isAdd?: Boolean;
+}>();
 </script>
 
 <template>
-  <div class="minilabel" :class="{ task: isTask, tag: isTag, add: isAdd }" >
+  <div class="minilabel" :class="{ task: isTask, tag: isTag, add: isAdd }">
     <!-- Title -->
     <div class="title">
       <slot name="title"></slot>
@@ -17,7 +16,6 @@ defineProps<{
     <div class="icon">
       <slot name="icon"></slot>
     </div>
-    
   </div>
 </template>
 
@@ -26,7 +24,8 @@ defineProps<{
   display: flex;
   align-items: center;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 
@@ -72,5 +71,4 @@ defineProps<{
     font-size: 0.55rem;
   }
 }
-
 </style>

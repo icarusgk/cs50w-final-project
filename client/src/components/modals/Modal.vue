@@ -1,24 +1,21 @@
 <script setup lang="ts">
-import CloseIcon from "@/components/icons/CloseIcon.vue";
+import CloseIcon from '@/components/icons/CloseIcon.vue';
 
 // Modal is gonna receive the props
 defineProps<{
-  open: Boolean
-  isButton?: Boolean
-  isProject?: Boolean
-}>()
+  open: Boolean;
+  isButton?: Boolean;
+  isProject?: Boolean;
+}>();
 
-const emits = defineEmits(['exitModal'])
-
+const emits = defineEmits(['exitModal']);
 </script>
 
 <template>
   <Teleport to="html">
     <div v-if="open" class="modal">
       <div class="task-upper-menu">
-      
         <div class="tags-and-title-container">
-
           <div v-if="!isProject" class="tags-container">
             <slot name="tags"></slot>
           </div>
@@ -26,7 +23,6 @@ const emits = defineEmits(['exitModal'])
           <div class="title-container">
             <slot name="title"></slot>
           </div>
-
         </div>
 
         <div>
@@ -36,7 +32,6 @@ const emits = defineEmits(['exitModal'])
         <div @click="emits('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
-
       </div>
       <slot></slot>
       <div class="buttons">
@@ -62,7 +57,7 @@ const emits = defineEmits(['exitModal'])
   padding: 2rem;
   border-radius: 10px;
 
-  background: rgba(136, 136, 136, 0.30);
+  background: rgba(136, 136, 136, 0.3);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(11.2px);
@@ -71,7 +66,6 @@ const emits = defineEmits(['exitModal'])
   .task-upper-menu {
     display: flex;
     justify-content: space-between;
-    
 
     .tags-and-title-container {
       display: flex;
@@ -86,7 +80,8 @@ const emits = defineEmits(['exitModal'])
     }
 
     .close-icon {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
     }
@@ -117,6 +112,5 @@ const emits = defineEmits(['exitModal'])
       flex-direction: column;
     }
   }
-  
 }
 </style>

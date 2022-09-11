@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
-import { useModalStore } from '@/stores/modal'
-import { useChoreStore } from '@/stores/chore'
-import SideBar from '@/components/Sidebar.vue'
-import UpperMenu from '@/components/UpperMenu.vue'
-useModalStore().close()
-const auth = useAuthStore()
+import { useAuthStore } from '@/stores/auth';
+import { useModalStore } from '@/stores/modal';
+import { useChoreStore } from '@/stores/chore';
+import SideBar from '@/components/Sidebar.vue';
+import UpperMenu from '@/components/UpperMenu.vue';
+useModalStore().close();
+const auth = useAuthStore();
 
 if (auth.isAuthenticated) {
-  auth.getUser()
-  useChoreStore().fetchAll()  
+  auth.getUser();
+  useChoreStore().fetchAll();
 }
 </script>
 
@@ -44,7 +44,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -73,7 +73,6 @@ html {
   pointer-events: none;
 }
 
-
 .body {
   display: flex;
   margin-left: 130px;
@@ -90,23 +89,22 @@ html {
   }
 }
 
-
 @media (max-width: 768px) {
-.body {
-  margin-left: 0;
-  margin-bottom: 140px;
+  .body {
+    margin-left: 0;
+    margin-bottom: 140px;
 
-  .menu-and-content {
-    padding: 0.5rem;
-    .upper-menu {
-      padding: 0;
+    .menu-and-content {
+      padding: 0.5rem;
+      .upper-menu {
+        padding: 0;
+      }
     }
   }
-}
 
-.blur {
-  filter: blur(60px);
-}
+  .blur {
+    filter: blur(60px);
+  }
 
   * {
     touch-action: manipulation;

@@ -1,8 +1,8 @@
 <script setup>
-import HomeIcon from '@/components/icons/HomeIcon.vue'
-import StatsIcon from '@/components/icons/StatsIcon.vue'
-import AboutIcon from '@/components/icons/AboutIcon.vue'
-import MenuIcon from '@/components/slots/MenuIcon.vue'
+import HomeIcon from '@/components/icons/HomeIcon.vue';
+import StatsIcon from '@/components/icons/StatsIcon.vue';
+import AboutIcon from '@/components/icons/AboutIcon.vue';
+import MenuIcon from '@/components/slots/MenuIcon.vue';
 </script>
 
 <template>
@@ -72,10 +72,8 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
       padding: 0 1rem;
       border-radius: 8px;
     }
-
   }
 }
-
 
 @media (max-width: 768px) {
   .container {
@@ -88,10 +86,8 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
 
     flex-direction: row;
     justify-content: space-around;
-    
 
     .menu-container {
-      
       flex-direction: row;
       margin-bottom: 4rem;
 
@@ -108,20 +104,16 @@ import MenuIcon from '@/components/slots/MenuIcon.vue'
         background-color: transparent;
         padding: 0;
         border-radius: 8px;
-        
+
         .item {
           color: white;
         }
       }
     }
-  }  
-  
+  }
+
   .logo-container {
     display: none;
   }
-  
-
-  
 }
 </style>
-

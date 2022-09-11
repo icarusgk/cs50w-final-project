@@ -1,65 +1,69 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import axios from 'axios';
-import type { TaskType, SubtaskType } from '@/types'
+import type { TaskType, SubtaskType } from '@/types';
 
 import Subtask from '@/components/Subtask.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from './icons/DoneIcon.vue';
 import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
-import { useChoreStore } from '@/stores/chore'
-import TaskInfoIcon from './icons/TaskInfoIcon.vue'
+import { useChoreStore } from '@/stores/chore';
+import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 
-const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew'])
+const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew']);
 
-const existingTask = ref(props.task)
-const existingProject = ref(props.project)
+const existingTask = ref(props.task);
+const existingProject = ref(props.project);
 
 // Initial mold for a task
 const taskModel = ref({
   tags: [],
   title: '',
   description: '',
-  estimated: 1
-})
+  estimated: 1,
+});
 
 // Initial mold for a subtask
 const subtaskModel = ref({
   title: '',
-  description: ''
-})
+  description: '',
+});
 
 // A chore can be either a task in a project
 // or a subtask in a task
-const newChoreOpened = ref(false)
+const newChoreOpened = ref(false);
 
 const activeChore = reactive<{
-  opened: boolean,
-  chore: TaskType | SubtaskType | null
+  opened: boolean;
+  chore: TaskType | SubtaskType | null;
 }>({
   opened: false,
-  chore: null
-})
+  chore: null,
+});
 
 // Open the an empty chore
 function openNewChore() {
   // Toggle the state of the active chore
-  if (activeChore.opened) { activeChore.opened = false }
+  if (activeChore.opened) {
+    activeChore.opened = false;
+  }
   // Open a new chore
-  newChoreOpened.value = true
+  newChoreOpened.value = true;
 }
 
 // Open chore details
 function openDetails(chore: TaskType | SubtaskType) {
   // Assign the current task details
-  activeChore.chore = chore
+  activeChore.chore = chore;
 
   // Close the "details" for a new chore
-  if (newChoreOpened.value) { newChoreOpened.value = false }
+  if (newChoreOpened.value) {
+    newChoreOpened.value = false;
+  }
 
   // Mark the chore details as opened
-  activeChore.opened = true
+  activeChore.opened = true;
 }
 
 // Resets the subtask model to its initial value
@@ -67,7 +71,7 @@ function resetSubtaskModel() {
   subtaskModel.value = {
     title: '',
     description: '',
-  }
+  };
 }
 
 // Resets the task model to its initial value
@@ -76,20 +80,19 @@ function resetTaskModel() {
     tags: [],
     title: '',
     description: '',
-    estimated: 1
-  }
+    estimated: 1,
+  };
 }
 
 // Add task to existing project
 async function addTaskToProject() {
-  // if a new task is being pushed to a new or 
+  // if a new task is being pushed to a new or
   // existing project
   if (taskModel.value.title) {
-
     // Push new task to new project
     if (props.isProject && props.isNew) {
-      existingProject.value.tasks.push(taskModel.value)
-      resetTaskModel()
+      existingProject.value.tasks.push(taskModel.value);
+      resetTaskModel();
     }
 
     // Add new task to an existing project
@@ -98,18 +101,18 @@ async function addTaskToProject() {
       // Works !!
       try {
         const response = await axios.patch(`projects/${props.project.id}/`, {
-          "obj": "project",
-          "action": "add_new",
-          "task": taskModel.value
-        })
+          obj: 'project',
+          action: 'add_new',
+          task: taskModel.value,
+        });
         if (response?.status === 201) {
           // Returns a task inside the project
-          existingProject.value.tasks.push(response.data)
+          existingProject.value.tasks.push(response.data);
           // Reset and close
-          closeNew()
+          closeNew();
         }
       } catch (err) {
-        console.log('err adding task to project', err)
+        console.log('err adding task to project', err);
       }
     }
   }
@@ -118,15 +121,14 @@ async function addTaskToProject() {
   if (activeChore.chore && !newChoreOpened.value) {
     // Make the api call
     const response = await axios.patch(`projects/${props.project.id}/`, {
-        "obj": "project",
-        "action": "update_task",
-        "subtask": activeChore.chore
-      })
+      obj: 'project',
+      action: 'update_task',
+      subtask: activeChore.chore,
+    });
     if (response?.status === 200) {
-      closeDetails()
+      closeDetails();
     }
   }
-    
 }
 
 // Add subtask to task or task to project
@@ -135,20 +137,20 @@ async function addSubtaskToTask() {
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
-      existingTask.value.subtasks.push(subtaskModel.value)
-      resetSubtaskModel()
+      existingTask.value.subtasks.push(subtaskModel.value);
+      resetSubtaskModel();
     }
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
       // Make the API call
       const response = await axios.patch(`tasks/${props.task.id}/`, {
-        "obj": "subtask",
-        "action": "add",
-        "subtask": subtaskModel.value
-      })
+        obj: 'subtask',
+        action: 'add',
+        subtask: subtaskModel.value,
+      });
       if (response?.status === 200) {
-        existingTask.value.subtasks.push(response.data)
-        resetSubtaskModel()
+        existingTask.value.subtasks.push(response.data);
+        resetSubtaskModel();
       }
     }
   }
@@ -158,16 +160,15 @@ async function addSubtaskToTask() {
     if (!props.isProject) {
       // Make the api call
       const response = await axios.patch(`/tasks/${props.task.id}/`, {
-        "obj": "subtask",
-        "action": "update",
-        "subtask": activeChore.chore
-      })
+        obj: 'subtask',
+        action: 'update',
+        subtask: activeChore.chore,
+      });
       if (response?.status === 200) {
-        closeDetails()
+        closeDetails();
       }
     }
-  }  
-  
+  }
 }
 
 // Delete chore (db) from parent component
@@ -176,43 +177,44 @@ async function deleteChore() {
     // Works !!
     // Delete task
     const response = await axios.patch(`/projects/${props.project.id}/`, {
-      "obj": "project",
-      "action": "delete_task",
-      "task_id": activeChore.chore?.id
-    })
+      obj: 'project',
+      action: 'delete_task',
+      task_id: activeChore.chore?.id,
+    });
     if (response?.status === 200) {
       existingProject.value.tasks = existingProject.value.tasks.filter(
         (task: TaskType) => task.id !== activeChore.chore?.id
-      )
+      );
     }
   } else {
     // If is task
     existingTask.value.subtasks = existingTask.value.subtasks.filter(
-      (sub: TaskType) => sub !== activeChore.chore)
+      (sub: TaskType) => sub !== activeChore.chore
+    );
 
     // Make the API call
     const response = await axios.patch(`/tasks/${props.task.id}/`, {
-      "obj": "subtask",
-      "action": "remove",
-      "subtask_id": activeChore.chore?.id
-    })
-    console.log(response?.data)
+      obj: 'subtask',
+      action: 'remove',
+      subtask_id: activeChore.chore?.id,
+    });
+    console.log(response?.data);
   }
-  activeChore.opened = false
+  activeChore.opened = false;
 }
 
 // Remove (visually) chore from parent component
-function removeChore() {  
+function removeChore() {
   if (props.isProject) {
     existingProject.value.tasks = existingProject.value.tasks.filter(
-      (task: TaskType) => task.title !== activeChore.chore?.title 
-    )
+      (task: TaskType) => task.title !== activeChore.chore?.title
+    );
   } else {
     existingTask.value.subtasks = existingTask.value.subtasks.filter(
       (subtask: SubtaskType) => subtask.title !== activeChore.chore?.title
-    )
+    );
   }
-  closeDetails()
+  closeDetails();
 }
 
 // Toggle done on Chore
@@ -220,50 +222,50 @@ async function toggleChoreDone(chore: TaskType | SubtaskType) {
   if (props.isProject) {
     try {
       const response = await axios.patch(`projects/${props.project.id}/`, {
-        "obj": "project",
-        "action": "task_done",
-        "task_id": chore.id
-      })
+        obj: 'project',
+        action: 'task_done',
+        task_id: chore.id,
+      });
       if (response?.status === 200) {
-        chore.done = response.data.done
+        chore.done = response.data.done;
         // Visual changes
         let project_task = useChoreStore().tasks.filter(
-          (task: TaskType) => task.id === chore.id)[0]
+          (task: TaskType) => task.id === chore.id
+        )[0];
 
         if (project_task) {
-          project_task.done = response.data.done
+          project_task.done = response.data.done;
         }
       }
     } catch (err) {
-      console.log('task done update err', err)
+      console.log('task done update err', err);
     }
-  }
-  else {
+  } else {
     try {
       const response = await axios.patch(`tasks/${props.task.id}/`, {
-        "obj": "subtask",
-        "action": "done",
-        "subtask_id": chore.id
-      })
+        obj: 'subtask',
+        action: 'done',
+        subtask_id: chore.id,
+      });
       if (response?.status === 200) {
-        chore.done = response.data.done
+        chore.done = response.data.done;
       }
     } catch (err) {
-      console.log('subtask done update err', err)
+      console.log('subtask done update err', err);
     }
   }
 }
 
 // Close chore details
-function closeDetails() {  
-  activeChore.opened = false
-  activeChore.chore = null
+function closeDetails() {
+  activeChore.opened = false;
+  activeChore.chore = null;
 }
 
 // Close new model details and reset it
 function closeNew() {
-  newChoreOpened.value = false
-  props.isProject ? resetTaskModel() : resetSubtaskModel()  
+  newChoreOpened.value = false;
+  props.isProject ? resetTaskModel() : resetSubtaskModel();
 }
 </script>
 
@@ -273,17 +275,27 @@ function closeNew() {
     <MiniLabel v-for="chore in chores" :is-task="true">
       <template #icon>
         <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="icon" />
-        <DoneIcon @click="toggleChoreDone(chore)" v-if="!chore.done && !isNew" class="icon" />
-        <MarkedDoneIcon @click="toggleChoreDone(chore)" v-if="chore.done" class="icon" />
+        <DoneIcon
+          @click="toggleChoreDone(chore)"
+          v-if="!chore.done && !isNew"
+          class="icon"
+        />
+        <MarkedDoneIcon
+          @click="toggleChoreDone(chore)"
+          v-if="chore.done"
+          class="icon"
+        />
       </template>
-      <template #title>  
+      <template #title>
         <div @click="openDetails(chore)">{{ chore.title }}</div>
       </template>
     </MiniLabel>
     <!-- Add new subtask or task -->
     <MiniLabel v-if="chores.length === 0" @click="openNewChore" :is-task="true">
       <template #title>
-        <span class="add-subtask">{{ isProject ? 'Add task' : 'Add subtask' }}</span>
+        <span class="add-subtask">{{
+          isProject ? 'Add task' : 'Add subtask'
+        }}</span>
       </template>
       <template #icon>
         <AddTagIcon class="new-subtask" />
@@ -308,7 +320,8 @@ function closeNew() {
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
       :key="isProject ? existingProject.tasks.length : task.subtasks.length"
-      :isProject="isProject" />
+      :isProject="isProject"
+    />
   </div>
   <!-- If an existing chore is opened -->
   <div v-if="activeChore.opened">
@@ -322,7 +335,8 @@ function closeNew() {
       :parentNew="isNew"
       :newChore="isNew"
       :key="isNew ? activeChore.chore?.title : activeChore.chore?.id"
-      :isProject="isProject" />
+      :isProject="isProject"
+    />
   </div>
 </template>
 

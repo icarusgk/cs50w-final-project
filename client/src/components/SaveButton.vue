@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  disabled: boolean
-}>()
+  disabled: boolean;
+}>();
 </script>
 
 <template>
@@ -9,9 +9,9 @@ defineProps<{
     class="close-modal-button"
     :disabled="disabled"
     :class="{ disabled: disabled }"
-  >Save!
-</button>
-
+  >
+    Save!
+  </button>
 </template>
 
 <style scoped lang="scss">
@@ -30,7 +30,8 @@ defineProps<{
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

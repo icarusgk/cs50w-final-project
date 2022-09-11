@@ -6,22 +6,20 @@ import TaskInfo from '@/components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
 // import tasks from '@/mocks/tasks';
 
-
-const tasks = computed(() => useChoreStore().tasks)
+const tasks = computed(() => useChoreStore().tasks);
 </script>
 
 <template>
-<div class="tasks-view">
-  <div class="go-back">
-    <BackIcon class="button" @click="$router.back()" />
-    <span class="title">Tasks</span>
+  <div class="tasks-view">
+    <div class="go-back">
+      <BackIcon class="button" @click="$router.back()" />
+      <span class="title">Tasks</span>
+    </div>
+    <div class="all-tasks-container">
+      <TaskInfo v-for="task in tasks" :task="task" />
+    </div>
   </div>
-  <div class="all-tasks-container">
-    <TaskInfo v-for="task in tasks" :task="task"/>
-  </div>
-</div>
 </template>
-
 
 <style scoped lang="scss">
 .tasks-view {
@@ -31,9 +29,10 @@ const tasks = computed(() => useChoreStore().tasks)
     align-items: center;
     color: white;
     gap: 1rem;
-    
+
     .button {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
     }

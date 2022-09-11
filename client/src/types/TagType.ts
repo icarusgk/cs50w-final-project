@@ -1,6 +1,6 @@
 type Tag = {
-  id?: number,
-  name: string
-}
+  id?: number;
+  name: string;
+};
 
-export default Tag
+export default Tag;

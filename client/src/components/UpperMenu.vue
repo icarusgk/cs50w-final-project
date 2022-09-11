@@ -8,12 +8,15 @@ import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import Title from './Title.vue';
 import Modal from './modals/Modal.vue';
-const open = ref(false)
-const auth = useAuthStore()
+const open = ref(false);
+const auth = useAuthStore();
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 </script>
 
 <template>
@@ -31,11 +34,16 @@ watch(() => open.value, () => {
       <!-- User -->
       <li>
         <div class="login">
-          <div class="login" @click="auth.isAuthenticated ? open = true : open = false">
+          <div
+            class="login"
+            @click="auth.isAuthenticated ? (open = true) : (open = false)"
+          >
             <UserIcon />
             <span v-if="auth.user">{{ auth.user?.username }}</span>
           </div>
-          <span v-if="!auth.isAuthenticated" @click="$router.push('/login')">Login</span>
+          <span v-if="!auth.isAuthenticated" @click="$router.push('/login')"
+            >Login</span
+          >
         </div>
       </li>
       <!-- Settings -->
@@ -46,13 +54,19 @@ watch(() => open.value, () => {
         <h1>Logout</h1>
         <h2>Hello there {{ auth.user?.username }}</h2>
         <h2>Your current streak is of {{ auth.user?.streak }} days</h2>
-        <button id="logout-btn" @click="auth.logout(); open = false;">Logout</button>
+        <button
+          id="logout-btn"
+          @click="
+            auth.logout();
+            open = false;
+          "
+        >
+          Logout
+        </button>
       </div>
     </Modal>
   </div>
-  
 </template>
-
 
 <style lang="scss" scoped>
 #icons {
@@ -66,7 +80,8 @@ watch(() => open.value, () => {
       display: inline-block;
       margin-right: 0.1rem;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
 
@@ -100,7 +115,7 @@ watch(() => open.value, () => {
 
   &:hover {
     cursor: pointer;
-    background-color: #ff4b4b9f
+    background-color: #ff4b4b9f;
   }
 }
 
@@ -108,7 +123,7 @@ watch(() => open.value, () => {
   #icons {
     ul {
       text-align: left;
-      
+
       li {
         transform: scale(0.7);
         margin-left: -8px;

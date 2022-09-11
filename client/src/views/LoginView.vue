@@ -1,8 +1,8 @@
 <script setup>
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from '@/stores/auth';
 
 async function login(credentials) {
-  useAuthStore().login(credentials)
+  useAuthStore().login(credentials);
 }
 </script>
 
@@ -11,11 +11,7 @@ async function login(credentials) {
     <h1>Login</h1>
     <div class="wrapper">
       <div>
-        <FormKit
-        type="form"
-        submit-label="Login"
-        @submit="login"
-        >
+        <FormKit type="form" submit-label="Login" @submit="login">
           <FormKit
             type="text"
             name="username"
@@ -36,7 +32,8 @@ async function login(credentials) {
       </div>
     </div>
     <div id="route-to-register">
-      <span>Don't have an account?
+      <span
+        >Don't have an account?
         <router-link to="/register">Register here!</router-link>
       </span>
     </div>
@@ -49,7 +46,7 @@ async function login(credentials) {
 }
 .login {
   text-align: center;
-  
+
   .wrapper {
     display: flex;
     justify-content: center;
@@ -60,6 +57,4 @@ async function login(credentials) {
     margin-top: 2rem;
   }
 }
-
-
 </style>

@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 const credentials = ref({
   username: '',
-  password: ''
-})
-const message = ref('')
+  password: '',
+});
+const message = ref('');
 
 function login() {
-  useAuthStore().login(credentials.value)
+  useAuthStore().login(credentials.value);
 }
 </script>
-
 
 <template>
   <div class="login">
@@ -22,10 +21,25 @@ function login() {
     </div>
     <form @submit.prevent="login()">
       <div>
-        <input v-model="credentials.username" placeholder="Username" type="username" name="username" id="username" class="form-input" />
+        <input
+          v-model="credentials.username"
+          placeholder="Username"
+          type="username"
+          name="username"
+          id="username"
+          class="form-input"
+        />
       </div>
       <div>
-        <input v-model="credentials.password" placeholder="Password" type="password" name="password" id="password" autocomplete="true" class="form-input" />
+        <input
+          v-model="credentials.password"
+          placeholder="Password"
+          type="password"
+          name="password"
+          id="password"
+          autocomplete="true"
+          class="form-input"
+        />
       </div>
       <div>
         <input type="submit" value="Submit" id="submit" />
@@ -52,13 +66,13 @@ function login() {
     border-radius: 8px;
   }
 
-
   #submit {
     padding: 0.6rem 4rem;
     background-color: var(--vivid-red);
     color: white;
     border: none;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       cursor: pointer;
     }
   }

@@ -27,7 +27,6 @@
   }
 }
 
-
 @media (max-width: 768px) {
   .item {
     transform: scale(0.5);
@@ -40,5 +39,4 @@
     margin-left: 1rem;
   }
 }
-
 </style>

@@ -9,62 +9,62 @@ import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
 
-
 const newProject = ref<Project>({
   name: '',
   tasks: [],
-})
+});
 
-const open = ref(false)
-const auth = useAuthStore()
+const open = ref(false);
+const auth = useAuthStore();
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 
 function resetProject() {
   newProject.value = {
     name: '',
-    tasks: []
-  }
-  open.value = false
+    tasks: [],
+  };
+  open.value = false;
 }
 
-function saveProject() {  
-  useChoreStore().addProject(newProject.value)
-  resetProject()
+function saveProject() {
+  useChoreStore().addProject(newProject.value);
+  resetProject();
 }
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthenticated ? open = true : open = false">
-    <template #type>
-      Add new project
-    </template>
+  <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
+    <template #type> Add new project </template>
   </ChoreButton>
 
-  <Modal :is-project="true" :is-button="true" :open="open" @exit-modal="resetProject()">
+  <Modal
+    :is-project="true"
+    :is-button="true"
+    :open="open"
+    @exit-modal="resetProject()"
+  >
     <template #title>
-      <input 
-        type="text" 
-        name="title" 
-        id="new-task-input-title" 
+      <input
+        type="text"
+        name="title"
+        id="new-task-input-title"
         placeholder="New project"
-        v-model="newProject.name" 
+        v-model="newProject.name"
       />
     </template>
-    
+
     <!-- Rest of modal -->
     <ProjectModalInfo :project="newProject" :isNew="true" />
     <template #save-button>
-      <button
-        @click="saveProject()" 
-        class="close-modal-button"
-      >Save!
-      </button>
+      <button @click="saveProject()" class="close-modal-button">Save!</button>
     </template>
   </Modal>
-
 </template>
 
 <style scoped lang="scss">
@@ -77,7 +77,8 @@ function saveProject() {
   font-family: sans-serif;
   width: 90%;
 
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     outline: none;
   }
 }
@@ -97,7 +98,8 @@ function saveProject() {
   margin-top: 1rem;
   padding: 0.8rem 0.8rem;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

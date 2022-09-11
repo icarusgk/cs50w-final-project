@@ -3,24 +3,19 @@ import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import { useAuthStore } from '@/stores/auth';
 
-import Project from '@/components/Project.vue'
-import TaskType from '@/components/slots/TaskType.vue'
-import ProjectIcon from '@/components/icons/ProjectIcon.vue'
+import Project from '@/components/Project.vue';
+import TaskType from '@/components/slots/TaskType.vue';
+import ProjectIcon from '@/components/icons/ProjectIcon.vue';
 
+const choreStore = useChoreStore();
 
-
-const choreStore = useChoreStore()
-
-const projects = computed(() => choreStore.projects)
+const projects = computed(() => choreStore.projects);
 </script>
 
 <template>
   <div>
     <!-- Title -->
-    <TaskType
-      class="projects-button"
-      @click="$router.push('/projects')"
-    >
+    <TaskType class="projects-button" @click="$router.push('/projects')">
       <template #icon>
         <ProjectIcon />
       </template>
@@ -42,9 +37,9 @@ const projects = computed(() => choreStore.projects)
 
 <style scoped lang="scss">
 .projects-button {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }
-
 </style>

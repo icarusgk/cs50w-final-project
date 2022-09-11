@@ -3,59 +3,80 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
 import Tags from './buttons/Tags.vue';
 
-const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew'])
-defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
+const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
+defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
 // const chore = ref(props.chore)
 </script>
 
 <template>
-<!-- Blur -->
-<div class="subtask">
-  <!-- Flex row -->
-  <div class="container">
-    <div v-if="props.isProject" class="subtask-tags">
-      <Tags :id="props.chore.id" :task-tags="props.chore.tags" :new="newChore" />
-    </div>
-    <!-- Title and description -->
-    <div class="title-and-description-container" @keyup.ctrl.enter="$emit('save')">
-      <!-- Title -->
-      <input 
-        v-model.lazy="props.chore.title"
-        placeholder="Title" 
-        type="text"
-        class="new-subtask-title"
-      />
-      <!-- Description -->
-      <textarea
-        v-model.trim="props.chore.description" 
-        class="new-subtask-description" 
-        placeholder="Description">
-      </textarea>
-    </div>
-    <div class="options-and-buttons">
-      <div class="delete-container">
-        <DeleteIcon class="delete-button" v-if="!newChore" @click="$emit('delete')" />
-        <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
+  <!-- Blur -->
+  <div class="subtask">
+    <!-- Flex row -->
+    <div class="container">
+      <div v-if="props.isProject" class="subtask-tags">
+        <Tags
+          :id="props.chore.id"
+          :task-tags="props.chore.tags"
+          :new="newChore"
+        />
       </div>
-      <div v-if="props.isProject">
-        <TimerSetter :chore="chore" />
+      <!-- Title and description -->
+      <div
+        class="title-and-description-container"
+        @keyup.ctrl.enter="$emit('save')"
+      >
+        <!-- Title -->
+        <input
+          v-model.lazy="props.chore.title"
+          placeholder="Title"
+          type="text"
+          class="new-subtask-title"
+        />
+        <!-- Description -->
+        <textarea
+          v-model.trim="props.chore.description"
+          class="new-subtask-description"
+          placeholder="Description"
+        >
+        </textarea>
       </div>
-      <!-- Estimated Timers and save button -->
-      <div class="timers-and-buttons-container">
-        <!-- Buttons -->
-        <div class="buttons">
-          <!-- Emit the close event -->
-          <!-- Cancel -->
-          <button @click="$emit('close')" class="cancel-button">Cancel</button>
-          <!-- Save -->
-          <button v-if="!isProject" @click="$emit('save')" class="save-button">Save!</button>
-          <button v-else class="save-button" @click="$emit('saveTask')">Save!</button>
+      <div class="options-and-buttons">
+        <div class="delete-container">
+          <DeleteIcon
+            class="delete-button"
+            v-if="!newChore"
+            @click="$emit('delete')"
+          />
+          <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
+        </div>
+        <div v-if="props.isProject">
+          <TimerSetter :chore="chore" />
+        </div>
+        <!-- Estimated Timers and save button -->
+        <div class="timers-and-buttons-container">
+          <!-- Buttons -->
+          <div class="buttons">
+            <!-- Emit the close event -->
+            <!-- Cancel -->
+            <button @click="$emit('close')" class="cancel-button">
+              Cancel
+            </button>
+            <!-- Save -->
+            <button
+              v-if="!isProject"
+              @click="$emit('save')"
+              class="save-button"
+            >
+              Save!
+            </button>
+            <button v-else class="save-button" @click="$emit('saveTask')">
+              Save!
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    
   </div>
-</div>
 </template>
 
 <style scoped lang="scss">
@@ -65,7 +86,8 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
   padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }
@@ -80,7 +102,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    
+
     .subtask-tags {
       display: flex;
     }
@@ -122,21 +144,21 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      
-      .delete-container {
 
-          .delete-button {
-            &:hover, &:focus {
-              cursor: pointer;
-            }
+      .delete-container {
+        .delete-button {
+          &:hover,
+          &:focus {
+            cursor: pointer;
           }
         }
+      }
 
       .timers-and-buttons-container {
         display: flex;
         flex-direction: column;
         align-self: flex-end;
-        
+
         width: 150px;
 
         .estimated {
@@ -170,5 +192,4 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove'])
     }
   }
 }
-
 </style>

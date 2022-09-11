@@ -1,55 +1,60 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch } from 'vue';
 import { useTimerStore } from '@/stores/timer';
 
 // import CurrentTask from './CurrentTask.vue';
 
-const timer = useTimerStore()
+const timer = useTimerStore();
 
-watch(() => timer.timer, () => {
-  // Change the red line percent
-  timer.incrementLine()
+watch(
+  () => timer.timer,
+  () => {
+    // Change the red line percent
+    timer.incrementLine();
 
-  if (timer.minutes === 0 && timer.seconds === 0) {
-    timer.markDone()
-    stopTimer()
+    if (timer.minutes === 0 && timer.seconds === 0) {
+      timer.markDone();
+      stopTimer();
+    }
   }
-})
+);
 
 function initTimer() {
   // Clear an existing ID
-  if (timer.timerId) { clearInterval(timer.timerId) }
+  if (timer.timerId) {
+    clearInterval(timer.timerId);
+  }
   // Create new ID and start a new timer
   timer.timerId = setInterval(() => {
-    timer.decrementSecond()
-  }, 1000)
+    timer.decrementSecond();
+  }, 1000);
 }
 
 function startTimer() {
   // Toggle status
-  timer.toggleOngoing()
-  timer.done = false
+  timer.toggleOngoing();
+  timer.done = false;
 
   // Restart the timer to the current mode
-  initTimer()
+  initTimer();
 }
 
 function stopTimer() {
-  timer.ongoing = false
-  clearInterval(timer.timerId)
-} 
+  timer.ongoing = false;
+  clearInterval(timer.timerId);
+}
 
 function restartTimer() {
-  stopTimer()
+  stopTimer();
   switch (timer.current) {
     case 'pomo':
-      timer.setPomo()
+      timer.setPomo();
       break;
     case 'short':
-      timer.setShortRest()
+      timer.setShortRest();
       break;
     case 'long':
-      timer.setLongRest()
+      timer.setLongRest();
   }
 }
 </script>
@@ -57,7 +62,13 @@ function restartTimer() {
 <template>
   <div id="timer-container">
     <div id="timer-setters">
-      <div id="normal-pomo" @click="timer.setPomo(); stopTimer()">
+      <div
+        id="normal-pomo"
+        @click="
+          timer.setPomo();
+          stopTimer();
+        "
+      >
         Pomo
       </div>
       <div id="short-rest" @click="timer.setShortRest(), stopTimer()">
@@ -68,29 +79,37 @@ function restartTimer() {
       </div>
     </div>
     <!-- Progress -->
-    <div 
+    <div
       id="line"
-      :style="{ 'width': `${timer.percent - 2}%` }"
+      :style="{ width: `${timer.percent - 2}%` }"
       :class="timer.current"
     ></div>
     <!-- Time -->
     <div>
-      <h1 id="timer-count">{{ timer.timer.format("mm:ss") }}</h1>
-      <button @click="startTimer()" v-if="!timer.ongoing" id="start-timer-btn">Start!</button>
+      <h1 id="timer-count">{{ timer.timer.format('mm:ss') }}</h1>
+      <button @click="startTimer()" v-if="!timer.ongoing" id="start-timer-btn">
+        Start!
+      </button>
       <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
-      <button @click="restartTimer()" v-if="timer.ongoing" id="restart-timer-btn">Restart!</button>
+      <button
+        @click="restartTimer()"
+        v-if="timer.ongoing"
+        id="restart-timer-btn"
+      >
+        Restart!
+      </button>
       <!-- TODO: Change style -->
       <div class="done" v-if="timer.done">
         <span>Done!</span>
       </div>
     </div>
-    
   </div>
 </template>
 
 <style lang="scss" scoped>
 %btn {
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }
@@ -108,12 +127,11 @@ function restartTimer() {
   height: 15px;
   border-radius: 18px;
   background-color: $color;
-  
+
   transition: background-color 0.2s ease-in-out;
 }
 
 #timer-container {
-
   #timer-setters {
     display: flex;
     gap: 0.6rem;
@@ -125,15 +143,15 @@ function restartTimer() {
   }
 
   .pomo {
-    @include line(var(--vivid-red))
+    @include line(var(--vivid-red));
   }
 
   .short {
-    @include line(var(--short-rest))
+    @include line(var(--short-rest));
   }
 
   .long {
-    @include line(var(--long-rest))
+    @include line(var(--long-rest));
   }
 
   #timer-count {
@@ -151,7 +169,7 @@ function restartTimer() {
     border: none;
     margin-top: 1rem;
 
-    @extend %btn
+    @extend %btn;
   }
 
   #normal-pomo {
@@ -187,7 +205,6 @@ function restartTimer() {
   }
 }
 
-
 @media (max-width: 768px) {
   @mixin mobile-btn($width) {
     margin-top: 0;
@@ -195,22 +212,20 @@ function restartTimer() {
   }
   #timer-container {
     width: 82vw;
-    #timer-count {  
+    #timer-count {
       font-size: 6rem;
     }
     #start-timer-btn {
-      @include mobile-btn(200px)
+      @include mobile-btn(200px);
     }
 
     #stop-timer-btn {
-      @include mobile-btn(120px)
+      @include mobile-btn(120px);
     }
 
     #restart-timer-btn {
-      @include mobile-btn(140px)
+      @include mobile-btn(140px);
     }
   }
-  
-  
 }
 </style>

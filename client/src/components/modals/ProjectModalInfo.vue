@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Subtasks from "@/components/Subtasks.vue"
+import Subtasks from '@/components/Subtasks.vue';
 
 defineProps<{
-  project: any,
-  isNew?: boolean
-}>()
+  project: any;
+  isNew?: boolean;
+}>();
 </script>
 
 <template>
@@ -15,7 +15,12 @@ defineProps<{
     </div>
     <!-- Add tasks button -->
     <div>
-      <Subtasks :is-project="true" :chores="project.tasks" :project="project" :isNew="isNew" />
+      <Subtasks
+        :is-project="true"
+        :chores="project.tasks"
+        :project="project"
+        :isNew="isNew"
+      />
     </div>
   </div>
 </template>
@@ -33,7 +38,7 @@ defineProps<{
     .add-task {
       padding: 0 1rem;
     }
-    
+
     .icon {
       margin-left: 1rem;
       margin-top: 2px;

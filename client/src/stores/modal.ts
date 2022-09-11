@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useModalStore = defineStore({
   id: 'modal',
@@ -7,13 +7,13 @@ export const useModalStore = defineStore({
   }),
   actions: {
     open() {
-      this.isOpened = true
+      this.isOpened = true;
     },
     close() {
-      this.isOpened = false
+      this.isOpened = false;
     },
     toggle() {
-      this.isOpened = !this.isOpened
-    }
-  }
-})
+      this.isOpened = !this.isOpened;
+    },
+  },
+});

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import type { Project } from '@/types';
 
@@ -7,14 +7,17 @@ import ProjectModal from './ProjectModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 defineProps<{
-  project: Project
-}>()
+  project: Project;
+}>();
 
-const open = ref(false)
+const open = ref(false);
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 </script>
 
 <template>
@@ -30,7 +33,7 @@ watch(() => open.value, () => {
         <TaskInfoIcon />
       </div>
     </div>
-    
+
     <ProjectModal :project="project" :open="open" @exit="open = false" />
   </div>
 </template>
@@ -41,7 +44,6 @@ watch(() => open.value, () => {
   align-items: center;
   margin: 0 0.2rem 0.5rem 0.2rem;
 
-
   .task-checkbox {
     height: 20px;
     width: 20px;
@@ -49,7 +51,7 @@ watch(() => open.value, () => {
     border-radius: 10px;
     margin-right: 1rem;
   }
-  
+
   .task-title-container {
     padding: 0.2rem 1rem;
     border-radius: 8px;
@@ -59,15 +61,13 @@ watch(() => open.value, () => {
     align-items: center;
     justify-content: space-between;
 
-    
     .task-info-icon {
       margin-top: 0.2rem;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
     }
   }
 }
-
-
 </style>

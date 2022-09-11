@@ -5,7 +5,7 @@ import ProjectInfo from '@/components/ProjectInfo.vue';
 // import projects from '@/mocks/projects';
 import { useChoreStore } from '@/stores/chore';
 
-const projects = computed(() => useChoreStore().projects)
+const projects = computed(() => useChoreStore().projects);
 </script>
 
 <template>
@@ -28,9 +28,10 @@ const projects = computed(() => useChoreStore().projects)
     align-items: center;
     gap: 1rem;
     color: white;
-  
+
     .button {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
     }

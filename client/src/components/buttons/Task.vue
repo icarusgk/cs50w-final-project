@@ -5,32 +5,33 @@ import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import type { TaskType, Project } from '@/types';
 
-
 import DoneIcon from '../icons/DoneIcon.vue';
 import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
 import TaskModal from '../TaskModal.vue';
-import TaskInfoIcon from "@/components/icons/TaskInfoIcon.vue";
-
+import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 const props = defineProps<{
-  task: TaskType
-}>()
+  task: TaskType;
+}>();
 
-const task = ref(props.task)
-const open = ref(false)
+const task = ref(props.task);
+const open = ref(false);
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 
 async function toggleDone() {
   const response = await axios.patch(`tasks/${props.task.id}/`, {
-    "obj": "task",
-    "action": "done"
-  })
+    obj: 'task',
+    action: 'done',
+  });
   if (response?.status === 200) {
-    task.value.done = response.data?.done
-    useChoreStore().fetchProjects()
+    task.value.done = response.data?.done;
+    useChoreStore().fetchProjects();
   }
 }
 
@@ -54,7 +55,12 @@ async function toggleDone() {
         <TaskInfoIcon />
       </div>
     </div>
-    <TaskModal :task=task :open="open" @exit="open = false" @toggle-done="toggleDone()" />
+    <TaskModal
+      :task="task"
+      :open="open"
+      @exit="open = false"
+      @toggle-done="toggleDone()"
+    />
   </div>
 </template>
 
@@ -67,7 +73,7 @@ async function toggleDone() {
   .task-checkbox {
     margin-right: 1rem;
   }
-  
+
   .task-title-container {
     padding: 0.2rem 0.8rem;
     border-radius: 8px;
@@ -77,10 +83,10 @@ async function toggleDone() {
     align-items: center;
     justify-content: space-between;
 
-    
     .task-info-icon {
       margin-top: 0.2rem;
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         cursor: pointer;
       }
     }

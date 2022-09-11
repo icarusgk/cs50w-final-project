@@ -5,81 +5,80 @@ import type { Project } from '@/types';
 import axios from 'axios';
 
 const props = defineProps<{
-  taskId?: number
-}>()
+  taskId?: number;
+}>();
 
-const allProjects = useChoreStore().projects
+const allProjects = useChoreStore().projects;
 
-const taskProjects = ref<Project[]>([])
+const taskProjects = ref<Project[]>([]);
 
 // Detect if is in project (Not my proudest search)
 // Could be done better in the back end
 allProjects.forEach((project: Project) => {
-  project.tasks?.forEach(task => {
+  project.tasks?.forEach((task) => {
     if (task.id === props?.taskId) {
-      taskProjects.value.push(project)
+      taskProjects.value.push(project);
     }
-  })
-})
+  });
+});
 
 async function addToProject(project: Project) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
     const response = await axios.patch(`projects/${project.id}/`, {
-      "obj": "project",
-      "action": "add_to_project",
-      "task_id": props.taskId
-    })
+      obj: 'project',
+      action: 'add_to_project',
+      task_id: props.taskId,
+    });
 
     if (response?.status === 200) {
       console.log('added', response.data);
-      
+
       // Refetch
-      useChoreStore().fetchProjects()
+      useChoreStore().fetchProjects();
       // Visual changes
-      taskProjects.value.push(project)
+      taskProjects.value.push(project);
     }
   } else {
     const response = await axios.patch(`projects/${project.id}/`, {
-      "obj": "project",
-      "action": "remove",
-      "task_id": props.taskId
-    })
-    console.log(response)
+      obj: 'project',
+      action: 'remove',
+      task_id: props.taskId,
+    });
+    console.log(response);
     if (response?.status === 200) {
-      console.log('removed', response.data)
+      console.log('removed', response.data);
       // Refetch
-      useChoreStore().fetchProjects()
+      useChoreStore().fetchProjects();
       // Visual changes
-      taskProjects.value = taskProjects.value.filter(p => p !== project)
-    }    
+      taskProjects.value = taskProjects.value.filter((p) => p !== project);
+    }
   }
 }
 </script>
 
 <template>
-<!-- Add to project -->
+  <!-- Add to project -->
   <div class="add-to-project-dropdown">
     <Popper arrow placement="bottom">
-    <div>
-      <span class="text">Add to Project</span>
-    </div>
-    <template #content="{ close }">
-      <div class="project-select">
-        <div class="project" 
-          :class="{ inside: taskProjects.includes(project) }" 
-          v-for="project in allProjects" 
-          @click="addToProject(project)"
-        >
-          {{ project.name }}
-        </div>
+      <div>
+        <span class="text">Add to Project</span>
       </div>
-    </template>
+      <template #content="{ close }">
+        <div class="project-select">
+          <div
+            class="project"
+            :class="{ inside: taskProjects.includes(project) }"
+            v-for="project in allProjects"
+            @click="addToProject(project)"
+          >
+            {{ project.name }}
+          </div>
+        </div>
+      </template>
     </Popper>
   </div>
-
 </template>
-
 
 <style scoped lang="scss">
 .add-to-project-dropdown {
@@ -90,7 +89,8 @@ async function addToProject(project: Project) {
   text-align: center;
   background-color: rgb(58, 58, 58);
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 
@@ -98,7 +98,7 @@ async function addToProject(project: Project) {
     font-weight: 500;
   }
 
-  .project-select { 
+  .project-select {
     width: 10rem;
 
     .project {

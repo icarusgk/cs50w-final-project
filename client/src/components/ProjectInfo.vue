@@ -3,35 +3,37 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import type { Project } from '@/types';
 
-import ProjectModal from '@/components/ProjectModal.vue'
-
+import ProjectModal from '@/components/ProjectModal.vue';
 
 defineProps<{
-  project: Project
-}>()
+  project: Project;
+}>();
 
-const open = ref(false)
+const open = ref(false);
 
-watch(() => open.value, () => {
-  useModalStore().toggle()
-})
-
+watch(
+  () => open.value,
+  () => {
+    useModalStore().toggle();
+  }
+);
 </script>
 
 <template>
-<div class="single-project" @click="open = true">
-  <h1>{{ project.name }}</h1>
-</div>
-<ProjectModal :project="project" :open="open" @exit="open = false" />
+  <div class="single-project" @click="open = true">
+    <h1>{{ project.name }}</h1>
+  </div>
+  <ProjectModal :project="project" :open="open" @exit="open = false" />
 </template>
 
 <style scoped lang="scss">
 .single-project {
   padding: 1rem;
-  background-color: #3D3D3D;
+  background-color: #3d3d3d;
   border-radius: 8px;
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     cursor: pointer;
   }
 }

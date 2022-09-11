@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
-import { useAuthStore } from "@/stores/auth";
+import { reactive, ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 
 const credentials = reactive({
-  username: "",
-  password: "",
-  passwordConfirmation: "",
+  username: '',
+  password: '',
+  passwordConfirmation: '',
 });
-const message = ref("");
+const message = ref('');
 
 function register() {
   useAuthStore().register(credentials);
@@ -18,11 +18,7 @@ function register() {
   <div class="register">
     <h1>Register</h1>
     <div class="wrapper">
-      <FormKit 
-        type="form"
-        submit-label="Register"
-        @submit="register"
-      >
+      <FormKit type="form" submit-label="Register" @submit="register">
         <FormKit
           type="text"
           name="username"
@@ -41,7 +37,7 @@ function register() {
           placeholder="Password"
           validation="required"
         />
-        <FormKit 
+        <FormKit
           type="password"
           name="confirm-password"
           id="confirm-password"
@@ -53,7 +49,8 @@ function register() {
       </FormKit>
     </div>
     <div id="route-to-login">
-      <span>Already have an account?
+      <span
+        >Already have an account?
         <router-link to="/login">Login here!</router-link>
       </span>
     </div>

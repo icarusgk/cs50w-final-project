@@ -13,26 +13,25 @@ import LightingIcon from './icons/LightingIcon.vue';
 </template>
 
 <style scoped lang="scss">
+#pomodoro-title-container {
+  display: flex;
+  align-items: center;
+  #title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
   #pomodoro-title-container {
-    display: flex;
-    align-items: center;
+    margin: 0;
+
+    #pomo-icon {
+      transform: scale(0.7);
+    }
     #title {
-      font-size: 2rem;
+      margin-left: -8px;
+      font-size: 1.2rem;
     }
   }
-
-
-  @media (max-width: 768px) {
-    #pomodoro-title-container {
-      margin: 0;
-
-      #pomo-icon {
-        transform: scale(0.7);
-      }
-      #title {
-        margin-left: -8px;
-        font-size: 1.2rem;
-      }
-    }
-  }
+}
 </style>

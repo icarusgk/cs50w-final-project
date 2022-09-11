@@ -2,16 +2,15 @@
 import Subtasks from '@/components/Subtasks.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
 
-
 const props = defineProps<{
-  task: any,
-  isNew?: boolean
-}>()
+  task: any;
+  isNew?: boolean;
+}>();
 
-const emit = defineEmits(['descriptionChange'])
+const emit = defineEmits(['descriptionChange']);
 
 function check(event: any) {
-  emit('descriptionChange', event.target.value)
+  emit('descriptionChange', event.target.value);
 }
 </script>
 
@@ -19,8 +18,12 @@ function check(event: any) {
   <div>
     <!-- Description -->
     <div class="new-task-description">
-      <textarea @input="check" v-model.lazy.trim="props.task.description" placeholder="Description"
-        class="new-task-textarea-description">
+      <textarea
+        @input="check"
+        v-model.lazy.trim="props.task.description"
+        placeholder="Description"
+        class="new-task-textarea-description"
+      >
       </textarea>
     </div>
     <!-- Subtasks -->
@@ -29,7 +32,12 @@ function check(event: any) {
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks :is-project="false" :chores="task.subtasks" :task="task" :isNew="isNew" />
+        <Subtasks
+          :is-project="false"
+          :chores="task.subtasks"
+          :task="task"
+          :isNew="isNew"
+        />
       </div>
     </div>
     <!-- Bottom container -->
@@ -37,14 +45,12 @@ function check(event: any) {
       <!-- Estimated Pomos -->
       <div class="estimated-pomos-container">
         <div>
-          <span style="font-weight: 800;">Estimated pomos</span>
+          <span style="font-weight: 800">Estimated pomos</span>
         </div>
         <!-- Counter -->
         <TimerSetter :chore="task" />
       </div>
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -82,7 +88,7 @@ function check(event: any) {
     flex-wrap: wrap;
     margin: 0.5rem 0;
     height: 33px;
-    
+
     .icon {
       margin-left: 1rem;
       margin-top: 2px;
@@ -122,12 +128,12 @@ function check(event: any) {
         border: none;
         margin: 0 4px;
 
-        &:hover, &:focus {
+        &:hover,
+        &:focus {
           cursor: pointer;
         }
       }
     }
-
   }
 }
 

@@ -1,10 +1,10 @@
-import type Task from './TaskType'
+import type Task from './TaskType';
 
 type Project = {
-  id?: number,
-  name: string,
-  tasks?: Task[]
-  user?: number
-}
+  id?: number;
+  name: string;
+  tasks?: Task[];
+  user?: number;
+};
 
-export default Project
+export default Project;
