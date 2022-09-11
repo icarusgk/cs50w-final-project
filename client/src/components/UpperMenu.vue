@@ -24,13 +24,6 @@ watch(
     <Title />
     <ul>
       <!-- Four icons -->
-      <!-- Streaks -->
-      <li>
-        <div v-if="auth.isAuthenticated" id="streaks-icon">
-          <StreaksIcon />
-          <p id="streaks-days-info">{{ auth.user?.streak }} days</p>
-        </div>
-      </li>
       <!-- User -->
       <li>
         <div class="login">
@@ -53,7 +46,6 @@ watch(
       <div>
         <h1>Logout</h1>
         <h2>Hello there {{ auth.user?.username }}</h2>
-        <h2>Your current streak is of {{ auth.user?.streak }} days</h2>
         <button
           id="logout-btn"
           @click="

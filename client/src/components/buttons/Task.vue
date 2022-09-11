@@ -35,9 +35,9 @@ async function toggleDone() {
   }
 }
 
-// function setCurrent() {
-//   useChoreStore().changeCurrentTask(props.task.id)
-// }
+function setCurrent() {
+  useChoreStore().changeCurrentTask(task.value.id)
+}
 </script>
 
 <template>
@@ -47,7 +47,7 @@ async function toggleDone() {
       <MarkedDoneIcon v-else />
     </div>
     <!-- Name -->
-    <div class="task-title-container" :class="{ done: task.done }">
+    <div @click="setCurrent()" class="task-title-container" :class="{ done: task.done }">
       <div class="title-container">
         <span class="title">{{ props.task.title }}</span>
       </div>

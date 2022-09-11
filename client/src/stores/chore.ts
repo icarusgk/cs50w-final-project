@@ -10,7 +10,7 @@ export const useChoreStore = defineStore({
     tasks: [] as TaskType[],
     projects: [] as Project[],
     tags: [] as Tag[],
-    // currentTask: null as { id: number } | null
+    currentTaskId: null as number | null,
   }),
   actions: {
     // fetchers
@@ -39,16 +39,32 @@ export const useChoreStore = defineStore({
         this.tags = response?.data;
       }
     },
-    // async fetchCurrentTask() {
-    //   const response = await useFetch('/currentTask/')
-    //   this.currentTask = response?.data
-    // },
+    async fetchCurrentTask() {
+      const response = await axios
+        .get('currentTask/')
+        .catch((err) => console.log('current Task err', err));
+
+      if (response?.status === 200) {
+        this.currentTaskId = response?.data.id;
+      }
+    },
+    async changeCurrentTask(id: number | undefined) {
+      const response = await axios
+        .put('currentTask/', {
+          id: id
+        })
+        .catch((err) => console.log('change current task err', err));
+
+      if (response?.status === 200) {
+        this.currentTaskId = response?.data.id;
+      }
+    },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
       this.fetchTasks();
       this.fetchProjects();
       this.fetchTags();
-      // this.fetchCurrentTask()
+      this.fetchCurrentTask()
     },
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {
@@ -98,9 +114,5 @@ export const useChoreStore = defineStore({
         console.log(response.data);
       }
     },
-    // changeCurrentTask(id: number) {
-    //   useFetch('/currentTask/', { method: 'put', data: { id: id } })
-    //   this.currentTask = { id: id }
-    // }
   },
 });

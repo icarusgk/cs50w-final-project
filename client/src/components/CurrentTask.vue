@@ -3,16 +3,17 @@ import { ref, watch, computed, onMounted } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import axios from 'axios';
 
-const currentTask = computed(() => useChoreStore().currentTask);
 const task = ref();
+const currentTask = computed(() => useChoreStore().currentTaskId);
 
-async function getTask() {
-  const response = await axios.get(`tasks/${currentTask.value?.id}/`);
+async function getTask() {  
+  const response = await axios.get(`tasks/${currentTask.value}/`);
   task.value = response?.data;
 }
 
 onMounted(() => getTask());
 
+// A kind of debouncer?
 watch(
   () => currentTask.value,
   (prevTask, curTask) => {

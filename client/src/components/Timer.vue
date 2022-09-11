@@ -2,7 +2,7 @@
 import { watch } from 'vue';
 import { useTimerStore } from '@/stores/timer';
 
-// import CurrentTask from './CurrentTask.vue';
+import CurrentTask from './CurrentTask.vue';
 
 const timer = useTimerStore();
 
@@ -102,6 +102,7 @@ function restartTimer() {
       <div class="done" v-if="timer.done">
         <span>Done!</span>
       </div>
+      <CurrentTask />
     </div>
   </div>
 </template>

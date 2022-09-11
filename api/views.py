@@ -277,4 +277,12 @@ class CurrentUserView(APIView):
 # Current Task
 class CurrentTaskView(APIView):
   def get(self, request):
-    return Response({"id": 1})
+    user = User.objects.get(id=request.user.id)
+    return Response({'id': user.current_task_id})
+
+  def put(self, request):
+    new_id = request.data['id']
+    user = User.objects.get(id=request.user.id)
+    user.current_task_id = new_id
+    user.save()
+    return Response({'id': new_id})

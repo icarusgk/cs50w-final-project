@@ -9,7 +9,7 @@ class Tag(models.Model):
 
 
 class User(AbstractUser):
-  streak = models.IntegerField(default=0)
+  current_task_id = models.IntegerField(default=0)
 
 class Task(models.Model):
   user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tasks')
