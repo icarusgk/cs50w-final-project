@@ -139,6 +139,11 @@ class TaskViewSet(viewsets.ModelViewSet):
           task.done = not task.done
           task.save()
           return Response ({"done": task.done})
+        if data['action'] == 'increment_gone_through':
+          task = Task.objects.get(id=pk)
+          task.gone_through += 1
+          task.save()
+          return Response(task.gone_through)
 
       return Response({'message': 'error'})
 

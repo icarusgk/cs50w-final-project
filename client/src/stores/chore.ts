@@ -114,5 +114,18 @@ export const useChoreStore = defineStore({
         console.log(response.data);
       }
     },
+    async incrementGoneThrough() {
+      const response = await axios
+      .patch(`tasks/${this.currentTaskId}/`, {
+        obj: "task",
+        action: "increment_gone_through"
+      })
+      .catch(err => console.log('incrementGoneThrough err', err))
+
+      if (response?.status === 200) {
+        let task = this.tasks.filter((task: TaskType) => task.id === this.currentTaskId)[0];
+        task.gone_through = response.data;
+      }
+    }
   },
 });

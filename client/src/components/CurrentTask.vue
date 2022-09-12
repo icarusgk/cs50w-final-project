@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 
 const task = ref();
@@ -23,7 +24,10 @@ watch(
 </script>
 
 <template>
-  <div style="margin-top: 1rem">
+  <div 
+    v-if="useAuthStore().isAuthenticated && useChoreStore().currentTaskId" 
+    style="margin-top: 1rem"
+  >
     <h3>Working on task: {{ task?.title }}</h3>
   </div>
 </template>

@@ -99,7 +99,7 @@ function restartTimer() {
         Restart!
       </button>
       <!-- TODO: Change style -->
-      <div class="done" v-if="timer.done">
+      <div class="done" v-if="timer.done && !timer.ongoing">
         <span>Done!</span>
       </div>
       <CurrentTask />

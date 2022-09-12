@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useChoreStore } from './chore';
 import dayjs from 'dayjs';
 
 type TimerType = {
@@ -52,6 +53,7 @@ export const useTimerStore = defineStore({
       if (this.current === 'short' || this.current === 'long') {
         this.setPomo();
       } else if (this.current === 'pomo') {
+        useChoreStore().incrementGoneThrough();
         if (this.sessions === 3) {
           this.setLongRest();
           this.sessions = 0;
