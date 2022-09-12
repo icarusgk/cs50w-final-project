@@ -1,8 +1,7 @@
 import type { Project, Tag, TaskType } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-
-function tryCatcher() {}
+import { useFetch } from '@/composables/useFetch';
 
 export const useChoreStore = defineStore({
   id: 'chores',
@@ -15,49 +14,29 @@ export const useChoreStore = defineStore({
   actions: {
     // fetchers
     async fetchTasks() {
-      const response = await axios
-        .get('tasks/')
-        .catch((err) => console.log('tasks error', err));
-
-      if (response?.status === 200) {
-        this.tasks = response?.data;
-      }
+      const { data, status } = await useFetch('tasks', 'get');
+      // console.log(response);      
+      if (status === 200) this.tasks = data.results;
     },
     async fetchProjects() {
-      const response = await axios
-        .get('projects/')
-        .catch((err) => console.log('projects error', err));
-      if (response?.status === 200) {
-        this.projects = response?.data;
-      }
+      const { data, status } = await useFetch('projects', 'get');
+      
+      if (status === 200) this.projects = data.results;
     },
     async fetchTags() {
-      const response = await axios
-        .get('tags/')
-        .catch((err) => console.log('tags error', err));
-      if (response?.status === 200) {
-        this.tags = response?.data;
-      }
+      const { data, status } = await useFetch('tags', 'get');
+      
+      if (status === 200) this.tags = data;
     },
     async fetchCurrentTask() {
-      const response = await axios
-        .get('currentTask/')
-        .catch((err) => console.log('current Task err', err));
+      const { data, status } = await useFetch('currentTask', 'get');
 
-      if (response?.status === 200) {
-        this.currentTaskId = response?.data.id;
-      }
+      if (status === 200) this.currentTaskId = data.id;
     },
     async changeCurrentTask(id: number | undefined) {
-      const response = await axios
-        .put('currentTask/', {
-          id: id
-        })
-        .catch((err) => console.log('change current task err', err));
-
-      if (response?.status === 200) {
-        this.currentTaskId = response?.data.id;
-      }
+      const { data, status } = await useFetch('currentTask', 'put', { id });
+      
+      if (status === 200) this.currentTaskId = data.id;
     },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
@@ -68,63 +47,45 @@ export const useChoreStore = defineStore({
     },
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {
-      const response = await axios
-        .post('tasks/', task)
-        .catch((err) => console.log('add task err', err));
+      const { data, status } = await useFetch('tasks', 'post', task);
 
-      if (response?.status === 200) {
-        this.tasks.push(response.data);
-      }
+      if (status === 200) this.tasks.push(data);
     },
     async deleteTask(id: number | undefined) {
-      const response = await axios
-        .delete(`tasks/${id}/`)
-        .catch((err) => console.log('delete task err', err));
+      const { status } = await useFetch('tasks', 'delete', null, id)
 
-      if (response?.status === 204) {
+      if (status === 204) {
         this.tasks = this.tasks.filter((task: TaskType) => task.id !== id);
       }
     },
     async addProject(project: Project) {
-      const response = await axios
-        .post('projects/', project)
-        .catch((err) => console.log('add project err', err));
+      const { data, status } = await useFetch('projects', 'post', project);
 
-      if (response?.status == 201) {
-        this.projects.push(response.data);
-      }
+      if (status == 201) this.projects.push(data);
     },
     async deleteProject(id: number) {
-      const response = await axios
-        .delete(`projects/${id}/`)
-        .catch((err) => console.log('delete project err', err));
+      const { status } = await useFetch('projects', 'delete', null, id);
 
-      if (response?.status === 200) {
+      if (status === 200) {
         this.projects = this.projects.filter(
           (project: Project) => project.id !== id
         );
       }
     },
     async addTag(tag: string) {
-      const response = await axios
-        .post('tags/', tag)
-        .catch((err) => console.log('add tag err', err));
+      const { data, status } = await useFetch('tags', 'post', tag);
 
-      if (response?.status === 200) {
-        console.log(response.data);
-      }
+      if (status === 200) console.log(data);
     },
     async incrementGoneThrough() {
-      const response = await axios
-      .patch(`tasks/${this.currentTaskId}/`, {
+      const { data, status } = await useFetch('tasks', 'patch', {
         obj: "task",
         action: "increment_gone_through"
-      })
-      .catch(err => console.log('incrementGoneThrough err', err))
+      }, this.currentTaskId);
 
-      if (response?.status === 200) {
+      if (status === 200) {
         let task = this.tasks.filter((task: TaskType) => task.id === this.currentTaskId)[0];
-        task.gone_through = response.data;
+        task.gone_through = data;
       }
     }
   },
