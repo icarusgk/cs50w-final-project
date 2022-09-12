@@ -5,8 +5,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from django.http import Http404
 import json
+
+class ProjectResultsSetPagination(PageNumberPagination):
+  page_size = 2
+  page_size_query_param = 'page_size'
+  max_page_size = 2
+
+class TaskResultsSetPagination(PageNumberPagination):
+  page_size = 4
+  page_size_query_param = 'page_size'
+  max_page_size = 4
 
 # This viewsets automatically provide `list`, `create`, `retrieve`,
 # `update` and `destroy` actions.
@@ -22,14 +33,10 @@ class TaskViewSet(viewsets.ModelViewSet):
   queryset = Task.objects.all()
   permission_classes = [permissions.IsAuthenticated]
   serializer_class = TaskSerializer
+  pagination_class = TaskResultsSetPagination
 
-  def list(self, request):
-    """
-    List tasks specific to the user
-    """
-    tasks = Task.objects.filter(user=request.user, in_project=False)
-    serializer = TaskSerializer(tasks, many=True)
-    return Response(serializer.data)
+  def get_queryset(self):
+    return self.request.user.tasks.all().order_by('-id')
 
   def retrieve(self, request, pk=None):
     """
@@ -156,17 +163,16 @@ class ProjectViewSet(viewsets.ModelViewSet):
   queryset = Project.objects.all()
   permission_classes = [permissions.IsAuthenticated]
   serializer_class = ProjectSerializer
+  pagination_class = ProjectResultsSetPagination
+
+  def get_queryset(self):
+    return self.request.user.projects.all()
 
   def get_object(self, pk):
     try:
       return Project.objects.get(id=pk)
     except Project.DoesNotExist:
       raise Http404
-
-  def list(self, request):
-    projects = Project.objects.filter(user=request.user)
-    serializer = ProjectSerializer(projects, many=True)
-    return Response(serializer.data)
 
   def create(self, request):
     """

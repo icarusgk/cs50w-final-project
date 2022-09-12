@@ -14,7 +14,7 @@ class User(AbstractUser):
 class Task(models.Model):
   user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tasks')
   title = models.CharField(max_length=50)
-  description = models.TextField(max_length=255)
+  description = models.TextField(max_length=255, blank=True)
   estimated = models.IntegerField(default=0)
   gone_through = models.IntegerField(default=0)
   minutes = models.IntegerField(default=0)

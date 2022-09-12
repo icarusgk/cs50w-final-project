@@ -5,20 +5,31 @@
       <slot name="icon"></slot>
     </div>
     <!-- Title -->
-    <div>
+    <div class="title">
       <slot name="type"></slot>
+      <div>
+        <slot name="count"></slot>
+      </div>
     </div>
+    
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
 #projects-container {
   display: flex;
   align-items: center;
   padding: 1rem 0;
-}
+  width: 100%;
+  .task-title-icon {
+    margin-right: 1rem;
+  }
 
-.task-title-icon {
-  margin-right: 1rem;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+  }
 }
 </style>
