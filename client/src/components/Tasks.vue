@@ -12,7 +12,7 @@ const tasks = computed(() => choreStore.tasks);
 </script>
 
 <template>
-  <div>
+  <div v-auto-animate>
     <TaskType class="button" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />

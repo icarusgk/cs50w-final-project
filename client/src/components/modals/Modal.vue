@@ -74,7 +74,6 @@ const emits = defineEmits(['exitModal']);
 
       .tags-container {
         display: flex;
-        height: 25px;
         margin-bottom: 1rem;
       }
     }

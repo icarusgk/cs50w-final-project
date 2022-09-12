@@ -96,16 +96,18 @@ function removeTag(tag: Tag) {
 
 <template>
   <!-- Existing tags -->
-  <MiniLabel v-for="tag in taskTags" :is-tag="true">
-    <template #title> #{{ tag.name }} </template>
-    <template #icon>
-      <DeleteTagIcon
-        v-if="!info"
-        @click="deleteTag(tag)"
-        class="delete-tag-icon"
-      />
-    </template>
-  </MiniLabel>
+  <div v-auto-animate class="tags-animate-container">
+    <MiniLabel v-for="tag in taskTags" :is-tag="true">
+      <template #title> #{{ tag.name }} </template>
+      <template #icon>
+        <DeleteTagIcon
+          v-if="!info"
+          @click="deleteTag(tag)"
+          class="delete-tag-icon"
+        />
+      </template>
+    </MiniLabel>
+  
   <!-- Add tags -->
   <MiniLabel
     v-if="!info && taskTags.length === 0 && newTagVisible"
@@ -119,6 +121,7 @@ function removeTag(tag: Tag) {
       <AddTagIcon />
     </template>
   </MiniLabel>
+
   <!-- Replace the button with input -->
   <MiniLabel
     v-if="!info && taskTags.length > 0 && taskTags.length < 3 && newTagVisible"
@@ -168,6 +171,7 @@ function removeTag(tag: Tag) {
       </template>
     </Popper>
   </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -177,6 +181,11 @@ function removeTag(tag: Tag) {
 
 .task-title {
   margin-right: 0.5rem;
+}
+
+.tags-animate-container {
+  display: flex;
+  width: 100%;
 }
 
 .new-tag-container {

@@ -47,8 +47,8 @@ function setCurrent() {
       <MarkedDoneIcon v-else />
     </div>
     <!-- Name -->
-    <div @click="setCurrent()" class="task-title-container" :class="{ done: task.done }">
-      <div class="title-container">
+    <div class="task-title-container" :class="{ done: task.done }">
+      <div @click="setCurrent()" class="title-container">
         <span class="title">{{ props.task.title }}</span>
       </div>
       <div class="task-info-icon" @click="open = true">
@@ -82,6 +82,13 @@ function setCurrent() {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    .title-container {
+      &:hover,
+      &:focus {
+        cursor: pointer;
+      }
+    }
 
     .task-info-icon {
       margin-top: 0.2rem;

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import { useAuthStore } from '@/stores/auth';
 
 import Project from '@/components/Project.vue';
 import TaskType from '@/components/slots/TaskType.vue';
@@ -28,8 +27,8 @@ const projects = computed(() => choreStore.projects);
         <h2>No Projects</h2>
       </div>
       <!-- List of projects -->
-      <div v-for="project in projects">
-        <Project :project="project" />
+      <div v-auto-animate>
+        <Project v-for="project in projects" :project="project" />
       </div>
     </div>
   </div>

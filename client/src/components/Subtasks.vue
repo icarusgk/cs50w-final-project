@@ -270,7 +270,7 @@ function closeNew() {
 </script>
 
 <template>
-  <div class="new-task-minitask-container">
+  <div class="new-task-minitask-container" v-auto-animate>
     <!-- Display each subtask list -->
     <MiniLabel v-for="chore in chores" :is-task="true">
       <template #icon>
