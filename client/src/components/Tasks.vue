@@ -34,7 +34,8 @@ const tasks = computed(() => choreStore.tasks);
     
     <Paginate
       :pages="choreStore.totalTaskPages"
-      :page="choreStore.taskPagination.page"
+      v-model:page="choreStore.taskPagination.page"
+      :added="choreStore.taskPagination.added"
       @prev="choreStore.previousTaskPage"
       @setPage="(page) => choreStore.setTaskPage(page)"
       @next="choreStore.nextTaskPage"

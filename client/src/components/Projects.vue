@@ -42,9 +42,11 @@ const projects = computed(() => choreStore.projects);
     </div>
     <Paginate
       :pages="choreStore.totalProjectPages"
-      :page="choreStore.projectPagination.page"
+      v-model:page="choreStore.projectPagination.page"
+      :added="choreStore.projectPagination.added"
       @prev="choreStore.previousProjectPage"
       @setPage="(page) => choreStore.setProjectPage(page)"
+      @setAdded="(number) => choreStore.projectPagination.added = number"
       @next="choreStore.nextProjectPage"
     />
   </div>

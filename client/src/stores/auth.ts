@@ -34,10 +34,10 @@ export const useAuthStore = defineStore({
           },
         });
         if (response.status === 200 && response.data) {
-          console.log('setting user...');
+          // console.log('setting user...');
 
           this.user = response.data;
-          console.log('user is', this.user);
+          // console.log('user is', this.user);
 
           return response.data;
         }

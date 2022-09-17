@@ -12,13 +12,15 @@ export const useChoreStore = defineStore({
     tasks: [] as TaskType[],
     projects: [] as Project[],
     tags: [] as Tag[],
-    taskPagination: {
-      count: 0,
-      page: 1,
-    },
     projectPagination: {
       count: 0,
       page: 1,
+      added: 1,
+    },
+    taskPagination: {
+      count: 0,
+      page: 1,
+      added: 1
     },
     currentTaskId: null as number | null,
   }),
@@ -32,6 +34,7 @@ export const useChoreStore = defineStore({
     previousProjectPage() {
       if (this.projectPagination.page > 1) {
         this.projectPagination.page--;
+        console.log('chore store: projectPage is now', this.projectPagination.page);
         this.fetchProjects();
       }
     },

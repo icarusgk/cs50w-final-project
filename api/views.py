@@ -36,7 +36,7 @@ class TaskViewSet(viewsets.ModelViewSet):
   pagination_class = TaskResultsSetPagination
 
   def get_queryset(self):
-    return self.request.user.tasks.all().order_by('-id')
+    return self.request.user.tasks.all().filter(in_project=False).order_by('-id')
 
   def retrieve(self, request, pk=None):
     """
