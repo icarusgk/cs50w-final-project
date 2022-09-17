@@ -123,13 +123,13 @@ function nextMoveBy(increasedBy: number): void {
     }
     // If added is less than 6 move by n (3)
     if (added.value < props.pages - 5) {
-      added.value += increasedBy;
-      currentPage.value = added.value + 2; 
+      added.value += increasedBy - 1;
+      currentPage.value = added.value + 2;
     } else {
       // For short pages
       added.value = props.pages - 4
-      currentPage.value = props.pages - 2;
-    }    
+      currentPage.value = props.pages - 2;      
+    }
     emit("setPage", currentPage.value);
   }
 
