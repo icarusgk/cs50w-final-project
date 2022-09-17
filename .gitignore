@@ -14,3 +14,4 @@ local_settings.py
 
 .env
 env/
+.vscode/
