@@ -12,6 +12,7 @@ router.register(r'tasks', views.TaskViewSet)
 router.register(r'tags', views.TagViewSet)
 router.register(r'projects', views.ProjectViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'stats', views.StatsViewSet)
 
 urlpatterns = [
   path('', include(router.urls)),

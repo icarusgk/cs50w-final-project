@@ -47,9 +47,9 @@ class Project(models.Model):
 
 
 class Stats(models.Model):
-  day = models.DateField(default=timezone.now, null=False)
-  done = models.IntegerField(default=0)
+  day = models.DateField(default=timezone.now, null=False, unique=True)
+  chores_done = models.IntegerField(default=0)
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stats')
 
   def __str__(self):
-    return f'{self.user} has done {self.done} on {self.day}'
+    return f'{self.user}: {self.done} chores on {self.day}'

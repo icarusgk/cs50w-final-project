@@ -29,6 +29,25 @@ class UserViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticated]
   serializer_class = UserSerializer
 
+
+class StatsViewSet(viewsets.ModelViewSet):
+  queryset = Stats.objects.all()
+  permission_classes = [permissions.IsAuthenticated]
+  serializer_class = StatsSerializer
+
+  def get_queryset(self):
+    return self.request.user.stats.all().order_by('day')
+
+  def create(self, request):
+    # Create a new stats object
+    serializer = StatsSerializer(data=request.data)
+
+    if serializer.is_valid():
+      stat = Stats.objects.create(**serializer.data, user=request.user)
+      return Response(serializer.data)
+    return Response('not valid')
+
+
 class TaskViewSet(viewsets.ModelViewSet):
   queryset = Task.objects.all()
   permission_classes = [permissions.IsAuthenticated]

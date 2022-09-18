@@ -7,6 +7,12 @@ class UserSerializer(serializers.ModelSerializer):
     fields = ['id', 'username', 'email']
 
 
+class StatsSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Stats
+    fields = ['id', 'day', 'done']
+
+
 class TagSerializer(serializers.ModelSerializer):
   class Meta:
     model = Tag
