@@ -11,6 +11,8 @@ class Tag(models.Model):
 
 class User(AbstractUser):
   current_task_id = models.IntegerField(default=0)
+  auto_start_pomos = models.BooleanField(default=False)
+  auto_start_breaks = models.BooleanField(default=False)
 
 class Task(models.Model):
   user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tasks')
@@ -53,3 +55,14 @@ class Stats(models.Model):
 
   def __str__(self):
     return f'{self.user}: {self.chores_done} chores on {self.day}'
+
+
+class Mode(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='modes')
+  name = models.CharField(max_length=40)
+  pomo = models.IntegerField(default=25)
+  short_break = models.IntegerField(default=25)
+  long_break = models.IntegerField(default=15)
+  
+  def __str__(self):
+    return f'Mode: {self.name} - User: {self.user}'
