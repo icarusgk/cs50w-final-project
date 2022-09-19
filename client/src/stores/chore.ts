@@ -1,4 +1,4 @@
-import type { Project, Tag, TaskType } from '@/types';
+import type { Project, Tag, TaskType, StatType } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
@@ -22,6 +22,7 @@ export const useChoreStore = defineStore({
       page: 1,
       added: 1
     },
+    stats: [] as StatType[],
     currentTaskId: null as number | null,
   }),
   getters: {
@@ -65,6 +66,22 @@ export const useChoreStore = defineStore({
       }
     },
     // fetchers
+    async fetchStats() {
+      const { data, status } = await useFetch('stats', 'get');
+      if (status === 200) this.stats = data;
+    },
+    async increaseTodayStats() {
+      const { data, status } = await useFetch('stats', 'post', {
+        day: new Date().toISOString().slice(0, 10),
+      });
+      if (status === 200) {
+        let stat = this.stats.find(stat => stat.id === data.id);
+
+        if (stat) {
+          stat.chores_done = data.chores_done;          
+        }
+      }
+    },
     async fetchTasks() {
       const { data, status } = await axios.get(
         `tasks/?page=${this.taskPagination.page}`
@@ -102,9 +119,10 @@ export const useChoreStore = defineStore({
     },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
-      this.fetchTasks();
-      this.fetchProjects();
+      this.fetchStats();
       this.fetchTags();
+      this.fetchTasks();
+      this.fetchProjects();      
       this.fetchCurrentTask();
     },
     // Adds tasks with tags and subtasks
@@ -141,7 +159,7 @@ export const useChoreStore = defineStore({
       if (status === 200) console.log(data);
     },
     async incrementGoneThrough() {
-      const { data, status } = await useFetch(
+      const { status } = await useFetch(
         'tasks',
         'patch',
         {
@@ -152,10 +170,7 @@ export const useChoreStore = defineStore({
       );
 
       if (status === 200) {
-        let task = this.tasks.filter(
-          (task: TaskType) => task.id === this.currentTaskId
-        )[0];
-        task.gone_through = data;
+        this.increaseTodayStats();
       }
     },
   },

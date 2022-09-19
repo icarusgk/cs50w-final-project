@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class StatsSerializer(serializers.ModelSerializer):
   class Meta:
     model = Stats
-    fields = ['id', 'day', 'done']
+    fields = ['id', 'day', 'chores_done']
 
 
 class TagSerializer(serializers.ModelSerializer):

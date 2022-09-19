@@ -52,4 +52,4 @@ class Stats(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stats')
 
   def __str__(self):
-    return f'{self.user}: {self.done} chores on {self.day}'
+    return f'{self.user}: {self.chores_done} chores on {self.day}'

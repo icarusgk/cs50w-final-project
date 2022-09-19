@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { plugin, defaultConfig } from '@formkit/vue';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
+import VueApexCharts from 'vue3-apexcharts';
 
 import App from './App.vue';
 import router from './router';
@@ -21,6 +22,8 @@ app.use(
 );
 
 app.use(autoAnimatePlugin);
+
+app.use(VueApexCharts)
 
 app.component('Popper', Popper);
 

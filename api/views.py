@@ -38,14 +38,22 @@ class StatsViewSet(viewsets.ModelViewSet):
   def get_queryset(self):
     return self.request.user.stats.all().order_by('day')
 
+  # POST
   def create(self, request):
-    # Create a new stats object
+    # See if there is a stat with the same date
+    stat = Stats.objects.filter(day=request.data['day'])
+    if stat:
+      stat = stat[0]
+      stat.chores_done += 1
+      stat.save()
+      return Response(StatsSerializer(stat).data)
+    
+    # If not, create a new Stat
     serializer = StatsSerializer(data=request.data)
-
     if serializer.is_valid():
-      stat = Stats.objects.create(**serializer.data, user=request.user)
+      Stats.objects.create(**serializer.data, user=request.user)
       return Response(serializer.data)
-    return Response('not valid')
+    return Response("not valid")
 
 
 class TaskViewSet(viewsets.ModelViewSet):
