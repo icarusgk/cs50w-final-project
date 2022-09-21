@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useChoreStore } from './chore';
+import type { ModeType } from '@/types';
 import dayjs from 'dayjs';
 
 type TimerType = {
@@ -7,16 +8,30 @@ type TimerType = {
   seconds: number;
 };
 
-const MINUTES25: TimerType = {
-  minutes: dayjs().set('minutes', 25).set('seconds', 0),
+// In case the timer object is empty
+const defaultTimer = {
+  name: 'default',
+  pomo: 25,
+  short_break: 5,
+  long_break: 15
+}
+
+let timer: ModeType = JSON.parse(localStorage.getItem('timer') || '{}');
+
+if (Object.keys(timer).length === 0) {
+  timer = defaultTimer;
+}
+
+const POMO: TimerType = {
+  minutes: dayjs().set('minutes', timer.pomo).set('seconds', 0),
   seconds: 1500,
 };
 const LONG_REST: TimerType = {
-  minutes: dayjs().set('minutes', 15).set('seconds', 0),
+  minutes: dayjs().set('minutes', timer.long_break).set('seconds', 0),
   seconds: 900,
 };
 const SHORT_REST: TimerType = {
-  minutes: dayjs().set('minutes', 5).set('seconds', 0),
+  minutes: dayjs().set('minutes', timer.short_break).set('seconds', 0),
   seconds: 300,
 };
 
@@ -28,7 +43,7 @@ export const useTimerStore = defineStore({
   id: 'timer',
   state: () => ({
     timerId: 0,
-    timer: MINUTES25.minutes,
+    timer: POMO.minutes,
     done: false,
     ongoing: false,
     current: 'pomo',
@@ -67,7 +82,7 @@ export const useTimerStore = defineStore({
       // Compare the current time with the original time
       switch (this.current) {
         case 'pomo':
-          this.percent = calculatePercent(MINUTES25, this.timer) + 5;
+          this.percent = calculatePercent(POMO, this.timer) + 5;
           break;
         case 'short':
           this.percent = calculatePercent(SHORT_REST, this.timer) + 5;
@@ -77,7 +92,7 @@ export const useTimerStore = defineStore({
       }
     },
     setPomo() {
-      this.timer = MINUTES25.minutes;
+      this.timer = POMO.minutes;
       this.current = 'pomo';
     },
     setShortRest() {
