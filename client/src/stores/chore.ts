@@ -66,6 +66,13 @@ export const useChoreStore = defineStore({
       }
     },
     // fetchers
+    async fetchMode() {
+      const { status, data } = await useFetch('currentMode', 'get');
+      if (status === 200) {
+        const timer = JSON.stringify(data);
+        localStorage.setItem('timer', timer);
+      }
+    },
     async fetchStats() {
       const { data, status } = await useFetch('stats', 'get');
       if (status === 200) this.stats = data;
@@ -120,6 +127,7 @@ export const useChoreStore = defineStore({
     // Fetch all chores from user (request.user in django)
     fetchAll() {
       this.fetchStats();
+      this.fetchMode();
       this.fetchTags();
       this.fetchTasks();
       this.fetchProjects();      
