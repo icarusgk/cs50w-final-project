@@ -13,6 +13,12 @@ class StatsSerializer(serializers.ModelSerializer):
     fields = ['id', 'day', 'chores_done']
 
 
+class ModesSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Mode
+    exclude = ['user']
+    
+
 class TagSerializer(serializers.ModelSerializer):
   class Meta:
     model = Tag

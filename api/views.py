@@ -7,7 +7,6 @@ from rest_framework import permissions, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from django.http import Http404
-import json
 
 class ProjectResultsSetPagination(PageNumberPagination):
   page_size = 2
@@ -54,6 +53,15 @@ class StatsViewSet(viewsets.ModelViewSet):
       Stats.objects.create(**serializer.data, user=request.user)
       return Response(serializer.data)
     return Response("not valid")
+
+
+class ModeViewSet(viewsets.ModelViewSet):
+  queryset = Mode.objects.all()
+  permission_classes = [permissions.IsAuthenticated]
+  serializer_class = ModesSerializer
+
+  def get_queryset(self):
+    return self.request.user.modes.all()
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -315,6 +323,7 @@ class CurrentUserView(APIView):
 # Current Task
 class CurrentTaskView(APIView):
   def get(self, request):
+    # TODO: Change to request.user
     user = User.objects.get(id=request.user.id)
     return Response({'id': user.current_task_id})
 
@@ -324,3 +333,22 @@ class CurrentTaskView(APIView):
     user.current_task_id = new_id
     user.save()
     return Response({'id': new_id})
+
+
+class CurrentModeView(APIView):
+  permission_classes = [permissions.IsAuthenticated]
+
+  def get_mode(self, id):
+    mode = Mode.objects.get(id=id)
+    return Response(ModesSerializer(mode).data)
+
+  def get(self, request):
+    return self.get_mode(request.user.current_mode_id)
+
+  # Change the current mode
+  def post(self, request):
+    mode_id = request.data['mode_id']
+    user = User.objects.get(id=request.user.id)
+    user.current_mode_id = mode_id
+    user.save()
+    return self.get_mode(mode_id)
