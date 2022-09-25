@@ -8,6 +8,8 @@ type User = {
   username: string;
   email: string;
   streak: number;
+  auto_start_pomos: boolean;
+  auto_start_breaks: boolean;
 };
 
 type UserCredentials = {
