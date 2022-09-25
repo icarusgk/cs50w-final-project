@@ -339,8 +339,11 @@ class CurrentModeView(APIView):
   permission_classes = [permissions.IsAuthenticated]
 
   def get_mode(self, id):
-    mode = Mode.objects.get(id=id)
-    return Response(ModesSerializer(mode).data)
+    try:
+      mode = Mode.objects.get(id=id)
+      return Response(ModesSerializer(mode).data)
+    except Mode.DoesNotExist:
+      raise Http404
 
   def get(self, request):
     return self.get_mode(request.user.current_mode_id)
