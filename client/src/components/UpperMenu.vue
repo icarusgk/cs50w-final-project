@@ -3,16 +3,21 @@ import { ref, watch, computed } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useAuthStore } from '@/stores/auth';
 
-import StreaksIcon from '@/components/icons/StreaksIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
+import Settings from './Settings.vue';
 import Title from './Title.vue';
 import Modal from './modals/Modal.vue';
-const open = ref(false);
+import UserInfo from './UserInfo.vue';
+
+const userOpen = ref(false);
+const settingsOpen = ref(false);
 const auth = useAuthStore();
 
-watch(
-  () => open.value,
+watch([
+  () => userOpen.value,
+  () => settingsOpen.value,
+  ],
   () => {
     useModalStore().toggle();
   }
@@ -29,7 +34,7 @@ watch(
         <div class="login">
           <div
             class="login"
-            @click="auth.isAuthenticated ? (open = true) : (open = false)"
+            @click="auth.isAuthenticated ? (userOpen = true) : (userOpen = false)"
           >
             <UserIcon />
             <span v-if="auth.user">{{ auth.user?.username }}</span>
@@ -40,22 +45,15 @@ watch(
         </div>
       </li>
       <!-- Settings -->
-      <li v-if="auth.isAuthenticated"><SettingsIcon /></li>
+      <li @click="settingsOpen = true" v-if="auth.isAuthenticated">
+        <SettingsIcon />
+      </li>
     </ul>
-    <Modal :open="open" @exit-modal="open = false">
-      <div>
-        <h1>Logout</h1>
-        <h2>Hello there {{ auth.user?.username }}</h2>
-        <button
-          id="logout-btn"
-          @click="
-            auth.logout();
-            open = false;
-          "
-        >
-          Logout
-        </button>
-      </div>
+    <Modal :open="userOpen" @exit-modal="userOpen = false">
+      <UserInfo />
+    </Modal>
+    <Modal :open="settingsOpen" @exit-modal="settingsOpen = false">
+      <Settings />
     </Modal>
   </div>
 </template>
@@ -93,21 +91,6 @@ watch(
         }
       }
     }
-  }
-}
-
-#logout-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  background-color: var(--vivid-red);
-  color: white;
-  font-weight: 500;
-  transition: background-color 0.15s ease-in;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #ff4b4b9f;
   }
 }
 
