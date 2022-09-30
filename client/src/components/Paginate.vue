@@ -68,7 +68,7 @@ function setCurrentPage(page: number): void {
     added.value = 2;
   }
   // Reset back to 1
-  if (currentPage.value === 3) {
+  if (currentPage.value <= 3) {
     added.value = 1;
   }
 
