@@ -10,8 +10,8 @@ class Tag(models.Model):
 
 
 class User(AbstractUser):
-  current_task_id = models.IntegerField(default=0)
-  current_mode_id = models.IntegerField(default=0)
+  current_task_id = models.IntegerField(default=0, null=True)
+  current_mode_id = models.IntegerField(default=0, null=True)
   auto_start_pomos = models.BooleanField(default=False)
   auto_start_breaks = models.BooleanField(default=False)
 
@@ -60,7 +60,7 @@ class Stats(models.Model):
 
 class Mode(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='modes')
-  name = models.CharField(max_length=40)
+  name = models.CharField(max_length=40, unique=True)
   pomo = models.IntegerField(default=25)
   short_break = models.IntegerField(default=5)
   long_break = models.IntegerField(default=15)
