@@ -35,7 +35,6 @@ export const useChoreStore = defineStore({
     previousProjectPage() {
       if (this.projectPagination.page > 1) {
         this.projectPagination.page--;
-        console.log('chore store: projectPage is now', this.projectPagination.page);
         this.fetchProjects();
       }
     },
@@ -66,11 +65,11 @@ export const useChoreStore = defineStore({
       }
     },
     // fetchers
-    async fetchMode() {
-      const { status, data } = await useFetch('currentMode', 'get');
+    async fetchModes() {
+      const { status, data } = await useFetch('modes', 'get');
       if (status === 200) {
-        const timer = JSON.stringify(data);
-        localStorage.setItem('timer', timer);
+        const modes = JSON.stringify(data);
+        localStorage.setItem('modes', modes);
       }
     },
     async fetchStats() {
@@ -127,7 +126,7 @@ export const useChoreStore = defineStore({
     // Fetch all chores from user (request.user in django)
     fetchAll() {
       this.fetchStats();
-      this.fetchMode();
+      this.fetchModes();
       this.fetchTags();
       this.fetchTasks();
       this.fetchProjects();      
