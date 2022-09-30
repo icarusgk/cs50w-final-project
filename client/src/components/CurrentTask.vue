@@ -12,7 +12,11 @@ async function getTask() {
   task.value = response?.data;
 }
 
-onMounted(() => getTask());
+onMounted(() => {
+  if (useAuthStore().isAuthenticated) {
+    getTask();
+  }
+});
 
 // A kind of debouncer?
 watch(
