@@ -86,6 +86,7 @@ export const useAuthStore = defineStore({
       [this.user, this.isAuthenticated] = [null, false];
       localStorage.removeItem('jwt');
       localStorage.removeItem('timer');
+      localStorage.removeItem('modes');
       console.log('now the user is:', this.user);
       console.log('and jwt is', localStorage.getItem('jwt'));
 
