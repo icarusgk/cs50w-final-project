@@ -63,6 +63,37 @@ class ModeViewSet(viewsets.ModelViewSet):
   def get_queryset(self):
     return self.request.user.modes.all()
 
+  def create(self, request):
+    if request.data['pomo'] >= 60 or request.data['short_break'] >= 60 or request.data['long_break'] >= 60:
+      return Response({'message': 'Not valid, timers can only be less than an hour long.'})
+    
+    if request.data['name'] == 'Default':
+      return Response({'message': 'There can only be one default mode.'})
+
+    serializer = ModesSerializer(data=request.data)
+
+    if serializer.is_valid():
+      mode = Mode.objects.create(**serializer.data, user=request.user)
+      return Response(ModesSerializer(mode).data)
+      
+    return Response('not valid')
+
+  def destroy(self, request, pk=None):
+    # Reset to default if the current timer is the one
+    # being deleted
+    if request.user.current_mode_id == int(pk):
+      user = User.objects.get(id=request.user.id)
+
+      # default_mode = Mode.objects.get(name='Default', user=user)
+
+      user.current_mode_id = None
+      user.save()
+
+      mode_to_delete = Mode.objects.get(id=int(pk))
+      mode_to_delete.delete()
+      
+      return Response('Back to default', status=status.HTTP_204_NO_CONTENT)
+    return super().destroy(request)
 
 class TaskViewSet(viewsets.ModelViewSet):
   queryset = Task.objects.all()
@@ -340,6 +371,13 @@ class CurrentModeView(APIView):
 
   def get_mode(self, id):
     try:
+      # if id is None:
+      #   return Response({
+      #     'name': 'Default',
+      #     'pomo': 25,
+      #     'short_break': 5,
+      #     'long_break': 15
+      #   })
       mode = Mode.objects.get(id=id)
       return Response(ModesSerializer(mode).data)
     except Mode.DoesNotExist:
