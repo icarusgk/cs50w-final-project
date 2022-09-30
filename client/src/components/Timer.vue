@@ -7,14 +7,31 @@ import CurrentTask from './CurrentTask.vue';
 const timer = useTimerStore();
 
 watch(
-  () => timer.timer,
+  () => timer.currentTimer.timer,
   () => {
     // Change the red line percent
-    timer.incrementLine();
+    if (timer.ongoing) {
+      timer.increasePercent();
+    }
 
+    // If current timer (pomo, short, long) ended
     if (timer.minutes === 0 && timer.seconds === 0) {
-      timer.markDone();
+      timer.done = true;
+      timer.setNextTimer();
       stopTimer();
+
+      // Auto start pomo
+      if (timer.current == 'pomo') {
+        // timer.ongoing or stopTimer()?
+        timer.auto_start_pomo ? startTimer() : timer.ongoing = false;
+      } 
+
+      // Auto start breaks
+      if (timer.current == 'short_break' || timer.current == 'long_break') {
+        if (timer.auto_start_breaks) {
+          startTimer();
+        }
+      }
     }
   }
 );
@@ -40,41 +57,38 @@ function startTimer() {
 }
 
 function stopTimer() {
-  timer.ongoing = false;
+  timer.ongoing = false;  
   clearInterval(timer.timerId);
 }
 
 function restartTimer() {
   stopTimer();
-  switch (timer.current) {
-    case 'pomo':
-      timer.setPomo();
-      break;
-    case 'short':
-      timer.setShortRest();
-      break;
-    case 'long':
-      timer.setLongRest();
-  }
+  timer.setTimer(timer.current);
 }
 </script>
 
 <template>
   <div id="timer-container">
+    <p 
+      v-if="!timer.currentMode.includes('Default')"
+      id="mode-title"
+    >
+      Current Mode: {{ timer.currentMode }}
+    </p>
     <div id="timer-setters">
       <div
         id="normal-pomo"
         @click="
-          timer.setPomo();
+          timer.setTimer('pomo');
           stopTimer();
         "
       >
         Pomo
       </div>
-      <div id="short-rest" @click="timer.setShortRest(), stopTimer()">
+      <div id="short-rest" @click="timer.setTimer('short_break'); stopTimer();">
         Short Rest
       </div>
-      <div id="long-rest" @click="timer.setLongRest(), stopTimer()">
+      <div id="long-rest" @click="timer.setTimer('long_break'); stopTimer();">
         Long Rest
       </div>
     </div>
@@ -86,7 +100,7 @@ function restartTimer() {
     ></div>
     <!-- Time -->
     <div>
-      <h1 id="timer-count">{{ timer.timer.format('mm:ss') }}</h1>
+      <h1 id="timer-count">{{ timer.currentTimer.timer.format('mm:ss') }}</h1>
       <button @click="startTimer()" v-if="!timer.ongoing" id="start-timer-btn">
         Start!
       </button>
@@ -133,6 +147,10 @@ function restartTimer() {
 }
 
 #timer-container {
+  #mode-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
   #timer-setters {
     display: flex;
     gap: 0.6rem;
@@ -147,11 +165,11 @@ function restartTimer() {
     @include line(var(--vivid-red));
   }
 
-  .short {
+  .short_break {
     @include line(var(--short-rest));
   }
 
-  .long {
+  .long_break {
     @include line(var(--long-rest));
   }
 
