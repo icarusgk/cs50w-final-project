@@ -48,8 +48,7 @@ function initTimer() {
 }
 
 function startTimer() {
-  // Toggle status
-  timer.toggleOngoing();
+  timer.ongoing = true;
   timer.done = false;
 
   // Restart the timer to the current mode
@@ -65,6 +64,20 @@ function restartTimer() {
   stopTimer();
   timer.setTimer(timer.current);
 }
+
+// Conditionally sets timer
+function setTimer(type: string) {
+  if (!timer.ongoing) {
+    timer.setTimer(type);
+    return;
+  }
+
+  const message = 'There is a current timer ongoing, are you sure?';
+  if (window.confirm(message)) {
+    timer.setTimer(type);
+    stopTimer();
+  }
+}
 </script>
 
 <template>
@@ -78,17 +91,14 @@ function restartTimer() {
     <div id="timer-setters">
       <div
         id="normal-pomo"
-        @click="
-          timer.setTimer('pomo');
-          stopTimer();
-        "
+        @click="setTimer('pomo')"
       >
         Pomo
       </div>
-      <div id="short-rest" @click="timer.setTimer('short_break'); stopTimer();">
+      <div id="short-rest" @click="setTimer('short_break')">
         Short Rest
       </div>
-      <div id="long-rest" @click="timer.setTimer('long_break'); stopTimer();">
+      <div id="long-rest" @click="setTimer('long_break')">
         Long Rest
       </div>
     </div>
@@ -122,20 +132,26 @@ function restartTimer() {
 </template>
 
 <style lang="scss" scoped>
-%btn {
+@mixin btn($bg-color) {
+  box-shadow: 0 4px 0 0 lighten($bg-color, 10%);
+  transition: box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   &:hover,
   &:focus {
     cursor: pointer;
   }
+
+  &:active {
+    box-shadow: 0 0 $bg-color;
+  }
 }
 
 @mixin timer-setter($bg-color) {
+  @include btn($bg-color);
+
   background-color: $bg-color;
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
-  font-weight: 600;
-
-  @extend %btn;
+  font-weight: 600;  
 }
 
 @mixin line($color) {
@@ -178,8 +194,10 @@ function restartTimer() {
   }
 
   @mixin timer-button($bg-color) {
+    @include btn($bg-color);
+
     padding: 1rem;
-    width: 210px;
+    width: 160px;
     border-radius: 18px;
     font-size: 1.5rem;
     background-color: $bg-color;
@@ -187,20 +205,18 @@ function restartTimer() {
     font-weight: 900;
     border: none;
     margin-top: 1rem;
-
-    @extend %btn;
   }
 
   #normal-pomo {
-    @include timer-setter(var(--vivid-red));
+    @include timer-setter(#ed4747);
   }
 
   #short-rest {
-    @include timer-setter(var(--short-rest));
+    @include timer-setter(#1ba7b1);
   }
 
   #long-rest {
-    @include timer-setter(var(--long-rest));
+    @include timer-setter(#1eaf58);
   }
 
   .done {
@@ -211,11 +227,11 @@ function restartTimer() {
   }
 
   #start-timer-btn {
-    @include timer-button(var(--vivid-red));
+    @include timer-button(#ed4747);
   }
 
   #stop-timer-btn {
-    @include timer-button(var(--light-blue));
+    @include timer-button(#1ba7b1);
   }
 
   #restart-timer-btn {
