@@ -1,6 +1,7 @@
 <script setup>
 import {  reactive, ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import VueApexCharts from 'vue3-apexcharts';
 
 const choreStore = useChoreStore();
 
@@ -27,12 +28,12 @@ const series = ref([
 </script>
 
 <template>
-  <apexchart
+  <VueApexCharts
     width="900"
     type="bar"
     :options="options"
     :series="series"
     style="border-radius: 4rem"
-  ></apexchart>
+  ></VueApexCharts>
 </template>
   
