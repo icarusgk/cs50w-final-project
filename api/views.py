@@ -11,13 +11,12 @@ from django.http import Http404
 class ProjectResultsSetPagination(PageNumberPagination):
   page_size = 2
   page_size_query_param = 'page_size'
-  # TODO: Change this to accept a size of 10
-  max_page_size = 2
+  max_page_size = 10
 
 class TaskResultsSetPagination(PageNumberPagination):
   page_size = 4
   page_size_query_param = 'page_size'
-  max_page_size = 4
+  max_page_size = 10
 
 # This viewsets automatically provide `list`, `create`, `retrieve`,
 # `update` and `destroy` actions.

@@ -7,9 +7,13 @@ import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import Task from '@/components/buttons/Task.vue';
 import Paginate from './Paginate.vue';
 
-const choreStore = useChoreStore();
+const chore = useChoreStore();
 
-const tasks = computed(() => choreStore.tasks);
+// Back to 1 / 4;
+chore.taskPagination.page = 1;
+chore.taskPagination.page_size = 4;
+
+const tasks = computed(() => chore.tasks.slice(0, 4));
 </script>
 
 <template>
@@ -22,7 +26,7 @@ const tasks = computed(() => choreStore.tasks);
         <h1>Single Tasks</h1>
       </template>
       <template #count>
-        Page {{ choreStore.taskPagination.page }} of {{ choreStore.totalTaskPages}}
+        Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages}}
       </template>
     </TaskType>
     <div v-if="tasks.length === 0">
@@ -33,12 +37,12 @@ const tasks = computed(() => choreStore.tasks);
     </div>
     
     <Paginate
-      :pages="choreStore.totalTaskPages"
-      v-model:page="choreStore.taskPagination.page"
-      :added="choreStore.taskPagination.added"
-      @prev="choreStore.previousTaskPage"
-      @setPage="(page) => choreStore.setTaskPage(page)"
-      @next="choreStore.nextTaskPage"
+      :pages="chore.totalTaskPages"
+      v-model:page="chore.taskPagination.page"
+      :added="chore.taskPagination.added"
+      @prev="chore.previousTaskPage"
+      @setPage="(page) => chore.setTaskPage(page)"
+      @next="chore.nextTaskPage"
     />
   </div>
 </template>

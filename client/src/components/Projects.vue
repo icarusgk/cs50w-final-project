@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import { useAutoAnimate } from '@formkit/auto-animate/vue';
 
 import Project from '@/components/Project.vue';
 import TaskType from '@/components/slots/TaskType.vue';
 import ProjectIcon from '@/components/icons/ProjectIcon.vue';
 import Paginate from './Paginate.vue';
 
-const choreStore = useChoreStore();
+const chore = useChoreStore();
 
-const projects = computed(() => choreStore.projects);
+chore.projectPagination.page = 1;
+chore.projectPagination.page_size = 4;
+
+const projects = computed(() => chore.projects.slice(0, 2));
 </script>
 
 <template>
@@ -23,8 +27,8 @@ const projects = computed(() => choreStore.projects);
         <h1>Projects</h1>
       </template>
       <template #count>
-        Page {{ choreStore.projectPagination.page }} of
-        {{ choreStore.totalProjectPages }}
+        Page {{ chore.projectPagination.page }} of
+        {{ chore.totalProjectPages }}
       </template>
     </TaskType>
     <div>
@@ -41,13 +45,13 @@ const projects = computed(() => choreStore.projects);
       </div>
     </div>
     <Paginate
-      :pages="choreStore.totalProjectPages"
-      v-model:page="choreStore.projectPagination.page"
-      :added="choreStore.projectPagination.added"
-      @prev="choreStore.previousProjectPage"
-      @setPage="(page) => choreStore.setProjectPage(page)"
-      @setAdded="(number) => choreStore.projectPagination.added = number"
-      @next="choreStore.nextProjectPage"
+      :pages="chore.totalProjectPages"
+      v-model:page="chore.projectPagination.page"
+      :added="chore.projectPagination.added"
+      @prev="chore.previousProjectPage"
+      @setPage="(page) => chore.setProjectPage(page)"
+      @setAdded="(number) => chore.projectPagination.added = number"
+      @next="chore.nextProjectPage"
     />
   </div>
 </template>

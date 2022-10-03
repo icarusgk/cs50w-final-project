@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
-import type { Task } from '@/types';
+import type { TaskType } from '@/types';
 
 import Tags from '@/components/buttons/Tags.vue';
 import TasksDoneIcon from '@/components/icons/TasksDoneIcon.vue';
@@ -9,7 +9,7 @@ import TotalTasksIcon from '@/components/icons/TotalTasksIcon.vue';
 import TaskModal from '@/components/TaskModal.vue';
 
 defineProps<{
-  task: Task;
+  task: TaskType;
 }>();
 
 const open = ref(false);
@@ -26,7 +26,7 @@ watch(
   <div class="single-task-info" @click="open = true">
     <div class="tags-and-counters">
       <div class="tags">
-        <Tags :taskTags="task.tags" :info="true" />
+        <Tags :task="task" :info="true" />
       </div>
       <div class="counters">
         <div class="counter-in-container">

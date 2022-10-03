@@ -4,9 +4,15 @@ import { useChoreStore } from '@/stores/chore';
 
 import TaskInfo from '@/components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
-// import tasks from '@/mocks/tasks';
+import Paginate from '../components/Paginate.vue';
 
-const tasks = computed(() => useChoreStore().tasks);
+const chore = useChoreStore();
+
+// Back to 1 / 10
+chore.taskPagination.page = 1;
+chore.taskPagination.page_size = 10;
+
+const tasks = computed(() => chore.tasks);
 </script>
 
 <template>
@@ -18,7 +24,16 @@ const tasks = computed(() => useChoreStore().tasks);
     <div class="all-tasks-container">
       <TaskInfo v-for="task in tasks" :task="task" />
     </div>
+    <Paginate
+      :pages="chore.totalTaskPages"
+      :page="chore.taskPagination.page"
+      :added="chore.taskPagination.added"
+      @prev="chore.previousTaskPage"
+      @setPage="(page) => chore.setTaskPage(page)"
+      @next="chore.nextTaskPage"
+    />
   </div>
+  
 </template>
 
 <style scoped lang="scss">

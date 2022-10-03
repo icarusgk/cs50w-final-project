@@ -4,9 +4,6 @@ import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
 import { useAlertStore } from './alerts';
 
-const PROJECT_PAGE_SIZE = 2;
-const TASK_PAGE_SIZE = 4;
-
 export const useChoreStore = defineStore({
   id: 'chores',
   state: () => ({
@@ -17,20 +14,24 @@ export const useChoreStore = defineStore({
       count: 0,
       page: 1,
       added: 1,
+      page_size: 2,
     },
     taskPagination: {
       count: 0,
       page: 1,
-      added: 1
+      added: 1,
+      page_size: 4,
     },
     stats: [] as StatType[],
     currentTaskId: null as number | null,
   }),
   getters: {
     totalProjectPages: (state) =>
-      Math.ceil(state.projectPagination.count / PROJECT_PAGE_SIZE),
+      Math.ceil(
+        state.projectPagination.count / state.projectPagination.page_size
+      ),
     totalTaskPages: (state) =>
-      Math.ceil(state.taskPagination.count / TASK_PAGE_SIZE),
+      Math.ceil(state.taskPagination.count / state.taskPagination.page_size),
   },
   actions: {
     previousProjectPage() {
@@ -83,18 +84,17 @@ export const useChoreStore = defineStore({
         day: new Date().toISOString().slice(0, 10),
       });
       if (status === 200) {
-        let stat = this.stats.find(stat => stat.id === data.id);
+        let stat = this.stats.find((stat) => stat.id === data.id);
 
         if (stat) {
-          stat.chores_done = data.chores_done;          
+          stat.chores_done = data.chores_done;
         }
       }
     },
     async fetchTasks() {
+      const { page, page_size } = this.taskPagination;
       const { data, status } = await axios.get('tasks/', {
-        params: {
-          page: this.taskPagination.page
-        }
+        params: { page, page_size },
       });
 
       if (status === 200) {
@@ -103,10 +103,9 @@ export const useChoreStore = defineStore({
       }
     },
     async fetchProjects() {
+      const { page, page_size } = this.projectPagination;
       const { data, status } = await axios.get('projects/', {
-        params: {
-          page: this.projectPagination.page
-        }
+        params: { page, page_size },
       });
 
       if (status === 200) {
@@ -134,8 +133,6 @@ export const useChoreStore = defineStore({
       this.fetchStats();
       this.fetchModes();
       this.fetchTags();
-      this.fetchTasks();
-      this.fetchProjects();      
       this.fetchCurrentTask();
     },
     // Adds tasks with tags and subtasks
@@ -149,7 +146,7 @@ export const useChoreStore = defineStore({
     async saveTask(task: TaskType) {
       const { status } = await axios.put(`tasks/${task.id}/`, task);
       if (status === 200) {
-        useAlertStore().success(`'${task.title}' saved!`)
+        useAlertStore().success(`'${task.title}' saved!`);
       }
     },
     async deleteTask(task: TaskType) {
@@ -167,7 +164,7 @@ export const useChoreStore = defineStore({
       if (status == 201) {
         useAlertStore().success(`Project ${project.name} created!`);
         this.fetchProjects();
-      };
+      }
     },
     async saveProject(project: Project, newProjectName: string) {
       const { status, data } = await axios.patch(`/projects/${project.id}/`, {
@@ -175,9 +172,9 @@ export const useChoreStore = defineStore({
         action: 'modify_title',
         name: newProjectName,
       });
-    
+
       if (status === 200) {
-        useAlertStore().success('Project saved!')
+        useAlertStore().success('Project saved!');
       }
     },
     async deleteProject(id: number) {

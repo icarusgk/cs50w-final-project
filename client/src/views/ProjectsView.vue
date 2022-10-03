@@ -2,14 +2,28 @@
 import { computed } from '@vue/reactivity';
 import BackIcon from '@/components/icons/BackIcon.vue';
 import ProjectInfo from '@/components/ProjectInfo.vue';
-// import projects from '@/mocks/projects';
+import Paginate from '@/components/Paginate.vue';
 import { useChoreStore } from '@/stores/chore';
 
-const projects = computed(() => useChoreStore().projects);
+const chore = useChoreStore();
+
+chore.projectPagination.page = 1;
+chore.projectPagination.page_size = 10;
+
+const projects = computed(() => chore.projects);
 </script>
 
 <template>
   <div class="projects-view">
+    <Paginate
+      :pages="chore.totalProjectPages"
+      v-model:page="chore.projectPagination.page"
+      :added="chore.projectPagination.added"
+      @prev="chore.previousProjectPage"
+      @setPage="(page: number) => chore.setProjectPage(page)"
+      @setAdded="(number: number) => chore.projectPagination.added = number"
+      @next="chore.nextProjectPage"
+    />
     <div class="go-back">
       <BackIcon class="button" @click="$router.back()" />
       <span class="title">All Projects</span>

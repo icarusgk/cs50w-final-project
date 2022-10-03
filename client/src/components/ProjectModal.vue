@@ -25,7 +25,7 @@ function deleteProject() {
 watch(
   () => props.project.name,
   (newName, oldName) => {
-    if (newName !== oldName) {
+    if (props.open && newName !== oldName) {
       chore.saveProject(props.project, newName);
     }
   }
