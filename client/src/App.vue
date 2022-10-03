@@ -4,6 +4,8 @@ import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import SideBar from '@/components/Sidebar.vue';
 import UpperMenu from '@/components/UpperMenu.vue';
+import Alerts from './components/Alerts.vue';
+
 useModalStore().close();
 const auth = useAuthStore();
 
@@ -20,6 +22,7 @@ if (auth.isAuthenticated) {
       <UpperMenu class="upper-menu" />
       <router-view @vnodeUpdated="useModalStore().close()"></router-view>
     </div>
+    <Alerts />
   </div>
 </template>
 
@@ -60,14 +63,6 @@ html {
   background-color: #212121;
 }
 
-.formkit-color-white {
-  color: white !important;
-}
-
-.formkit-color-red {
-  color: var(--vivid-red) !important;
-}
-
 .blur {
   filter: blur(14px);
   pointer-events: none;
@@ -83,7 +78,7 @@ html {
     flex-direction: column;
 
     .upper-menu {
-      padding: 2rem 3rem;
+      padding: 1.5rem 3rem 0 3rem;
       color: white;
     }
   }
