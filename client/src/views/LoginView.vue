@@ -1,42 +1,10 @@
 <script setup>
-import { useAuthStore } from '@/stores/auth';
-
-async function login(credentials) {
-  useAuthStore().login(credentials);
-}
+import Login from '@/components/Login.vue';
 </script>
 
 <template>
   <div class="login">
-    <h1>Login</h1>
-    <div class="wrapper">
-      <div>
-        <FormKit type="form" submit-label="Login" @submit="login">
-          <FormKit
-            type="text"
-            name="username"
-            placeholder="Username"
-            input-class="formkit-color-white"
-            message-class="formkit-color-red"
-            validation="required|length:4"
-          />
-          <FormKit
-            type="password"
-            name="password"
-            placeholder="Password"
-            input-class="formkit-color-white"
-            message-class="formkit-color-red"
-            validation="required|length:4"
-          />
-        </FormKit>
-      </div>
-    </div>
-    <div id="route-to-register">
-      <span
-        >Don't have an account?
-        <router-link to="/register">Register here!</router-link>
-      </span>
-    </div>
+    <Login />
   </div>
 </template>
 

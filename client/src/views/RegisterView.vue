@@ -18,35 +18,7 @@ function register() {
   <div class="register">
     <h1>Register</h1>
     <div class="wrapper">
-      <FormKit type="form" submit-label="Register" @submit="register">
-        <FormKit
-          type="text"
-          name="username"
-          id="username"
-          input-class="formkit-color-white"
-          message-class="formkit-color-red"
-          placeholder="Username"
-          validation="required"
-        />
-        <FormKit
-          type="password"
-          name="password"
-          id="password"
-          input-class="formkit-color-white"
-          message-class="formkit-color-red"
-          placeholder="Password"
-          validation="required"
-        />
-        <FormKit
-          type="password"
-          name="confirm-password"
-          id="confirm-password"
-          input-class="formkit-color-white"
-          message-class="formkit-color-red"
-          placeholder="Confirm Password"
-          validation="required"
-        />
-      </FormKit>
+
     </div>
     <div id="route-to-login">
       <span
