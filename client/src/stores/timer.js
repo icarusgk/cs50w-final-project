@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useChoreStore } from './chore';
 import dayjs from 'dayjs';
+import { useAuthStore } from './auth';
 
 // In case the timer object is empty
 export const defaultTimer = {
@@ -19,7 +20,6 @@ const minutes = minutes => {
 
 const seconds = minutes => minutes * 60;
 
-const n = 5;
 export const useTimerStore = defineStore({
   id: 'timer',
   state: () => ({
@@ -46,8 +46,8 @@ export const useTimerStore = defineStore({
     current: 'pomo',
     percent: 5,
     sessions: 0,
-    auto_start_pomo: true,
-    auto_start_breaks: true,
+    auto_start_pomo: useAuthStore().isAuthenticated ? useAuthStore().user.auto_start_pomos : false,
+    auto_start_breaks: useAuthStore().isAuthenticated ? useAuthStore().user.auto_start_breaks : false,
   }),
   getters: {
     minutes: (state) => state.currentTimer.timer.minute(),
@@ -56,8 +56,6 @@ export const useTimerStore = defineStore({
   actions: {
     setTo(data) {
       const { pomo, short_break, long_break } = data;
-      this.currentTimer.timer = minutes(pomo);
-      this.currentTimer.seconds = pomo;
       this.pomo.timer = minutes(pomo);
       this.pomo.seconds = seconds(pomo);
 
@@ -66,10 +64,13 @@ export const useTimerStore = defineStore({
 
       this.long_break.timer = minutes(long_break);
       this.long_break.seconds = seconds(long_break);
+
       this.currentMode = data.name;
     },
     setNewTimer(data) {
       this.setTo(data);
+      this.currentTimer.timer = minutes(data.pomo);
+      this.currentTimer.seconds = data.pomo;
       const timer = JSON.stringify(data);
       localStorage.setItem('timer', timer);
     },
@@ -96,6 +97,8 @@ export const useTimerStore = defineStore({
     },
     setToDefault() {
       this.setTo(defaultTimer);
+      this.currentTimer.timer = minutes(defaultTimer.pomo);
+      this.currentTimer.seconds = defaultTimer.pomo;
       localStorage.removeItem('timer');
     },
     increasePercent() {
