@@ -2,6 +2,7 @@ import type { Project, Tag, TaskType, StatType } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
+import { useAlertStore } from './alerts';
 
 const PROJECT_PAGE_SIZE = 2;
 const TASK_PAGE_SIZE = 4;
@@ -76,6 +77,7 @@ export const useChoreStore = defineStore({
       const { data, status } = await useFetch('stats', 'get');
       if (status === 200) this.stats = data;
     },
+    // TODO: Review this function
     async increaseTodayStats() {
       const { data, status } = await useFetch('stats', 'post', {
         day: new Date().toISOString().slice(0, 10),
@@ -89,9 +91,11 @@ export const useChoreStore = defineStore({
       }
     },
     async fetchTasks() {
-      const { data, status } = await axios.get(
-        `tasks/?page=${this.taskPagination.page}`
-      );
+      const { data, status } = await axios.get('tasks/', {
+        params: {
+          page: this.taskPagination.page
+        }
+      });
 
       if (status === 200) {
         this.tasks = data.results;
@@ -99,9 +103,11 @@ export const useChoreStore = defineStore({
       }
     },
     async fetchProjects() {
-      const { data, status } = await axios.get(
-        `projects/?page=${this.projectPagination.page}`
-      );
+      const { data, status } = await axios.get('projects/', {
+        params: {
+          page: this.projectPagination.page
+        }
+      });
 
       if (status === 200) {
         this.projects = data.results;
@@ -134,30 +140,55 @@ export const useChoreStore = defineStore({
     },
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {
-      const { data, status } = await useFetch('tasks', 'post', task);
-      console.log(data);
-
-      if (status === 200) this.tasks.unshift(data);
+      const { status } = await useFetch('tasks', 'post', task);
+      if (status === 200) {
+        useAlertStore().success(`Task ${task.title} created!`);
+        this.fetchTasks();
+      }
     },
-    async deleteTask(id: number | undefined) {
-      const { status } = await useFetch('tasks', 'delete', null, id);
+    async saveTask(task: TaskType) {
+      const { status } = await axios.put(`tasks/${task.id}/`, task);
+      if (status === 200) {
+        useAlertStore().success(`'${task.title}' saved!`)
+      }
+    },
+    async deleteTask(task: TaskType) {
+      const { status } = await useFetch('tasks', 'delete', null, task.id);
 
       if (status === 204) {
-        this.tasks = this.tasks.filter((task: TaskType) => task.id !== id);
+        useAlertStore().info(`Task '${task.title}' deleted`);
+        // this.tasks = this.tasks.filter((t: TaskType) => t.id !== task.id);
+        this.fetchTasks();
       }
     },
     async addProject(project: Project) {
       const { data, status } = await useFetch('projects', 'post', project);
 
-      if (status == 201) this.projects.push(data);
+      if (status == 201) {
+        useAlertStore().success(`Project ${project.name} created!`);
+        this.fetchProjects();
+      };
+    },
+    async saveProject(project: Project, newProjectName: string) {
+      const { status, data } = await axios.patch(`/projects/${project.id}/`, {
+        obj: 'project',
+        action: 'modify_title',
+        name: newProjectName,
+      });
+    
+      if (status === 200) {
+        useAlertStore().success('Project saved!')
+      }
     },
     async deleteProject(id: number) {
       const { status } = await useFetch('projects', 'delete', null, id);
 
       if (status === 200) {
-        this.projects = this.projects.filter(
-          (project: Project) => project.id !== id
-        );
+        useAlertStore().info('Project deleted!');
+        this.fetchProjects();
+        // this.projects = this.projects.filter(
+        //   (project: Project) => project.id !== id
+        // );
       }
     },
     async addTag(tag: string) {

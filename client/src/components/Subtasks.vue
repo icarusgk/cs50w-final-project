@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
+import { useChoreStore } from '@/stores/chore';
+import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
 import type { TaskType, SubtaskType } from '@/types';
 
@@ -8,7 +10,7 @@ import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from './icons/DoneIcon.vue';
 import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
-import { useChoreStore } from '@/stores/chore';
+
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 
 const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew']);
@@ -41,6 +43,8 @@ const activeChore = reactive<{
   opened: false,
   chore: null,
 });
+
+const alert = useAlertStore();
 
 // Open the an empty chore
 function openNewChore() {
@@ -92,6 +96,7 @@ async function addTaskToProject() {
     // Push new task to new project
     if (props.isProject && props.isNew) {
       existingProject.value.tasks.push(taskModel.value);
+      alert.info('Task added!');
       resetTaskModel();
     }
 
@@ -108,6 +113,7 @@ async function addTaskToProject() {
         if (response?.status === 201) {
           // Returns a task inside the project
           existingProject.value.tasks.push(response.data);
+          alert.success(`Task ${taskModel.value.title} saved!`);
           // Reset and close
           closeNew();
         }
@@ -126,6 +132,7 @@ async function addTaskToProject() {
       subtask: activeChore.chore,
     });
     if (response?.status === 200) {
+      alert.success(`Task ${activeChore.chore.title} saved!`);
       closeDetails();
     }
   }
@@ -138,6 +145,7 @@ async function addSubtaskToTask() {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
       existingTask.value.subtasks.push(subtaskModel.value);
+      alert.info(`${subtaskModel.value.title} added!`);
       resetSubtaskModel();
     }
     // Add subtasks to an existing task
@@ -150,6 +158,7 @@ async function addSubtaskToTask() {
       });
       if (response?.status === 200) {
         existingTask.value.subtasks.push(response.data);
+        alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
       }
     }
@@ -165,6 +174,7 @@ async function addSubtaskToTask() {
         subtask: activeChore.chore,
       });
       if (response?.status === 200) {
+        alert.success(`Subtask ${activeChore.chore.title} saved!`);
         closeDetails();
       }
     }
@@ -174,31 +184,35 @@ async function addSubtaskToTask() {
 // Delete chore (db) from parent component
 async function deleteChore() {
   if (props.isProject) {
-    // Works !!
     // Delete task
-    const response = await axios.patch(`/projects/${props.project.id}/`, {
-      obj: 'project',
-      action: 'delete_task',
-      task_id: activeChore.chore?.id,
-    });
-    if (response?.status === 200) {
-      existingProject.value.tasks = existingProject.value.tasks.filter(
-        (task: TaskType) => task.id !== activeChore.chore?.id
-      );
+    if (window.confirm('Are you sure?')) {
+      const response = await axios.patch(`/projects/${props.project.id}/`, {
+        obj: 'project',
+        action: 'delete_task',
+        task_id: activeChore.chore?.id,
+      });
+      if (response?.status === 200) {
+        alert.success(`Task ${activeChore.chore?.title} deleted!`);
+        existingProject.value.tasks = existingProject.value.tasks.filter(
+          (task: TaskType) => task.id !== activeChore.chore?.id
+        );
+      }
     }
   } else {
-    // If is task
-    existingTask.value.subtasks = existingTask.value.subtasks.filter(
-      (sub: TaskType) => sub !== activeChore.chore
-    );
-
-    // Make the API call
+    // If subtask
     const response = await axios.patch(`/tasks/${props.task.id}/`, {
       obj: 'subtask',
       action: 'remove',
       subtask_id: activeChore.chore?.id,
     });
-    console.log(response?.data);
+
+    if (response?.status === 200) {
+      // If is task
+      alert.success(`Subtask ${activeChore.chore?.title} deleted!`);
+      existingTask.value.subtasks = existingTask.value.subtasks.filter(
+        (sub: TaskType) => sub !== activeChore.chore
+      );
+    }
   }
   activeChore.opened = false;
 }
@@ -229,9 +243,9 @@ async function toggleChoreDone(chore: TaskType | SubtaskType) {
       if (response?.status === 200) {
         chore.done = response.data.done;
         // Visual changes
-        let project_task = useChoreStore().tasks.filter(
+        let project_task = useChoreStore().tasks.find(
           (task: TaskType) => task.id === chore.id
-        )[0];
+        );
 
         if (project_task) {
           project_task.done = response.data.done;
@@ -275,16 +289,18 @@ function closeNew() {
     <MiniLabel v-for="chore in chores" :is-task="true">
       <template #icon>
         <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="icon" />
-        <DoneIcon
-          @click="toggleChoreDone(chore)"
-          v-if="!chore.done && !isNew"
-          class="icon"
-        />
-        <MarkedDoneIcon
-          @click="toggleChoreDone(chore)"
-          v-if="chore.done"
-          class="icon"
-        />
+        <div v-auto-animate>
+          <DoneIcon
+            @click="toggleChoreDone(chore)"
+            v-if="!chore.done && !isNew"
+            class="icon"
+          />
+          <MarkedDoneIcon
+            @click="toggleChoreDone(chore)"
+            v-if="chore.done"
+            class="icon"
+          />
+        </div>
       </template>
       <template #title>
         <div @click="openDetails(chore)">{{ chore.title }}</div>
