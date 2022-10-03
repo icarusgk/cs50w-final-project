@@ -11,6 +11,7 @@ from django.http import Http404
 class ProjectResultsSetPagination(PageNumberPagination):
   page_size = 2
   page_size_query_param = 'page_size'
+  # TODO: Change this to accept a size of 10
   max_page_size = 2
 
 class TaskResultsSetPagination(PageNumberPagination):
@@ -131,7 +132,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         tag_obj = Tag.objects.filter(name=tag['name']).first()
         if not tag_obj:
           # Create tag
-          tag_obj = Tag.objects.create(name=tag['name'])
+          tag_obj = Tag.objects.create(user=request.user, name=tag['name'])
         task.tags.add(tag_obj)
 
       # Add subtasks
@@ -162,7 +163,7 @@ class TaskViewSet(viewsets.ModelViewSet):
           return Response({'message': f'tag removed'})
         if data['action'] == 'add':
           # Get or create the tag
-          (tag_obj, is_new) = Tag.objects.get_or_create(name=data['tag_name'])
+          (tag_obj, is_new) = Tag.objects.get_or_create(user=request.user, name=data['tag_name'])
           # If tag already exists, check if tag is in obj already
           if not is_new and tag_obj in task.tags.all():
             return Response({'message': 'tag already exists in task'})
@@ -225,6 +226,10 @@ class TagViewSet(viewsets.ModelViewSet):
   permission_classes = [permissions.IsAuthenticated]
   serializer_class = TagSerializer
 
+  def get_queryset(self):
+    return self.request.user.tags.all()
+    
+
 class ProjectViewSet(viewsets.ModelViewSet):
   queryset = Project.objects.all()
   permission_classes = [permissions.IsAuthenticated]
@@ -232,7 +237,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
   pagination_class = ProjectResultsSetPagination
 
   def get_queryset(self):
-    return self.request.user.projects.all()
+    return self.request.user.projects.all().order_by('-id')
 
   def get_object(self, pk):
     try:

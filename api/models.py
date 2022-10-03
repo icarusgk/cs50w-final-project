@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 class Tag(models.Model):
+  user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tags')
   name = models.CharField(max_length=20, unique=True)
 
   def __str__(self):
