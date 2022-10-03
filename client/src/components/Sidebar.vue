@@ -7,9 +7,9 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 
 <template>
   <div class="container">
-    <router-link to="/">
+    <router-link to="/" aria-label="Pomo">
       <div class="logo-container">
-        <img src="../assets/tomato-logo.png" class="logo-img" />
+        <img src="../assets/tomato-logo.png" class="logo-img" alt="Pomo Logo" />
       </div>
     </router-link>
     <div class="menu-container">
@@ -53,6 +53,11 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 
   .logo-container {
     margin-top: 2rem;
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .menu-container {

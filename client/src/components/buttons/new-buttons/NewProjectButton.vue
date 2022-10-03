@@ -8,6 +8,7 @@ import type Project from '@/types/ProjectType';
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
+import SaveButton from '@/components/SaveButton.vue';
 
 const newProject = ref<Project>({
   name: '',
@@ -53,7 +54,7 @@ function saveProject() {
       <input
         type="text"
         name="title"
-        id="new-task-input-title"
+        id="new-project-input-title"
         placeholder="New project"
         v-model="newProject.name"
       />
@@ -62,51 +63,23 @@ function saveProject() {
     <!-- Rest of modal -->
     <ProjectModalInfo :project="newProject" :isNew="true" />
     <template #save-button>
-      <button @click="saveProject()" class="close-modal-button">Save!</button>
+      <SaveButton @click="saveProject()" :disabled="false" />
     </template>
   </Modal>
 </template>
 
 <style scoped lang="scss">
-#new-task-input-title {
+#new-project-input-title {
   border: none;
   background: transparent;
   color: white;
   font-size: 2rem;
-  font-weight: 900;
-  font-family: sans-serif;
+  font-weight: 700;
   width: 90%;
 
   &:focus,
   &:hover {
     outline: none;
-  }
-}
-
-.close-modal-button {
-  background-color: var(--vivid-red);
-  color: var(--white);
-
-  font: {
-    weight: 900;
-    family: sans-serif;
-  }
-
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  margin-top: 1rem;
-  padding: 0.8rem 0.8rem;
-
-  &:hover,
-  &:focus {
-    cursor: pointer;
-  }
-}
-
-@media (max-width: 768px) {
-  #new-task-input-title {
-    width: 80%;
   }
 }
 </style>

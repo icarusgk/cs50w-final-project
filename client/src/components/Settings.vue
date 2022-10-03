@@ -70,6 +70,8 @@ async function createMode() {
   if (status === 200) {
     modes.value.push(data);
     localStorage.setItem('modes', JSON.stringify(modes.value));
+    timer.setNewTimer(data);
+    currentMode.value = data;
     showForm.value = false;
   }
 }

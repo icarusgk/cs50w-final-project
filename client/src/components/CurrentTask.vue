@@ -32,6 +32,6 @@ watch(
     v-if="useAuthStore().isAuthenticated && useChoreStore().currentTaskId" 
     style="margin-top: 1rem"
   >
-    <h3>Working on task: {{ task?.title }}</h3>
+    <span>Working on task: {{ task?.title }}</span>
   </div>
 </template>

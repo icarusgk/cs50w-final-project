@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 
 const credentials = reactive({
@@ -7,7 +7,6 @@ const credentials = reactive({
   password: '',
   passwordConfirmation: '',
 });
-const message = ref('');
 
 function register() {
   useAuthStore().register(credentials);

@@ -74,7 +74,6 @@ function check(event: any) {
     outline: none;
     background-color: transparent;
     color: white;
-    font-family: sans-serif;
     border: none;
     resize: none;
   }
