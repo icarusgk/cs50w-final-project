@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+
 import type { Project } from '@/types';
 
 import Modal from '@/components/modals/Modal.vue';
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import axios from 'axios';
 
 const props = defineProps<{
   project: Project;
@@ -14,10 +14,11 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['exit']);
+const chore = useChoreStore();
 
 // Works
 function deleteProject() {
-  useChoreStore().deleteProject(props.project.id as number);
+  chore.deleteProject(props.project.id as number);
   emit('exit');
 }
 
@@ -25,11 +26,7 @@ watch(
   () => props.project.name,
   (newName, oldName) => {
     if (newName !== oldName) {
-      axios.patch(`/projects/${props.project.id}/`, {
-        obj: 'project',
-        action: 'modify_title',
-        name: newName,
-      });
+      chore.saveProject(props.project, newName);
     }
   }
 );
@@ -64,8 +61,7 @@ watch(
   background: transparent;
   color: white;
   font-size: 2rem;
-  font-weight: 900;
-  font-family: sans-serif;
+  font-weight: 700;
   width: 100%;
 
   &:focus {

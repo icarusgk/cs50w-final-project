@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import type { Tag, TaskType } from '@/types';
-import axios from 'axios';
 
 import Tags from '@/components/buttons/Tags.vue';
 import Modal from '@/components/modals/Modal.vue';
@@ -22,22 +21,16 @@ const emit = defineEmits(['exit', 'toggleDone']);
 
 const task = ref(props.task);
 const pristine = ref(true);
+const chores = useChoreStore();
 
 // Saves task with PUT method
-async function saveTask() {
-  try {
-    const response = await axios.put(`tasks/${props.task.id}/`, task.value);
-    if (response?.status === 200) {
-      console.log(response);
-    }
-  } catch (err) {
-    console.log('saveTask() err', err);
-  }
+function saveTask() {
+  chores.saveTask(props.task);
   emit('exit');
 }
 
-async function deleteTask() {
-  useChoreStore().deleteTask(task.value?.id);
+function deleteTask() {
+  chores.deleteTask(task.value);
   emit('exit');
 }
 
@@ -46,7 +39,7 @@ function checkPristine(description: string) {
 }
 
 function removeTag(tag: Tag) {
-  task.value.tags = task.value.tags.filter((t: Tag) => t.name !== tag.name);
+  task.value.tags = task.value.tags.filter((t: Tag) => t.id !== tag.id);  
 }
 </script>
 
@@ -56,9 +49,11 @@ function removeTag(tag: Tag) {
     <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Tags -->
       <template #tags>
-        <Tags :taskTags="task.tags" :id="task.id" />
-        <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
-        <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
+        <Tags :task="task" :id="task.id" @remove-tag="tag => removeTag(tag)" />
+        <div class="done-buttons" v-auto-animate>
+          <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
+          <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
+        </div>
         <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->
@@ -67,7 +62,7 @@ function removeTag(tag: Tag) {
           type="text"
           name="title"
           id="task-input-title"
-          v-model="props.task.title"
+          v-model.lazy="props.task.title"
         />
       </template>
       <!-- Modal -->
@@ -80,11 +75,17 @@ function removeTag(tag: Tag) {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .delete-icon {
   margin: 0.1rem 0.5rem;
   &:hover,
   &:focus {
+    cursor: pointer;
+  }
+}
+
+.done-buttons {
+  &:hover, &:focus {
     cursor: pointer;
   }
 }
@@ -94,8 +95,7 @@ function removeTag(tag: Tag) {
   background: transparent;
   color: white;
   font-size: 2rem;
-  font-weight: 900;
-  font-family: sans-serif;
+  font-weight: 700;
   width: 100%;
 
   &:focus {
