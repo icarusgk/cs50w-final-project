@@ -8,8 +8,9 @@ import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
 import Tags from '@/components/buttons/Tags.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
+import SaveButton from '@/components/SaveButton.vue';
 
-import type Task from '@/types/TaskType';
+import type { Tag, TaskType } from '@/types';
 
 const open = ref(false);
 const taskStore = useChoreStore();
@@ -22,7 +23,7 @@ watch(
   }
 );
 
-const initialTask = ref<Task>({
+const initialTask = ref<TaskType>({
   tags: [],
   title: '',
   description: '',
@@ -47,6 +48,10 @@ function saveTask() {
   }
   resetTask();
 }
+
+function removeTag(tag: Tag) {
+  initialTask.value.tags = initialTask.value.tags.filter((t: Tag) => t.id !== tag.id);  
+}
 </script>
 
 <template>
@@ -55,7 +60,7 @@ function saveTask() {
   </ChoreButton>
   <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
     <template #tags>
-      <Tags :taskTags="initialTask.tags" :new="true" />
+      <Tags :task="initialTask" :new="true" @remove-tag="tag => removeTag(tag)" />
     </template>
     <!-- New task title input -->
     <template #title>
@@ -71,7 +76,7 @@ function saveTask() {
     <TaskModalInfo :task="initialTask" :isNew="true" />
     <!-- Button -->
     <template #save-button>
-      <button @click="saveTask()" class="close-modal-button">Save!</button>
+      <SaveButton @click="saveTask()" :disabled="false">Save!</SaveButton>
     </template>
   </Modal>
 </template>
@@ -82,34 +87,12 @@ function saveTask() {
   background: transparent;
   color: white;
   font-size: 2rem;
-  font-weight: 900;
-  font-family: sans-serif;
+  font-weight: 700;
   width: 100%;
 
   &:focus,
   &:hover {
     outline: none;
-  }
-}
-
-.close-modal-button {
-  background-color: var(--vivid-red);
-  color: var(--white);
-
-  font: {
-    weight: 900;
-    family: sans-serif;
-  }
-
-  width: 100%;
-  border: none;
-  border-radius: 10px;
-  margin-top: 1rem;
-  padding: 0.8rem 0.8rem;
-
-  &:hover,
-  &:focus {
-    cursor: pointer;
   }
 }
 </style>
