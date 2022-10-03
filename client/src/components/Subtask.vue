@@ -16,7 +16,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
       <div v-if="props.isProject" class="subtask-tags">
         <Tags
           :id="props.chore.id"
-          :task-tags="props.chore.tags"
+          :task="props.chore"
           :new="newChore"
         />
       </div>
@@ -118,8 +118,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
         background: transparent;
         color: white;
         font-size: 1.5rem;
-        font-weight: 900;
-        font-family: sans-serif;
+        font-weight: 700;
         width: 100%;
 
         &:focus {
@@ -132,7 +131,6 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
         outline: none;
         background-color: transparent;
         color: white;
-        font-family: sans-serif;
         border: none;
         resize: none;
       }

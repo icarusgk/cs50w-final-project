@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
+import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
-import type { Tag } from '@/types';
+import type { Tag, TaskType } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
@@ -10,23 +11,24 @@ import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
 
 const props = defineProps<{
   id?: number;
-  taskTags: Tag[];
+  task: TaskType;
   info?: boolean;
   new?: boolean;
 }>();
 
+const emit = defineEmits(['removeTag'])
+
 // A local manipulable copy of the tags
 // For filtering and pushing
-const taskTags = ref(props.taskTags);
 
 const newTagVisible = ref(true);
 const newTag = ref('');
-// const taskTags = ref(props.taskTags)
 
 const allTags = ref(useChoreStore().tags);
+const alert = useAlertStore();
 
 // Filter existing tags
-props.taskTags.forEach((taskTag: Tag) => {
+props.task.tags.forEach((taskTag: Tag) => {
   allTags.value = allTags.value.filter((tag: Tag) => tag.name !== taskTag.name);
 });
 
@@ -40,15 +42,14 @@ async function addTag() {
   if (newTag.value) {
     // Push the tag but not upload it
     if (props.new) {
-      props.taskTags.push({
+      props.task.tags.push({
         name: newTag.value,
       });
-      console.log(newTag.value);
       // if not new
     } else {
       // filter if not in taskTags
       if (
-        !(props.taskTags.filter((tag) => tag.name === newTag.value).length > 0)
+        !(props.task.tags.filter((tag) => tag.name === newTag.value).length > 0)
       ) {
         // Make the request
         try {
@@ -61,10 +62,13 @@ async function addTag() {
 
           if (response?.status === 200) {
             if (response.data?.message === 'new') {
+              alert.success('Tag created');
               useChoreStore().tags.push(response.data?.tag);
+            } else {
+              alert.info('Tag added');
             }
             // response.data will be the tag obj {id, name}
-            taskTags.value.push(response.data?.tag);
+            props.task.tags.push(response.data?.tag);
           }
         } catch (err) {
           console.log('addTag err', err);
@@ -77,27 +81,28 @@ async function addTag() {
 }
 
 async function deleteTag(tag: Tag) {
-  // TODO: Ask for confirmation
-  const response = await axios.patch(`tasks/${props.id}/`, {
-    obj: 'tag',
-    action: 'remove',
-    tag_id: tag.id,
-  });
-  if (response?.status === 200) {
-    // emit the deletion of the tag
-    removeTag(tag);
+  if (!props.new) {
+    // TODO: Ask for confirmation
+    const response = await axios.patch(`tasks/${props.id}/`, {
+      obj: 'tag',
+      action: 'remove',
+      tag_id: tag.id,
+    });
+    if (response?.status === 200) {
+      // emit the deletion of the tag
+      alert.error('Tag deleted');
+      emit('removeTag', tag);
+    }
+  } else {
+    emit('removeTag', tag);
   }
-}
-
-function removeTag(tag: Tag) {
-  taskTags.value = taskTags.value.filter((t: Tag) => t.name !== tag.name);
 }
 </script>
 
 <template>
   <!-- Existing tags -->
   <div v-auto-animate class="tags-animate-container">
-    <MiniLabel v-for="tag in taskTags" :is-tag="true">
+    <MiniLabel v-for="tag in task.tags" :is-tag="true">
       <template #title> #{{ tag.name }} </template>
       <template #icon>
         <DeleteTagIcon
@@ -110,7 +115,7 @@ function removeTag(tag: Tag) {
   
   <!-- Add tags -->
   <MiniLabel
-    v-if="!info && taskTags.length === 0 && newTagVisible"
+    v-if="!info && task.tags.length === 0 && newTagVisible"
     @click="newTagVisible = false"
     :is-add="true"
   >
@@ -124,7 +129,7 @@ function removeTag(tag: Tag) {
 
   <!-- Replace the button with input -->
   <MiniLabel
-    v-if="!info && taskTags.length > 0 && taskTags.length < 3 && newTagVisible"
+    v-if="!info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible"
     @click="newTagVisible = false"
     :is-add="true"
   >
