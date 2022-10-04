@@ -19,6 +19,7 @@ urlpatterns = [
   path('', include(router.urls)),
   path('currentTask/', views.CurrentTaskView.as_view()),
   path('currentMode/', views.CurrentModeView.as_view()),
+  path('tagInfo/<str:name>/', views.TagInfo.as_view()),
   
   # User Router
   path('register/', views.RegisterView.as_view()),

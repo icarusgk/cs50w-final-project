@@ -375,13 +375,6 @@ class CurrentModeView(APIView):
 
   def get_mode(self, id):
     try:
-      # if id is None:
-      #   return Response({
-      #     'name': 'Default',
-      #     'pomo': 25,
-      #     'short_break': 5,
-      #     'long_break': 15
-      #   })
       mode = Mode.objects.get(id=id)
       return Response(ModesSerializer(mode).data)
     except Mode.DoesNotExist:
@@ -397,3 +390,14 @@ class CurrentModeView(APIView):
     user.current_mode_id = mode_id
     user.save()
     return self.get_mode(mode_id)
+
+
+class TagInfo(APIView):
+  permission_classes = [permissions.IsAuthenticated]
+
+  def get(self, request, name=None):
+    try:
+      tag = Tag.objects.get(name=name)
+      return Response(TaskSerializer(tag.tasks, many=True).data)
+    except Tag.DoesNotExist:
+      raise Http404

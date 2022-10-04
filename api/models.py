@@ -23,7 +23,7 @@ class Task(models.Model):
   estimated = models.IntegerField(default=0)
   gone_through = models.IntegerField(default=0)
   minutes = models.IntegerField(default=0)
-  tags = models.ManyToManyField('Tag', blank=True, related_name='tags')
+  tags = models.ManyToManyField('Tag', blank=True, related_name='tasks')
   done = models.BooleanField(default=False)
   in_project = models.BooleanField(default=False)
 
