@@ -86,7 +86,8 @@ async function deleteTask() {
   .task-checkbox {
     margin-right: 1rem;
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       cursor: pointer;
     }
   }
@@ -107,7 +108,8 @@ async function deleteTask() {
 
     .title-container {
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }
@@ -116,7 +118,8 @@ async function deleteTask() {
       margin-top: 0.2rem;
       margin-right: 0.2rem;
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }

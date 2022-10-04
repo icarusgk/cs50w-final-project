@@ -102,7 +102,7 @@ async function deleteTag(tag: Tag) {
 <template>
   <!-- Existing tags -->
   <div v-auto-animate class="tags-animate-container">
-    <MiniLabel v-for="tag in task.tags" :is-tag="true">
+    <MiniLabel @click="$router.push(`/tags/${tag.name}`)" v-for="tag in task.tags" :is-tag="true">
       <template #title> #{{ tag.name }} </template>
       <template #icon>
         <DeleteTagIcon
@@ -209,7 +209,8 @@ async function deleteTag(tag: Tag) {
     margin-left: 0.5rem;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       cursor: pointer;
     }
   }
@@ -222,7 +223,8 @@ async function deleteTag(tag: Tag) {
   background-color: rgba(233, 244, 233, 0.1);
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

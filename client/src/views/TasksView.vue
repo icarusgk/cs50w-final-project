@@ -47,7 +47,8 @@ const tasks = computed(() => chore.tasks);
 
     .button {
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }

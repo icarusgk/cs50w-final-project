@@ -33,7 +33,8 @@ watch(
   border-radius: 8px;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

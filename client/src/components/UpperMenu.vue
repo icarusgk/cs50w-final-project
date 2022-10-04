@@ -71,7 +71,8 @@ watch([
       margin-right: 0.1rem;
 
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
 

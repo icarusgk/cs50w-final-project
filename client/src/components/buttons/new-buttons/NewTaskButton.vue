@@ -91,7 +91,8 @@ function removeTag(tag: Tag) {
   width: 100%;
 
   &:focus,
-  &:hover {
+  &:hover,
+  &:active {
     outline: none;
   }
 }

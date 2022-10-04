@@ -90,7 +90,8 @@ async function addToProject(project: Project) {
   background-color: rgb(58, 58, 58);
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 

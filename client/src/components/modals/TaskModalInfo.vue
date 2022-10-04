@@ -128,7 +128,8 @@ function check(event: any) {
         margin: 0 4px;
 
         &:hover,
-        &:focus {
+        &:focus,
+        &:active {
           cursor: pointer;
         }
       }

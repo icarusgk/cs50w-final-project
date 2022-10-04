@@ -87,7 +87,8 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
   border-radius: 8px;
   border: none;
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }
@@ -146,7 +147,8 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
       .delete-container {
         .delete-button {
           &:hover,
-          &:focus {
+          &:focus,
+          &:active {
             cursor: pointer;
           }
         }

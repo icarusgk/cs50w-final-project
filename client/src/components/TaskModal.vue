@@ -79,13 +79,16 @@ function removeTag(tag: Tag) {
 .delete-icon {
   margin: 0.1rem 0.5rem;
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }
 
 .done-buttons {
-  &:hover, &:focus {
+  &:hover,
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

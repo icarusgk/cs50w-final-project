@@ -25,7 +25,8 @@ defineProps<{
   align-items: center;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 

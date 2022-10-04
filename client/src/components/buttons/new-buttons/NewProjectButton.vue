@@ -78,7 +78,8 @@ function saveProject() {
   width: 90%;
 
   &:focus,
-  &:hover {
+  &:hover,
+  &:active {
     outline: none;
   }
 }

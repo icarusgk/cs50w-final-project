@@ -23,7 +23,7 @@ watch(
 </script>
 
 <template>
-  <div class="single-task-info" @click="open = true">
+  <div class="single-task-info">
     <div class="tags-and-counters">
       <div class="tags">
         <Tags :task="task" :info="true" />
@@ -39,7 +39,7 @@ watch(
         </div>
       </div>
     </div>
-    <div class="task-info">
+    <div class="task-info" @click="open = true">
       <span class="title">{{ task.title }}</span>
       <span>{{ task.description }}</span>
     </div>
@@ -58,7 +58,8 @@ watch(
   border-radius: 8px;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 

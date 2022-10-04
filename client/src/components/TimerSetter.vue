@@ -59,7 +59,8 @@ function increasePomos() {
     color: white;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       cursor: pointer;
     }
   }

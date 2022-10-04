@@ -72,7 +72,8 @@ function login() {
     color: white;
     border: none;
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       cursor: pointer;
     }
   }

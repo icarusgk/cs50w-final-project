@@ -24,7 +24,8 @@ import AddIcon from '@/components/icons/AddIcon.vue';
   transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 

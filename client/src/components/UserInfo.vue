@@ -32,7 +32,9 @@ const auth = useAuthStore();
   font-weight: 500;
   transition: background-color 0.15s ease-in;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     cursor: pointer;
     background-color: #ff4b4b9f;
   }

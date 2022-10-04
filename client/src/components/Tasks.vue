@@ -50,7 +50,8 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
 <style lang="scss" scoped>
 .button {
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

@@ -64,7 +64,8 @@ watch(
     .task-info-icon {
       margin-top: 0.2rem;
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }

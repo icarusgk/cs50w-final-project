@@ -59,7 +59,8 @@ const projects = computed(() => chore.projects.slice(0, 2));
 <style scoped lang="scss">
 .projects-button {
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

@@ -71,7 +71,8 @@ watch(
 
 .delete-icon {
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 }

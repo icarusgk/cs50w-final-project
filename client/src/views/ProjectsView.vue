@@ -45,7 +45,8 @@ const projects = computed(() => chore.projects);
 
     .button {
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }

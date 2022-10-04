@@ -45,7 +45,8 @@ const alerts = useAlertStore();
   align-items: center;
   margin-right: 10px;
 
-  &:hover, &:focus {
+  &:hover, &:focus,
+  &:active {
     cursor: pointer;
   }
 }

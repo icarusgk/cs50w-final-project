@@ -136,7 +136,8 @@ function setTimer(type: string) {
   box-shadow: 0 4px 0 0 lighten($bg-color, 10%);
   transition: box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     cursor: pointer;
   }
 

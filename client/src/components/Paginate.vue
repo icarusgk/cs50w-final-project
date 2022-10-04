@@ -233,7 +233,8 @@ function nextMoveBy(increasedBy: number): void {
     transition: background-color 0.2s ease-in-out;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       cursor: pointer;
     }
   }
@@ -241,6 +242,7 @@ function nextMoveBy(increasedBy: number): void {
   .action-btn {
     transition: all 0.1s ease-in-out;
     &:hover,
+    &:active,
     &:active {
       background-color: var(--white);
       color: var(--black);

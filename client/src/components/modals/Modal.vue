@@ -80,7 +80,8 @@ const emits = defineEmits(['exitModal']);
 
     .close-icon {
       &:hover,
-      &:focus {
+      &:focus,
+      &:active {
         cursor: pointer;
       }
     }
