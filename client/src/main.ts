@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
+import { useChoreStore } from './stores/chore';
 
 import App from './App.vue';
 import router from './router';
@@ -17,3 +18,5 @@ app.use(autoAnimatePlugin);
 app.component('Popper', Popper);
 
 app.mount('#app');
+
+useChoreStore().fetchAll();

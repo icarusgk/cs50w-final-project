@@ -13,7 +13,6 @@ const chore = useChoreStore();
 
 if (auth.isAuthenticated) {
   auth.getUser();
-  chore.fetchAll();
 }
 
 watchEffect(() => {
