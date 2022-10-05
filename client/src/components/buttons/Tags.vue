@@ -8,6 +8,7 @@ import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
 import axios from 'axios';
+import CloseIcon from '../icons/CloseIcon.vue';
 
 const props = defineProps<{
   id?: number;
@@ -96,6 +97,12 @@ async function deleteTag(tag: Tag) {
     emit('removeTag', tag);
   }
 }
+
+function addSelectedTag(tag: Tag) {
+  newTag.value = tag.name;
+  addTag();
+  close();
+}
 </script>
 
 <template>
@@ -120,7 +127,7 @@ async function deleteTag(tag: Tag) {
         />
       </template>
     </MiniLabel>
-  
+
   <!-- Add tags -->
   <MiniLabel
     v-if="!info && task.tags.length === 0 && newTagVisible"
@@ -146,27 +153,26 @@ async function deleteTag(tag: Tag) {
     </template>
   </MiniLabel>
   <!-- Form -->
-  <div v-if="!newTagVisible">
-    <Popper>
+  <div class="form-container" v-if="!newTagVisible">
+    <Popper placement="bottom" :arrow="true">
+      <!-- Input -->
       <div class="new-tag-container">
         <input
           type="text"
-          class="new-tag-name"
+          class="new-tag-name-input"
           v-model="newTag"
           @keydown.enter="addTag()"
         />
+        <CloseIcon class="close-icon" @click="newTagVisible = true" />
         <button @click="addTag()" class="new-tag-button">Add</button>
       </div>
       <template #content="{ close }">
+        <!-- Pre fetched tags -->
         <div>
-          <span>Add a new tag:</span>
+          <span class="add-new-tag-text">Add a new tag:</span>
           <div
             class="tag-results"
-            @click="
-              newTag = tag.name;
-              addTag();
-              close();
-            "
+            @click="addSelectedTag(tag)"
             v-for="tag in selectedTags.slice(0, 5)"
           >
             <div class="tag-result">
@@ -202,19 +208,24 @@ async function deleteTag(tag: Tag) {
 }
 
 .new-tag-container {
-  .new-tag-name {
+  display: flex;
+  align-items: center;
+  margin-left: 6px;
+
+  .new-tag-name-input {
+    margin-top: 2px;
+    height: 1.5rem;
     outline: none;
     border: none;
     border-radius: 4px;
-    padding: 1px 2px;
+    padding: 1px 8px;
     width: 6rem;
+    background: rgb(87, 87, 87);
+    color: white;
   }
 
-  .new-tag-button {
-    padding: 0 0.5rem;
-    border-radius: 4px;
-    border: none;
-    margin-left: 0.5rem;
+  .close-icon {
+    transform: scale(40%);
 
     &:hover,
     &:focus,
@@ -222,6 +233,22 @@ async function deleteTag(tag: Tag) {
       cursor: pointer;
     }
   }
+
+  .new-tag-button {
+    padding: 0 0.5rem;
+    border-radius: 4px;
+    border: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      cursor: pointer;
+    }
+  }
+}
+
+.add-new-tag-text {
+  font-size: 0.75rem;
 }
 
 .tag-result {
@@ -237,3 +264,4 @@ async function deleteTag(tag: Tag) {
   }
 }
 </style>
+  
