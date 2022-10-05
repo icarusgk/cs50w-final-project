@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import { useAlertStore } from '@/stores/alerts';
-import axios from 'axios';
+import { useAlertStore } from '@/stores/alerts'
 import type { Tag, TaskType } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
+import axios from 'axios';
 
 const props = defineProps<{
   id?: number;
@@ -18,13 +18,12 @@ const props = defineProps<{
 
 const emit = defineEmits(['removeTag'])
 
-// A local manipulable copy of the tags
-// For filtering and pushing
+const chore = useChoreStore();
 
 const newTagVisible = ref(true);
 const newTag = ref('');
 
-const allTags = ref(useChoreStore().tags);
+const allTags = ref(chore.tags);
 const alert = useAlertStore();
 
 // Filter existing tags
@@ -63,7 +62,7 @@ async function addTag() {
           if (response?.status === 200) {
             if (response.data?.message === 'new') {
               alert.success('Tag created');
-              useChoreStore().tags.push(response.data?.tag);
+              chore.tags.push(response.data?.tag);
             } else {
               alert.info('Tag added');
             }
@@ -102,8 +101,17 @@ async function deleteTag(tag: Tag) {
 <template>
   <!-- Existing tags -->
   <div v-auto-animate class="tags-animate-container">
-    <MiniLabel @click="$router.push(`/tags/${tag.name}`)" v-for="tag in task.tags" :is-tag="true">
-      <template #title> #{{ tag.name }} </template>
+    <MiniLabel v-if="task.tags.length === 0 && info" :is-add="true">
+      <template #title>
+        <span>No tags</span>
+      </template>
+    </MiniLabel>
+    <MiniLabel v-else v-for="tag in task.tags" :is-tag="true">
+      <template #title>
+        <span @click="$router.push(`/tags/${tag.name}`)">
+          #{{ tag.name }}
+        </span>
+      </template>
       <template #icon>
         <DeleteTagIcon
           v-if="!info"

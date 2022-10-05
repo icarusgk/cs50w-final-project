@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import Subtasks from '@/components/Subtasks.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
+import type { TaskType } from '@/types';
 
-const props = defineProps<{
-  task: any;
+defineProps<{
+  task: TaskType;
   isNew?: boolean;
 }>();
-
-const emit = defineEmits(['descriptionChange']);
-
-function check(event: any) {
-  emit('descriptionChange', event.target.value);
-}
 </script>
 
 <template>
@@ -19,8 +14,7 @@ function check(event: any) {
     <!-- Description -->
     <div class="new-task-description">
       <textarea
-        @input="check"
-        v-model.lazy.trim="props.task.description"
+        v-model.lazy="task.description"
         placeholder="Description"
         class="new-task-textarea-description"
       >

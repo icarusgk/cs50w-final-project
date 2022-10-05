@@ -43,17 +43,15 @@ watch(
       <span class="title">{{ task.title }}</span>
       <span>{{ task.description }}</span>
     </div>
-
     <TaskModal :task="task" :open="open" @exit="open = false" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .single-task-info {
-  width: 500px;
+  width: 320px;
   background-color: #3d3d3d;
   color: white;
-  height: 250px;
   padding: 1rem;
   border-radius: 8px;
 

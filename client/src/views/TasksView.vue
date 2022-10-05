@@ -22,7 +22,7 @@ const tasks = computed(() => chore.tasks);
       <span class="title">Tasks</span>
     </div>
     <div class="all-tasks-container">
-      <TaskInfo v-for="task in tasks" :task="task" />
+      <TaskInfo v-for="task in tasks" :task="task" :key="task.id" />
     </div>
     <Paginate
       :pages="chore.totalTaskPages"

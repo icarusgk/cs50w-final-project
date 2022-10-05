@@ -19,27 +19,22 @@ const props = defineProps<{
 
 const emit = defineEmits(['exit', 'toggleDone']);
 
-const task = ref(props.task);
-const pristine = ref(true);
-const chores = useChoreStore();
+// not updating cuz of this
+const chore = useChoreStore();
 
 // Saves task with PUT method
-function saveTask() {
-  chores.saveTask(props.task);
+function saveTask() { 
+  chore.saveTask(props.task);
   emit('exit');
 }
 
 function deleteTask() {
-  chores.deleteTask(task.value);
+  chore.deleteTask(props.task);
   emit('exit');
 }
 
-function checkPristine(description: string) {
-  pristine.value = description === props.task.description;
-}
-
 function removeTag(tag: Tag) {
-  task.value.tags = task.value.tags.filter((t: Tag) => t.id !== tag.id);  
+  props.task.tags = props.task.tags.filter((t: Tag) => t.id !== tag.id);  
 }
 </script>
 
@@ -49,7 +44,7 @@ function removeTag(tag: Tag) {
     <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Tags -->
       <template #tags>
-        <Tags :task="task" :id="task.id" @remove-tag="tag => removeTag(tag)" />
+        <Tags :task="props.task" :id="props.task.id" @remove-tag="tag => removeTag(tag)" />
         <div class="done-buttons" v-auto-animate>
           <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
           <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
@@ -66,9 +61,9 @@ function removeTag(tag: Tag) {
         />
       </template>
       <!-- Modal -->
-      <TaskModalInfo :task="task" @description-change="checkPristine" />
+      <TaskModalInfo :task="props.task" />
       <template #save-button>
-        <AddToProjectPopup :taskId="task.id" />
+        <AddToProjectPopup :taskId="props.task.id" />
         <SaveButton @click="saveTask()" :disabled="false" />
       </template>
     </Modal>

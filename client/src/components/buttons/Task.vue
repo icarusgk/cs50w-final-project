@@ -16,15 +16,12 @@ const props = defineProps<{
   task: TaskType;
 }>();
 
-const task = ref(props.task);
 const open = ref(false);
+const chore = useChoreStore();
 
-watch(
-  () => open.value,
-  () => {
-    useModalStore().toggle();
-  }
-);
+watch(open, () => {
+  useModalStore().toggle();
+});
 
 async function toggleDone() {
   const response = await axios.patch(`tasks/${props.task.id}/`, {
@@ -32,18 +29,18 @@ async function toggleDone() {
     action: 'done',
   });
   if (response?.status === 200) {
-    task.value.done = response.data?.done;
-    useChoreStore().fetchProjects();
+    props.task.done = response.data?.done;
+    chore.fetchProjects();
   }
 }
 
 function setCurrent() {
-  useChoreStore().changeCurrentTask(task.value.id)
+  chore.changeCurrentTask(props.task.id);
 }
 
 async function deleteTask() {
   if (window.confirm('Are you sure you want to delete this task?')) {
-    useChoreStore().deleteTask(task.value);
+    chore.deleteTask(props.task);
   }
 }
 </script>
@@ -69,7 +66,7 @@ async function deleteTask() {
       </div>
     </div>
     <TaskModal
-      :task="task"
+      :task="props.task"
       :open="open"
       @exit="open = false"
       @toggle-done="toggleDone()"
