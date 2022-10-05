@@ -52,7 +52,7 @@ defineProps<{
   border-radius: 8px;
   background-color: var(--lighter-gray);
   color: var(--white);
-  height: 100%;
+  height: 2rem;
 }
 
 .add {
@@ -65,6 +65,7 @@ defineProps<{
   }
   background-color: #444;
   color: var(--white);
+  
 }
 
 @media (max-width: 768px) {

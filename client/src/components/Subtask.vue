@@ -145,6 +145,8 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
       justify-content: flex-end;
 
       .delete-container {
+        margin-right: 1rem;
+        
         .delete-button {
           &:hover,
           &:focus,
