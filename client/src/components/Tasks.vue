@@ -12,6 +12,7 @@ const chore = useChoreStore();
 // Back to 1 / 4;
 chore.taskPagination.page = 1;
 chore.taskPagination.page_size = 4;
+chore.taskPagination.added = 1;
 
 const tasks = computed(() => chore.tasks.slice(0, 4));
 </script>

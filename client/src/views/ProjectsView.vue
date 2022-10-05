@@ -9,6 +9,7 @@ const chore = useChoreStore();
 
 chore.projectPagination.page = 1;
 chore.projectPagination.page_size = 10;
+chore.projectPagination.added = 1;
 
 const projects = computed(() => chore.projects);
 </script>

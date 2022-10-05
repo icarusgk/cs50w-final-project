@@ -12,6 +12,7 @@ const chore = useChoreStore();
 
 chore.projectPagination.page = 1;
 chore.projectPagination.page_size = 4;
+chore.projectPagination.added = 1;
 
 const projects = computed(() => chore.projects.slice(0, 2));
 </script>
