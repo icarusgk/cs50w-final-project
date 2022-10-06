@@ -40,19 +40,13 @@ class StatsViewSet(viewsets.ModelViewSet):
   # POST
   def create(self, request):
     # See if there is a stat with the same date
-    stat = Stats.objects.filter(day=request.data['day'])
-    if stat:
-      stat = stat[0]
-      stat.chores_done += 1
-      stat.save()
-      return Response(StatsSerializer(stat).data)
-    
-    # If not, create a new Stat
-    serializer = StatsSerializer(data=request.data)
-    if serializer.is_valid():
-      Stats.objects.create(**serializer.data, user=request.user)
-      return Response(serializer.data)
-    return Response("not valid")
+    stat, created = Stats.objects.get_or_create(user=request.user, day=request.data['day'])
+
+    stat.chores_done = 1 if created else stat.chores_done + 1
+    stat.save()
+
+    return Response(StatsSerializer(stat).data)
+
 
 
 class ModeViewSet(viewsets.ModelViewSet):
