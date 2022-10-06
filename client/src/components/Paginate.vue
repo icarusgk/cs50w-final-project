@@ -248,5 +248,11 @@ function nextMoveBy(increasedBy: number): void {
       color: var(--black);
     }
   }
+
+  @media (max-width: 390px) {
+    .paginate-btn {
+      padding: 0.25rem 0.5rem;
+    }
+  }
 }
 </style>
