@@ -101,7 +101,6 @@ async function deleteTag(tag: Tag) {
 function addSelectedTag(tag: Tag) {
   newTag.value = tag.name;
   addTag();
-  close();
 }
 </script>
 
@@ -172,7 +171,7 @@ function addSelectedTag(tag: Tag) {
           <span class="add-new-tag-text">Add a new tag:</span>
           <div
             class="tag-results"
-            @click="addSelectedTag(tag)"
+            @click="addSelectedTag(tag); close()"
             v-for="tag in selectedTags.slice(0, 5)"
           >
             <div class="tag-result">
