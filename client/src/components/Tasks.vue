@@ -24,7 +24,7 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
         <SingleTaskIcon />
       </template>
       <template #type>
-        <h1>Single Tasks</h1>
+        <h1 @click="$router.push('/tasks')">Single Tasks</h1>
       </template>
       <template #count>
         Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages}}

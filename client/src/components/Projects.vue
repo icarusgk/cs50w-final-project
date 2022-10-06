@@ -20,12 +20,12 @@ const projects = computed(() => chore.projects.slice(0, 2));
 <template>
   <div>
     <!-- Title -->
-    <TaskType class="projects-button" @click="$router.push('/projects')">
+    <TaskType class="projects-button">
       <template #icon>
         <ProjectIcon />
       </template>
       <template #type>
-        <h1>Projects</h1>
+        <h1 @click="$router.push('/projects')">Projects</h1>
       </template>
       <template #count>
         Page {{ chore.projectPagination.page }} of
