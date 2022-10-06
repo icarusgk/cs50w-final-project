@@ -45,11 +45,13 @@ function removeTag(tag: Tag) {
       <!-- Tags -->
       <template #tags>
         <Tags :task="props.task" :id="props.task.id" @remove-tag="tag => removeTag(tag)" />
-        <div class="done-buttons" v-auto-animate>
-          <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
-          <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
+        <div class="buttons">
+          <div class="done-buttons" v-auto-animate>
+            <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
+            <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
+          </div>
+          <DeleteIcon @click="deleteTask()" class="delete-icon" />
         </div>
-        <DeleteIcon @click="deleteTask()" class="delete-icon" />
       </template>
       <!-- Title -->
       <template #title>
@@ -78,6 +80,11 @@ function removeTag(tag: Tag) {
   &:active {
     cursor: pointer;
   }
+}
+
+.buttons {
+  display: flex;
+  align-items: baseline;
 }
 
 .done-buttons {
