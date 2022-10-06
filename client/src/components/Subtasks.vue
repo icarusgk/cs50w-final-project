@@ -193,6 +193,7 @@ async function deleteChore() {
       });
       if (response?.status === 200) {
         alert.success(`Task ${activeChore.chore?.title} deleted!`);
+        console.log(response.data);        
         existingProject.value.tasks = existingProject.value.tasks.filter(
           (task: TaskType) => task.id !== activeChore.chore?.id
         );

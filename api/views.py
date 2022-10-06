@@ -307,10 +307,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         if data['action'] == 'delete_task':
           task = Task.objects.get(id=data['task_id'])
+          # Remove task from project 
           if not task.in_project:
             project = self.get_object(pk)
             project.tasks.remove(task)
             return Response("task removed")
+          # delete task totally
           task.delete()
           return Response("task deleted")
           

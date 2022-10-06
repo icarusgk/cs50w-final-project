@@ -8,7 +8,9 @@ const props = defineProps<{
   taskId?: number;
 }>();
 
-const allProjects = useChoreStore().projects;
+const chore = useChoreStore();
+
+const allProjects = chore.projects;
 
 const taskProjects = ref<Project[]>([]);
 
@@ -35,21 +37,21 @@ async function addToProject(project: Project) {
       console.log('added', response.data);
 
       // Refetch
-      useChoreStore().fetchProjects();
+      chore.fetchProjects();
       // Visual changes
       taskProjects.value.push(project);
     }
   } else {
     const response = await axios.patch(`projects/${project.id}/`, {
       obj: 'project',
-      action: 'remove',
+      action: 'delete_task',
       task_id: props.taskId,
     });
     console.log(response);
     if (response?.status === 200) {
       console.log('removed', response.data);
       // Refetch
-      useChoreStore().fetchProjects();
+      chore.fetchProjects();
       // Visual changes
       taskProjects.value = taskProjects.value.filter((p) => p !== project);
     }
