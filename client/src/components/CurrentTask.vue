@@ -54,6 +54,7 @@ watch(open, () => {
 
 <style scoped lang="scss">
   .container {
+    width: 21rem;
     background: #333;
     color: white;
     padding: 1rem;
