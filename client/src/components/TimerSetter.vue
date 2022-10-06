@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 const props = defineProps(['chore']);
+const emit = defineEmits(['decreasePomos', 'increasePomos'])
 
-const pomoLimits = ref({ min: 1, max: 99 });
+const pomoLimits = reactive({ min: 1, max: 99 });
 
-function decreasePomos() {
-  if (props.chore.estimated > pomoLimits.value.min) props.chore.estimated--;
-}
+const localPomos = ref(props.chore.estimated);
 
 function increasePomos() {
-  props.chore.estimated < pomoLimits.value.max
-    ? props.chore.estimated++
-    : (props.chore.estimated = pomoLimits.value.max);
+  if (props.chore.estimated < pomoLimits.max) {
+    localPomos.value++;
+  } else {
+    localPomos.value = pomoLimits.max;
+  }
+  emit('increasePomos', localPomos.value);
+}
+
+function decreasePomos() {
+  if (props.chore.estimated > pomoLimits.min) {
+    localPomos.value--;
+  }
+  emit('decreasePomos', localPomos.value);
 }
 </script>
 
@@ -24,7 +33,8 @@ function increasePomos() {
       class="estimated-timers"
       :min="pomoLimits.min"
       :max="pomoLimits.max"
-      v-model="chore.estimated"
+      :value="localPomos"
+      @input="e => localPomos = ((e.target) as HTMLInputElement).value"
     />
     <button @click="decreasePomos" class="minus-icon pomo-icon">-</button>
     <button @click="increasePomos" class="pomo-icon">+</button>

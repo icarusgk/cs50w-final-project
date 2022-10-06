@@ -17,13 +17,20 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['exit', 'toggleDone']);
+let tmpNewTitle = '';
+let tmpNewDesc = '';
+let tmpEstimated: number;
 
-// not updating cuz of this
+
 const chore = useChoreStore();
 
 // Saves task with PUT method
-function saveTask() { 
+function saveTask() {
+  props.task.title = tmpNewTitle !== '' ? tmpNewTitle : props.task.title ;
+  props.task.description = tmpNewDesc !== '' ? tmpNewDesc : props.task.description;
+  props.task.estimated = tmpEstimated !== null ? tmpEstimated : props.task.estimated;
   chore.saveTask(props.task);
+  
   emit('exit');
 }
 
@@ -37,6 +44,16 @@ function deleteTask() {
 function removeTag(tag: Tag) {
   props.task.tags = props.task.tags.filter((t: Tag) => t.id !== tag.id);  
 }
+
+function handleInput(event: any) {
+  tmpNewTitle = event.target.value;
+}
+
+function handleDescription(event: any) {
+  tmpNewDesc = event.target.value;
+}
+
+const handlePomos = (pomos: number) => tmpEstimated = pomos;
 </script>
 
 <template>
@@ -60,11 +77,17 @@ function removeTag(tag: Tag) {
           type="text"
           name="title"
           id="task-input-title"
-          v-model.lazy="props.task.title"
+          @input="event => handleInput(event)"
+          :value="props.task.title"
         />
       </template>
       <!-- Modal -->
-      <TaskModalInfo :task="props.task" />
+      <TaskModalInfo 
+        :task="props.task"
+        @description-input="handleDescription($event)" 
+        @decrease-pomos="handlePomos($event)"
+        @increase-pomos="handlePomos($event)"
+      />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
         <SaveButton @click="saveTask()" :disabled="false" />

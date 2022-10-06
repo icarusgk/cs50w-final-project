@@ -7,6 +7,8 @@ defineProps<{
   task: TaskType;
   isNew?: boolean;
 }>();
+
+defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos'])
 </script>
 
 <template>
@@ -14,7 +16,8 @@ defineProps<{
     <!-- Description -->
     <div class="new-task-description">
       <textarea
-        v-model.lazy="task.description"
+        @input="event => $emit('descriptionInput', event)"
+        :value="task.description"
         placeholder="Description"
         class="new-task-textarea-description"
       >
@@ -42,7 +45,11 @@ defineProps<{
           <span style="font-weight: 800">Estimated pomos</span>
         </div>
         <!-- Counter -->
-        <TimerSetter :chore="task" />
+        <TimerSetter 
+          :chore="task"
+          @decrease-pomos="$emit('decreasePomos', $event)"
+          @increase-pomos="$emit('increasePomos', $event)"
+        />
       </div>
       <div></div>
     </div>
