@@ -5,7 +5,7 @@ import CloseIcon from '@/components/icons/CloseIcon.vue';
 defineProps<{
   open: Boolean;
   isButton?: Boolean;
-  isProject?: Boolean;
+  isTask?: Boolean
 }>();
 
 const emits = defineEmits(['exitModal']);
@@ -16,7 +16,7 @@ const emits = defineEmits(['exitModal']);
     <div v-if="open" class="modal">
       <div class="task-upper-menu">
         <div class="tags-and-title-container">
-          <div v-if="!isProject" class="tags-container">
+          <div v-if="isTask" class="tags-container">
             <slot name="tags"></slot>
           </div>
 

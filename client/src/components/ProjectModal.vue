@@ -35,7 +35,7 @@ watch(
 <template>
   <div class="project-container">
     <!-- Modal -->
-    <Modal :is-project="true" :open="open" @exit-modal="$emit('exit')">
+    <Modal :open="open" @exit-modal="$emit('exit')">
       <!-- Title -->
       <template #title>
         <input

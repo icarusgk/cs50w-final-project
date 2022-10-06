@@ -45,7 +45,6 @@ function saveProject() {
   </ChoreButton>
 
   <Modal
-    :is-project="true"
     :is-button="true"
     :open="open"
     @exit-modal="resetProject()"

@@ -59,7 +59,7 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
 <template>
   <div class="task-container">
     <!-- Modal -->
-    <Modal :open="open" @exit-modal="$emit('exit')">
+    <Modal :open="open" @exit-modal="$emit('exit')" :is-task="true">
       <!-- Tags -->
       <template #tags>
         <Tags :task="props.task" :id="props.task.id" @remove-tag="tag => removeTag(tag)" />

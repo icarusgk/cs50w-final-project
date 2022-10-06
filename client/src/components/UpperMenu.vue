@@ -50,9 +50,15 @@ watch([
       </li>
     </ul>
     <Modal :open="userOpen" @exit-modal="userOpen = false">
+      <template #title>
+        <h1>User</h1>
+      </template>
       <UserInfo />
     </Modal>
     <Modal :open="settingsOpen" @exit-modal="settingsOpen = false">
+      <template #title>
+        <h1>Settings</h1>
+      </template>
       <Settings />
     </Modal>
   </div>

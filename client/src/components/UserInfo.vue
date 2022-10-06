@@ -8,8 +8,7 @@ const auth = useAuthStore();
 
 <template>
   <div>
-    <h1>Logout</h1>
-    <h2>Hello there {{ auth.user?.username }}</h2>
+    <h2>Hello there {{ auth.user?.username }}!</h2>
     <button
       id="logout-btn"
       @click="

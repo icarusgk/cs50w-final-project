@@ -58,7 +58,7 @@ function removeTag(tag: Tag) {
   <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
-  <Modal :is-button="true" :open="open" @exit-modal="resetTask()">
+  <Modal :is-button="true" :open="open" @exit-modal="resetTask()" :is-task="true" >
     <template #tags>
       <Tags :task="initialTask" :new="true" @remove-tag="tag => removeTag(tag)" />
     </template>
