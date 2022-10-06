@@ -139,7 +139,7 @@ function backToDefault() {
         </Popper>
       </div>
     </div>
-    <button class="new-mode-button" @click="showForm = !showForm">
+    <button v-if="modes.length < 3" class="new-mode-button" @click="showForm = !showForm">
       {{showForm ? 'Close' : 'Create a new Mode' }}
     </button>
     <div v-if="showForm">
