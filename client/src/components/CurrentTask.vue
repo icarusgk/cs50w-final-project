@@ -59,6 +59,8 @@ watch(open, () => {
     padding: 1rem;
     border-radius: 10px;
     font-weight: 600;
+    box-shadow: 3px 4px rgb(71, 71, 71);
+    transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     .info {
       display: flex;
@@ -73,6 +75,9 @@ watch(open, () => {
     &:focus,
     &:active {
       cursor: pointer;
+    }
+    &:active {
+      box-shadow: 0 0 #333;
     }
   }
 </style>
