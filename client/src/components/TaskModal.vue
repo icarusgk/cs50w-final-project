@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import type { Tag, TaskType } from '@/types';
 
@@ -29,8 +28,10 @@ function saveTask() {
 }
 
 function deleteTask() {
-  chore.deleteTask(props.task);
-  emit('exit');
+  if (window.confirm('Are you sure?')) {
+    chore.deleteTask(props.task);
+    emit('exit');
+  }
 }
 
 function removeTag(tag: Tag) {
