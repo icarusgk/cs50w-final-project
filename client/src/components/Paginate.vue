@@ -144,7 +144,7 @@ function nextMoveBy(increasedBy: number): void {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" v-if="pages > 1">
     <!-- Previous Button -->
     <div
       @click="
