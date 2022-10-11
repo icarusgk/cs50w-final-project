@@ -1,3 +1,4 @@
+from math import perm
 from .serializers import *
 from .models import *
 from rest_framework import status, generics, viewsets
@@ -353,10 +354,10 @@ class CurrentUserView(APIView):
 
 # Current Task
 class CurrentTaskView(APIView):
+  permission_classes = [permissions.IsAuthenticated]
   def get(self, request):
     # TODO: Change to request.user
-    user = User.objects.get(id=request.user.id)
-    return Response({'id': user.current_task_id})
+    return Response({'id': request.user.current_task_id})
 
   def put(self, request):
     new_id = request.data['id']
