@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
 import { useAlertStore } from './alerts';
+import { useAuthStore } from './auth';
 
 export const useChoreStore = defineStore({
   id: 'chores',
@@ -130,10 +131,12 @@ export const useChoreStore = defineStore({
     },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
-      this.fetchStats();
-      this.fetchModes();
-      this.fetchTags();
-      this.fetchCurrentTask();
+      if (useAuthStore().isAuthenticated) {
+        this.fetchStats();
+        this.fetchModes();
+        this.fetchTags();
+        this.fetchCurrentTask();
+      }
     },
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {

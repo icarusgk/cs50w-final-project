@@ -16,8 +16,10 @@ if (auth.isAuthenticated) {
 }
 
 watchEffect(() => {
-  chore.fetchTasks();
-  chore.fetchProjects();
+  if (auth.isAuthenticated) {
+    chore.fetchTasks();
+    chore.fetchProjects();
+  }
 });
 </script>
 

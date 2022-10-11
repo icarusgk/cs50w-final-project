@@ -8,6 +8,6 @@ export async function useFetch(url: string, method: string, data?: any, id?: any
   try {
     return await axios({ method, url, data });
   } catch (err) {
-    console.log(err);
+    console.log('useFetch error', err);
   }
 }
