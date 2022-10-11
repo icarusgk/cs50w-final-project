@@ -16,7 +16,6 @@ const props = defineProps<{
 const emit = defineEmits(['exit']);
 const chore = useChoreStore();
 
-// Works
 function deleteProject() {
   chore.deleteProject(props.project.id as number);
   emit('exit');
@@ -70,6 +69,7 @@ watch(
 }
 
 .delete-icon {
+  margin-right: 10px;
   &:hover,
   &:focus,
   &:active {

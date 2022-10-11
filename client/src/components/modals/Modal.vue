@@ -14,7 +14,7 @@ const emits = defineEmits(['exitModal']);
 <template>
   <Teleport to="html">
     <div v-if="open" class="modal">
-      <div class="task-upper-menu">
+      <div class="task-upper-menu" :class="{ 'align-items': !isTask }">
         <div class="tags-and-title-container">
           <div v-if="isTask" class="tags-container">
             <slot name="tags"></slot>
@@ -62,6 +62,10 @@ const emits = defineEmits(['exitModal']);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(11.2px);
   -webkit-backdrop-filter: blur(11.2px);
+
+  .align-items {
+    align-items: center;
+  }
 
   .task-upper-menu {
     display: flex;
