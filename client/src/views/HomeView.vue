@@ -26,15 +26,17 @@ const auth = useAuthStore();
         <!-- New Project -->
         <NewProjectButton />
       </div>
-      <div v-if="!auth.isAuthenticated">
-        <UnauntheticatedLogin />
+      <div id="message" v-if="!auth.isAuthenticated">
+        <UnauntheticatedLogin>
+          To add tasks and projects
+        </UnauntheticatedLogin>
       </div>
       <Chores />
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 #home {
   color: white;
   display: flex;
@@ -59,6 +61,11 @@ const auth = useAuthStore();
 
 #main-tasks-container {
   width: 500px;
+
+  #message {
+    width: 80%;
+    margin-top: 8rem;
+  }
 }
 
 #task-btn-container {

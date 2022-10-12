@@ -4,7 +4,9 @@
     <span> or </span>
     <router-link to="/register">Sign up</router-link>
   </div>
-  <div id="message">To add tasks and projects</div>
+  <div id="message">
+    <slot></slot>
+  </div>
 </template>
 <style scoped lang="scss">
 a {
@@ -23,8 +25,6 @@ a:hover {
   padding: 1rem;
   background-color: var(--vivid-red);
   border-radius: 10px;
-  margin-top: 8rem;
-  width: 80%;
 }
 
 #message {
