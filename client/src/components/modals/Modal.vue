@@ -12,7 +12,7 @@ const emits = defineEmits(['exitModal']);
 </script>
 
 <template>
-  <Teleport to="html">
+  <Teleport to="body">
     <div v-if="open" class="modal">
       <div class="task-upper-menu" :class="{ 'align-items': !isTask }">
         <div class="tags-and-title-container">
@@ -44,10 +44,13 @@ const emits = defineEmits(['exitModal']);
 <style lang="scss" scoped>
 .modal {
   // Positioning
-  position: fixed;
-  z-index: 2;
+  position: absolute;
   top: 20%;
-  left: 30%;
+  z-index: 10;
+  left: 5%;
+  right: 0;
+  margin-left: auto; 
+  margin-right: auto; 
   width: 700px;
 
   // Color
@@ -99,13 +102,16 @@ const emits = defineEmits(['exitModal']);
 
 @media (max-width: 1160px) {
   .modal {
+    position: fixed;
     left: 23%;
+    top: 25%;
     width: 600px;
   }
 }
 
 @media (max-width: 768px) {
   .modal {
+    position: fixed;
     left: 5%;
     right: 5%;
     width: 90%;

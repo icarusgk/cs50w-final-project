@@ -79,6 +79,7 @@ html {
 .body {
   display: flex;
   margin-left: 130px;
+  position: relative;
 
   .menu-and-content {
     width: 100%;
