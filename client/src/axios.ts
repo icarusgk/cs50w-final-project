@@ -5,6 +5,8 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 const jwt = localStorage.getItem('jwt');
 
-const accessToken = jwt ? JSON.parse(jwt).access : null;
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+if (jwt) {
+  const accessToken = JSON.parse(jwt).access
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+}
 

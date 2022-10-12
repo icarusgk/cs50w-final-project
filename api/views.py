@@ -338,7 +338,7 @@ class RegisterView(APIView):
     confirmation = request.data['passwordConfirmation']
     
     if User.objects.filter(username=username):
-      return Response({'message': 'User already exists'})
+      return Response({'message': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
     if password == confirmation:
       user = User.objects.create_user(username=username, password=password)

@@ -8,8 +8,8 @@ const creds = reactive({
   password: '',
 });
 const errors = reactive({
-  username: null,
-  password: null,
+  username: '',
+  password: '',
 });
 
 const auth = useAuthStore();
@@ -26,7 +26,7 @@ function login() {
 
     auth.login(creds).then(() => {
       if (auth.error) {
-        useAlertStore().error('Your username or password is incorrect.')
+        useAlertStore().error('Your username or password is incorrect.');
       }
     });
   }
@@ -36,9 +36,6 @@ function login() {
 <template>
   <div class="login">
     <h1>Login</h1>
-    <div>
-      <span class="error-message">{{ errors.general }}</span>
-    </div>
     <form @submit.prevent="login()">
       <div>
         <input
@@ -49,7 +46,11 @@ function login() {
           id="username"
           class="form-input"
         />
-        <span class="error-message">{{ errors.username }}</span>
+        <Transition name="fade">
+          <span v-if="errors.username" class="error-message">
+            {{ errors.username }}
+          </span>
+        </Transition>
       </div>
       <div>
         <input
@@ -61,12 +62,20 @@ function login() {
           autocomplete="true"
           class="form-input"
         />
-        <span class="error-message">{{ errors.password }}</span>
+        <Transition name="fade">
+          <span v-if="errors.password" class="error-message">
+            {{ errors.password }}
+          </span>
+        </Transition>
       </div>
       <div>
         <input type="submit" value="Submit" id="submit" />
       </div>
-  </form>
+    </form>
+    <div id="route-to-register">
+      <span>Don't have an account yet? </span>
+      <RouterLink to="/register">Register here!</RouterLink>
+    </div>
   </div>
 </template>
 
@@ -76,6 +85,16 @@ function login() {
 
   form {
     margin-top: 1rem;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.7s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
 
   .error-message {
@@ -103,6 +122,10 @@ function login() {
     &:active {
       cursor: pointer;
     }
+  }
+
+  #route-to-register {
+    margin-top: 2rem;
   }
 }
 </style>

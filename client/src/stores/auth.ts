@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import router from '@/router';
 import { useChoreStore } from './chore';
 
@@ -94,6 +94,7 @@ export const useAuthStore = defineStore({
       }      
     },
     async register(credentials: UserCredentials) {
+      this.error = null;
       try {
         const response = await axios.post('register/', credentials);
         if (response.status === 200) {
@@ -103,8 +104,8 @@ export const useAuthStore = defineStore({
             password: credentials.password,
           });
         }
-      } catch (err) {
-        console.log('err in register()', err);
+      } catch (err: any) {
+        this.error = err;
       }
       router.push('/register');
     },
