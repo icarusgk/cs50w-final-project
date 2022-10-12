@@ -27,10 +27,13 @@ const projects = computed(() => chore.projects);
     />
     <div class="go-back">
       <BackIcon class="button" @click="$router.back()" />
-      <span class="title">All Projects</span>
+      <span class="title">Projects</span>
     </div>
-    <div class="all-projects-container">
+    <div v-if="chore.projects.length > 0" class="all-projects-container">
       <ProjectInfo v-for="project in projects" :project="project" />
+    </div>
+    <div v-else>
+      <h1 class="white">No Projects</h1>
     </div>
   </div>
 </template>
@@ -67,6 +70,10 @@ const projects = computed(() => chore.projects);
     margin-top: 1rem;
     gap: 1rem;
   }
+}
+
+.white {
+  color: white;
 }
 
 @media (max-width: 768px) {

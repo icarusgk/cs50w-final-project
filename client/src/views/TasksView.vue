@@ -22,17 +22,22 @@ const tasks = computed(() => chore.tasks);
       <BackIcon class="button" @click="$router.back()" />
       <span class="title">Tasks</span>
     </div>
-    <div class="all-tasks-container">
-      <TaskInfo v-for="task in tasks" :task="task" :key="task.id" />
+    <div v-if="chore.tasks.length > 0">
+      <div class="all-tasks-container">
+        <TaskInfo v-for="task in tasks" :task="task" :key="task.id" />
+      </div>
+      <Paginate
+        :pages="chore.totalTaskPages"
+        :page="chore.taskPagination.page"
+        :added="chore.taskPagination.added"
+        @prev="chore.previousTaskPage"
+        @setPage="(page) => chore.setTaskPage(page)"
+        @next="chore.nextTaskPage"
+      />
     </div>
-    <Paginate
-      :pages="chore.totalTaskPages"
-      :page="chore.taskPagination.page"
-      :added="chore.taskPagination.added"
-      @prev="chore.previousTaskPage"
-      @setPage="(page) => chore.setTaskPage(page)"
-      @next="chore.nextTaskPage"
-    />
+    <div v-else>
+      <h1 class="white">No tasks</h1>
+    </div>
   </div>
   
 </template>
@@ -65,6 +70,10 @@ const tasks = computed(() => chore.tasks);
     flex-wrap: wrap;
     gap: 1rem;
   }
+}
+
+.white {
+  color: white;
 }
 
 @media (max-width: 768px) {
