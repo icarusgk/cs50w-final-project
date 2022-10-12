@@ -15,8 +15,8 @@ const errors = reactive({
 const auth = useAuthStore();
 
 function login() {
-  creds.username == '' ? errors.username = 'Username is empty' : null;
-  creds.password == '' ? errors.password = 'Password is empty' : null;
+  creds.username == '' ? errors.username = 'Username is empty' : errors.username = '';
+  creds.password == '' ? errors.password = 'Password is empty' : errors.password = '';
     
 
   if (creds.username && creds.password) {
