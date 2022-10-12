@@ -37,7 +37,7 @@ watch([
             @click="auth.isAuthenticated ? (userOpen = true) : (userOpen = false)"
           >
             <UserIcon />
-            <span v-if="auth.user">{{ auth.user?.username }}</span>
+            <span v-if="auth.isAuthenticated">{{ auth.user?.username }}</span>
           </div>
           <span v-if="!auth.isAuthenticated" @click="$router.push('/login')"
             >Login</span

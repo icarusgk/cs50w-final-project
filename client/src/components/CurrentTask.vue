@@ -18,11 +18,9 @@ async function getTask() {
   task.value = response?.data;
 }
 
-onMounted(() => {
-  if (useAuthStore().isAuthenticated) {
-    getTask();
-  }
-});
+if (useAuthStore().isAuthenticated) {
+  getTask();
+}
 
 // A kind of debouncer?
 watch(
@@ -31,6 +29,7 @@ watch(
     if (prevTask !== curTask) getTask();
   }
 );
+
 watch(open, () => {
   useModalStore().toggle();
 });

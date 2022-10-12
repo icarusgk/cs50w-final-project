@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import router from '@/router';
 import { useChoreStore } from './chore';
 
@@ -51,24 +51,29 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: null as User | null,
     isAuthenticated: Boolean(localStorage.getItem('jwt')),
+    error: null
   }),
   actions: {
     // First is login in, this will not have an error
     async login(credentials: UserCredentials) {
-      // Grab the access and refresh token
-      const response = await axios.post('token/', credentials);
-      // Set the localStorage key to the jwt
-      if (response.status === 200) {
-        // { refresh: '', access: '' }
-        localStorage.setItem('jwt', JSON.stringify(response.data));
-        
-        // After the user logs in, we get its user
-        await this.getUser();
-        
-        // And we push the user to the main / page
-        await router.push('/');
+      try {
+        // Grab the access and refresh token
+        const response = await axios.post('token/', credentials);
+        // Set the localStorage key to the jwt
+        if (response.status === 200) {
+          // { refresh: '', access: '' }
+          localStorage.setItem('jwt', JSON.stringify(response.data));
+          
+          // After the user logs in, we get its user
+          await this.getUser();
+          this.error = null;
+          // And we push the user to the main / page
+          await router.push('/');
 
-        location.reload();
+          location.reload();
+        }
+      } catch (e: any) {
+        this.error = e;
       }
     },
     async getUser() {
