@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import { useAutoAnimate } from '@formkit/auto-animate/vue';
 
 import Project from '@/components/Project.vue';
 import TaskType from '@/components/slots/TaskType.vue';
@@ -11,7 +10,7 @@ import Paginate from './Paginate.vue';
 const chore = useChoreStore();
 
 chore.projectPagination.page = 1;
-chore.projectPagination.page_size = 4;
+chore.projectPagination.page_size = 2;
 chore.projectPagination.added = 1;
 
 const projects = computed(() => chore.projects.slice(0, 2));
