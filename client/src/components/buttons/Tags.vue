@@ -94,6 +94,7 @@ async function deleteTag(tag: Tag) {
       emit('removeTag', tag);
     }
   } else {
+    // Remove tag visually from the tag list
     emit('removeTag', tag);
   }
 }

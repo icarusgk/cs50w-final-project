@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
-import type { TaskType, SubtaskType } from '@/types';
+import type { TaskType, SubtaskType, Tag } from '@/types';
 
 import Subtask from '@/components/Subtask.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
@@ -38,7 +38,7 @@ const newChoreOpened = ref(false);
 
 const activeChore = reactive<{
   opened: boolean;
-  chore: TaskType | SubtaskType | null;
+  chore: any;
 }>({
   opened: false,
   chore: null,
@@ -282,6 +282,20 @@ function closeNew() {
   newChoreOpened.value = false;
   props.isProject ? resetTaskModel() : resetSubtaskModel();
 }
+
+function removeTag(tag: Tag) {
+  if (props.isProject) {
+
+    // When a existing chore is opened
+    if (activeChore.opened) {
+      activeChore.chore.tags = activeChore.chore.tags.filter((t: Tag) => t.name !== tag.name);
+      return;
+    }
+
+    // When a fresh chore is opened, just remove it
+    taskModel.value.tags = taskModel.value.tags.filter((t: Tag) => t.name !== tag.name);
+  }  
+}
 </script>
 
 <template>
@@ -329,11 +343,12 @@ function closeNew() {
   </div>
   <!-- If the a new chore is opened -->
   <div v-if="newChoreOpened">
-    <!-- Listen to the event emitter -->
+    <!-- A new fresh chore -->
     <Subtask
       @close="closeNew()"
       @save="addSubtaskToTask()"
       @saveTask="addTaskToProject()"
+      @removeTag="removeTag($event)"
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
       :key="isProject ? existingProject.tasks.length : task.subtasks.length"
@@ -348,6 +363,7 @@ function closeNew() {
       @saveTask="addTaskToProject()"
       @remove="removeChore()"
       @delete="deleteChore()"
+      @removeTag="removeTag($event)"
       :chore="activeChore.chore"
       :parentNew="isNew"
       :newChore="isNew"

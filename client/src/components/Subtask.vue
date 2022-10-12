@@ -4,8 +4,7 @@ import TimerSetter from '@/components/TimerSetter.vue';
 import Tags from './buttons/Tags.vue';
 
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
-defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
-// const chore = ref(props.chore)
+defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag']);
 </script>
 
 <template>
@@ -18,6 +17,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove']);
           :id="props.chore.id"
           :task="props.chore"
           :new="newChore"
+          @removeTag="$emit('removeTag', $event)"
         />
       </div>
       <!-- Title and description -->
