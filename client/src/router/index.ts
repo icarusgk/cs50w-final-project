@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,9 +26,6 @@ const router = createRouter({
       path: '/stats',
       name: 'Stats',
       component: () => import('../views/StatsView.vue'),
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: '/about',
@@ -53,11 +51,14 @@ const router = createRouter({
   ],
 });
 
-// Prevent to visit page that requiresAuth
-// router.beforeEach((to) => {
-//   if (to.meta.requiresAuth) {
-//     return false
-//   }
-// })
+router.beforeEach((to) => {
+  // Prevent visit to register and login when auth
+  if (to.name === 'Login' || to.name === 'Register') {
+    const auth = useAuthStore();
+    if (auth.isAuthenticated) {
+      return { name: 'Home'}
+    }
+  }
+})
 
 export default router;
