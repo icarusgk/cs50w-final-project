@@ -18,8 +18,10 @@ const emit = defineEmits(['exit']);
 const chore = useChoreStore();
 
 function deleteProject() {
-  chore.deleteProject(props.project.id as number);
-  emit('exit');
+  if (window.confirm('Are you sure?')) {
+    chore.deleteProject(props.project.id as number);
+    emit('exit');
+  }
 }
 
 function saveAndExit() {
