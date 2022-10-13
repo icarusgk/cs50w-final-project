@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch, computed } from 'vue';
 import { useTimerStore } from '@/stores/timer';
 
 import CurrentTask from './CurrentTask.vue';
 
 const timer = useTimerStore();
+const currentLine = computed(() => `line-${timer.current}`)
 
 watch(
   () => timer.currentTimer.timer,
@@ -106,12 +107,12 @@ function setTimer(type: string) {
     <div
       id="line"
       :style="{ width: `${timer.percent - 2}%` }"
-      :class="timer.current"
+      :class="currentLine"
     ></div>
     <!-- Time -->
     <div>
       <h1 id="timer-count">{{ timer.currentTimer.timer.format('mm:ss') }}</h1>
-      <button @click="startTimer()" v-if="!timer.ongoing" id="start-timer-btn">
+      <button @click="startTimer()" v-if="!timer.ongoing" :class="timer.current">
         Start!
       </button>
       <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
@@ -178,15 +179,15 @@ function setTimer(type: string) {
     transition: width 0.2s ease-in-out;
   }
 
-  .pomo {
+  .line-pomo {
     @include line(var(--vivid-red));
   }
 
-  .short_break {
+  .line-short_break {
     @include line(var(--short-rest));
   }
 
-  .long_break {
+  .line-long_break {
     @include line(var(--long-rest));
   }
 
@@ -220,6 +221,18 @@ function setTimer(type: string) {
     @include timer-setter(#1eaf58);
   }
 
+  .pomo {
+    @include timer-button(#ed4747);
+  }
+
+  .short_break {
+    @include timer-button(#1ba7b1);
+  }
+
+  .long_break {
+    @include timer-button(#1eaf58);
+  }
+
   .done {
     display: block;
     margin-top: 1rem;
@@ -232,7 +245,7 @@ function setTimer(type: string) {
   }
 
   #stop-timer-btn {
-    @include timer-button(#1ba7b1);
+    @include timer-button(#1b6eb1);
   }
 
   #restart-timer-btn {
