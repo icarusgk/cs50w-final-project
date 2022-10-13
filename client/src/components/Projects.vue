@@ -27,8 +27,9 @@ const projects = computed(() => chore.projects.slice(0, 2));
         <h1 @click="$router.push('/projects')">Projects</h1>
       </template>
       <template #count>
-        Page {{ chore.projectPagination.page }} of
-        {{ chore.totalProjectPages }}
+        <span v-if="chore.totalProjectPages > 1">
+          Page {{ chore.projectPagination.page }} of {{ chore.totalProjectPages }}
+        </span>
       </template>
     </TaskType>
     <div>
