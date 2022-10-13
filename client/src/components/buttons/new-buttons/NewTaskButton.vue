@@ -74,7 +74,12 @@ function removeTag(tag: Tag) {
       />
     </template>
     <!-- Rest of modal -->
-    <TaskModalInfo :task="initialTask" :isNew="true" />
+    <TaskModalInfo 
+      :task="initialTask" 
+      :isNew="true" 
+      @saveTask="saveTask()" 
+      @descriptionInput="initialTask.description = $event"
+    />
     <!-- Button -->
     <template #save-button>
       <SaveButton @click="saveTask()" :disabled="false">Save!</SaveButton>

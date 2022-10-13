@@ -16,7 +16,7 @@ defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask'])
     <!-- Description -->
     <div class="new-task-description">
       <textarea
-        @input="event => $emit('descriptionInput', event)"
+        @input="event => $emit('descriptionInput', (event.target as HTMLInputElement).value)"
         @keyup.ctrl.enter="$emit('saveTask')"
         :value="task.description"
         placeholder="Description"

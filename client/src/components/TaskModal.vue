@@ -49,10 +49,6 @@ function handleInput(event: any) {
   tmpNewTitle = event.target.value;
 }
 
-function handleDescription(event: any) {
-  tmpNewDesc = event.target.value;
-}
-
 const handlePomos = (pomos: number) => tmpEstimated = pomos;
 </script>
 
@@ -85,7 +81,7 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
       <!-- Modal -->
       <TaskModalInfo 
         :task="props.task"
-        @description-input="handleDescription($event)" 
+        @description-input="tmpNewDesc = $event" 
         @decrease-pomos="handlePomos($event)"
         @increase-pomos="handlePomos($event)"
         @saveTask="saveTask()"
