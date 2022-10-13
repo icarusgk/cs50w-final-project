@@ -24,7 +24,6 @@ export const useChoreStore = defineStore({
       page_size: 4,
     },
     stats: [] as StatType[],
-    currentTaskId: null as number | null,
   }),
   getters: {
     totalProjectPages: (state) =>
@@ -119,23 +118,20 @@ export const useChoreStore = defineStore({
 
       if (status === 200) this.tags = data;
     },
-    async fetchCurrentTask() {
-      const { data, status } = await useFetch('currentTask', 'get');
-
-      if (status === 200) this.currentTaskId = data.id;
-    },
     async changeCurrentTask(id: number | undefined) {
       const { data, status } = await useFetch('currentTask', 'put', { id });
 
-      if (status === 200) this.currentTaskId = data.id;
+      if (status === 200) {
+        useAuthStore().user!.current_task_id = data.id;
+      };
     },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
-      if (useAuthStore().isAuthenticated) {
+      const auth = useAuthStore();
+      if (auth.isAuthenticated) {
         this.fetchStats();
         this.fetchModes();
         this.fetchTags();
-        this.fetchCurrentTask();
       }
     },
     // Adds tasks with tags and subtasks
@@ -155,9 +151,15 @@ export const useChoreStore = defineStore({
     async deleteTask(task: TaskType) {
       const { status } = await useFetch('tasks', 'delete', null, task.id);
 
-      if (status === 204) {
+      if (status === 200) {
+        const auth = useAuthStore();
+        
         useAlertStore().info(`Task '${task.title}' deleted`);
-        // this.tasks = this.tasks.filter((t: TaskType) => t.id !== task.id);
+
+        if (task.id === auth.user!.current_task_id) {
+          auth.user!.current_task_id = 0;
+        }
+
         this.fetchTasks();
       }
     },
@@ -197,6 +199,7 @@ export const useChoreStore = defineStore({
       if (status === 200) console.log(data);
     },
     async incrementGoneThrough() {
+      const auth = useAuthStore();
       const { status } = await useFetch(
         'tasks',
         'patch',
@@ -204,7 +207,7 @@ export const useChoreStore = defineStore({
           obj: 'task',
           action: 'increment_gone_through',
         },
-        this.currentTaskId
+        auth.user!.current_task_id
       );
 
       if (status === 200) {

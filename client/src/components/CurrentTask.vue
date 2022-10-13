@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
-import { useChoreStore } from '@/stores/chore';
+import { ref, watch, computed, watchEffect } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modal';
 import axios from 'axios';
@@ -8,28 +7,24 @@ import TaskModal from './TaskModal.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 
 const task = ref();
-const chore = useChoreStore();
-const currentTask = computed(() => chore.currentTaskId);
+const auth = useAuthStore();
+const userTaskId = computed(() => auth.user?.current_task_id);
 const open = ref(false);
 
-
-async function getTask() {  
-  const response = await axios.get(`tasks/${currentTask.value}/`);
+async function getTask(id: any) {
+  const response = await axios.get(`tasks/${id}/`);
   task.value = response?.data;
 }
 
-if (useAuthStore().isAuthenticated) {
-  getTask();
-}
-
-// A kind of debouncer?
-watch(
-  () => currentTask.value,
-  (prevTask, curTask) => {
-    if (prevTask !== curTask) getTask();
+watchEffect(
+  () => {
+    if (userTaskId.value !== 0) {
+      getTask(userTaskId.value);
+    }
   }
 );
 
+// The modal blur
 watch(open, () => {
   useModalStore().toggle();
 });
@@ -37,7 +32,7 @@ watch(open, () => {
 
 <template>
   <div 
-    v-if="useAuthStore().isAuthenticated && chore.currentTaskId" 
+    v-if="userTaskId !== 0" 
     style="margin-top: 1rem"
   >
     <div @click="open = true" class="container">

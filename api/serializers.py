@@ -4,7 +4,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
-    fields = ['id', 'username', 'email', 'auto_start_pomos', 'auto_start_breaks']
+    fields = ['id', 'username', 'email', 'auto_start_pomos', 'auto_start_breaks', 'current_task_id']
 
 
 class StatsSerializer(serializers.ModelSerializer):

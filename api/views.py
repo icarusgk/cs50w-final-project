@@ -215,6 +215,21 @@ class TaskViewSet(viewsets.ModelViewSet):
 
       return Response({'message': 'error'})
 
+  def destroy(self, request, pk=None):
+    user = User.objects.get(id=request.user.id)
+    task = Task.objects.get(id=int(pk))
+
+    # If the task being deleted is the same
+    # as the current one
+    # set it to 0
+    if int(pk) == user.current_task_id:
+      user.current_task_id = 0
+      user.save()
+      
+    task.delete()
+    return Response(status=status.HTTP_200_OK)
+      
+
 class TagViewSet(viewsets.ModelViewSet):
   queryset = Tag.objects.all()
   permission_classes = [permissions.IsAuthenticated]
@@ -360,11 +375,10 @@ class CurrentTaskView(APIView):
     return Response({'id': request.user.current_task_id})
 
   def put(self, request):
-    new_id = request.data['id']
     user = User.objects.get(id=request.user.id)
-    user.current_task_id = new_id
+    user.current_task_id = request.data['id']
     user.save()
-    return Response({'id': new_id})
+    return Response({'id': user.current_task_id})
 
 
 class CurrentModeView(APIView):

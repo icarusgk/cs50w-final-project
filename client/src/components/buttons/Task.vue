@@ -16,6 +16,8 @@ const props = defineProps<{
   task: TaskType;
 }>();
 
+const emit = defineEmits(['setCurrent'])
+
 const open = ref(false);
 const chore = useChoreStore();
 
@@ -34,10 +36,6 @@ async function toggleDone() {
   }
 }
 
-function setCurrent() {
-  chore.changeCurrentTask(props.task.id);
-}
-
 async function deleteTask() {
   if (window.confirm('Are you sure you want to delete this task?')) {
     chore.deleteTask(props.task);
@@ -53,7 +51,7 @@ async function deleteTask() {
     </div>
     <!-- Name -->
     <div class="task-title-container" :class="{ done: task.done }">
-      <div @click="setCurrent()" class="title-container">
+      <div @click="$emit('setCurrent', task.id)" class="title-container">
         <span class="title">{{ props.task.title }}</span>
       </div>
       <div class="icon-container">

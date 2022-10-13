@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import TaskType from '@/components/slots/TaskType.vue';
@@ -15,6 +15,17 @@ chore.taskPagination.page_size = 4;
 chore.taskPagination.added = 1;
 
 const tasks = computed(() => chore.tasks.slice(0, 4));
+
+const currentTask = ref();
+
+const setCurrent = (id: number) => currentTask.value = id;
+
+// A id debouncer
+watch(currentTask, (prevId, curId) => {
+  if (prevId !== curId) {
+    chore.changeCurrentTask(currentTask.value);
+  }
+})
 </script>
 
 <template>
@@ -36,7 +47,12 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
       <h2>No tasks</h2>
     </div>
     <div v-auto-animate>
-      <Task v-for="task in tasks" :task="task" :key="task.id" />
+      <Task
+        v-for="task in tasks"
+        :task="task"
+        :key="task.id"
+        @setCurrent="setCurrent"
+      />
     </div>
     
     <Paginate
