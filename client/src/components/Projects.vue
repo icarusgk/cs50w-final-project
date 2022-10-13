@@ -34,7 +34,7 @@ const projects = computed(() => chore.projects.slice(0, 2));
     </TaskType>
     <div>
       <div v-if="projects.length === 0">
-        <h2>No Projects</h2>
+        <span>There are no projects</span>
       </div>
       <!-- List of projects -->
       <div v-auto-animate>

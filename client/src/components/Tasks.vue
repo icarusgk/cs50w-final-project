@@ -44,7 +44,7 @@ watch(currentTask, (prevId, curId) => {
       </template>
     </TaskType>
     <div v-if="tasks.length === 0">
-      <h2>No tasks</h2>
+      <span>The are no tasks</span>
     </div>
     <div v-auto-animate>
       <Task
