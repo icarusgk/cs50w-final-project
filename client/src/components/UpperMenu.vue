@@ -36,12 +36,19 @@ watch([
             class="login"
             @click="auth.isAuthenticated ? (userOpen = true) : (userOpen = false)"
           >
-            <UserIcon />
-            <span v-if="auth.isAuthenticated">{{ auth.user?.username }}</span>
+            <div class="user-info" v-if="auth.isAuthenticated">
+              <UserIcon />
+              <span>{{ auth.user?.username }}</span>
+            </div>
           </div>
-          <span v-if="!auth.isAuthenticated" @click="$router.push('/login')"
-            >Login</span
-          >
+          <div v-if="!auth.isAuthenticated" class="user-actions-container">
+            <div @click="$router.push('/login')">
+              <span class="action">Login</span>
+            </div>
+            <div @click="$router.push('/register')">
+              <span class="action">Register</span>
+            </div>
+          </div>
         </div>
       </li>
       <!-- Settings -->
@@ -85,6 +92,29 @@ watch([
       .login {
         display: flex;
         align-items: center;
+
+        .user-info {
+          display: flex;
+          align-items: center;
+          margin-right: 1rem;
+        }
+
+        .user-actions-container {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1.5rem;
+
+          .action {
+            background-color: rgb(60, 60, 60);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            transition: background-color 0.25s ease-in-out;
+
+            &:hover {
+              background-color: var(--vivid-red);
+            }
+          }
+        }
       }
 
       #streaks-icon {
