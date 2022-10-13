@@ -8,12 +8,16 @@ defineProps<{
   isTask?: Boolean
 }>();
 
-const emits = defineEmits(['exitModal']);
+const emit = defineEmits(['exitModal']);
+
+function exit(event: any) {
+  if (event.key === 'Escape') emit('exitModal')
+}
 </script>
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="modal">
+    <div v-if="open" class="modal" @keyup="event => exit(event)">
       <div class="task-upper-menu" :class="{ 'align-items': !isTask }">
         <div class="tags-and-title-container">
           <div v-if="isTask" class="tags-container">
@@ -29,7 +33,7 @@ const emits = defineEmits(['exitModal']);
           <slot name="delete-icon"></slot>
         </div>
 
-        <div @click="emits('exitModal')" class="close-icon">
+        <div @click="$emit('exitModal')" class="close-icon">
           <CloseIcon />
         </div>
       </div>
