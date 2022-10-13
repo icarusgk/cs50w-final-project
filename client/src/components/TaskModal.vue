@@ -29,6 +29,7 @@ function saveTask() {
   props.task.title = tmpNewTitle !== '' ? tmpNewTitle : props.task.title ;
   props.task.description = tmpNewDesc !== '' ? tmpNewDesc : props.task.description;
   props.task.estimated = tmpEstimated !== null ? tmpEstimated : props.task.estimated;
+
   chore.saveTask(props.task);
   
   emit('exit');
@@ -48,6 +49,8 @@ function removeTag(tag: Tag) {
 function handleInput(event: any) {
   tmpNewTitle = event.target.value;
 }
+
+const handleDesc = (desc: any) => tmpNewDesc = desc;
 
 const handlePomos = (pomos: number) => tmpEstimated = pomos;
 </script>
@@ -81,7 +84,7 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
       <!-- Modal -->
       <TaskModalInfo 
         :task="props.task"
-        @description-input="tmpNewDesc = $event" 
+        @description-input="handleDesc" 
         @decrease-pomos="handlePomos($event)"
         @increase-pomos="handlePomos($event)"
         @saveTask="saveTask()"

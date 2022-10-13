@@ -9,6 +9,8 @@ defineProps<{
 }>();
 
 defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask'])
+
+const say = (s: string) => console.log(s);
 </script>
 
 <template>
