@@ -70,6 +70,7 @@ function removeTag(tag: Tag) {
         id="new-task-input-title"
         placeholder="New task title"
         v-model="initialTask.title"
+        @keyup.ctrl.enter="saveTask()"
       />
     </template>
     <!-- Rest of modal -->

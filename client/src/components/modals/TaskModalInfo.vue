@@ -8,7 +8,7 @@ defineProps<{
   isNew?: boolean;
 }>();
 
-defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos'])
+defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask'])
 </script>
 
 <template>
@@ -17,6 +17,7 @@ defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos'])
     <div class="new-task-description">
       <textarea
         @input="event => $emit('descriptionInput', event)"
+        @keyup.ctrl.enter="$emit('saveTask')"
         :value="task.description"
         placeholder="Description"
         class="new-task-textarea-description"

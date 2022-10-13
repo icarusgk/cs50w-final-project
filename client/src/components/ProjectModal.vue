@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import type { Project } from '@/types';
@@ -13,6 +13,7 @@ const props = defineProps<{
   open: boolean;
 }>();
 
+const title = ref(props.project.name);
 const emit = defineEmits(['exit']);
 const chore = useChoreStore();
 
@@ -21,28 +22,33 @@ function deleteProject() {
   emit('exit');
 }
 
-watch(
-  () => props.project.name,
-  (newName, oldName) => {
-    if (props.open && newName !== oldName) {
-      chore.saveProject(props.project, newName);
-    }
+function saveAndExit() {
+  chore.saveProject(props.project, title.value);
+  props.project.name = title.value;
+  emit('exit');
+}
+
+function exitModal() {
+  if (title.value !== props.project.name) {
+    props.project.name = title.value;
+    chore.saveProject(props.project, title.value);
   }
-);
+  emit('exit');
+}
 </script>
 
 <template>
   <div class="project-container">
     <!-- Modal -->
-    <Modal :open="open" @exit-modal="$emit('exit')">
+    <Modal :open="open" @exit-modal="exitModal()">
       <!-- Title -->
       <template #title>
         <input
           type="text"
           name="title"
           id="task-input-title"
-          v-model.lazy="props.project.name"
-          @keyup.ctrl.enter="$emit('exit')"
+          v-model="title"
+          @keyup.ctrl.enter="saveAndExit()"
         />
       </template>
       <template #delete-icon>

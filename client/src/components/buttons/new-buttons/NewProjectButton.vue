@@ -55,6 +55,7 @@ function saveProject() {
         name="title"
         id="new-project-input-title"
         placeholder="New project"
+        @keyup.ctrl.enter="saveProject()"
         v-model="newProject.name"
       />
     </template>

@@ -79,6 +79,7 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
           id="task-input-title"
           @input="event => handleInput(event)"
           :value="props.task.title"
+          @keyup.ctrl.enter="saveTask()"
         />
       </template>
       <!-- Modal -->
@@ -87,6 +88,7 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
         @description-input="handleDescription($event)" 
         @decrease-pomos="handlePomos($event)"
         @increase-pomos="handlePomos($event)"
+        @saveTask="saveTask()"
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
