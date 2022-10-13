@@ -4,7 +4,7 @@ import TimerSetter from '@/components/TimerSetter.vue';
 import Tags from './buttons/Tags.vue';
 
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
-defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag']);
+defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titleChange', 'descChange']);
 </script>
 
 <template>
@@ -27,14 +27,16 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag']);
       >
         <!-- Title -->
         <input
-          v-model.lazy="props.chore.title"
+          :value="props.chore.title"
+          @input="event => $emit('titleChange', (event.target as HTMLInputElement).value)"
           placeholder="Title"
           type="text"
           class="new-subtask-title"
         />
         <!-- Description -->
         <textarea
-          v-model.trim="props.chore.description"
+          :value="props.chore.description"
+          @input="event => $emit('descChange', (event.target as HTMLInputElement).value)"
           class="new-subtask-description"
           placeholder="Description"
         >

@@ -44,7 +44,15 @@ const activeChore = reactive<{
   chore: null,
 });
 
+const tmp = reactive({
+  title: '',
+  desc: ''
+})
+
 const alert = useAlertStore();
+
+const handleTitle = (title: string) => tmp.title = title;
+const handleDesc = (desc: string) => tmp.desc = desc;
 
 // Open the an empty chore
 function openNewChore() {
@@ -125,12 +133,15 @@ async function addTaskToProject() {
 
   // If an existing task has to be updated
   if (activeChore.chore && !newChoreOpened.value) {
+    activeChore.chore.title = tmp.title !== '' ? tmp.title : activeChore.chore.title;
+    activeChore.chore.description = tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
     // Make the api call
     const response = await axios.patch(`projects/${props.project.id}/`, {
       obj: 'project',
       action: 'update_task',
       subtask: activeChore.chore,
     });
+
     if (response?.status === 200) {
       alert.success(`Task ${activeChore.chore.title} saved!`);
       closeDetails();
@@ -139,7 +150,7 @@ async function addTaskToProject() {
 }
 
 // Add subtask to task or task to project
-async function addSubtaskToTask() {
+async function saveSubtaskToTask() {
   // Just a title is required
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
@@ -167,6 +178,9 @@ async function addSubtaskToTask() {
   // Modify existing subtask
   else if (activeChore.chore && !newChoreOpened.value) {
     if (!props.isProject) {
+      activeChore.chore.title = tmp.title !== '' ? tmp.title : activeChore.chore.title;
+      activeChore.chore.description = tmp.desc !== '' ? tmp.desc : activeChore.chore.description;      
+      
       // Make the api call
       const response = await axios.patch(`/tasks/${props.task.id}/`, {
         obj: 'subtask',
@@ -346,9 +360,11 @@ function removeTag(tag: Tag) {
     <!-- A new fresh chore -->
     <Subtask
       @close="closeNew()"
-      @save="addSubtaskToTask()"
+      @save="saveSubtaskToTask()"
       @saveTask="addTaskToProject()"
       @removeTag="removeTag($event)"
+      @titleChange="isProject ? taskModel.title = $event : subtaskModel.title = $event"
+      @descChange="isProject ? taskModel.description = $event : subtaskModel.description = $event"
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
       :key="isProject ? existingProject.tasks.length : task.subtasks.length"
@@ -359,11 +375,13 @@ function removeTag(tag: Tag) {
   <div v-if="activeChore.opened">
     <Subtask
       @close="closeDetails()"
-      @save="addSubtaskToTask()"
+      @save="saveSubtaskToTask()"
       @saveTask="addTaskToProject()"
       @remove="removeChore()"
       @delete="deleteChore()"
       @removeTag="removeTag($event)"
+      @titleChange="handleTitle"
+      @descChange="handleDesc"
       :chore="activeChore.chore"
       :parentNew="isNew"
       :newChore="isNew"
