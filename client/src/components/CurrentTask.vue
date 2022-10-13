@@ -18,7 +18,7 @@ async function getTask(id: any) {
 
 watchEffect(
   () => {
-    if (userTaskId.value !== 0) {
+    if (userTaskId.value !== 0 && auth.user) {
       getTask(userTaskId.value);
     }
   }
@@ -33,7 +33,7 @@ watch(open, () => {
 <template>
   <Transition name="slide">
     <div 
-      v-if="userTaskId !== 0" 
+      v-if="userTaskId !== 0 && auth.user" 
       style="margin-top: 1rem"
     >
       <div @click="open = true" class="container">
