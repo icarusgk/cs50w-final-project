@@ -31,48 +31,60 @@ watch(open, () => {
 </script>
 
 <template>
-  <div 
-    v-if="userTaskId !== 0" 
-    style="margin-top: 1rem"
-  >
-    <div @click="open = true" class="container">
-      <div class="info">
-        <TaskInfoIcon />
-        <span>Working on task: {{ task?.title }}</span>
+  <Transition name="slide">
+    <div 
+      v-if="userTaskId !== 0" 
+      style="margin-top: 1rem"
+    >
+      <div @click="open = true" class="container">
+        <div class="info">
+          <TaskInfoIcon />
+          <span>Working on task: {{ task?.title }}</span>
+        </div>
       </div>
+      <TaskModal :open="open" :task="task" @exit="open = false" />
     </div>
-    <TaskModal :open="open" :task="task" @exit="open = false" />
-  </div>
+  </Transition>
 </template>
 
 
 <style scoped lang="scss">
-  .container {
-    width: 21rem;
-    background: #333;
-    color: white;
-    padding: 1rem;
-    border-radius: 10px;
-    font-weight: 600;
-    box-shadow: 3px 4px rgb(71, 71, 71);
-    transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 0.7s ease-in-out;
+}
 
-    .info {
-      display: flex;
-      align-items: center;
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+}
 
-      span {
-        margin-left: 0.5rem;
-      }
-    }
+.container {
+  width: 21rem;
+  background: #333;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 3px 4px rgb(71, 71, 71);
+  transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-    &:active {
-      box-shadow: 0 0 #333;
+  .info {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 0.5rem;
     }
   }
+
+  &:hover,
+  &:focus,
+  &:active {
+    cursor: pointer;
+  }
+  &:active {
+    box-shadow: 0 0 #333;
+  }
+}
 </style>
