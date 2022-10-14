@@ -80,5 +80,21 @@ const alerts = useAlertStore();
   opacity: 0;
   transform: translateX(1rem);
 }
+
+@media (max-width: 768px) {
+  .alert-container {
+    z-index: 15;
+    .message {
+      font-size: 0.55rem;
+    }
+  }
+  
+  .alert {
+    width: 150px;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+  }
+}
 </style>
   

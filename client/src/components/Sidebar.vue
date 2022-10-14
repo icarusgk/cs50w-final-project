@@ -6,7 +6,7 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 </script>
 
 <template>
-  <div class="container">
+  <div class="sidebar">
     <router-link to="/" aria-label="Pomo">
       <div class="logo-container">
         <img src="../assets/tomato-logo.png" class="logo-img" alt="Pomo Logo" />
@@ -42,7 +42,7 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 </template>
 
 <style lang="scss" scoped>
-.container {
+.sidebar {
   background-color: #2f2f2f;
   width: 130px;
   height: 100%;
@@ -64,7 +64,6 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
     display: flex;
     flex-direction: column;
     height: 60%;
-    justify-content: space-evenly;
     margin-top: 4rem;
     align-items: center;
 
@@ -74,14 +73,13 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 
     .router-link-active {
       background-color: var(--vivid-red);
-      padding: 0 1rem;
       border-radius: 8px;
     }
   }
 }
 
 @media (max-width: 768px) {
-  .container {
+  .sidebar {
     width: 100%;
     height: 3rem;
     background-color: var(--light-gray);
@@ -90,14 +88,14 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
     z-index: 3;
 
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
 
     .menu-container {
       flex-direction: row;
       margin-bottom: 4rem;
 
       a {
-        transform: scale(0.8);
+        transform: scale(70%);
         margin: 0 -2rem;
       }
 
@@ -106,7 +104,7 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
       }
 
       .router-link-active {
-        background-color: transparent;
+        background-color: var(--vivid-red);
         padding: 0;
         border-radius: 8px;
 

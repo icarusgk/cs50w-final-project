@@ -16,8 +16,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px 20px;
-  border-radius: 10px;
+  padding: 30px 30px;
+  border-radius: 8px;
   color: white;
   transition: all 0.1s ease-in-out;
 
@@ -29,10 +29,16 @@
 
 @media (max-width: 768px) {
   .item {
-    transform: scale(0.5);
+    transform: scale(50%);
     flex-direction: row;
     padding: 0;
     margin: 0;
+    transition: none;
+
+    &:hover {
+      background-color: transparent;
+      padding: 0;
+    }
   }
   .title {
     font-size: 2rem;
