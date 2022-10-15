@@ -78,6 +78,10 @@ watch([
 
   ul {
     text-align: right;
+    list-style-type: none;
+    margin-block: 0 0;
+    margin-inline: 0 0;
+    padding-inline-start: 0px;
 
     li {
       display: inline-block;
@@ -142,6 +146,19 @@ watch([
 
         #streaks-icon {
           display: none;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 580px) {
+#icons {  
+  ul {
+    li 
+      .login {
+        .user-info {
+          margin-right: 0;
         }
       }
     }
