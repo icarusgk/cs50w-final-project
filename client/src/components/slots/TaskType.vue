@@ -32,4 +32,12 @@
     width: 85%;
   }
 }
+
+@media (max-width: 420px) {
+  #projects-container {
+    .title {
+      font-size: 0.9rem;
+    }
+  }
+}
 </style>
