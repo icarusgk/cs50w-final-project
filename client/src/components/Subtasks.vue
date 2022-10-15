@@ -44,15 +44,18 @@ const activeChore = reactive<{
   chore: null,
 });
 
-const tmp = reactive({
+const tmp = {
   title: '',
-  desc: ''
-})
+  desc: '',
+  estimated: 0
+};
+
 
 const alert = useAlertStore();
 
 const handleTitle = (title: string) => tmp.title = title;
 const handleDesc = (desc: string) => tmp.desc = desc;
+const handleEstimated = (n: number) => tmp.estimated = n;
 
 // Open the an empty chore
 function openNewChore() {
@@ -135,6 +138,8 @@ async function addTaskToProject() {
   if (activeChore.chore && !newChoreOpened.value) {
     activeChore.chore.title = tmp.title !== '' ? tmp.title : activeChore.chore.title;
     activeChore.chore.description = tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
+    activeChore.chore.estimated = tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
+
     // Make the api call
     const response = await axios.patch(`projects/${props.project.id}/`, {
       obj: 'project',
@@ -146,6 +151,11 @@ async function addTaskToProject() {
       alert.success(`Task ${activeChore.chore.title} saved!`);
       closeDetails();
     }
+
+    // Reset tmp's
+    tmp.title = '';
+    tmp.desc = '';
+    tmp.estimated = 0;
   }
 }
 
@@ -382,6 +392,8 @@ function removeTag(tag: Tag) {
       @removeTag="removeTag($event)"
       @titleChange="handleTitle"
       @descChange="handleDesc"
+      @increasePomo="handleEstimated"
+      @decreasePomo="handleEstimated"
       :chore="activeChore.chore"
       :parentNew="isNew"
       :newChore="isNew"

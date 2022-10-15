@@ -4,7 +4,7 @@ import TimerSetter from '@/components/TimerSetter.vue';
 import Tags from './buttons/Tags.vue';
 
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
-defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titleChange', 'descChange']);
+defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titleChange', 'descChange', 'decreasePomo', 'increasePomo']);
 </script>
 
 <template>
@@ -52,7 +52,11 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titl
           <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
         </div>
         <div v-if="props.isProject">
-          <TimerSetter :chore="chore" />
+          <TimerSetter 
+            :chore="chore"
+            @decreasePomos="$emit('decreasePomo', $event)"
+            @increasePomos="$emit('increasePomo', $event)"
+          />
         </div>
         <!-- Estimated Timers and save button -->
         <div class="timers-and-buttons-container">
