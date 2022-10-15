@@ -145,6 +145,9 @@ const say = (s: string) => console.log(s);
   .new-task-description {
     margin-top: 0.5rem;
     margin-bottom: 0;
+    .new-task-textarea-description {
+      height: 80px;
+    }
   }
   .new-task-subtasks-container {
     margin: 0 0 0.5rem 0;
