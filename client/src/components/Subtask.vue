@@ -21,17 +21,16 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titl
         />
       </div>
       <!-- Title and description -->
-      <div
-        class="title-and-description-container"
-        @keyup.ctrl.enter="$emit('save')"
-      >
+      <div class="title-and-description-container">
         <!-- Title -->
         <input
           :value="props.chore.title"
           @input="event => $emit('titleChange', (event.target as HTMLInputElement).value)"
           placeholder="Title"
           type="text"
+          autofocus
           class="new-subtask-title"
+          @keyup.ctrl.enter="isProject ? $emit('saveTask') : $emit('save')"
         />
         <!-- Description -->
         <textarea
@@ -39,6 +38,7 @@ defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titl
           @input="event => $emit('descChange', (event.target as HTMLInputElement).value)"
           class="new-subtask-description"
           placeholder="Description"
+          @keyup.ctrl.enter="isProject ? $emit('saveTask') : $emit('save')"
         >
         </textarea>
       </div>
