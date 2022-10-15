@@ -249,9 +249,9 @@ function nextMoveBy(increasedBy: number): void {
     }
   }
 
-  @media (max-width: 390px) {
+  @media (max-width: 480px) {
     .paginate-btn {
-      padding: 0.25rem 0.5rem;
+      padding: 0.25rem 0.55rem;
     }
   }
 }
