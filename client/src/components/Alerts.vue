@@ -85,7 +85,7 @@ const alerts = useAlertStore();
   .alert-container {
     z-index: 15;
     .message {
-      font-size: 0.55rem;
+      font-size: 0.9rem;
     }
   }
   
