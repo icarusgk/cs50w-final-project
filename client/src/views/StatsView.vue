@@ -18,8 +18,8 @@ const auth = useAuthStore();
       </div>
       <FakeChart class="blur" />
     </div>
-    <div v-else>
-      <Chart />
+    <div v-else class="chart-container">
+      <Chart id="the-chart" />
     </div>
   </div>
 </template>
@@ -31,6 +31,7 @@ const auth = useAuthStore();
   justify-content: center;
   align-items: center;
   color: white;
+  width: 100%;
 
   .fake-chart-container {
     position: relative;
@@ -44,9 +45,32 @@ const auth = useAuthStore();
       font-size: 2rem;
     }
   }
+
+  .chart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    #the-chart {
+      width: 70%;
+      color: black;
+    }
+  }
 }
 
 .blur {
   filter: blur(10px);
+}
+
+@media (max-width: 1000px) {
+  .stats {
+    .chart-container {
+      #the-chart {
+        width: 100%;
+      }
+    }
+  }
 }
 </style>

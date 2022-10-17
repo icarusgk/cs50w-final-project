@@ -1,39 +1,106 @@
 <script setup>
-import {  reactive, ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import VueApexCharts from 'vue3-apexcharts';
+import ApexChart from 'apexcharts';
 
-const choreStore = useChoreStore();
+const chore = useChoreStore();
+chore.fetchStats();
 
-const options = reactive({
-  theme: {
-    mode: 'dark',
-    palette: 'palette7',
-  },
+// A template ref
+const responsiveChart = ref(null);
+
+const widthSize = () => window.innerWidth;
+const heightSize = () => window.innerWidth;
+
+// options
+const options = ref({
   chart: {
-    id: 'vuechart-example',
-    fontFamily: 'Poppins',
+    width: "100%",
+    height: widthSize() < 768 ? heightSize() : 600,
+    type: "bar",
+    fontFamily: 'Poppins'
   },
+  theme: {
+    mode: 'light',
+    monochrome: {
+      enabled: true,
+      color: '#ed4747',
+      shadeTo: 'light',
+      shadeIntensity: 0.65
+    },
+  },
+  fill: {
+    type: 'solid',
+  },
+  title: {
+    text: 'Tasks done',
+    align: 'center',
+    margin: 10,
+    style: {
+      fontSize:  '16px',
+      fontWeight:  'bold',
+      color:  '#fff'
+    },
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    width: 1,
+    colors: ["#fff"]
+  },
+  series: [{
+    name: 'Tasks done',
+    data: chore.stats.map(stat => stat.chores_done)
+  }],
   xaxis: {
-    type: 'datetime',
-    categories: choreStore.stats.map((stat) => stat.day),
+    categories: chore.stats.map(stat => stat.day)
   },
+  legend: {
+    position: "right",
+    verticalAlign: "top",
+    containerMargin: {
+      left: 35,
+      right: 60
+    }
+  },
+  responsive: [
+    {
+      breakpoint: 1000,
+      options: {
+        plotOptions: {
+          bar: {
+            horizontal: true
+          }
+        },
+        legend: {
+          position: "bottom"
+        }
+      }
+    }
+  ]
 });
-const series = ref([
-  {
-    name: 'Tasks Done',
-    data: choreStore.stats.map((stat) => stat.chores_done),
-  },
-]);
+
+onMounted(() => {
+  // Here we can have access to the elements
+  // That are in the DOM
+  const chart = new ApexChart(responsiveChart.value, options.value);
+  chart.render();
+});
 </script>
 
 <template>
-  <VueApexCharts
-    width="900"
-    type="bar"
-    :options="options"
-    :series="series"
-    style="border-radius: 4rem"
-  ></VueApexCharts>
+  <div id="responsiveChart" ref="responsiveChart"></div>
 </template>
-  
+
+<style scoped lang="scss">
+  #responsiveChart {
+    max-width: 760px;
+    margin: 35px auto;
+  }
+</style>
