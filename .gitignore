@@ -8,10 +8,6 @@ __pycache__
 db.sqlite3
 media
 
-main/settings.py
-
-local_settings.py
-
 .env
 env/
 .vscode/
