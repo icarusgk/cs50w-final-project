@@ -74,7 +74,7 @@ const say = (s: string) => console.log(s);
 
   .new-task-textarea-description {
     width: 100%;
-    height: 35px;
+    height: 50px;
     outline: none;
     background-color: transparent;
     color: white;
