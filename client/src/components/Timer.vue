@@ -43,7 +43,7 @@ function initTimer() {
     clearInterval(timer.timerId);
   }
   // Create new ID and start a new timer
-  timer.timerId = setInterval(() => {
+  timer.timerId = window.setInterval(() => {
     timer.decrementSecond();
   }, 1000);
 }
