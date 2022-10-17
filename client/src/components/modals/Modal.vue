@@ -119,8 +119,9 @@ function exit(event: any) {
     left: 5%;
     right: 5%;
     width: 90%;
-    height: 80%;
-    top: 5%;
+    height: 90%;
+    top: 3%;
+    overflow-y: scroll;
 
     .buttons {
       flex-direction: column;
