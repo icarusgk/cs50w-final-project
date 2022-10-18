@@ -4,7 +4,8 @@ import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue';
 import Timer from '@/components/Timer.vue';
 import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue';
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue';
-import Chores from '../components/Chores.vue';
+import Projects from '@/components/Projects.vue';
+import Tasks from '@/components/Tasks.vue';
 
 const auth = useAuthStore();
 </script>
@@ -31,7 +32,10 @@ const auth = useAuthStore();
           To add tasks and projects
         </UnauntheticatedLogin>
       </div>
-      <Chores />
+      <div v-if="auth.isAuthenticated">
+        <Projects />
+        <Tasks />
+      </div>
     </div>
   </div>
 </template>
