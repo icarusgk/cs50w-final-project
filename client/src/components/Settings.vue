@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useTimerStore } from '@/stores/timer';
 import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
-import DeleteIcon from './icons/DeleteIcon.vue';
+import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import Popper from 'vue3-popper';
 
 const auth = useAuthStore();

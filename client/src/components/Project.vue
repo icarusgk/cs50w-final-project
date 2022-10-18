@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import type { ProjectType } from '@/types';
 
-import ProjectModal from './ProjectModal.vue';
+import ProjectModal from '@/components/ProjectModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 defineProps<{
