@@ -2,7 +2,7 @@
 import { watch, computed } from 'vue';
 import { useTimerStore } from '@/stores/timer';
 
-import CurrentTask from './CurrentTask.vue';
+import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
 const currentLine = computed(() => `line-${timer.current}`)
