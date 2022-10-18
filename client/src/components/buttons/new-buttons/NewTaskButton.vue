@@ -10,7 +10,7 @@ import Tags from '@/components/buttons/Tags.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
 import SaveButton from '@/components/SaveButton.vue';
 
-import type { Tag, TaskType } from '@/types';
+import type { TagType, TaskType } from '@/types';
 
 const open = ref(false);
 const taskStore = useChoreStore();
@@ -49,8 +49,8 @@ function saveTask() {
   resetTask();
 }
 
-function removeTag(tag: Tag) {
-  initialTask.value.tags = initialTask.value.tags.filter((t: Tag) => t.id !== tag.id);  
+function removeTag(tag: TagType) {
+  initialTask.value.tags = initialTask.value.tags.filter((t: TagType) => t.id !== tag.id);  
 }
 </script>
 

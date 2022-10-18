@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
-import type { Project } from '@/types';
+import type { ProjectType } from '@/types';
 
 import ProjectModal from './ProjectModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 defineProps<{
-  project: Project;
+  project: ProjectType;
 }>();
 
 const open = ref(false);

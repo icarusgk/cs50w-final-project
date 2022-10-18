@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CloseIcon from '@/components/icons/CloseIcon.vue';
 
-// Modal is gonna receive the props
 defineProps<{
   open: Boolean;
   isButton?: Boolean;

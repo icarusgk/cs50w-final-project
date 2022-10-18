@@ -1,4 +1,4 @@
-import type { Project, Tag, TaskType, StatType } from '@/types';
+import type { ProjectType, TagType, TaskType, StatType } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
@@ -9,8 +9,8 @@ export const useChoreStore = defineStore({
   id: 'chores',
   state: () => ({
     tasks: [] as TaskType[],
-    projects: [] as Project[],
-    tags: [] as Tag[],
+    projects: [] as ProjectType[],
+    tags: [] as TagType[],
     projectPagination: {
       count: 0,
       page: 1,
@@ -163,16 +163,16 @@ export const useChoreStore = defineStore({
         this.fetchTasks();
       }
     },
-    async addProject(project: Project) {
-      const { data, status } = await useFetch('projects', 'post', project);
+    async addProject(project: ProjectType) {
+      const { status } = await useFetch('projects', 'post', project);
 
       if (status == 201) {
         useAlertStore().success(`Project ${project.name} created!`);
         this.fetchProjects();
       }
     },
-    async saveProject(project: Project, newProjectName: string) {
-      const { status, data } = await axios.patch(`/projects/${project.id}/`, {
+    async saveProject(project: ProjectType, newProjectName: string) {
+      const { status } = await axios.patch(`/projects/${project.id}/`, {
         obj: 'project',
         action: 'modify_title',
         name: newProjectName,
