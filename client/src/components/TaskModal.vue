@@ -7,9 +7,9 @@ import Modal from '@/components/modals/Modal.vue';
 import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
 import SaveButton from '@/components/SaveButton.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import AddToProjectPopup from './AddToProjectPopup.vue';
-import DoneIcon from './icons/DoneIcon.vue';
-import MarkedDoneIcon from './icons/MarkedDoneIcon.vue';
+import AddToProjectPopup from '@/components/AddToProjectPopup.vue';
+import DoneIcon from '@/components/icons/DoneIcon.vue';
+import MarkedDoneIcon from '@/components/icons/MarkedDoneIcon.vue';
 
 const props = defineProps<{
   task: TaskType;

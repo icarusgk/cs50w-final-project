@@ -5,10 +5,10 @@ import { useAuthStore } from '@/stores/auth';
 
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
-import Settings from './Settings.vue';
-import Title from './Title.vue';
-import Modal from './modals/Modal.vue';
-import UserInfo from './UserInfo.vue';
+import Settings from '@/components/Settings.vue';
+import Title from '@/components/Title.vue';
+import Modal from '@/components/modals/Modal.vue';
+import UserInfo from '@/components/UserInfo.vue';
 
 const userOpen = ref(false);
 const settingsOpen = ref(false);
