@@ -14,8 +14,7 @@ const allProjects = chore.projects;
 
 const taskProjects = ref<ProjectType[]>([]);
 
-// Detect if is in project (Not my proudest search)
-// Could be done better in the back end
+// Detect if is in project
 allProjects.forEach((project: ProjectType) => {
   project.tasks?.forEach((task) => {
     if (task.id === props?.taskId) {
@@ -72,6 +71,7 @@ async function addToProject(project: ProjectType) {
             class="project"
             :class="{ inside: taskProjects.includes(project) }"
             v-for="project in allProjects"
+            :key="project.id"
             @click="addToProject(project)"
           >
             {{ project.name }}
