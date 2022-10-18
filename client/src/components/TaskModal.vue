@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChoreStore } from '@/stores/chore';
-import type { Tag, TaskType } from '@/types';
+import type { TagType, TaskType } from '@/types';
 
 import Tags from '@/components/buttons/Tags.vue';
 import Modal from '@/components/modals/Modal.vue';
@@ -42,8 +42,8 @@ function deleteTask() {
   }
 }
 
-function removeTag(tag: Tag) {
-  props.task.tags = props.task.tags.filter((t: Tag) => t.id !== tag.id);  
+function removeTag(tag: TagType) {
+  props.task.tags = props.task.tags.filter((t: TagType) => t.id !== tag.id);  
 }
 
 function handleInput(event: any) {

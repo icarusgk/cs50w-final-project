@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import { useAlertStore } from '@/stores/alerts'
-import type { Tag, TaskType } from '@/types';
+import type { TagType, TaskType } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
@@ -28,12 +28,12 @@ const allTags = ref(chore.tags);
 const alert = useAlertStore();
 
 // Filter existing tags
-props.task.tags.forEach((taskTag: Tag) => {
-  allTags.value = allTags.value.filter((tag: Tag) => tag.name !== taskTag.name);
+props.task.tags.forEach((taskTag: TagType) => {
+  allTags.value = allTags.value.filter((tag: TagType) => tag.name !== taskTag.name);
 });
 
 const selectedTags = computed(() => {
-  return allTags.value.filter((tag: Tag) =>
+  return allTags.value.filter((tag: TagType) =>
     tag.name.includes(newTag.value.toLowerCase())
   );
 });
@@ -80,7 +80,7 @@ async function addTag() {
   newTagVisible.value = true;
 }
 
-async function deleteTag(tag: Tag) {
+async function deleteTag(tag: TagType) {
   if (!props.new) {
     // TODO: Ask for confirmation
     const response = await axios.patch(`tasks/${props.id}/`, {
@@ -99,7 +99,7 @@ async function deleteTag(tag: Tag) {
   }
 }
 
-function addSelectedTag(tag: Tag) {
+function addSelectedTag(tag: TagType) {
   newTag.value = tag.name;
   addTag();
 }
