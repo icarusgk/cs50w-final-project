@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import type { Project } from '@/types';
+import type { ProjectType } from '@/types';
 import axios from 'axios';
 
 const props = defineProps<{
@@ -12,11 +12,11 @@ const chore = useChoreStore();
 
 const allProjects = chore.projects;
 
-const taskProjects = ref<Project[]>([]);
+const taskProjects = ref<ProjectType[]>([]);
 
 // Detect if is in project (Not my proudest search)
 // Could be done better in the back end
-allProjects.forEach((project: Project) => {
+allProjects.forEach((project: ProjectType) => {
   project.tasks?.forEach((task) => {
     if (task.id === props?.taskId) {
       taskProjects.value.push(project);
@@ -24,7 +24,7 @@ allProjects.forEach((project: Project) => {
   });
 });
 
-async function addToProject(project: Project) {
+async function addToProject(project: ProjectType) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
     const response = await axios.patch(`projects/${project.id}/`, {

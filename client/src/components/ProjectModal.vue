@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
-import type { Project } from '@/types';
+import type { ProjectType } from '@/types';
 
 import Modal from '@/components/modals/Modal.vue';
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const props = defineProps<{
-  project: Project;
+  project: ProjectType;
   open: boolean;
 }>();
 

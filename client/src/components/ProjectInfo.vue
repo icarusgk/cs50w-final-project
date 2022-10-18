@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
-import type { Project } from '@/types';
+import type { ProjectType } from '@/types';
 
 import ProjectModal from '@/components/ProjectModal.vue';
 
 defineProps<{
-  project: Project;
+  project: ProjectType;
 }>();
 
 const open = ref(false);
