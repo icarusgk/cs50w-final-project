@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LightingIcon from './icons/LightingIcon.vue';
+import LightingIcon from '@/components/icons/LightingIcon.vue';
 </script>
 
 <template>

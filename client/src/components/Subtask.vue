@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import TimerSetter from '@/components/TimerSetter.vue';
-import Tags from './buttons/Tags.vue';
+import Tags from '@/components/buttons/Tags.vue';
 
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
 defineEmits(['save', 'saveTask', 'close', 'delete', 'remove', 'removeTag', 'titleChange', 'descChange', 'decreasePomo', 'increasePomo']);
