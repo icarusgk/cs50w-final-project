@@ -3,14 +3,14 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import { useAuthStore } from '@/stores/auth';
-import type Project from '@/types/ProjectType';
+import type { ProjectType } from '@/types';
 
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
 import SaveButton from '@/components/SaveButton.vue';
 
-const newProject = ref<Project>({
+const newProject = ref<ProjectType>({
   name: '',
   tasks: [],
 });

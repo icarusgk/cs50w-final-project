@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
-import type { TaskType, SubtaskType, Tag } from '@/types';
+import type { TaskType, SubtaskType, TagType } from '@/types';
 
 import Subtask from '@/components/Subtask.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
@@ -307,17 +307,17 @@ function closeNew() {
   props.isProject ? resetTaskModel() : resetSubtaskModel();
 }
 
-function removeTag(tag: Tag) {
+function removeTag(tag: TagType) {
   if (props.isProject) {
 
     // When a existing chore is opened
     if (activeChore.opened) {
-      activeChore.chore.tags = activeChore.chore.tags.filter((t: Tag) => t.name !== tag.name);
+      activeChore.chore.tags = activeChore.chore.tags.filter((t: TagType) => t.name !== tag.name);
       return;
     }
 
     // When a fresh chore is opened, just remove it
-    taskModel.value.tags = taskModel.value.tags.filter((t: Tag) => t.name !== tag.name);
+    taskModel.value.tags = taskModel.value.tags.filter((t: TagType) => t.name !== tag.name);
   }  
 }
 </script>
