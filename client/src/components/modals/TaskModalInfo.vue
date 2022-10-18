@@ -8,9 +8,7 @@ defineProps<{
   isNew?: boolean;
 }>();
 
-defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask'])
-
-const say = (s: string) => console.log(s);
+defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask']);
 </script>
 
 <template>
