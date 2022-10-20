@@ -33,6 +33,7 @@ const auth = useAuthStore();
 
   .fake-chart-container {
     position: relative;
+    width: 100%;
     .message {
       // Above the graph
       position: absolute;
@@ -64,6 +65,11 @@ const auth = useAuthStore();
 
 @media (max-width: 1000px) {
   .stats {
+    .fake-chart-container {
+      .message {
+        right: 30%;
+      }
+    }
     .chart-container {
       #the-chart {
         width: 100%;
@@ -76,7 +82,7 @@ const auth = useAuthStore();
   .stats {
     .fake-chart-container {
       .message {
-        right: 10%;
+        right: 18%;
       }
     }
   }
