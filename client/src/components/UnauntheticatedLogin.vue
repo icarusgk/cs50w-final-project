@@ -8,6 +8,7 @@
     <slot></slot>
   </div>
 </template>
+
 <style scoped lang="scss">
 a {
   text-decoration: none;
@@ -38,6 +39,14 @@ a:hover {
   #login-signup {
     font-size: 1.8rem;
     width: 80%;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  #login-signup {
+    font-size: 1.5rem;
+    width: 100%;
     margin-top: 2rem;
   }
 }
