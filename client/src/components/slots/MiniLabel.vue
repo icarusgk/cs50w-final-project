@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div class="minilabel" :class="{ task: isTask, tag: isTag, add: isAdd }">
-  <!-- Title -->
+    <!-- Title -->
     <div class="title">
       <slot name="title"></slot>
     </div>
@@ -65,7 +65,6 @@ defineProps<{
   }
   background-color: #444;
   color: var(--white);
-  
 }
 
 @media (max-width: 768px) {

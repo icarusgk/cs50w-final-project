@@ -15,9 +15,12 @@ const errors = reactive({
 const auth = useAuthStore();
 
 function login() {
-  creds.username == '' ? errors.username = 'Username is empty' : errors.username = '';
-  creds.password == '' ? errors.password = 'Password is empty' : errors.password = '';
-    
+  creds.username == ''
+    ? (errors.username = 'Username is empty')
+    : (errors.username = '');
+  creds.password == ''
+    ? (errors.password = 'Password is empty')
+    : (errors.password = '');
 
   if (creds.username && creds.password) {
     // clear errors
@@ -98,7 +101,7 @@ function login() {
   }
 
   .error-message {
-    color:rgb(249, 122, 90);
+    color: rgb(249, 122, 90);
     display: block;
   }
 

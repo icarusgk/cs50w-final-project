@@ -21,17 +21,18 @@ let tmpNewTitle = '';
 let tmpNewDesc = '';
 let tmpEstimated: number;
 
-
 const chore = useChoreStore();
 
 // Saves task with PUT method
 function saveTask() {
-  props.task.title = tmpNewTitle !== '' ? tmpNewTitle : props.task.title ;
-  props.task.description = tmpNewDesc !== '' ? tmpNewDesc : props.task.description;
-  props.task.estimated = tmpEstimated !== null ? tmpEstimated : props.task.estimated;
+  props.task.title = tmpNewTitle !== '' ? tmpNewTitle : props.task.title;
+  props.task.description =
+    tmpNewDesc !== '' ? tmpNewDesc : props.task.description;
+  props.task.estimated =
+    tmpEstimated !== null ? tmpEstimated : props.task.estimated;
 
   chore.saveTask(props.task);
-  
+
   emit('exit');
 }
 
@@ -43,16 +44,16 @@ function deleteTask() {
 }
 
 function removeTag(tag: TagType) {
-  props.task.tags = props.task.tags.filter((t: TagType) => t.id !== tag.id);  
+  props.task.tags = props.task.tags.filter((t: TagType) => t.id !== tag.id);
 }
 
 function handleInput(event: any) {
   tmpNewTitle = event.target.value;
 }
 
-const handleDesc = (desc: any) => tmpNewDesc = desc;
+const handleDesc = (desc: any) => (tmpNewDesc = desc);
 
-const handlePomos = (pomos: number) => tmpEstimated = pomos;
+const handlePomos = (pomos: number) => (tmpEstimated = pomos);
 </script>
 
 <template>
@@ -61,7 +62,11 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
     <Modal :open="open" @exit-modal="$emit('exit')" :is-task="true">
       <!-- Tags -->
       <template #tags>
-        <Tags :task="props.task" :id="props.task.id" @remove-tag="tag => removeTag(tag)" />
+        <Tags
+          :task="props.task"
+          :id="props.task.id"
+          @remove-tag="(tag) => removeTag(tag)"
+        />
         <div class="buttons">
           <div class="done-buttons" v-auto-animate>
             <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
@@ -76,15 +81,15 @@ const handlePomos = (pomos: number) => tmpEstimated = pomos;
           type="text"
           name="title"
           id="task-input-title"
-          @input="event => handleInput(event)"
+          @input="(event) => handleInput(event)"
           :value="props.task.title"
           @keyup.ctrl.enter="saveTask()"
         />
       </template>
       <!-- Modal -->
-      <TaskModalInfo 
+      <TaskModalInfo
         :task="props.task"
-        @description-input="handleDesc" 
+        @description-input="handleDesc"
         @decrease-pomos="handlePomos($event)"
         @increase-pomos="handlePomos($event)"
         @saveTask="saveTask()"

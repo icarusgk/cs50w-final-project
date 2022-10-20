@@ -14,11 +14,11 @@ export const defaultTimer = {
 const storageTimer = localStorage.getItem('timer');
 const localTimer = storageTimer ? JSON.parse(storageTimer) : defaultTimer;
 
-const minutes = minutes => {
+const minutes = (minutes) => {
   return dayjs().set('minutes', minutes).set('seconds', 0);
-}
+};
 
-const seconds = minutes => minutes * 60;
+const seconds = (minutes) => minutes * 60;
 
 export const useTimerStore = defineStore({
   id: 'timer',
@@ -46,8 +46,12 @@ export const useTimerStore = defineStore({
     current: 'pomo',
     percent: 5,
     sessions: 0,
-    auto_start_pomo: useAuthStore().isAuthenticated ? useAuthStore().user.auto_start_pomos : false,
-    auto_start_breaks: useAuthStore().isAuthenticated ? useAuthStore().user.auto_start_breaks : false,
+    auto_start_pomo: useAuthStore().isAuthenticated
+      ? useAuthStore().user.auto_start_pomos
+      : false,
+    auto_start_breaks: useAuthStore().isAuthenticated
+      ? useAuthStore().user.auto_start_breaks
+      : false,
   }),
   getters: {
     minutes: (state) => state.currentTimer.timer.minute(),

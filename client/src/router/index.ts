@@ -42,12 +42,12 @@ const router = createRouter({
     },
     {
       path: '/tags',
-      component: () => import('../views/TagsView.vue')
+      component: () => import('../views/TagsView.vue'),
     },
     {
       path: '/tags/:name',
-      component: () => import('../views/TagView.vue')
-    }
+      component: () => import('../views/TagView.vue'),
+    },
   ],
 });
 
@@ -56,9 +56,9 @@ router.beforeEach((to) => {
   if (to.name === 'Login' || to.name === 'Register') {
     const auth = useAuthStore();
     if (auth.isAuthenticated) {
-      return { name: 'Home'}
+      return { name: 'Home' };
     }
   }
-})
+});
 
 export default router;

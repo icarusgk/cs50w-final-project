@@ -77,7 +77,7 @@ async function createMode() {
     localStorage.setItem('modes', JSON.stringify(modes.value));
 
     changeMode(data.id);
-    
+
     showForm.value = false;
   }
 }
@@ -109,7 +109,9 @@ function backToDefault() {
       <label for="auto_start_breaks">Auto start breaks</label>
     </div>
     <div v-if="Object.keys(modes).length > 0">
-      <button class="back-to-default-button" @click="backToDefault()">Back to default</button>
+      <button class="back-to-default-button" @click="backToDefault()">
+        Back to default
+      </button>
       <p>Change mode:</p>
       <div v-for="mode in modes" :key="mode.name">
         <Popper placement="right" hover>
@@ -130,16 +132,24 @@ function backToDefault() {
             <div>
               <div class="mode-info">
                 <span><strong>Pomo:</strong> {{ mode.pomo }} min</span>
-                <span><strong>Short Rest:</strong> {{ mode.short_break }} min</span>
-                <span><strong>Long Rest:</strong> {{ mode.long_break }} min</span>
+                <span
+                  ><strong>Short Rest:</strong> {{ mode.short_break }} min</span
+                >
+                <span
+                  ><strong>Long Rest:</strong> {{ mode.long_break }} min</span
+                >
               </div>
             </div>
           </template>
         </Popper>
       </div>
     </div>
-    <button v-if="modes.length < 3" class="new-mode-button" @click="showForm = !showForm">
-      {{showForm ? 'Close' : 'Create a new Mode' }}
+    <button
+      v-if="modes.length < 3"
+      class="new-mode-button"
+      @click="showForm = !showForm"
+    >
+      {{ showForm ? 'Close' : 'Create a new Mode' }}
     </button>
     <div v-if="showForm">
       <p style="font-weight: 600; font-size: 2rem">Create new mode</p>
@@ -210,7 +220,7 @@ function backToDefault() {
 .mode-radio-input {
   display: flex;
 
-  input[type="radio"] {
+  input[type='radio'] {
     margin-right: 1rem;
   }
 

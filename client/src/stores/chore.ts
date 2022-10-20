@@ -123,7 +123,7 @@ export const useChoreStore = defineStore({
 
       if (status === 200) {
         useAuthStore().user!.current_task_id = data.id;
-      };
+      }
     },
     // Fetch all chores from user (request.user in django)
     fetchAll() {
@@ -153,7 +153,7 @@ export const useChoreStore = defineStore({
 
       if (status === 200) {
         const auth = useAuthStore();
-        
+
         useAlertStore().info(`Task '${task.title}' deleted`);
 
         if (task.id === auth.user!.current_task_id) {

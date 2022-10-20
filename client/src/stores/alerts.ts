@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { v4 as uuid } from "uuid";
+import { defineStore } from 'pinia';
+import { v4 as uuid } from 'uuid';
 
-export type AlertStyle = "error" | "success" | "info" | "none";
+export type AlertStyle = 'error' | 'success' | 'info' | 'none';
 
 export interface AlertOptions {
   closable?: boolean;
@@ -12,7 +12,7 @@ export interface AlertOptions {
 const defaultOptions: Required<AlertOptions> = {
   closable: true,
   timeout: 2000,
-  style: "info",
+  style: 'info',
 };
 
 export interface Alert extends AlertOptions {
@@ -30,7 +30,7 @@ export const useAlertStore = defineStore({
     notify(message: string, style: AlertStyle, options?: AlertOptions) {
       options = { ...defaultOptions, style, ...options };
 
-      const id = uuid();      
+      const id = uuid();
 
       this.items.push({
         message,
@@ -46,15 +46,15 @@ export const useAlertStore = defineStore({
     },
 
     success(message: string, options?: AlertOptions) {
-      this.notify(message, "success", options);
+      this.notify(message, 'success', options);
     },
 
     error(message: string, options?: AlertOptions) {
-      this.notify(message, "error", options);
+      this.notify(message, 'error', options);
     },
 
     info(message: string, options?: AlertOptions) {
-      this.notify(message, "info", options);
+      this.notify(message, 'info', options);
     },
 
     remove(id: string) {

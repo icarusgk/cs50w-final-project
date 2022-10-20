@@ -6,30 +6,34 @@ import { useChoreStore } from './chore';
 const firstCalledInstance = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 // An interceptor that refreshes the token credentials only on getUser()
 
-firstCalledInstance.interceptors.response.use(response => response, async error => {
-  if (error.response.status === 401) {
-    const jwt = localStorage.getItem('jwt');
-    const refresh = jwt ? JSON.parse(jwt).refresh : null;
-    // Change the tokens here
-    const response = await firstCalledInstance.post('token/refresh/', { refresh });
+firstCalledInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response.status === 401) {
+      const jwt = localStorage.getItem('jwt');
+      const refresh = jwt ? JSON.parse(jwt).refresh : null;
+      // Change the tokens here
+      const response = await firstCalledInstance.post('token/refresh/', {
+        refresh,
+      });
 
-    if (response.status === 200) {
-      localStorage.setItem('jwt', JSON.stringify(response.data));
-      location.reload();
+      if (response.status === 200) {
+        localStorage.setItem('jwt', JSON.stringify(response.data));
+        location.reload();
+      }
+      return axios(error.response);
     }
-    return axios(error.response);
+
+    // This has to be obligatory
+    return Promise.reject(error);
   }
-
-  // This has to be obligatory
-  return Promise.reject(error);
-});
-
+);
 
 type User = {
   id: number;
@@ -52,7 +56,7 @@ export const useAuthStore = defineStore({
   state: () => ({
     user: null as User | null,
     isAuthenticated: Boolean(localStorage.getItem('jwt')),
-    error: null
+    error: null,
   }),
   actions: {
     // First is login in, this will not have an error
@@ -64,7 +68,7 @@ export const useAuthStore = defineStore({
         if (response.status === 200) {
           // { refresh: '', access: '' }
           localStorage.setItem('jwt', JSON.stringify(response.data));
-          
+
           // After the user logs in, we get its user
           await this.getUser();
           this.error = null;
@@ -80,19 +84,19 @@ export const useAuthStore = defineStore({
     async getUser() {
       const jwt = localStorage.getItem('jwt');
       const accessToken = jwt ? JSON.parse(jwt).access : null;
-      
+
       try {
         const response = await firstCalledInstance.get('me/', {
           headers: {
             Authorization: 'Bearer ' + accessToken,
-          }
+          },
         });
-          
+
         if (response.status === 200) this.user = response.data;
       } catch (e) {
         // If refresh token is not longer valid, logout
         this.logout();
-      }      
+      }
     },
     async register(credentials: UserCredentials) {
       this.error = null;

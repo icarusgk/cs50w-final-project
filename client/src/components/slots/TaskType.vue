@@ -11,7 +11,6 @@
         <slot name="count"></slot>
       </div>
     </div>
-    
   </div>
 </template>
 

@@ -28,7 +28,8 @@ const projects = computed(() => chore.projects.slice(0, 2));
       </template>
       <template #count>
         <span v-if="chore.totalProjectPages > 1">
-          Page {{ chore.projectPagination.page }} of {{ chore.totalProjectPages }}
+          Page {{ chore.projectPagination.page }} of
+          {{ chore.totalProjectPages }}
         </span>
       </template>
     </TaskType>
@@ -51,7 +52,7 @@ const projects = computed(() => chore.projects.slice(0, 2));
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
       @setPage="(page) => chore.setProjectPage(page)"
-      @setAdded="(number) => chore.projectPagination.added = number"
+      @setAdded="(number) => (chore.projectPagination.added = number)"
       @next="chore.nextProjectPage"
     />
   </div>

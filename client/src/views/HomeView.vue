@@ -28,9 +28,7 @@ const auth = useAuthStore();
         <NewProjectButton />
       </div>
       <div id="message" v-if="!auth.isAuthenticated">
-        <UnauntheticatedLogin>
-          To add tasks and projects
-        </UnauntheticatedLogin>
+        <UnauntheticatedLogin> To add tasks and projects </UnauntheticatedLogin>
       </div>
       <div v-if="auth.isAuthenticated">
         <Projects />
