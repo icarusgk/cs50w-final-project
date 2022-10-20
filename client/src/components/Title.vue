@@ -34,4 +34,12 @@ import LightingIcon from '@/components/icons/LightingIcon.vue';
     }
   }
 }
+
+@media (max-width: 460px) {
+  #pomodoro-title-container {
+    #title {
+      font-size: 0.8rem;
+    }
+  }
+}
 </style>
