@@ -148,9 +148,8 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
       text-align: left;
 
       li {
-        transform: scale(0.7);
         margin-left: -8px;
-
+        margin-right: 10px;
         #streaks-icon {
           display: none;
         }
@@ -159,12 +158,16 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 480px) {
   #icons {
     ul {
-      li .login {
-        .user-info {
-          margin-right: 0;
+      li {
+        transform: scale(0.7);
+        margin-right: -0.8rem;
+        .login {
+          .user-info {
+            margin-right: 0;
+            }
         }
       }
     }
