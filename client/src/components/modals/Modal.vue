@@ -4,19 +4,19 @@ import CloseIcon from '@/components/icons/CloseIcon.vue';
 defineProps<{
   open: Boolean;
   isButton?: Boolean;
-  isTask?: Boolean
+  isTask?: Boolean;
 }>();
 
 const emit = defineEmits(['exitModal']);
 
 function exit(event: any) {
-  if (event.key === 'Escape') emit('exitModal')
+  if (event.key === 'Escape') emit('exitModal');
 }
 </script>
 
 <template>
   <Teleport to="body">
-    <div v-if="open" class="modal" @keyup="event => exit(event)">
+    <div v-if="open" class="modal" @keyup="(event) => exit(event)">
       <div class="task-upper-menu" :class="{ 'align-items': !isTask }">
         <div class="tags-and-title-container">
           <div v-if="isTask" class="tags-container">
@@ -52,8 +52,8 @@ function exit(event: any) {
   z-index: 10;
   left: 5%;
   right: 0;
-  margin-left: auto; 
-  margin-right: auto; 
+  margin-left: auto;
+  margin-right: auto;
   width: 700px;
 
   // Color

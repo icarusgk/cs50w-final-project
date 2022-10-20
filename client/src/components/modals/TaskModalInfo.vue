@@ -46,7 +46,7 @@ defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask']);
           <span style="font-weight: 800">Estimated pomos</span>
         </div>
         <!-- Counter -->
-        <TimerSetter 
+        <TimerSetter
           :chore="task"
           @decrease-pomos="$emit('decreasePomos', $event)"
           @increase-pomos="$emit('increasePomos', $event)"

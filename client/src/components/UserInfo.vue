@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
 
-defineEmits(['exitModal'])
+defineEmits(['exitModal']);
 
 const auth = useAuthStore();
 </script>
@@ -13,7 +13,7 @@ const auth = useAuthStore();
       id="logout-btn"
       @click="
         auth.logout();
-        $emit('exitModal')
+        $emit('exitModal');
       "
     >
       Logout

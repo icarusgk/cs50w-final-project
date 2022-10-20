@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
-import { useAlertStore } from '@/stores/alerts'
+import { useAlertStore } from '@/stores/alerts';
 import type { TagType, TaskType } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
@@ -17,7 +17,7 @@ const props = defineProps<{
   new?: boolean;
 }>();
 
-const emit = defineEmits(['removeTag'])
+const emit = defineEmits(['removeTag']);
 
 const chore = useChoreStore();
 
@@ -29,7 +29,9 @@ const alert = useAlertStore();
 
 // Filter existing tags
 props.task.tags.forEach((taskTag: TagType) => {
-  allTags.value = allTags.value.filter((tag: TagType) => tag.name !== taskTag.name);
+  allTags.value = allTags.value.filter(
+    (tag: TagType) => tag.name !== taskTag.name
+  );
 });
 
 const selectedTags = computed(() => {
@@ -128,68 +130,73 @@ function addSelectedTag(tag: TagType) {
       </template>
     </MiniLabel>
 
-  <!-- Add tags -->
-  <MiniLabel
-    v-if="!info && task.tags.length === 0 && newTagVisible"
-    @click="newTagVisible = false"
-    :is-add="true"
-  >
-    <template #title>
-      <span class="task-title">Add tag</span>
-    </template>
-    <template #icon>
-      <AddTagIcon />
-    </template>
-  </MiniLabel>
+    <!-- Add tags -->
+    <MiniLabel
+      v-if="!info && task.tags.length === 0 && newTagVisible"
+      @click="newTagVisible = false"
+      :is-add="true"
+    >
+      <template #title>
+        <span class="task-title">Add tag</span>
+      </template>
+      <template #icon>
+        <AddTagIcon />
+      </template>
+    </MiniLabel>
 
-  <!-- Replace the button with input -->
-  <MiniLabel
-    v-if="!info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible"
-    @click="newTagVisible = false"
-    :is-add="true"
-  >
-    <template #icon>
-      <AddTagIcon />
-    </template>
-  </MiniLabel>
-  <!-- Form -->
-  <div class="form-container" v-if="!newTagVisible">
-    <Popper placement="bottom" :arrow="true">
-      <!-- Input -->
-      <div class="new-tag-container">
-        <input
-          type="text"
-          class="new-tag-name-input"
-          v-model="newTag"
-          @keydown.enter="addTag()"
-        />
-        <CloseIcon class="close-icon" @click="newTagVisible = true" />
-        <button @click="addTag()" class="new-tag-button">Add</button>
-      </div>
-      <template #content="{ close }">
-        <!-- Pre fetched tags -->
-        <div>
-          <span class="add-new-tag-text">Add a new tag:</span>
-          <div
-            class="tag-results"
-            @click="addSelectedTag(tag); close()"
-            v-for="tag in selectedTags.slice(0, 5)"
-          >
-            <div class="tag-result">
-              {{ tag.name }}
+    <!-- Replace the button with input -->
+    <MiniLabel
+      v-if="
+        !info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible
+      "
+      @click="newTagVisible = false"
+      :is-add="true"
+    >
+      <template #icon>
+        <AddTagIcon />
+      </template>
+    </MiniLabel>
+    <!-- Form -->
+    <div class="form-container" v-if="!newTagVisible">
+      <Popper placement="bottom" :arrow="true">
+        <!-- Input -->
+        <div class="new-tag-container">
+          <input
+            type="text"
+            class="new-tag-name-input"
+            v-model="newTag"
+            @keydown.enter="addTag()"
+          />
+          <CloseIcon class="close-icon" @click="newTagVisible = true" />
+          <button @click="addTag()" class="new-tag-button">Add</button>
+        </div>
+        <template #content="{ close }">
+          <!-- Pre fetched tags -->
+          <div>
+            <span class="add-new-tag-text">Add a new tag:</span>
+            <div
+              class="tag-results"
+              @click="
+                addSelectedTag(tag);
+                close();
+              "
+              v-for="tag in selectedTags.slice(0, 5)"
+            >
+              <div class="tag-result">
+                {{ tag.name }}
+              </div>
+            </div>
+            <div
+              class="tag-result"
+              @click="addTag()"
+              v-if="selectedTags.length === 0"
+            >
+              {{ newTag }}
             </div>
           </div>
-          <div
-            class="tag-result"
-            @click="addTag()"
-            v-if="selectedTags.length === 0"
-          >
-            {{ newTag }}
-          </div>
-        </div>
-      </template>
-    </Popper>
-  </div>
+        </template>
+      </Popper>
+    </div>
   </div>
 </template>
 
@@ -264,4 +271,3 @@ function addSelectedTag(tag: TagType) {
   }
 }
 </style>
-  

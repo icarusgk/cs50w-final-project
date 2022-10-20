@@ -45,7 +45,8 @@ const alerts = useAlertStore();
   align-items: center;
   margin-right: 10px;
 
-  &:hover, &:focus,
+  &:hover,
+  &:focus,
   &:active {
     cursor: pointer;
   }
@@ -62,7 +63,6 @@ const alerts = useAlertStore();
 .flex {
   display: flex;
 }
-
 
 .success {
   background-color: rgb(52, 169, 94);
@@ -88,7 +88,7 @@ const alerts = useAlertStore();
       font-size: 0.9rem;
     }
   }
-  
+
   .alert {
     width: 150px;
     margin-bottom: 0.5rem;
@@ -97,4 +97,3 @@ const alerts = useAlertStore();
   }
 }
 </style>
-  

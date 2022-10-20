@@ -22,11 +22,7 @@ useFetch(`tagInfo/${route.params.name}`, 'get').then((res) => {
     </div>
     <span class="title">#{{ route.params.name }}</span>
     <div class="all-tasks-container">
-      <TaskInfo 
-        v-for="task in tasks" 
-        :task="task"
-        :key="task.id"
-      />
+      <TaskInfo v-for="task in tasks" :task="task" :key="task.id" />
     </div>
   </div>
 </template>

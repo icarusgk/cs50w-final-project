@@ -32,7 +32,7 @@ import AddIcon from '@/components/icons/AddIcon.vue';
   &:active {
     box-shadow: 0 0 var(--white);
   }
-  
+
   .add-icon {
     width: 2rem;
     margin-right: 0.4rem;
