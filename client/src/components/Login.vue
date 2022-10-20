@@ -83,6 +83,9 @@ function login() {
 </template>
 
 <style scoped lang="scss">
+* {
+  color: white;
+}
 .login {
   text-align: center;
 
