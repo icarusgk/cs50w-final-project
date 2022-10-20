@@ -1,11 +1,7 @@
 <script setup>
-import { reactive, ref } from 'vue';
-import { useChoreStore } from '@/stores/chore';
 import VueApexCharts from 'vue3-apexcharts';
 
-const choreStore = useChoreStore();
-
-const options = reactive({
+const options = {
   theme: {
     mode: 'dark',
     palette: 'palette7',
@@ -29,13 +25,13 @@ const options = reactive({
       '27-oct',
     ],
   },
-});
-const series = ref([
+};
+const series = [
   {
     name: 'Tasks Done',
     data: [5, 9, 10, 5, 3, 6, 7, 1, 2, 8],
   },
-]);
+];
 </script>
 
 <template>
