@@ -116,10 +116,11 @@ function login() {
   }
 
   #submit {
-    padding: 0.6rem 4rem;
+    padding: 0.8rem 4rem;
     background-color: var(--vivid-red);
     color: white;
     border: none;
+    border-radius: 8px;
     &:hover,
     &:focus,
     &:active {
