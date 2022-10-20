@@ -40,10 +40,10 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
           </div>
           <div v-if="!auth.isAuthenticated" class="user-actions-container">
             <div @click="$router.push('/login')">
-              <span class="action">Login</span>
+              <span class="login-btn">Login</span>
             </div>
             <div @click="$router.push('/register')">
-              <span class="action">Register</span>
+              <span class="register-btn">Register</span>
             </div>
           </div>
         </div>
@@ -105,7 +105,17 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
           gap: 1rem;
           margin-top: 1.5rem;
 
-          .action {
+          .login-btn {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            transition: background-color 0.25s ease-in-out;
+
+            &:hover {
+              background-color: rgb(60, 60, 60);
+            }
+          }
+
+          .register-btn {
             background-color: rgb(60, 60, 60);
             padding: 0.8rem 1rem;
             border-radius: 10px;
