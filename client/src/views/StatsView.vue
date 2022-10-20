@@ -9,7 +9,7 @@ const auth = useAuthStore();
 
 <template>
   <div class="stats">
-    <h1>Stats</h1>
+    <h1 v-if="auth.isAuthenticated">Stats</h1>
     <div class="fake-chart-container" v-if="!auth.isAuthenticated">
       <div class="message">
         <UnauntheticatedLogin> To see your stats! </UnauntheticatedLogin>
@@ -38,7 +38,7 @@ const auth = useAuthStore();
       // Above the graph
       position: absolute;
       top: 40%;
-      right: 35%;
+      right: 40%;
       z-index: 4;
 
       font-size: 2rem;
