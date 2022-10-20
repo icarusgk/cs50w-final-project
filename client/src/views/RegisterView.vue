@@ -12,15 +12,17 @@ const creds = reactive({
 const errors = reactive({
   username: '',
   password: '',
-  passwordConfirmation: ''
-})
+  passwordConfirmation: '',
+});
 
 const auth = useAuthStore();
 const alert = useAlertStore();
 
 function register() {
   // Username empty
-  creds.username == '' ? errors.username = 'Username is empty' : errors.username = '';
+  creds.username == ''
+    ? (errors.username = 'Username is empty')
+    : (errors.username = '');
 
   // Check for username length
   if (creds.username.length <= 4) {
@@ -31,13 +33,14 @@ function register() {
   }
 
   // Password empty
-  creds.password == '' ? errors.password = 'Password is empty' : errors.password = '';
-
+  creds.password == ''
+    ? (errors.password = 'Password is empty')
+    : (errors.password = '');
 
   // Password conf empty
   creds.passwordConfirmation == ''
-    ? errors.passwordConfirmation = 'Password Confirmation is empty'
-    : errors.passwordConfirmation = '';
+    ? (errors.passwordConfirmation = 'Password Confirmation is empty')
+    : (errors.passwordConfirmation = '');
 
   // If all fields are filled
   if (creds.username && creds.password && creds.passwordConfirmation) {
@@ -45,7 +48,6 @@ function register() {
     errors.username = '';
     errors.password = '';
     errors.passwordConfirmation = '';
-
 
     // The passwords don't match
     if (creds.password !== creds.passwordConfirmation) {
@@ -126,7 +128,7 @@ function register() {
       <div>
         <input type="submit" value="Submit" id="submit" />
       </div>
-  </form>
+    </form>
     <div id="route-to-login">
       <span
         >Already have an account?
@@ -142,7 +144,7 @@ function register() {
 }
 .register {
   text-align: center;
-  
+
   form {
     margin-top: 1rem;
   }
@@ -158,7 +160,7 @@ function register() {
   }
 
   .error-message {
-    color:rgb(249, 122, 90);
+    color: rgb(249, 122, 90);
     display: block;
   }
 

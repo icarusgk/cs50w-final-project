@@ -2,12 +2,11 @@
 import { ref } from 'vue';
 import { useFetch } from '@/composables/useFetch';
 
-
 const tags = ref([]);
 
 useFetch('tags', 'get').then((res) => {
   tags.value = res.data;
-})
+});
 </script>
 
 <template>

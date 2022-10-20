@@ -47,15 +47,14 @@ const activeChore = reactive<{
 const tmp = {
   title: '',
   desc: '',
-  estimated: 0
+  estimated: 0,
 };
-
 
 const alert = useAlertStore();
 
-const handleTitle = (title: string) => tmp.title = title;
-const handleDesc = (desc: string) => tmp.desc = desc;
-const handleEstimated = (n: number) => tmp.estimated = n;
+const handleTitle = (title: string) => (tmp.title = title);
+const handleDesc = (desc: string) => (tmp.desc = desc);
+const handleEstimated = (n: number) => (tmp.estimated = n);
 
 // Open the an empty chore
 function openNewChore() {
@@ -136,9 +135,12 @@ async function addTaskToProject() {
 
   // If an existing task has to be updated
   if (activeChore.chore && !newChoreOpened.value) {
-    activeChore.chore.title = tmp.title !== '' ? tmp.title : activeChore.chore.title;
-    activeChore.chore.description = tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
-    activeChore.chore.estimated = tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
+    activeChore.chore.title =
+      tmp.title !== '' ? tmp.title : activeChore.chore.title;
+    activeChore.chore.description =
+      tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
+    activeChore.chore.estimated =
+      tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
 
     // Make the api call
     const response = await axios.patch(`projects/${props.project.id}/`, {
@@ -188,9 +190,11 @@ async function saveSubtaskToTask() {
   // Modify existing subtask
   else if (activeChore.chore && !newChoreOpened.value) {
     if (!props.isProject) {
-      activeChore.chore.title = tmp.title !== '' ? tmp.title : activeChore.chore.title;
-      activeChore.chore.description = tmp.desc !== '' ? tmp.desc : activeChore.chore.description;      
-      
+      activeChore.chore.title =
+        tmp.title !== '' ? tmp.title : activeChore.chore.title;
+      activeChore.chore.description =
+        tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
+
       // Make the api call
       const response = await axios.patch(`/tasks/${props.task.id}/`, {
         obj: 'subtask',
@@ -217,7 +221,7 @@ async function deleteChore() {
       });
       if (response?.status === 200) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        console.log(response.data);        
+        console.log(response.data);
         existingProject.value.tasks = existingProject.value.tasks.filter(
           (task: TaskType) => task.id !== activeChore.chore?.id
         );
@@ -309,16 +313,19 @@ function closeNew() {
 
 function removeTag(tag: TagType) {
   if (props.isProject) {
-
     // When a existing chore is opened
     if (activeChore.opened) {
-      activeChore.chore.tags = activeChore.chore.tags.filter((t: TagType) => t.name !== tag.name);
+      activeChore.chore.tags = activeChore.chore.tags.filter(
+        (t: TagType) => t.name !== tag.name
+      );
       return;
     }
 
     // When a fresh chore is opened, just remove it
-    taskModel.value.tags = taskModel.value.tags.filter((t: TagType) => t.name !== tag.name);
-  }  
+    taskModel.value.tags = taskModel.value.tags.filter(
+      (t: TagType) => t.name !== tag.name
+    );
+  }
 }
 </script>
 
@@ -373,8 +380,14 @@ function removeTag(tag: TagType) {
       @save="saveSubtaskToTask()"
       @saveTask="addTaskToProject()"
       @removeTag="removeTag($event)"
-      @titleChange="isProject ? taskModel.title = $event : subtaskModel.title = $event"
-      @descChange="isProject ? taskModel.description = $event : subtaskModel.description = $event"
+      @titleChange="
+        isProject ? (taskModel.title = $event) : (subtaskModel.title = $event)
+      "
+      @descChange="
+        isProject
+          ? (taskModel.description = $event)
+          : (subtaskModel.description = $event)
+      "
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
       :key="isProject ? existingProject.tasks.length : task.subtasks.length"

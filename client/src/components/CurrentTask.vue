@@ -9,7 +9,6 @@ import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import CloseIcon from './icons/CloseIcon.vue';
 import Popper from 'vue3-popper';
 
-
 const task = ref();
 const auth = useAuthStore();
 const chore = useChoreStore();
@@ -21,13 +20,11 @@ async function getTask(id: any) {
   task.value = response?.data;
 }
 
-watchEffect(
-  () => {
-    if (userTaskId.value !== 0 && auth.user) {
-      getTask(userTaskId.value);
-    }
+watchEffect(() => {
+  if (userTaskId.value !== 0 && auth.user) {
+    getTask(userTaskId.value);
   }
-);
+});
 
 // The modal blur
 watch(open, () => {
@@ -37,11 +34,8 @@ watch(open, () => {
 
 <template>
   <Transition name="slide">
-    <div 
-      v-if="userTaskId !== 0 && auth.user" 
-      style="margin-top: 1rem"
-    >
-      <div class="current-task-container">        
+    <div v-if="userTaskId !== 0 && auth.user" style="margin-top: 1rem">
+      <div class="current-task-container">
         <div @click="open = true" class="container">
           <div class="info">
             <TaskInfoIcon />
@@ -50,16 +44,13 @@ watch(open, () => {
         </div>
         <Popper hover>
           <CloseIcon @click="chore.changeCurrentTask(0)" class="close-icon" />
-          <template #content>
-            Remove current task
-          </template>
+          <template #content> Remove current task </template>
         </Popper>
       </div>
       <TaskModal :open="open" :task="task" @exit="open = false" />
     </div>
   </Transition>
 </template>
-
 
 <style scoped lang="scss">
 .slide-enter-active,
@@ -92,16 +83,16 @@ watch(open, () => {
     font-weight: 600;
     box-shadow: 3px 4px rgb(71, 71, 71);
     transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
-  
+
     .info {
       display: flex;
       align-items: center;
-  
+
       span {
         margin-left: 0.5rem;
       }
     }
-  
+
     &:hover,
     &:focus,
     &:active {

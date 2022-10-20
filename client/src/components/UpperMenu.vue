@@ -14,14 +14,9 @@ const userOpen = ref(false);
 const settingsOpen = ref(false);
 const auth = useAuthStore();
 
-watch([
-  () => userOpen.value,
-  () => settingsOpen.value,
-  ],
-  () => {
-    useModalStore().toggle();
-  }
-);
+watch([() => userOpen.value, () => settingsOpen.value], () => {
+  useModalStore().toggle();
+});
 </script>
 
 <template>
@@ -34,7 +29,9 @@ watch([
         <div class="login">
           <div
             class="login"
-            @click="auth.isAuthenticated ? (userOpen = true) : (userOpen = false)"
+            @click="
+              auth.isAuthenticated ? (userOpen = true) : (userOpen = false)
+            "
           >
             <div class="user-info" v-if="auth.isAuthenticated">
               <UserIcon />
@@ -153,10 +150,9 @@ watch([
 }
 
 @media (max-width: 580px) {
-#icons {  
-  ul {
-    li 
-      .login {
+  #icons {
+    ul {
+      li .login {
         .user-info {
           margin-right: 0;
         }

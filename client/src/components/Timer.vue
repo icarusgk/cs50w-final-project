@@ -5,7 +5,7 @@ import { useTimerStore } from '@/stores/timer';
 import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
-const currentLine = computed(() => `line-${timer.current}`)
+const currentLine = computed(() => `line-${timer.current}`);
 
 watch(
   () => timer.currentTimer.timer,
@@ -24,8 +24,8 @@ watch(
       // Auto start pomo
       if (timer.current == 'pomo') {
         // timer.ongoing or stopTimer()?
-        timer.auto_start_pomo ? startTimer() : timer.ongoing = false;
-      } 
+        timer.auto_start_pomo ? startTimer() : (timer.ongoing = false);
+      }
 
       // Auto start breaks
       if (timer.current == 'short_break' || timer.current == 'long_break') {
@@ -57,7 +57,7 @@ function startTimer() {
 }
 
 function stopTimer() {
-  timer.ongoing = false;  
+  timer.ongoing = false;
   clearInterval(timer.timerId);
 }
 
@@ -83,25 +83,13 @@ function setTimer(type: string) {
 
 <template>
   <div id="timer-container">
-    <p 
-      v-if="!timer.currentMode.includes('Default')"
-      id="mode-title"
-    >
+    <p v-if="!timer.currentMode.includes('Default')" id="mode-title">
       Current Mode: {{ timer.currentMode }}
     </p>
     <div id="timer-setters">
-      <div
-        id="normal-pomo"
-        @click="setTimer('pomo')"
-      >
-        Pomo
-      </div>
-      <div id="short-rest" @click="setTimer('short_break')">
-        Short Rest
-      </div>
-      <div id="long-rest" @click="setTimer('long_break')">
-        Long Rest
-      </div>
+      <div id="normal-pomo" @click="setTimer('pomo')">Pomo</div>
+      <div id="short-rest" @click="setTimer('short_break')">Short Rest</div>
+      <div id="long-rest" @click="setTimer('long_break')">Long Rest</div>
     </div>
     <!-- Progress -->
     <div
@@ -112,7 +100,11 @@ function setTimer(type: string) {
     <!-- Time -->
     <div>
       <h1 id="timer-count">{{ timer.currentTimer.timer.format('mm:ss') }}</h1>
-      <button @click="startTimer()" v-if="!timer.ongoing" :class="timer.current">
+      <button
+        @click="startTimer()"
+        v-if="!timer.ongoing"
+        :class="timer.current"
+      >
         Start!
       </button>
       <button @click="stopTimer()" v-else id="stop-timer-btn">Stop!</button>
@@ -153,7 +145,7 @@ function setTimer(type: string) {
   background-color: $bg-color;
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
-  font-weight: 600;  
+  font-weight: 600;
 }
 
 @mixin line($color) {

@@ -50,7 +50,9 @@ function saveTask() {
 }
 
 function removeTag(tag: TagType) {
-  initialTask.value.tags = initialTask.value.tags.filter((t: TagType) => t.id !== tag.id);  
+  initialTask.value.tags = initialTask.value.tags.filter(
+    (t: TagType) => t.id !== tag.id
+  );
 }
 </script>
 
@@ -58,9 +60,18 @@ function removeTag(tag: TagType) {
   <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
-  <Modal :is-button="true" :open="open" @exit-modal="resetTask()" :is-task="true" >
+  <Modal
+    :is-button="true"
+    :open="open"
+    @exit-modal="resetTask()"
+    :is-task="true"
+  >
     <template #tags>
-      <Tags :task="initialTask" :new="true" @remove-tag="tag => removeTag(tag)" />
+      <Tags
+        :task="initialTask"
+        :new="true"
+        @remove-tag="(tag) => removeTag(tag)"
+      />
     </template>
     <!-- New task title input -->
     <template #title>
@@ -74,10 +85,10 @@ function removeTag(tag: TagType) {
       />
     </template>
     <!-- Rest of modal -->
-    <TaskModalInfo 
-      :task="initialTask" 
-      :isNew="true" 
-      @saveTask="saveTask()" 
+    <TaskModalInfo
+      :task="initialTask"
+      :isNew="true"
+      @saveTask="saveTask()"
       @descriptionInput="initialTask.description = $event"
     />
     <!-- Button -->

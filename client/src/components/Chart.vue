@@ -15,10 +15,10 @@ const heightSize = () => window.innerWidth;
 // options
 const options = ref({
   chart: {
-    width: "100%",
+    width: '100%',
     height: widthSize() < 768 ? heightSize() : 600,
-    type: "bar",
-    fontFamily: 'Poppins'
+    type: 'bar',
+    fontFamily: 'Poppins',
   },
   theme: {
     mode: 'light',
@@ -26,7 +26,7 @@ const options = ref({
       enabled: true,
       color: '#ed4747',
       shadeTo: 'light',
-      shadeIntensity: 0.65
+      shadeIntensity: 0.65,
     },
   },
   fill: {
@@ -37,37 +37,39 @@ const options = ref({
     align: 'center',
     margin: 10,
     style: {
-      fontSize:  '16px',
-      fontWeight:  'bold',
-      color:  '#fff'
+      fontSize: '16px',
+      fontWeight: 'bold',
+      color: '#fff',
     },
   },
   plotOptions: {
     bar: {
-      horizontal: false
-    }
+      horizontal: false,
+    },
   },
   dataLabels: {
-    enabled: false
+    enabled: false,
   },
   stroke: {
     width: 1,
-    colors: ["#fff"]
+    colors: ['#fff'],
   },
-  series: [{
-    name: 'Tasks done',
-    data: chore.stats.map(stat => stat.chores_done)
-  }],
+  series: [
+    {
+      name: 'Tasks done',
+      data: chore.stats.map((stat) => stat.chores_done),
+    },
+  ],
   xaxis: {
-    categories: chore.stats.map(stat => stat.day)
+    categories: chore.stats.map((stat) => stat.day),
   },
   legend: {
-    position: "right",
-    verticalAlign: "top",
+    position: 'right',
+    verticalAlign: 'top',
     containerMargin: {
       left: 35,
-      right: 60
-    }
+      right: 60,
+    },
   },
   responsive: [
     {
@@ -75,15 +77,15 @@ const options = ref({
       options: {
         plotOptions: {
           bar: {
-            horizontal: true
-          }
+            horizontal: true,
+          },
         },
         legend: {
-          position: "bottom"
-        }
-      }
-    }
-  ]
+          position: 'bottom',
+        },
+      },
+    },
+  ],
 });
 
 onMounted(() => {
@@ -99,8 +101,8 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-  #responsiveChart {
-    max-width: 760px;
-    margin: 35px auto;
-  }
+#responsiveChart {
+  max-width: 760px;
+  margin: 35px auto;
+}
 </style>
