@@ -11,12 +11,11 @@ import TaskModal from '../TaskModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import DeleteIcon from '../icons/DeleteIcon.vue';
 
-
 const props = defineProps<{
   task: TaskType;
 }>();
 
-const emit = defineEmits(['setCurrent'])
+const emit = defineEmits(['setCurrent']);
 
 const open = ref(false);
 const chore = useChoreStore();

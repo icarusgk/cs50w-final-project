@@ -39,7 +39,6 @@ const tasks = computed(() => chore.tasks);
       <h1 class="white">No tasks</h1>
     </div>
   </div>
-  
 </template>
 
 <style scoped lang="scss">

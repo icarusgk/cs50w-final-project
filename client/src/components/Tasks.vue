@@ -18,14 +18,14 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
 
 const currentTask = ref();
 
-const setCurrent = (id: number) => currentTask.value = id;
+const setCurrent = (id: number) => (currentTask.value = id);
 
 // A id debouncer
 watch(currentTask, (prevId, curId) => {
   if (prevId !== curId) {
     chore.changeCurrentTask(currentTask.value);
   }
-})
+});
 </script>
 
 <template>
@@ -39,7 +39,7 @@ watch(currentTask, (prevId, curId) => {
       </template>
       <template #count>
         <span v-if="chore.totalTaskPages > 1">
-          Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages}}
+          Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages }}
         </span>
       </template>
     </TaskType>
@@ -54,7 +54,7 @@ watch(currentTask, (prevId, curId) => {
         @setCurrent="setCurrent"
       />
     </div>
-    
+
     <Paginate
       :pages="chore.totalTaskPages"
       v-model:page="chore.taskPagination.page"

@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue';
 
 const props = defineProps(['chore']);
-const emit = defineEmits(['decreasePomos', 'increasePomos'])
+const emit = defineEmits(['decreasePomos', 'increasePomos']);
 
 const pomoLimits = reactive({ min: 1, max: 99 });
 
