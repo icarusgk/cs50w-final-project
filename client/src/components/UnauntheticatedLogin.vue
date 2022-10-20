@@ -38,7 +38,6 @@ a:hover {
 @media (max-width: 768px) {
   #login-signup {
     font-size: 1.8rem;
-    width: 80%;
     margin-top: 2rem;
   }
 }
@@ -46,7 +45,6 @@ a:hover {
 @media (max-width: 500px) {
   #login-signup {
     font-size: 1.5rem;
-    width: 100%;
     margin-top: 2rem;
   }
 }
