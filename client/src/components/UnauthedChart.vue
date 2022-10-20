@@ -27,16 +27,6 @@ const options = ref({
   fill: {
     type: 'solid',
   },
-  title: {
-    text: 'Tasks done',
-    align: 'center',
-    margin: 10,
-    style: {
-      fontSize: '16px',
-      fontWeight: 'bold',
-      color: '#fff',
-    },
-  },
   plotOptions: {
     bar: {
       horizontal: false,
