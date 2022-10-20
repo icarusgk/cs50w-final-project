@@ -1,7 +1,7 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
 import Chart from '@/components/Chart.vue';
-import FakeChart from '@/components/FakeChart.vue';
+import UnauthedChart from '@/components/UnauthedChart.vue';
 import UnauntheticatedLogin from '../components/UnauntheticatedLogin.vue';
 
 const auth = useAuthStore();
@@ -14,7 +14,7 @@ const auth = useAuthStore();
       <div class="message">
         <UnauntheticatedLogin> To see your stats! </UnauntheticatedLogin>
       </div>
-      <FakeChart class="blur" />
+      <UnauthedChart class="blur" />
     </div>
     <div v-else class="chart-container">
       <Chart id="the-chart" />
@@ -67,6 +67,16 @@ const auth = useAuthStore();
     .chart-container {
       #the-chart {
         width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .stats {
+    .fake-chart-container {
+      .message {
+        right: 10%;
       }
     }
   }
