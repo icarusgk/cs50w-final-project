@@ -1,10 +1,17 @@
-import { defineStore } from 'pinia';
+import { defineStore, type PiniaCustomStateProperties } from 'pinia';
 import { useChoreStore } from './chore';
 import dayjs from 'dayjs';
 import { useAuthStore } from './auth';
 
+type TimerType = {
+  name: string,
+  pomo: number,
+  short_break: number,
+  long_break: number
+}
+
 // In case the timer object is empty
-export const defaultTimer = {
+export const defaultTimer: TimerType = {
   name: 'Local Default',
   pomo: 25,
   short_break: 5,
@@ -14,11 +21,11 @@ export const defaultTimer = {
 const storageTimer = localStorage.getItem('timer');
 const localTimer = storageTimer ? JSON.parse(storageTimer) : defaultTimer;
 
-const minutes = (minutes) => {
+const minutes = (minutes: number) => {
   return dayjs().set('minutes', minutes).set('seconds', 0);
 };
 
-const seconds = (minutes) => minutes * 60;
+const seconds = (minutes: number) => minutes * 60;
 
 export const useTimerStore = defineStore({
   id: 'timer',
@@ -47,10 +54,10 @@ export const useTimerStore = defineStore({
     percent: 5,
     sessions: 0,
     auto_start_pomo: useAuthStore().isAuthenticated
-      ? useAuthStore().user.auto_start_pomos
+      ? useAuthStore().user!.auto_start_pomos
       : false,
     auto_start_breaks: useAuthStore().isAuthenticated
-      ? useAuthStore().user.auto_start_breaks
+      ? useAuthStore().user!.auto_start_breaks
       : false,
   }),
   getters: {
@@ -58,7 +65,7 @@ export const useTimerStore = defineStore({
     seconds: (state) => state.currentTimer.timer.second(),
   },
   actions: {
-    setTo(data) {
+    setTo(data: TimerType) {
       const { pomo, short_break, long_break } = data;
       this.pomo.timer = minutes(pomo);
       this.pomo.seconds = seconds(pomo);
@@ -71,7 +78,7 @@ export const useTimerStore = defineStore({
 
       this.currentMode = data.name;
     },
-    setNewTimer(data) {
+    setNewTimer(data: TimerType) {
       this.setTo(data);
       this.currentTimer.timer = minutes(data.pomo);
       this.currentTimer.seconds = data.pomo;
@@ -111,7 +118,7 @@ export const useTimerStore = defineStore({
           this.currentTimer.seconds) *
         100;
     },
-    setTimer(name) {
+    setTimer(name: string) {
       this.currentTimer.timer = this[name].timer;
       this.currentTimer.seconds = this[name].seconds;
       this.current = name;
