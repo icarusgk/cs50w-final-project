@@ -9,12 +9,14 @@ from django.http import Http404
 
 
 class ProjectResultsSetPagination(PageNumberPagination):
+    """Sets the page size and max size for Project Pagination"""
     page_size = 2
     page_size_query_param = 'page_size'
     max_page_size = 10
 
 
 class TaskResultsSetPagination(PageNumberPagination):
+    """Sets the page size and max size for Task Pagination"""
     page_size = 4
     page_size_query_param = 'page_size'
     max_page_size = 10
@@ -32,9 +34,15 @@ class StatsViewSet(viewsets.ModelViewSet):
     serializer_class = StatsSerializer
 
     def get_queryset(self):
+        """
+        Returns current user's stats
+        """
         return self.request.user.stats.all().order_by('day')
 
     def create(self, request):
+        """
+        Creates a new stat for the current day
+        """
         # See if there is a stat with the same date
         stat, created = Stats.objects.get_or_create(
             user=request.user, day=request.data['day'])
@@ -51,9 +59,16 @@ class ModeViewSet(viewsets.ModelViewSet):
     serializer_class = ModesSerializer
 
     def get_queryset(self):
+        """
+        Returns current user's modes
+        """
         return self.request.user.modes.all()
 
     def create(self, request):
+        """
+        Checks for time validation (pomo, short_break, long_break)
+        and creates a new timer mode 
+        """
         if request.data['pomo'] >= 60 or request.data['short_break'] >= 60 or request.data['long_break'] >= 60:
             return Response(
                 {'message': 'Not valid, timers can only be less than an hour long.'})
@@ -70,6 +85,9 @@ class ModeViewSet(viewsets.ModelViewSet):
         return Response('not valid')
 
     def destroy(self, request, pk=None):
+        """
+        Deletes a mode from the current user
+        """
         # Reset to default if the current timer is the one
         # being deleted
         if request.user.current_mode_id == int(pk):
@@ -93,6 +111,10 @@ class TaskViewSet(viewsets.ModelViewSet):
     pagination_class = TaskResultsSetPagination
 
     def get_queryset(self):
+        """
+        Returns the current user's tasks
+        ordered descendingly
+        """
         return self.request.user.tasks.all().filter(in_project=False).order_by('-id')
 
     def retrieve(self, request, pk=None):
@@ -108,6 +130,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     def create(self, request):
         """
         Create a new task with tags and subtasks
+        for the current user
         """
         serializer = TaskSerializer(data=request.data)
         subtasks = request.data['subtasks']
@@ -135,6 +158,16 @@ class TaskViewSet(viewsets.ModelViewSet):
         return Response({'message': 'error'})
 
     def partial_update(self, request, pk=None):
+        """
+        Updates in real time
+        these elements (obj) inside the tasks:
+        - Tags
+        - Subtasks
+
+        And updates the task itself
+        """
+        # Assign the request to a data variable
+        # for ease of use
         data = request.data
         if "obj" in data:
             obj = data['obj']
@@ -227,6 +260,9 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Response({'message': 'error'})
 
     def destroy(self, request, pk=None):
+        """
+        Deletes a task from the current user
+        """
         user = User.objects.get(id=request.user.id)
         task = Task.objects.get(id=int(pk))
 
@@ -248,6 +284,9 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
 
     def get_queryset(self):
+        """
+        Returns the current user's tags
+        """
         return self.request.user.tags.all()
 
 
@@ -258,9 +297,19 @@ class ProjectViewSet(viewsets.ModelViewSet):
     pagination_class = ProjectResultsSetPagination
 
     def get_queryset(self):
+        """
+        Returns the current user's projects
+        """
         return self.request.user.projects.all().order_by('-id')
 
     def get_object(self, pk):
+        """
+        Tries to get the project object with the id of pk
+        it if fails it raises a HTTP404 error
+
+        Keyword arguments:
+        pk -- the id of the to be retrieved object
+        """
         try:
             return Project.objects.get(id=pk)
         except Project.DoesNotExist:
@@ -298,6 +347,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED)
 
     def partial_update(self, request, pk=None):
+        """
+        Updates in real time the project with id of pk
+
+        Keyword arguments:
+        pk -- the id of the project
+        """
         data = request.data
 
         if 'obj' in data:
@@ -366,9 +421,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
                     return Response({"done": task.done})
 
-                return Response("toggled")
+                return Response(status=status.HTTP_200_OK)
 
     def destroy(self, request, pk=None):
+        """
+        Deletes the project with an id of pk
+        """
         project = self.get_object(pk)
 
         for task in project.tasks.all():
@@ -381,6 +439,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 
 class RegisterView(APIView):
+    """
+    Register an user with an username and password
+    """
     def post(self, request):
         username = request.data['username']
         password = request.data['password']
@@ -404,6 +465,9 @@ class CurrentUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        """
+        Returns the current user's info
+        """
         return Response(UserSerializer(request.user).data)
 
 
@@ -411,6 +475,9 @@ class CurrentTaskView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
+        """
+        Returns the current user's current task id
+        """
         return Response({'id': request.user.current_task_id})
 
     def put(self, request):
@@ -425,6 +492,13 @@ class CurrentModeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_mode(self, id):
+        """
+        Tries to get the mode object with the id of id
+        it if fails it raises a HTTP404 error
+
+        Keyword arguments:
+        id -- the id of the to be retrieved object
+        """
         try:
             mode = Mode.objects.get(id=id)
             return Response(ModesSerializer(mode).data)
@@ -450,6 +524,14 @@ class TagInfo(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, name=None):
+        """
+        Tries to get the tag with the name of name
+        if it succedes it returns the tasks inside the tag
+        if it fails it raise a HTTP 404 error
+
+        Keyword arguments:
+        name -- the name of the tag
+        """
         try:
             tag = Tag.objects.get(name=name)
             return Response(TaskSerializer(tag.tasks, many=True).data)
