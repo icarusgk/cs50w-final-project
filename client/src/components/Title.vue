@@ -4,7 +4,7 @@ import LightingIcon from '@/components/icons/LightingIcon.vue';
 
 <template>
   <!-- Pomo Title -->
-  <div id="pomodoro-title-container">
+  <div @click="$router.push('/')" id="pomodoro-title-container">
     <!-- Icon -->
     <LightingIcon id="pomo-icon" />
     <!-- Title -->
@@ -14,6 +14,7 @@ import LightingIcon from '@/components/icons/LightingIcon.vue';
 
 <style scoped lang="scss">
 #pomodoro-title-container {
+  cursor: pointer;
   display: flex;
   align-items: center;
   #title {
