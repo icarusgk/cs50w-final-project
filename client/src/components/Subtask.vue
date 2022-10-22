@@ -98,15 +98,22 @@ defineEmits([
 
 <style scoped lang="scss">
 @mixin btn($color) {
-  background-color: var($color);
+  background-color: $color;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   border: none;
+  box-shadow: 0 3px 0 1px darken($color, 20%);
+  transition: box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+
   &:hover,
   &:focus,
   &:active {
     cursor: pointer;
+  }
+  
+  &:active {
+    box-shadow: 0 0 $color;
   }
 }
 .subtask {
@@ -200,11 +207,11 @@ defineEmits([
           display: flex;
           justify-content: flex-end;
           .cancel-button {
-            @include btn(--gray);
+            @include btn(#636363);
             margin-right: 0.5rem;
           }
           .save-button {
-            @include btn(--vivid-red);
+            @include btn(#ed4747);
           }
         }
       }
