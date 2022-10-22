@@ -88,9 +88,7 @@ export const useChoreStore = defineStore({
       if (status === 200) {
         let stat = this.stats.find((stat) => stat.id === data.id);
 
-        if (stat) {
-          stat.chores_done = data.chores_done;
-        }
+        if (stat) stat.chores_done = data.chores_done;
       }
     },
     async fetchTasks() {
@@ -190,9 +188,6 @@ export const useChoreStore = defineStore({
       if (status === 200) {
         useAlertStore().info('Project deleted!');
         this.fetchProjects();
-        // this.projects = this.projects.filter(
-        //   (project: Project) => project.id !== id
-        // );
       }
     },
     async addTag(tag: string) {
