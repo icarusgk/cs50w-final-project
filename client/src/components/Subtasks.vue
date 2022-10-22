@@ -113,14 +113,15 @@ async function addTaskToProject() {
     // Add new task to an existing project
     // LIVE
     if (props.isProject && !props.isNew) {
-      // Works !!
+      console.log(taskModel.value);
+      
       try {
         const response = await axios.patch(`projects/${props.project.id}/`, {
           obj: 'project',
           action: 'add_new',
           task: taskModel.value,
         });
-        if (response?.status === 201) {
+        if (response?.status === 201) {          
           // Returns a task inside the project
           existingProject.value.tasks.push(response.data);
           alert.success(`Task ${taskModel.value.title} saved!`);
