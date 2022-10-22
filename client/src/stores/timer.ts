@@ -1,4 +1,4 @@
-import { defineStore, type PiniaCustomStateProperties } from 'pinia';
+import { defineStore } from 'pinia';
 import { useChoreStore } from './chore';
 import dayjs from 'dayjs';
 import { useAuthStore } from './auth';
@@ -63,6 +63,7 @@ export const useTimerStore = defineStore({
   getters: {
     minutes: (state) => state.currentTimer.timer.minute(),
     seconds: (state) => state.currentTimer.timer.second(),
+    formattedTime: (state) => state.currentTimer.timer.format('mm:ss')
   },
   actions: {
     setTo(data: TimerType) {
@@ -87,6 +88,7 @@ export const useTimerStore = defineStore({
     },
     decrementSecond() {
       this.currentTimer.timer = this.currentTimer.timer.subtract(1, 'second');
+      document.title = `Pomo.do ${this.formattedTime}`
     },
     toggleOngoing() {
       this.ongoing = !this.ongoing;
@@ -112,14 +114,10 @@ export const useTimerStore = defineStore({
       this.currentTimer.seconds = defaultTimer.pomo;
       localStorage.removeItem('timer');
     },
-    increasePercent() {      
-      this.percent =
-        (this[this.current].timer.diff(this.currentTimer.timer, 'seconds') /
-          this.currentTimer.seconds) *
-        100;
-    },
     setTimer(name: string) {
+      //  @ts-ignore
       this.currentTimer.timer = this[name].timer;
+      //  @ts-ignore
       this.currentTimer.seconds = this[name].seconds;
       this.current = name;
       this.percent = 5;

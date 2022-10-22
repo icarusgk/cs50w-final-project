@@ -1,29 +1,27 @@
 <script setup lang="ts">
 import { watch, computed } from 'vue';
 import { useTimerStore } from '@/stores/timer';
-
+import start from '@/assets/start-timer.mp3';
+import finished from '@/assets/finished-timer.mp3';
 import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
 const currentLine = computed(() => `line-${timer.current}`);
+const startAudio = new Audio(start);
+const finishedAudio = new Audio(finished);
 
 watch(
   () => timer.currentTimer.timer,
   () => {
-    // Change the red line percent
-    if (timer.ongoing) {
-      timer.increasePercent();
-    }
-
     // If current timer (pomo, short, long) ended
     if (timer.minutes === 0 && timer.seconds === 0) {
       timer.done = true;
       timer.setNextTimer();
+      finishedAudio.play();
       stopTimer();
 
       // Auto start pomo
       if (timer.current == 'pomo') {
-        // timer.ongoing or stopTimer()?
         timer.auto_start_pomo ? startTimer() : (timer.ongoing = false);
       }
 
@@ -86,22 +84,17 @@ function setTimer(type: string) {
     <p v-if="!timer.currentMode.includes('Default')" id="mode-title">
       Current Mode: {{ timer.currentMode }}
     </p>
+    <!-- Timer buttons -->
     <div id="timer-setters">
       <div id="normal-pomo" @click="setTimer('pomo')">Pomo</div>
       <div id="short-rest" @click="setTimer('short_break')">Short Rest</div>
       <div id="long-rest" @click="setTimer('long_break')">Long Rest</div>
     </div>
-    <!-- Progress -->
-    <div
-      id="line"
-      :style="{ width: `${timer.percent - 2}%` }"
-      :class="currentLine"
-    ></div>
     <!-- Time -->
     <div>
-      <h1 id="timer-count">{{ timer.currentTimer.timer.format('mm:ss') }}</h1>
+      <h1 id="timer-count">{{ timer.formattedTime }}</h1>
       <button
-        @click="startTimer()"
+        @click="startTimer(); startAudio.play();"
         v-if="!timer.ongoing"
         :class="timer.current"
       >
