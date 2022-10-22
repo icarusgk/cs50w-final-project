@@ -78,10 +78,12 @@ export const useChoreStore = defineStore({
       const { data, status } = await useFetch('stats', 'get');
       if (status === 200) this.stats = data;
     },
-    // TODO: Review this function
     async increaseTodayStats() {
+      const date = new Date();
+      date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
+
       const { data, status } = await useFetch('stats', 'post', {
-        day: new Date().toISOString().slice(0, 10),
+        day: date.toISOString().slice(0, 10)
       });
       if (status === 200) {
         let stat = this.stats.find((stat) => stat.id === data.id);
@@ -198,20 +200,20 @@ export const useChoreStore = defineStore({
 
       if (status === 200) console.log(data);
     },
-    async incrementGoneThrough() {
+    incrementGoneThrough() {
+      this.increaseTodayStats();
       const auth = useAuthStore();
-      const { status } = await useFetch(
-        'tasks',
-        'patch',
-        {
-          obj: 'task',
-          action: 'increment_gone_through',
-        },
-        auth.user!.current_task_id
-      );
 
-      if (status === 200) {
-        this.increaseTodayStats();
+      if (auth.user?.current_task_id) {
+        useFetch(
+          'tasks',
+          'patch',
+          {
+            obj: 'task',
+            action: 'increment_gone_through',
+          },
+          auth.user!.current_task_id
+        );
       }
     },
   },
