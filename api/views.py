@@ -374,6 +374,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
                     if task_serializer.is_valid():
                         task = Task.objects.create(
                             user=request.user, in_project=True, **task_serializer.data)
+                        
+                        tags = data['task']['tags']
+                        for tag in tags:
+                            (the_tag, created) = Tag.objects.get_or_create(name=tag['name'])
+                            task.tags.add(the_tag)
 
                         task.save()
 
