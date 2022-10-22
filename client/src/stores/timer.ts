@@ -114,13 +114,6 @@ export const useTimerStore = defineStore({
       this.currentTimer.seconds = defaultTimer.pomo;
       localStorage.removeItem('timer');
     },
-    increasePercent() {
-      this.percent =
-        //  @ts-ignore
-        (this[this.current].timer.diff(this.currentTimer.timer, 'seconds') /
-          this.currentTimer.seconds) *
-        100;
-    },
     setTimer(name: string) {
       //  @ts-ignore
       this.currentTimer.timer = this[name].timer;

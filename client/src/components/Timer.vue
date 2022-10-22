@@ -13,11 +13,6 @@ const finishedAudio = new Audio(finished);
 watch(
   () => timer.currentTimer.timer,
   () => {
-    // Change the red line percent
-    if (timer.ongoing) {
-      timer.increasePercent();
-    }
-
     // If current timer (pomo, short, long) ended
     if (timer.minutes === 0 && timer.seconds === 0) {
       timer.done = true;
@@ -27,7 +22,6 @@ watch(
 
       // Auto start pomo
       if (timer.current == 'pomo') {
-        // timer.ongoing or stopTimer()?
         timer.auto_start_pomo ? startTimer() : (timer.ongoing = false);
       }
 
@@ -90,17 +84,12 @@ function setTimer(type: string) {
     <p v-if="!timer.currentMode.includes('Default')" id="mode-title">
       Current Mode: {{ timer.currentMode }}
     </p>
+    <!-- Timer buttons -->
     <div id="timer-setters">
       <div id="normal-pomo" @click="setTimer('pomo')">Pomo</div>
       <div id="short-rest" @click="setTimer('short_break')">Short Rest</div>
       <div id="long-rest" @click="setTimer('long_break')">Long Rest</div>
     </div>
-    <!-- Progress -->
-    <div
-      id="line"
-      :style="{ width: `${timer.percent - 2}%` }"
-      :class="currentLine"
-    ></div>
     <!-- Time -->
     <div>
       <h1 id="timer-count">{{ timer.formattedTime }}</h1>
