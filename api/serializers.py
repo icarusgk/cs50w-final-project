@@ -41,7 +41,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'description',
             'estimated',
             'gone_through',
-            'minutes',
             'done',
             'tags',
             'subtasks',
@@ -56,8 +55,6 @@ class SubtaskSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
-
     def get_fields(self):
         fields = super(ProjectSerializer, self).get_fields()
         fields['tasks'] = TaskSerializer(many=True)
@@ -65,5 +62,5 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'tasks', 'user']
+        fields = ['id', 'name', 'tasks']
         depth = 2
