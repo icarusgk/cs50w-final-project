@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { watch, computed } from 'vue';
 import { useTimerStore } from '@/stores/timer';
-
+import start from '@/assets/start-timer.mp3';
+import finished from '@/assets/finished-timer.mp3';
 import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
 const currentLine = computed(() => `line-${timer.current}`);
+const startAudio = new Audio(start);
+const finishedAudio = new Audio(finished);
 
 watch(
   () => timer.currentTimer.timer,
@@ -19,6 +22,7 @@ watch(
     if (timer.minutes === 0 && timer.seconds === 0) {
       timer.done = true;
       timer.setNextTimer();
+      finishedAudio.play();
       stopTimer();
 
       // Auto start pomo
@@ -99,9 +103,9 @@ function setTimer(type: string) {
     ></div>
     <!-- Time -->
     <div>
-      <h1 id="timer-count">{{ timer.currentTimer.timer.format('mm:ss') }}</h1>
+      <h1 id="timer-count">{{ timer.formattedTime }}</h1>
       <button
-        @click="startTimer()"
+        @click="startTimer(); startAudio.play();"
         v-if="!timer.ongoing"
         :class="timer.current"
       >
