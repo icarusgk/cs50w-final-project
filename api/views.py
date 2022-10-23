@@ -349,6 +349,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def modify_title(self, request, pk=None):
+        """Modifies the project's title"""
         project = self.get_object(pk)
         project.name = request.data['name']
         project.save()
@@ -357,6 +358,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def add_new_task(self, request, pk=None):
+        """Adds a new task inside the project"""
         project = self.get_object(pk)
 
         task_serializer = TaskSerializer(data=request.data['task'])
@@ -381,6 +383,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def update_task(self, request, pk=None):
+        """Updates the task inside the project"""
         task = Task.objects.get(id=request.data['subtask']['id'])
         serializer = TaskSerializer(task, data=request.data['subtask'])
 
@@ -391,6 +394,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def delete_task(self, request, pk=None):
+        """
+        Deletes a task inside a project
+        or removes it from outside the project
+        """
         task = Task.objects.get(id=request.data['task_id'])
 
         # Remove task from project
@@ -406,6 +413,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def add_to_project(self, request, pk=None):
+        """Adds a task to a project from outside"""
         project = self.get_object(pk)
         task = Task.objects.get(id=request.data['task_id'])
 
@@ -414,6 +422,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def task_done(self, request, pk=None):
+        """Toggles a task done status"""
         project = self.get_object(pk)
         task = project.tasks.get(id=request.data['task_id'])
 
