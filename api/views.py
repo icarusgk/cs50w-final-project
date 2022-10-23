@@ -3,6 +3,7 @@ from .models import *
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import permissions, status
 from rest_framework.pagination import PageNumberPagination
 from django.http import Http404
@@ -346,87 +347,81 @@ class ProjectViewSet(viewsets.ModelViewSet):
             ProjectSerializer(project).data,
             status=status.HTTP_201_CREATED)
 
-    def partial_update(self, request, pk=None):
-        """
-        Updates in real time the project with id of pk
 
-        Keyword arguments:
-        pk -- the id of the project
-        """
-        data = request.data
+    @action(detail=True, methods=['patch'])
+    def modify_title(self, request, pk=None):
+        project = self.get_object(pk)
+        project.name = request.data['name']
+        project.save()
 
-        if 'obj' in data:
-            if data['obj'] == 'project':
+        return Response(status=status.HTTP_200_OK)
 
-                if data['action'] == 'modify_title':
-                    project = self.get_object(pk)
-                    project.name = data['name']
 
-                    project.save()
+    @action(detail=True, methods=['patch'])
+    def add_new_task(self, request, pk=None):
+        project = self.get_object(pk)
 
-                    return Response("name changed", status=status.HTTP_200_OK)
+        task_serializer = TaskSerializer(data=request.data['task'])
 
-                if data['action'] == 'add_new':
-                    project = self.get_object(pk)
+        if task_serializer.is_valid():
+            task = Task.objects.create(
+                user=request.user, in_project=True, **task_serializer.data)
+            
+            tags = request.data['task']['tags']
+            for tag in tags:
+                (the_tag, created) = Tag.objects.get_or_create(name=tag['name'])
+                task.tags.add(the_tag)
 
-                    task_serializer = TaskSerializer(data=data['task'])
+            task.save()
 
-                    if task_serializer.is_valid():
-                        task = Task.objects.create(
-                            user=request.user, in_project=True, **task_serializer.data)
-                        
-                        tags = data['task']['tags']
-                        for tag in tags:
-                            (the_tag, created) = Tag.objects.get_or_create(name=tag['name'])
-                            task.tags.add(the_tag)
+            project.tasks.add(task)
+            project.save()
+        return Response(
+            TaskSerializer(task).data,
+            status=status.HTTP_201_CREATED)
 
-                        task.save()
+    @action(detail=True, methods=['patch'])
+    def update_task(self, request, pk=None):
+        task = Task.objects.get(id=request.data['subtask']['id'])
+        serializer = TaskSerializer(task, data=request.data['subtask'])
 
-                        project.tasks.add(task)
-                        project.save()
-                    return Response(
-                        TaskSerializer(task).data,
-                        status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            serializer.save()
 
-                if data['action'] == 'add_to_project':
-                    project = self.get_object(pk)
-                    task = Task.objects.get(id=data['task_id'])
+        return Response(serializer.data)
 
-                    project.tasks.add(task)
+    @action(detail=True, methods=['patch'])
+    def delete_task(self, request, pk=None):
+        task = Task.objects.get(id=request.data['task_id'])
 
-                if data['action'] == 'update_task':
-                    task = Task.objects.get(id=data['subtask']['id'])
-                    serializer = TaskSerializer(task, data=data['subtask'])
+        # Remove task from project
+        if not task.in_project:
+            project = self.get_object(pk)
+            project.tasks.remove(task)
 
-                    if serializer.is_valid():
-                        serializer.save()
+            return Response("task removed")
+        # delete task totally
+        task.delete()
 
-                        return Response(serializer.data)
+        return Response("task deleted")
 
-                if data['action'] == 'delete_task':
-                    task = Task.objects.get(id=data['task_id'])
+    @action(detail=True, methods=['patch'])
+    def add_to_project(self, request, pk=None):
+        project = self.get_object(pk)
+        task = Task.objects.get(id=request.data['task_id'])
 
-                    # Remove task from project
-                    if not task.in_project:
-                        project = self.get_object(pk)
-                        project.tasks.remove(task)
+        project.tasks.add(task)
+        return Response(status=status.HTTP_200_OK)
 
-                        return Response("task removed")
-                    # delete task totally
-                    task.delete()
+    @action(detail=True, methods=['patch'])
+    def task_done(self, request, pk=None):
+        project = self.get_object(pk)
+        task = project.tasks.get(id=request.data['task_id'])
 
-                    return Response("task deleted")
+        task.done = not task.done
+        task.save()
 
-                if data['action'] == 'task_done':
-                    project = self.get_object(pk)
-                    task = project.tasks.get(id=data['task_id'])
-
-                    task.done = not task.done
-                    task.save()
-
-                    return Response({"done": task.done})
-
-                return Response(status=status.HTTP_200_OK)
+        return Response({"done": task.done}, status=status.HTTP_200_OK)
 
     def destroy(self, request, pk=None):
         """

@@ -26,9 +26,7 @@ allProjects.forEach((project: ProjectType) => {
 async function addToProject(project: ProjectType) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
-    const response = await axios.patch(`projects/${project.id}/`, {
-      obj: 'project',
-      action: 'add_to_project',
+    const response = await axios.patch(`projects/${project.id}/add_to_project/`, {
       task_id: props.taskId,
     });
 
@@ -41,9 +39,7 @@ async function addToProject(project: ProjectType) {
       taskProjects.value.push(project);
     }
   } else {
-    const response = await axios.patch(`projects/${project.id}/`, {
-      obj: 'project',
-      action: 'delete_task',
+    const response = await axios.patch(`projects/${project.id}/delete_task/`, {
       task_id: props.taskId,
     });
     console.log(response);
