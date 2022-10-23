@@ -25,10 +25,12 @@ The default file created by Django. I registered my models here in order to acce
 I created the following models in here:
 
 - Tag
+
   A tag for assigning a task, to quickly organize them. A task can have a max of 3 tags, this is controlled by the client.
   - user (foreign key)
   - name
 - User
+
   Extend the `AbstractUser` model from `django.contrib.auth.models` in here with the following fields:
   - **current_task_id**
   The id of the task the logged in user is currently working in. The client set this id clicking on a created task. If the id is not set, it defaults to 0.
@@ -54,23 +56,28 @@ I created the following models in here:
   If the task is created inside a project. This helps us list the tasks only outside the project in the client.
 
 - Subtask
+
   A subtask are used primarily on tasks. They are a smaller unit used to keep track of fine grained things to do inside a task.
   - task (foreign key)
   - title
   - description
   - done (the state of the subtask)
 - Project
+
+  A project's purpose is to encapsulate multiple tasks for an easier task tracking.
   - name
   - user (foreign key)
   - **tasks**
   Many to many field so that we can have multiple tasks on different projects. It can be blank so that we can a project without any tasks inside it.
 - Stats
+
   The user stats. When a user finishes a pomodoro timer with a current working task active, the chores_done for the current day and the gone_through field for the active working task increase.
   - **day**
   The current day, defaults to `timezone.now` and accept the format of `yyyy-mm-dd`
   - **chores_done**
   The number of chores done in the current day
 - Mode
+
   A customized mode that the user can create. Each user can create a max of 3 modes, this is controlled by the client in the settings.
   - user (foreign key)
   - **name**
