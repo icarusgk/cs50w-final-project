@@ -68,7 +68,7 @@ class ModeViewSet(viewsets.ModelViewSet):
     def create(self, request):
         """
         Checks for time validation (pomo, short_break, long_break)
-        and creates a new timer mode 
+        and creates a new timer mode
         """
         if request.data['pomo'] >= 60 or request.data['short_break'] >= 60 or request.data['long_break'] >= 60:
             return Response(
@@ -347,7 +347,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
             ProjectSerializer(project).data,
             status=status.HTTP_201_CREATED)
 
-
     @action(detail=True, methods=['patch'])
     def modify_title(self, request, pk=None):
         project = self.get_object(pk)
@@ -355,7 +354,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project.save()
 
         return Response(status=status.HTTP_200_OK)
-
 
     @action(detail=True, methods=['patch'])
     def add_new_task(self, request, pk=None):
@@ -366,10 +364,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if task_serializer.is_valid():
             task = Task.objects.create(
                 user=request.user, in_project=True, **task_serializer.data)
-            
+
             tags = request.data['task']['tags']
             for tag in tags:
-                (the_tag, created) = Tag.objects.get_or_create(name=tag['name'])
+                (the_tag, created) = Tag.objects.get_or_create(
+                    name=tag['name'])
                 task.tags.add(the_tag)
 
             task.save()
@@ -442,6 +441,7 @@ class RegisterView(APIView):
     """
     Register an user with an username and password
     """
+
     def post(self, request):
         username = request.data['username']
         password = request.data['password']
