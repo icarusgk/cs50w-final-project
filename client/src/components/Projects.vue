@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
-import Project from '@/components/Project.vue';
+import Project from '@/components/buttons/Project.vue';
 import TaskType from '@/components/slots/TaskType.vue';
 import ProjectIcon from '@/components/icons/ProjectIcon.vue';
 import Paginate from '@/components/Paginate.vue';
