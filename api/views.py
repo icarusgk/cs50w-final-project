@@ -486,6 +486,9 @@ class CurrentTaskView(APIView):
         return Response({'id': request.user.current_task_id})
 
     def put(self, request):
+        """
+        Changes the current task id received in the request
+        """
         user = User.objects.get(id=request.user.id)
         user.current_task_id = request.data['id']
         user.save()
