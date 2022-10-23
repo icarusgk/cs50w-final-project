@@ -116,9 +116,7 @@ async function addTaskToProject() {
       console.log(taskModel.value);
       
       try {
-        const response = await axios.patch(`projects/${props.project.id}/`, {
-          obj: 'project',
-          action: 'add_new',
+        const response = await axios.patch(`projects/${props.project.id}/add_new_task/`, {
           task: taskModel.value,
         });
         if (response?.status === 201) {          
@@ -144,9 +142,7 @@ async function addTaskToProject() {
       tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
 
     // Make the api call
-    const response = await axios.patch(`projects/${props.project.id}/`, {
-      obj: 'project',
-      action: 'update_task',
+    const response = await axios.patch(`projects/${props.project.id}/update_task/`, {
       subtask: activeChore.chore,
     });
 
@@ -215,14 +211,11 @@ async function deleteChore() {
   if (props.isProject) {
     // Delete task
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(`/projects/${props.project.id}/`, {
-        obj: 'project',
-        action: 'delete_task',
+      const response = await axios.patch(`/projects/${props.project.id}/delete_task/`, {
         task_id: activeChore.chore?.id,
       });
       if (response?.status === 200) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        console.log(response.data);
         existingProject.value.tasks = existingProject.value.tasks.filter(
           (task: TaskType) => task.id !== activeChore.chore?.id
         );
@@ -265,9 +258,7 @@ function removeChore() {
 async function toggleChoreDone(chore: TaskType | SubtaskType) {
   if (props.isProject) {
     try {
-      const response = await axios.patch(`projects/${props.project.id}/`, {
-        obj: 'project',
-        action: 'task_done',
+      const response = await axios.patch(`projects/${props.project.id}/task_done/`, {
         task_id: chore.id,
       });
       if (response?.status === 200) {

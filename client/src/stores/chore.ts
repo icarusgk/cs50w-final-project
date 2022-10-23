@@ -172,9 +172,7 @@ export const useChoreStore = defineStore({
       }
     },
     async saveProject(project: ProjectType, newProjectName: string) {
-      const { status } = await axios.patch(`/projects/${project.id}/`, {
-        obj: 'project',
-        action: 'modify_title',
+      const { status } = await axios.patch(`/projects/${project.id}/modify_title/`, {
         name: newProjectName,
       });
 
