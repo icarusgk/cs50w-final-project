@@ -3,7 +3,6 @@ import CloseIcon from '@/components/icons/CloseIcon.vue';
 
 defineProps<{
   open: Boolean;
-  isButton?: Boolean;
   isTask?: Boolean;
 }>();
 
