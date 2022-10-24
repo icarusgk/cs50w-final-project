@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { watch, computed } from 'vue';
+import { watch } from 'vue';
 import { useTimerStore } from '@/stores/timer';
 import start from '@/assets/start-timer.mp3';
 import finished from '@/assets/finished-timer.mp3';
 import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
-const currentLine = computed(() => `line-${timer.current}`);
 const startAudio = new Audio(start);
 const finishedAudio = new Audio(finished);
 
