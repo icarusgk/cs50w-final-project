@@ -2,7 +2,7 @@
 import { useAuthStore } from '@/stores/auth';
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue';
 import Timer from '@/components/Timer.vue';
-import UnauntheticatedLogin from '@/components/UnauntheticatedLogin.vue';
+import UnauthedLogin from '@/components/UnauthedLogin.vue';
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue';
 import Projects from '@/components/Projects.vue';
 import Tasks from '@/components/Tasks.vue';
@@ -28,7 +28,7 @@ const auth = useAuthStore();
         <NewProjectButton />
       </div>
       <div id="message" v-if="!auth.isAuthenticated">
-        <UnauntheticatedLogin> To add tasks and projects </UnauntheticatedLogin>
+        <UnauthedLogin> To add tasks and projects </UnauthedLogin>
       </div>
       <div v-if="auth.isAuthenticated">
         <Projects />
