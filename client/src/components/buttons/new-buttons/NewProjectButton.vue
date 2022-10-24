@@ -56,7 +56,7 @@ function saveProject() {
     <!-- Rest of modal -->
     <ProjectModalInfo :project="newProject" :isNew="true" />
     <template #save-button>
-      <SaveButton @click="saveProject()" :disabled="false" />
+      <SaveButton @click="saveProject()" />
     </template>
   </Modal>
 </template>

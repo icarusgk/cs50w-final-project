@@ -90,7 +90,7 @@ function removeTag(tag: TagType) {
     />
     <!-- Button -->
     <template #save-button>
-      <SaveButton @click="saveTask()" :disabled="false">Save!</SaveButton>
+      <SaveButton @click="saveTask()">Save!</SaveButton>
     </template>
   </Modal>
 </template>
