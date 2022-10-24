@@ -18,12 +18,9 @@ const newProject = ref<ProjectType>({
 const open = ref(false);
 const auth = useAuthStore();
 
-watch(
-  () => open.value,
-  () => {
-    useModalStore().toggle();
-  }
-);
+watch(open, () => {
+  useModalStore().toggle();
+});
 
 function resetProject() {
   newProject.value = {

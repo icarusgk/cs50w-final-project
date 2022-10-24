@@ -11,12 +11,9 @@ defineProps<{
 
 const open = ref(false);
 
-watch(
-  () => open.value,
-  () => {
-    useModalStore().toggle();
-  }
-);
+watch(open, () => {
+  useModalStore().toggle();
+});
 </script>
 
 <template>

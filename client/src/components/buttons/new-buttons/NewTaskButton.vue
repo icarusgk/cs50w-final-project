@@ -16,12 +16,9 @@ const open = ref(false);
 const taskStore = useChoreStore();
 const auth = useAuthStore();
 
-watch(
-  () => open.value,
-  () => {
-    useModalStore().toggle();
-  }
-);
+watch(open, () => {
+  useModalStore().toggle();
+});
 
 const initialTask = ref<TaskType>({
   tags: [],
