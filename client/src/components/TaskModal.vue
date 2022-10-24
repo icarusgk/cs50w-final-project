@@ -96,7 +96,7 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
-        <SaveButton @click="saveTask()" :disabled="false" />
+        <SaveButton @click="saveTask()" />
       </template>
     </Modal>
   </div>

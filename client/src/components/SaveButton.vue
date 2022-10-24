@@ -1,15 +1,5 @@
-<script setup lang="ts">
-defineProps<{
-  disabled: boolean;
-}>();
-</script>
-
 <template>
-  <button
-    class="close-modal-button"
-    :disabled="disabled"
-    :class="{ disabled: disabled }"
-  >
+  <button class="close-modal-button">
     Save!
   </button>
 </template>
@@ -41,9 +31,5 @@ defineProps<{
   &:active {
     box-shadow: 0 0 $vivid-red;
   }
-}
-
-.disabled {
-  opacity: 0.3;
 }
 </style>
