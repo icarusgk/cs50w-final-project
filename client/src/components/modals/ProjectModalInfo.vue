@@ -10,9 +10,7 @@ defineProps<{
 <template>
   <div class="project-modal">
     <!-- Tasks heading -->
-    <div>
-      <p class="task-heading">Tasks</p>
-    </div>
+    <span class="task-heading">Tasks</span>
     <!-- Add tasks button -->
     <div>
       <Subtasks
@@ -28,6 +26,10 @@ defineProps<{
 <style lang="scss" scoped>
 .project-modal {
   margin-top: 1rem;
+
+  .task-heading {
+    display: block;
+  }
 
   .task-container {
     display: flex;

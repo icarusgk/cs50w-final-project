@@ -52,7 +52,6 @@ defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask']);
           @increase-pomos="$emit('increasePomos', $event)"
         />
       </div>
-      <div></div>
     </div>
   </div>
 </template>
