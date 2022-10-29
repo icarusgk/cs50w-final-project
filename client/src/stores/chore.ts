@@ -146,6 +146,7 @@ export const useChoreStore = defineStore({
       const { status } = await axios.put(`tasks/${task.id}/`, task);
       if (status === 200) {
         useAlertStore().success(`'${task.title}' saved!`);
+        this.fetchTasks();
       }
     },
     async deleteTask(task: TaskType) {
