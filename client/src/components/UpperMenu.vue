@@ -8,7 +8,6 @@ import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import Settings from '@/components/Settings.vue';
 import Title from '@/components/Title.vue';
 import Modal from '@/components/modals/Modal.vue';
-import UserInfo from '@/components/UserInfo.vue';
 
 const userOpen = ref(false);
 const settingsOpen = ref(false);
@@ -27,16 +26,18 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
       <!-- User -->
       <li>
         <div class="login">
-          <div
-            class="login"
-            @click="
-              auth.isAuthenticated ? (userOpen = true) : (userOpen = false)
-            "
-          >
-            <div class="user-info" v-if="auth.isAuthenticated">
-              <UserIcon />
-              <span>{{ auth.user?.username }}</span>
-            </div>
+          <div class="login">
+            <Popper hover arrow placement="bottom">
+              <div class="user-info" v-if="auth.isAuthenticated">
+                <UserIcon />
+                <span>{{ auth.user?.username }}</span>
+              </div>
+              <template #content>
+                <button id="logout-btn" @click="auth.logout();">
+                  Logout
+                </button>
+              </template>
+            </Popper>
           </div>
           <div v-if="!auth.isAuthenticated" class="user-actions-container">
             <div @click="$router.push('/login')">
@@ -53,12 +54,6 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         <SettingsIcon />
       </li>
     </ul>
-    <Modal :open="userOpen" @exit-modal="userOpen = false">
-      <template #title>
-        <h1>User</h1>
-      </template>
-      <UserInfo />
-    </Modal>
     <Modal :open="settingsOpen" @exit-modal="settingsOpen = false">
       <template #title>
         <h1>Settings</h1>
@@ -98,6 +93,23 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
           display: flex;
           align-items: center;
           margin-right: 1rem;
+        }
+
+        #logout-btn {
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
+          border: none;
+          background-color: var(--vivid-red);
+          color: white;
+          font-weight: 500;
+          transition: background-color 0.15s ease-in;
+        
+          &:hover,
+          &:focus,
+          &:active {
+            cursor: pointer;
+            background-color: #ff4b4b9f;
+          }
         }
 
         .user-actions-container {
