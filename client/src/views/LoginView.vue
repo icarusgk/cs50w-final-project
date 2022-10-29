@@ -129,10 +129,16 @@ function login() {
       color: white;
       border: none;
       border-radius: 8px;
+      transition: background-color 0.2s ease-in-out;
+
       &:hover,
       &:focus,
       &:active {
         cursor: pointer;
+      }
+
+      &:hover {
+        background-color: #ff4b4b9f;
       }
     }
   
