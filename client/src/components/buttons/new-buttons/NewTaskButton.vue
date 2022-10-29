@@ -58,7 +58,6 @@ function removeTag(tag: TagType) {
     <template #type> Add new task </template>
   </ChoreButton>
   <Modal
-    :is-button="true"
     :open="open"
     @exit-modal="resetTask()"
     :is-task="true"
