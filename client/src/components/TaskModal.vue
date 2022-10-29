@@ -66,6 +66,7 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
           :task="props.task"
           :id="props.task.id"
           @remove-tag="(tag) => removeTag(tag)"
+          @close="$emit('exit')"
         />
         <div class="buttons">
           <div class="done-buttons" v-auto-animate>
