@@ -8,6 +8,7 @@ import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
 import axios from 'axios';
+import router from '@/router';
 import CloseIcon from '../icons/CloseIcon.vue';
 
 const props = defineProps<{
@@ -17,7 +18,7 @@ const props = defineProps<{
   new?: boolean;
 }>();
 
-const emit = defineEmits(['removeTag']);
+const emit = defineEmits(['removeTag', 'close']);
 
 const chore = useChoreStore();
 
@@ -105,6 +106,11 @@ function addSelectedTag(tag: TagType) {
   newTag.value = tag.name;
   addTag();
 }
+
+function goToTag(tag: string) {
+  router.push(`/tags/${tag}`);
+  emit('close');
+}
 </script>
 
 <template>
@@ -117,7 +123,7 @@ function addSelectedTag(tag: TagType) {
     </MiniLabel>
     <MiniLabel v-else v-for="tag in task.tags" :is-tag="true">
       <template #title>
-        <span @click="$router.push(`/tags/${tag.name}`)">
+        <span @click="goToTag(tag.name)">
           #{{ tag.name }}
         </span>
       </template>
