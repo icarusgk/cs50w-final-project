@@ -29,7 +29,12 @@ Link to final project page: https://cs50.harvard.edu/web/2020/projects/final/cap
 - In a README.md in your project’s main directory, include a writeup describing your project, and specifically your file MUST include all of the following:
 
 # Distinctiveness and Complexity
-Why you believe your project satisfies the distinctiveness and complexity requirements, mentioned above.
+
+I wanted to make my project different from the other from this course mainly by using Vue 3 in order to practice using a front-end framework and learn the commonly used practices and concepts like props, two-way data binding and separation of concerns in components.
+
+Furthermore I wanted to use Django as an API so I decided to challenge myself and went with Django REST Framework. I learned common REST API's practices and concepts too, such as: serializers, pagination, responses, auth via tokens. DRF's specifics too such as: viewsets, and APIViews.
+
+
 
 # What's contained in each file I created
 
@@ -135,7 +140,7 @@ The urls of my api application. Here I imported the `DefaultRouter` from `rest_f
 
 I anteceded all my routes inside the api app with the route of `api/` inside the `main/urls.py` file. So when the user visits the route of `api/<matching-route>` it routes them to the route inside the the api app.
 
-Then in the urlpatterns in `api/urls.py` I included the urls registered inside the router variable with the `include` function with the route of `''` so when the user makes a request to the url of `api/tasks/` the DefaultRouter of Django Rest Framework controls the route and calls the appropiate ViewSet, in this case, the TaskViewSet. If the makes a request to `api/tags/` the router will handle it and call the appropieate ViewSet, the TagViewSet in this case, and so on. 
+Then in the `urlpatterns` list, inside `api/urls.py`, I included the urls registered inside the router variable with the `include` function with the route of `''` so when the user makes a request to the url of `api/tasks/` the DefaultRouter of Django Rest Framework controls the route and calls the appropriate ViewSet, in this case, the TaskViewSet. If the makes a request to `api/tags/` the router will handle it and call the appropriate ViewSet, the TagViewSet in this case, and so on. 
 
 After this, I created paths for
 - The Current task
@@ -147,7 +152,8 @@ I included the documentation for each of this routes inside the `views.py` file.
 
 I'm using JWT based authentication using the [`djangorestframework-simplejwt`](https://github.com/jazzband/djangorestframework-simplejwt) pip package. 
 
-To login the user has to make a request to the `token/` route with the user cretendials, this route will return a JSON object with the `refresh` and `access` keys.
+To login the user has to make a request to the `token/` route with the user credentials, this route will return a JSON object with the `refresh` and `access` keys.
+
 ```json
 {
   "refresh": "eyJ0eXAiOiJ...",
@@ -163,6 +169,7 @@ When these tokens expire we need to hit the `token/refresh/` route with the `ref
 
 The views.py is where all my server logic is. I've included documentation inside each function inside this file.
 I'm using class-based views, inheriting from [viewsets.ModelViewSet](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) to create the views that Django Rest Framework's Default Router will contain. This will provide common actions for our models such as list, retrieve, create, update, partial_update and destroy. We just need to provide the queryset, serializer and optionally permission classes or pagination classes. For example:
+
 ```python
 class TagViewSet(viewsets.ModelViewSet):
   queryset = Tag.objects.all() # <- Queryset 
@@ -216,7 +223,7 @@ This file contains the info part of the Project Modal, the tasks. It uses the `S
 
 > `TaskModalInfo.vue`
 
-Contains the info part of the Task Modal, (description, subtasks, and the estimated pomos counter). I decided to create this different file to declutter the main `TaskModal.vue` file.
+Contains the info part of the Task Modal, (description, subtasks, and the estimated pomos counter). I decided to create this different file to unclutter the main `TaskModal.vue` file.
 
 
 #### slots/
@@ -278,7 +285,7 @@ It has an `items` array of type `Alert` that has all the alerts currently being 
 
 The store for managing the JWT tokens and handle the log in, register and logout process. At the top it creates a custom axios instance for login in and uses this instance for creating a interceptor. When the get request for the `me/` endpoint in the `getUser` store action and fails, it intercepts the request and replaces the JWT tokens. This action is called on each page initial load. If the refresh fails because the token has expired, it logs the user out.
 When a user registers, it automatically logs them in calling the login store action
-When a user logs out, the localStorage is removed and the chore store is resetted.
+When a user logs out, the localStorage is removed and the chore store is reset.
 
 > `chore.ts`
 
@@ -371,5 +378,16 @@ Vite configuration file. It uses the vue plugin and an alias of `@` for importin
 
 # How to run my application
 
+Setting up the server
+- Create a virtual environment
+- Activate the virtual environment
+- Install the requirements
+
+Setting up the client
+- Change directory to the client folder
+- Install the dependencies
+- Run the project
+
 
 # Any other additional information the staff should know about your project.
+
