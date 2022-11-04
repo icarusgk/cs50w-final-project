@@ -4,125 +4,105 @@ This is the repository for the **Harvard's CS50w Final Project**
 
 Link to final project page: https://cs50.harvard.edu/web/2020/projects/final/capstone/
 
-- [Final Project](#final-project)
-- [Distinctiveness and Complexity](#distinctiveness-and-complexity)
-- [What's contained in each file I created](#whats-contained-in-each-file-i-created)
-  - [api/](#api)
-  - [client/src/](#clientsrc)
-    - [assets/](#assets)
-    - [components/](#components)
-      - [buttons/](#buttons)
-        - [new-buttons/](#new-buttons)
-      - [icons/](#icons)
-      - [modals/](#modals)
-      - [slots/](#slots)
-    - [composables/](#composables)
-    - [router/](#router)
-    - [stores/](#stores)
-    - [types/](#types)
-    - [views/](#views)
-- [How to run my application](#how-to-run-my-application)
-- [Any other additional information the staff should know about your project.](#any-other-additional-information-the-staff-should-know-about-your-project)
-
-**Getting Started**
-
-- In a README.md in your project’s main directory, include a writeup describing your project, and specifically your file MUST include all of the following:
-
 # Distinctiveness and Complexity
 
-I wanted to make my project different from the other from this course mainly by using Vue 3 in order to practice using a front-end framework and learn the commonly used practices and concepts like props, two-way data binding and separation of concerns in components.
+I separated my app into a server API (Django REST Framework) and a front-end client (Vue 3 + Vite). 
 
-Furthermore I wanted to use Django as an API so I decided to challenge myself and went with Django REST Framework. I learned common REST API's practices and concepts too, such as: serializers, pagination, responses, auth via tokens. DRF's specifics too such as: viewsets, and APIViews.
+I wanted to use Django as an API instead of a MVC, so I decided to challenge myself and created the API with Django REST Framework, with the goal of learning common REST API's practices and concepts too, such as: serializers, pagination, responses, auth via tokens. DRF's specifics too such as: viewsets, and APIViews.
 
+Furthermore I wanted to make my project different from the others in this course mainly by using Vue 3 in order to practice using a front-end framework and learn the commonly used practices and concepts like props, two-way data binding and separation of concerns in components, as well as composables. I also used [Vite](https://vitejs.dev/) which provides a dev server and a build tool for modern web projects.
 
-
+ 
 # What's contained in each file I created
 
-## api/
+## `api/`
 The directory for my app. I decided to use The Django Rest Framework for this app.
 
-> admin.py
+> `admin.py`
 
 The default file created by Django. I registered my models here in order to access them later on the Admin panel
 
-> models.py
+> `models.py`
 
 I created the following models in here:
 
-- Tag
+- **Tag**
 
   A tag for assigning a task, to quickly organize them. A task can have a max of 3 tags, this is controlled by the client.
-  - user (foreign key)
-  - name
+  - `user` (foreign key)
+  - `name`
 
-- User
+- **User**
 
   Extend the `AbstractUser` model from `django.contrib.auth.models` in here with the following fields:
-  - **current_task_id**
+  - **`current_task_id`**
   The id of the task the logged in user is currently working in. The client set this id clicking on a created task. If the id is not set, it defaults to 0.
-  - **current_mode_id**
+  - **`current_mode_id`**
   The id of the mode the logged in user has currently active, if it has one. If the mode is empty, it defaults to 0.
-  - **auto_start_pomos**
+  - **`auto_start_pomos`**
   Part of the pomodoro timer settings, when True it doesn't require the user to start the pomodoro timer when the break is over.
-  - **auto_start_breaks**
-  Part of the pomodoro timer settings, when True it doesn't require the user to start the break timer when the pomodoro timer is over.
+  - **`auto_start_breaks`**
+  Part of the pomodoro timer settings, when True it doesn't require the user to start the break timer when the pomodoro timer is over
 
-- Task
+- **Task**
 
   A task is the basic block for keeping track of what has to be done. Tasks can have subtasks inside them which are a used to keep track of specific things to be done inside the task.
 
-  - user (foreign key)
-  - title
-  - description
-  - **estimated**
+  - `user` (foreign key)
+  - `title`
+  - `description`
+  - **`estimated`**
   The pomodoro timer count estimated to finish the task.
-  - **gone_through**
+  - **`gone_through`**
   The pomodoro timer count the task has gone_through
-  - **tags**
+  - **`tags`**
   The tags the task has. Many to many field so we can access the tasks when clicking on a tag on the client.
-  - done (the state of the task)
-  - **in_project**
+  - `done` (the state of the task)
+  - **`in_project`**
   If the task is created inside a project. This helps us list the tasks only outside the project in the client.
 
-- Subtask
+- **Subtask**
 
   A subtask are used primarily on tasks. They are a smaller unit used to keep track of fine grained things to do inside a task.
 
-  - task (foreign key)
-  - title
-  - description
-  - done (the state of the subtask)
-- Project
+  - `task` (foreign key)
+  - `title`
+  - `description`
+  - `done` (the state of the subtask)
+
+- **Project**
 
   A project's purpose is to encapsulate multiple tasks for an easier task tracking.
 
-  - name
-  - user (foreign key)
-  - **tasks**
+  - `name`
+  - `user` (foreign key)
+  - **`tasks`**
   Many to many field so that we can have multiple tasks on different projects. It can be blank so that we can a project without any tasks inside it.
-- Stats
+
+- **Stats**
 
   The user stats. When a user finishes a pomodoro timer with a current working task active, the chores_done for the current day and the gone_through field for the active working task increase.
 
-  - **day**
+  - **`day`**
   The current day, defaults to `timezone.now` and accept the format of `yyyy-mm-dd`
-  - **chores_done**
+  - **`chores_done`**
   The number of chores done in the current day
-- Mode
+
+- **Mode**
 
   A customized mode that the user can create. Each user can create a max of 3 modes, this is controlled by the client in the settings.
 
-  - user (foreign key)
-  - **name**
+  - `user` (foreign key)
+  - **`name`**
   The name of the mode e.g. "School classes" or "Short pomo"
-  - **pomo**
+  - **`pomo`**
   The length of the Pomodoro timer defaults to 25 minutes.
-  - **short_break**
+  - **`short_break`**
   The length of the short break timer defaults to 5 minutes.
-  - **long_break**
+  - **`long_break`**
   The length of the long break timer defaults to 15 minutes.
 
-> serializers.py
+> `serializers.py`
 
 This file is required for the Django Rest Framework. Its purpose is to serialize the data in our models. They allow querysets to be converted to native Python datatypes that can be easily be rendered to JSON.
 
@@ -134,7 +114,7 @@ In `TaskSerializer` I included an extra option called `depth` with a value of 1,
 
 In `ProjectSerializer` I overrode an the `get_fields` function to serialize the data inside the `tasks` field with the TaskSerializer. In the `Meta` class I included the extra option of `depth` with a value of 2 to access the tags and tasks info.
 
->  urls.py
+>  `urls.py`
 
 The urls of my api application. Here I imported the `DefaultRouter` from `rest_framework.routers` to register the ViewSets created on the views.py file which I will later explain.
 
@@ -165,10 +145,10 @@ The `access` key is included in the Authorization header of each request we make
 
 When these tokens expire we need to hit the `token/refresh/` route with the `refresh` token as the body of the request, this will return a response with a new set of tokens. The `access` token is valid for 1 week and the `refresh` token is valid for a month. After the `refresh` token expires the user is logged out from the client.
 
-> views.py
+> `views.py`
 
-The views.py is where all my server logic is. I've included documentation inside each function inside this file.
-I'm using class-based views, inheriting from [viewsets.ModelViewSet](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) to create the views that Django Rest Framework's Default Router will contain. This will provide common actions for our models such as list, retrieve, create, update, partial_update and destroy. We just need to provide the queryset, serializer and optionally permission classes or pagination classes. For example:
+The `views.py` is where all my server logic is. I've included documentation inside each function inside this file.
+I'm using class-based views, inheriting from [viewsets.ModelViewSet](https://www.django-rest-framework.org/api-guide/viewsets/#modelviewset) to create the views that Django Rest Framework's Default Router will contain. This will provide common actions for our models such as `list`, `retrieve`, `create`, `update`, `partial_update` and `destroy`. We just need to provide the queryset, serializer and optionally permission classes or pagination classes. For example:
 
 ```python
 class TagViewSet(viewsets.ModelViewSet):
@@ -181,18 +161,18 @@ In some cases I overrode the ModelViewSet functions to suit the needs of my app.
 
 After these ModelViewSet inherited views, I created [`APIView`](https://www.django-rest-framework.org/api-guide/views/) inherited class-based views for its ease of use. I've included the documentation inside of the functions for these classes too.
 
-## client/src/
+## `client/src/`
 I'm using Vue 3 as the framework for my client.
 
-### assets/
+### `assets/`
 The assets for my project such as the `base.css` for the color variables, the popper theme variables, the logo and the sound for starting and finishing a timer.
 
-### components/
+### `components/`
 This is where all my components are.
 
-#### buttons/
+#### `buttons/`
 
-##### new-buttons/
+##### `new-buttons/`
 Contains the clickable buttons used to create a task or a project. As well as the info buttons for Tags, Task and Project.
 
 | Filename | Description |
@@ -204,11 +184,11 @@ Contains the clickable buttons used to create a task or a project. As well as th
 |`Task.vue`|The main button that is showed in the home screen with the task name, a delete and an info icon. When the info icon is clicked it displays a task info in a modal that allows editing.|
 |`Project.vue`|Displays a project's name with an info icon, when the info icon is clicked it displays a modal with the tasks that are inside it.|
 
-#### icons/
+#### `icons/`
 
 The various icons used throughout the app, I made them as a Vue component because it is easier to work with them this way.
 
-#### modals/
+#### `modals/`
 The modals used throughout the application.
 
 > `Modal.vue`
@@ -226,7 +206,7 @@ This file contains the info part of the Project Modal, the tasks. It uses the `S
 Contains the info part of the Task Modal, (description, subtasks, and the estimated pomos counter). I decided to create this different file to unclutter the main `TaskModal.vue` file.
 
 
-#### slots/
+#### `slots/`
 
 | Filename | Description |
 | -------- | ----------- |
@@ -258,21 +238,21 @@ Contains the info part of the Task Modal, (description, subtasks, and the estima
 |`UserInfo.vue`|The modal where the user can log out.|
 
 
-### composables/
+### `composables/`
 
 > `useFetch.ts`
 
 An axios wrapper, I created this file because I wanted to try Vue composables.
 
 
-### router/
+### `router/`
 
 > `index.ts`
 
 The main router file, it lazily loads the view components. If the user visits the `/login` or `/register` routes when logged it redirects them to home.
 
 
-### stores/
+### `stores/`
 
 I'm using Pinia as my library of choice for state management.
 
@@ -309,7 +289,7 @@ Then as part of the state I have a `currentTimer` that is set to whichever timer
 
 - to be continued...
 
-### types/
+### `types/`
 
 The directory where I keep the types for the data I receive and set from and to the server.
 
@@ -317,7 +297,7 @@ The directory where I keep the types for the data I receive and set from and to 
 
 The file I import all the files in the directory and export them.
 
-### views/
+### `views/`
 
 The pages that the Vue Router renders on each route.
 | Route | Component | Description |
