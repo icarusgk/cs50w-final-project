@@ -50,7 +50,6 @@ export const useTimerStore = defineStore('timer', {
     done: false,
     ongoing: false,
     current: 'pomo',
-    percent: 5,
     sessions: 0,
     auto_start_pomo: useAuthStore().isAuthenticated
       ? useAuthStore().user!.auto_start_pomos
@@ -119,7 +118,6 @@ export const useTimerStore = defineStore('timer', {
       //  @ts-ignore
       this.currentTimer.seconds = this[name].seconds;
       this.current = name;
-      this.percent = 5;
     },
   },
 });
