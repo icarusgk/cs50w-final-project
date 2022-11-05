@@ -27,8 +27,7 @@ const minutes = (minutes: number) => {
 
 const seconds = (minutes: number) => minutes * 60;
 
-export const useTimerStore = defineStore({
-  id: 'timer',
+export const useTimerStore = defineStore('timer', {
   state: () => ({
     timerId: 0,
     currentTimer: {

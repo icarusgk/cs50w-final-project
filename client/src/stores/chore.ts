@@ -5,8 +5,7 @@ import { useFetch } from '@/composables/useFetch';
 import { useAlertStore } from './alerts';
 import { useAuthStore } from './auth';
 
-export const useChoreStore = defineStore({
-  id: 'chores',
+export const useChoreStore = defineStore('chores', {
   state: () => ({
     tasks: [] as TaskType[],
     projects: [] as ProjectType[],
