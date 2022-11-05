@@ -20,8 +20,7 @@ export interface Alert extends AlertOptions {
   message: string;
 }
 
-export const useAlertStore = defineStore({
-  id: 'alerts',
+export const useAlertStore = defineStore('alerts', {
   state: () => ({
     items: [] as Alert[],
   }),

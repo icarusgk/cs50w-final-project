@@ -51,8 +51,7 @@ type UserCredentials = {
   passwordConfirmation?: string;
 };
 
-export const useAuthStore = defineStore({
-  id: 'auth',
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
     isAuthenticated: Boolean(localStorage.getItem('jwt')),
