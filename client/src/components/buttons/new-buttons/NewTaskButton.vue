@@ -51,6 +51,8 @@ function removeTag(tag: TagType) {
     (t: TagType) => t.id !== tag.id
   );
 }
+
+const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
@@ -85,6 +87,7 @@ function removeTag(tag: TagType) {
       :task="initialTask"
       :isNew="true"
       @saveTask="saveTask()"
+      @newPomoCount="handlePomos($event)"
       @descriptionInput="initialTask.description = $event"
     />
     <!-- Button -->
