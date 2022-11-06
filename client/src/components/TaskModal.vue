@@ -91,8 +91,7 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
       <TaskModalInfo
         :task="props.task"
         @description-input="handleDesc"
-        @decrease-pomos="handlePomos($event)"
-        @increase-pomos="handlePomos($event)"
+        @newPomoCount="handlePomos($event)"
         @saveTask="saveTask()"
       />
       <template #save-button>

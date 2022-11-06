@@ -8,7 +8,7 @@ defineProps<{
   isNew?: boolean;
 }>();
 
-defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask']);
+defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
 </script>
 
 <template>
@@ -48,8 +48,7 @@ defineEmits(['descriptionInput', 'decreasePomos', 'increasePomos', 'saveTask']);
         <!-- Counter -->
         <TimerSetter
           :chore="task"
-          @decrease-pomos="$emit('decreasePomos', $event)"
-          @increase-pomos="$emit('increasePomos', $event)"
+          @newPomoCount="$emit('newPomoCount', $event)"
         />
       </div>
     </div>

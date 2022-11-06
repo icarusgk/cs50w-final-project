@@ -2,7 +2,7 @@
 import { ref, reactive } from 'vue';
 
 const props = defineProps(['chore']);
-const emit = defineEmits(['decreasePomos', 'increasePomos']);
+const emit = defineEmits(['newPomoCount']);
 
 const pomoLimits = reactive({ min: 1, max: 99 });
 
@@ -14,14 +14,14 @@ function increasePomos() {
   } else {
     localPomos.value = pomoLimits.max;
   }
-  emit('increasePomos', localPomos.value);
+  emit('newPomoCount', localPomos.value);
 }
 
 function decreasePomos() {
   if (props.chore.estimated > pomoLimits.min) {
     localPomos.value--;
   }
-  emit('decreasePomos', localPomos.value);
+  emit('newPomoCount', localPomos.value);
 }
 </script>
 
