@@ -19,7 +19,7 @@ useFetch('tags', 'get').then((res) => {
     </div>
     <div class="tags-container">
       <div
-        v-for="tag in tags" 
+        v-for="tag in tags"
         :key="tag.id" 
         @click="$router.push(`/tags/${tag.name}`)"
         class="tag"
