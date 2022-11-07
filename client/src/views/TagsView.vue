@@ -59,6 +59,7 @@ useFetch('tags', 'get').then((res) => {
   .tags-container {
     color: white;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     padding-top: 1rem;
   

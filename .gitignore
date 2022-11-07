@@ -11,3 +11,4 @@ media
 .env
 env/
 .vscode/
+.obsidian/
