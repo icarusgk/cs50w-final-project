@@ -538,7 +538,7 @@ class TagInfo(APIView):
     def get(self, request, name=None):
         """
         Tries to get the tag with the name of name
-        if it succedes it returns the tasks inside the tag
+        if it succeeds it returns the tasks inside the tag
         if it fails it raise a HTTP 404 error
 
         Keyword arguments:
