@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useChoreStore } from '@/stores/chore';
+import type { TagType } from '@/types';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -54,7 +55,7 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   // Prevent visit to register and login when auth
   if (to.name === 'Login' || to.name === 'Register') {
     const auth = useAuthStore();
@@ -66,9 +67,10 @@ router.beforeEach((to) => {
   if (to.name === 'Tag') {
     const tag = to.params.name;
     const chore = useChoreStore();
+
+    const tags = await chore.fetchTags();
     
-    // Guard for not existing tags
-    if (!chore.tags.find(t => t.name === tag)) {
+    if (!tags.find((t: TagType) => t.name === tag)) {
       return { name: 'Tags' };
     }
   }
