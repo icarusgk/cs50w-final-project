@@ -115,7 +115,9 @@ export const useChoreStore = defineStore('chores', {
     async fetchTags() {
       const { data, status } = await useFetch('tags', 'get');
 
-      if (status === 200) this.tags = data;
+      if (status === 200) {
+        return (this.tags = data);
+      }
     },
     async changeCurrentTask(id: number | undefined) {
       const { data, status } = await useFetch('currentTask', 'put', { id });
