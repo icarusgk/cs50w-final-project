@@ -370,7 +370,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             tags = request.data['task']['tags']
             for tag in tags:
                 (the_tag, created) = Tag.objects.get_or_create(
-                    name=tag['name'])
+                    name=tag['name'], user=request.user)
                 task.tags.add(the_tag)
 
             task.save()
