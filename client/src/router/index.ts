@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { useChoreStore } from '@/stores/chore';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -43,10 +44,12 @@ const router = createRouter({
     {
       path: '/tags',
       component: () => import('../views/TagsView.vue'),
+      name: 'Tags'
     },
     {
       path: '/tags/:name',
       component: () => import('../views/TagView.vue'),
+      name: 'Tag'
     },
   ],
 });
@@ -57,6 +60,16 @@ router.beforeEach((to) => {
     const auth = useAuthStore();
     if (auth.isAuthenticated) {
       return { name: 'Home' };
+    }
+  };
+
+  if (to.name === 'Tag') {
+    const tag = to.params.name;
+    const chore = useChoreStore();
+    
+    // Guard for not existing tags
+    if (!chore.tags.find(t => t.name === tag)) {
+      return { name: 'Tags' };
     }
   }
 });
