@@ -51,7 +51,12 @@ async function deleteTask() {
     <!-- Name -->
     <div class="task-title-container" :class="{ done: task.done }">
       <div @click="$emit('setCurrent', task.id)" class="title-container">
-        <span class="title">{{ props.task.title }}</span>
+        <Popper hover arrow placement="bottom" openDelay="1000">
+          <span class="title">{{ props.task.title }}</span>
+          <template #content>
+            Click to set it to current
+          </template>
+        </Popper>
       </div>
       <div class="icon-container">
         <div class="task-icon" @click="deleteTask()" style="margin-top: 0.3rem">
