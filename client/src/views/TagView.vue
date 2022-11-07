@@ -1,24 +1,40 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
+import { useChoreStore } from '@/stores/chore';
 import TaskInfo from '../components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
-import type { TaskType } from '@/types';
+import type { TaskType, TagType } from '@/types';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const route = useRoute();
+const router = useRouter();
+const chore = useChoreStore();
 
 const tasks = ref<TaskType[]>([]);
 const fetchedTags = ref(false);
+const urlTag = route.params.name;
 
 watchEffect(async () => {
-  if (route.params.name) {
+  if (urlTag) {
     const { data } = await useFetch(`tagInfo/${route.params.name}`, 'get');
     tasks.value = data as TaskType[];
     fetchedTags.value = true;
   }
 });
+
+async function deleteTag() {
+  const tagFound = chore.tags.find((t: TagType) => t.name === urlTag);
+  
+  const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
+  if (status === 204) {
+    router.push('/tags');
+    
+    // Refresh the current displayed tasks
+    chore.fetchTasks();
+  }
+}
 </script>
 
 <template>
@@ -28,7 +44,7 @@ watchEffect(async () => {
     </div>
     <div class="tag-name">
       <span class="title">#{{ route.params.name }}</span>
-      <div class="delete-tag">
+      <div @click="deleteTag()" class="delete-tag">
         <span class="text">Delete tag</span>
         <div><DeleteIcon /></div>
       </div>
