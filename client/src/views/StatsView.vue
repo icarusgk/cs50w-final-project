@@ -17,7 +17,9 @@ const auth = useAuthStore();
       <UnauthedChart class="blur" />
     </div>
     <div v-else class="chart-container">
-      <Chart id="the-chart" />
+      <Suspense>
+        <Chart id="the-chart" />
+      </Suspense>
     </div>
   </div>
 </template>
