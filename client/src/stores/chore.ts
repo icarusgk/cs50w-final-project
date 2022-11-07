@@ -128,7 +128,6 @@ export const useChoreStore = defineStore('chores', {
     fetchAll() {
       const auth = useAuthStore();
       if (auth.isAuthenticated) {
-        this.fetchStats();
         this.fetchModes();
         this.fetchTags();
       }

@@ -4,7 +4,7 @@ import { useChoreStore } from '@/stores/chore';
 import ApexChart from 'apexcharts';
 
 const chore = useChoreStore();
-chore.fetchStats();
+await chore.fetchStats();
 
 // A template ref
 const responsiveChart = ref(null);
