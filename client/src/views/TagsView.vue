@@ -26,6 +26,9 @@ useFetch('tags', 'get').then((res) => {
       >
         <span>#{{ tag.name }}</span>
       </div>
+      <div v-if="tags.length === 0">
+        <p>Currently there are no tags.</p>
+      </div>
     </div>
   </div>
 </template>
