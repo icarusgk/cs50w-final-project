@@ -76,7 +76,9 @@ async function createMode() {
     modes.value.push(data);
     localStorage.setItem('modes', JSON.stringify(modes.value));
 
-    changeMode(data.id);
+    if (!timer.ongoing) {
+      changeMode(data.id);
+    }
 
     showForm.value = false;
   }
