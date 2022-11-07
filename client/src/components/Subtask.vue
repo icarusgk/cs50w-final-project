@@ -13,8 +13,7 @@ defineEmits([
   'removeTag',
   'titleChange',
   'descChange',
-  'decreasePomo',
-  'increasePomo',
+  'newPomoCount'
 ]);
 </script>
 
@@ -65,8 +64,7 @@ defineEmits([
         <div v-if="props.isProject">
           <TimerSetter
             :chore="chore"
-            @decreasePomos="$emit('decreasePomo', $event)"
-            @increasePomos="$emit('increasePomo', $event)"
+            @newPomoCount="$emit('newPomoCount', $event)"
           />
         </div>
         <!-- Estimated Timers and save button -->
