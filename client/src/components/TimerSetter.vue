@@ -9,7 +9,7 @@ const pomoLimits = reactive({ min: 1, max: 99 });
 const localPomos = ref(props.chore.estimated);
 
 function increasePomos() {
-  if (props.chore.estimated < pomoLimits.max) {
+  if (localPomos.value < pomoLimits.max) {
     localPomos.value++;
   } else {
     localPomos.value = pomoLimits.max;
@@ -18,10 +18,22 @@ function increasePomos() {
 }
 
 function decreasePomos() {
-  if (props.chore.estimated > pomoLimits.min) {
+  if (localPomos.value > pomoLimits.min) {
     localPomos.value--;
   }
   emit('newPomoCount', localPomos.value);
+}
+
+function setPomos(count: any) {  
+  if (parseInt(count) <= pomoLimits.max) {
+    localPomos.value = parseInt(count);
+    emit('newPomoCount', localPomos.value);
+  }
+
+  if (parseInt(count) > pomoLimits.max) {
+    localPomos.value = pomoLimits.max;
+    emit('newPomoCount', localPomos.value);
+  }  
 }
 </script>
 
@@ -34,7 +46,7 @@ function decreasePomos() {
       :min="pomoLimits.min"
       :max="pomoLimits.max"
       :value="localPomos"
-      @input="e => localPomos = ((e.target) as HTMLInputElement).value"
+      @input="e => setPomos(((e.target) as HTMLInputElement).value)"
     />
     <button @click="decreasePomos" class="minus-icon pomo-icon">-</button>
     <button @click="increasePomos" class="pomo-icon">+</button>
