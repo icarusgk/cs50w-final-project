@@ -33,9 +33,14 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
                 <span>{{ auth.user?.username }}</span>
               </div>
               <template #content>
-                <button id="logout-btn" @click="auth.logout();">
-                  Logout
-                </button>
+                <div class="user-menu">
+                  <div class="tags" @click="$router.push('/tags')">
+                    Manage tags
+                  </div>
+                  <button id="logout-btn" @click="auth.logout();">
+                    Logout
+                  </button>
+                </div>
               </template>
             </Popper>
           </div>
@@ -95,22 +100,41 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
           margin-right: 1rem;
         }
 
-        #logout-btn {
-          padding: 0.5rem 1rem;
-          border-radius: 8px;
-          border: none;
-          background-color: var(--vivid-red);
-          color: white;
-          font-weight: 500;
-          transition: background-color 0.15s ease-in;
-        
-          &:hover,
-          &:focus,
-          &:active {
-            cursor: pointer;
-            background-color: #ff4b4b9f;
+        .user-menu {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .tags {
+            padding: 0.7rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+            background-color: rgb(92, 92, 92);
+            color: white;
+            
+          }
+
+          #logout-btn {
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--vivid-red);
+            color: white;
+            font-weight: 500;
+            transition: background-color 0.15s ease-in;
+          
+            &:hover,
+            &:focus,
+            &:active {
+              cursor: pointer;
+              background-color: #ff4b4b9f;
+            }
           }
         }
+
+        
 
         .user-actions-container {
           display: flex;
