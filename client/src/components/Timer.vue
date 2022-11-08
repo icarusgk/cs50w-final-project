@@ -18,6 +18,7 @@ watch(
       timer.setNextTimer();
       finishedAudio.play();
       stopTimer();
+      document.title = 'Pomo.do - Done!'
 
       // Auto start pomo
       if (timer.current == 'pomo') {
