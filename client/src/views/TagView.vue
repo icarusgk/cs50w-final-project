@@ -27,12 +27,14 @@ watchEffect(async () => {
 async function deleteTag() {
   const tagFound = chore.tags.find((t: TagType) => t.name === urlTag);
   
-  const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
-  if (status === 204) {
-    router.push('/tags');
-    
-    // Refresh the current displayed tasks
-    chore.fetchTasks();
+  if (window.confirm('Are you sure?')) {
+    const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
+    if (status === 204) {
+      router.push('/tags');
+      
+      // Refresh the current displayed tasks
+      chore.fetchTasks();
+    }
   }
 }
 </script>
