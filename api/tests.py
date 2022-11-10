@@ -89,3 +89,68 @@ class UserTestCase(TestCase):
   def tearDown(self):
     all_users = User.objects.all()
     all_users.delete()
+
+
+class ModeTestCase(TestCase):
+  def setUp(self):
+    user = User.objects.create(**{
+      'username': 'test_user',
+      'password': 'test_password'
+    })
+    self.mode = Mode.objects.create(**{
+      'user': user,
+      'name': 'Classes mode',
+      'pomo': 50,
+      'short_break': 10,
+      'long_break': 30
+    })
+    self.c = Client()
+
+  def test_mode_existence(self):
+    self.assertTrue(self.mode)
+    self.assertEqual(Mode.objects.count(), 1)
+
+  def test_mode_correct_values(self):
+    user = User.objects.get(username='test_user')
+    
+    self.assertEqual(self.mode.user, user)
+    self.assertEqual(self.mode.name, 'Classes mode')
+    self.assertEqual(self.mode.pomo, 50)
+    self.assertEqual(self.mode.short_break, 10)
+    self.assertEqual(self.mode.long_break, 30)
+
+
+  def test_mode_creation(self):
+    def auth():
+      credentials = {
+      'username': 'test_user_mode',
+      'password': 'test_password_mode'
+      }
+
+      self.c.post('/api/register/', {
+        **credentials,
+        'passwordConfirmation': 'test_password_mode'
+      })
+
+      login_response = self.c.post('/api/token/', credentials)
+
+      return json.loads(login_response.content)
+
+    auth_headers = {
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth()['access']
+    }
+
+    new_mode = {
+      'name': 'Short mode',
+      'pomo': 15,
+      'short_break': 2,
+      'long_break': 5
+    }
+    response = self.c.post('/api/modes/', new_mode, **auth_headers)
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(json.loads(response.content), {
+      'id': 2,
+      **new_mode
+    })
+    
