@@ -6,32 +6,25 @@ import json
 
 class UserTestCase(TestCase):
   def setUp(self) -> None:
-    User.objects.create(**{
+    self.user = User.objects.create(**{
       'username': 'test_user',
       'password': 'test_password',
     })
     self.c = Client()
 
-  def get_user(self, username):
-    try:
-      return User.objects.get(username=username)
-    except User.DoesNotExist:
-      return False
-
   def test_user_creation(self):
-    user = self.get_user('test_user')
-    self.assertTrue(user)
+    self.assertTrue(self.user)
+    self.assertEqual(User.objects.all().count(), 1)
 
   def test_user_credentials(self):
-    user = self.get_user('test_user')
-    self.assertEqual(user.username, 'test_user')
+    self.assertEqual(self.user.username, 'test_user')
+    self.assertEqual(self.user.password, 'test_password')
 
   def test_user_settings(self):
-    user = self.get_user('test_user')
-    self.assertEqual(user.current_task_id, 0)
-    self.assertEqual(user.current_mode_id, 0)
-    self.assertFalse(user.auto_start_pomos)
-    self.assertFalse(user.auto_start_breaks)
+    self.assertEqual(self.user.current_task_id, 0)
+    self.assertEqual(self.user.current_mode_id, 0)
+    self.assertFalse(self.user.auto_start_pomos)
+    self.assertFalse(self.user.auto_start_breaks)
 
   def test_user_register(self, username='test_user_r', password='test_password_r'):
     response = self.c.post('/api/register/', {
@@ -94,9 +87,5 @@ class UserTestCase(TestCase):
     self.assertEqual(type(json.loads(response.content)), list)
 
   def tearDown(self):
-    user = self.get_user('test_user')
-    user.delete()
-
-    
-    
-
+    all_users = User.objects.all()
+    all_users.delete()
