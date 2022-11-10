@@ -83,6 +83,16 @@ class UserTestCase(TestCase):
     self.assertEqual(response.status_code, 200)
     self.assertEqual(json.loads(response.content)['username'], 'test_user_self')
 
+  def test_user_retrieve_all(self):
+    tokens = self.test_user_login('test_users', 'test_passwords')
+    auth_headers = {
+      'HTTP_AUTHORIZATION': 'Bearer ' + tokens['access']
+    }
+    response = self.c.get('/api/users/', **auth_headers)
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(type(json.loads(response.content)), list)
+
   def tearDown(self):
     user = self.get_user('test_user')
     user.delete()
