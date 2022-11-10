@@ -12,9 +12,9 @@ class UserTestCase(TestCase):
     })
     self.c = Client()
 
-  def test_user_creation(self):
+  def test_user_existence(self):
     self.assertTrue(self.user)
-    self.assertEqual(User.objects.all().count(), 1)
+    self.assertEqual(User.objects.count(), 1)
 
   def test_user_credentials(self):
     self.assertEqual(self.user.username, 'test_user')
