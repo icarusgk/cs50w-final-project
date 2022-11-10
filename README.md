@@ -2,7 +2,7 @@
 
 This is the repository for the [**Harvard's CS50w Final Project**](https://cs50.harvard.edu/web/2020/projects/final/capstone/)
 
-<h1 align="center">🍅 Pomo.do</h1>
+![Group 105](https://user-images.githubusercontent.com/38413630/200972214-0b300dc1-a20b-4579-96f9-bc1fcfb745de.png)
 
 ## About this project
 
