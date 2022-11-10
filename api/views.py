@@ -70,7 +70,11 @@ class ModeViewSet(viewsets.ModelViewSet):
         Checks for time validation (pomo, short_break, long_break)
         and creates a new timer mode
         """
-        if request.data['pomo'] >= 60 or request.data['short_break'] >= 60 or request.data['long_break'] >= 60:
+        pomo = request.data['pomo']
+        short_break = request.data['short_break']
+        long_break = request.data['long_break']
+
+        if int(pomo) >= 60 or int(short_break) >= 60 or int(long_break) >= 60:
             return Response(
                 {'message': 'Not valid, timers can only be less than an hour long.'})
 
