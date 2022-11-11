@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from .models import Task, Project, Subtask, Tag, Stats, Mode, User
 import datetime
+from django.db.utils import IntegrityError
 
 # Create your tests here.
 
@@ -68,7 +69,7 @@ class StatsTestCase(TestCase):
       'username': 'test_user',
       'password': 'test_pass'
     })
-    
+
     user_1 = User.objects.create(**{
       'username': 'test_user_1',
       'password': 'test_pass_1'
@@ -88,4 +89,39 @@ class StatsTestCase(TestCase):
     self.assertEqual(user_1.stats.count(), 1)
 
 
-  
+class TagTestCase(TestCase):
+  def setUp(self):
+    user = User.objects.create(**{
+      'username': 'test_user',
+      'password': 'test_pass'
+    })
+
+    user_1 = User.objects.create(**{
+      'username': 'test_user_1',
+      'password': 'test_pass_1'
+    })
+
+    Tag.objects.create(name='Vue 3', user=user)
+    Tag.objects.create(name='Nuxt 3', user=user)
+    Tag.objects.create(name='Django', user=user_1)
+    Tag.objects.create(name='DRF', user=user_1)
+
+
+  def test_user_tags_count(self):
+    user = User.objects.get(username='test_user')
+    user_1 = User.objects.get(username='test_user_1')
+
+    self.assertEqual(user.tags.count(), 2)
+    self.assertEqual(user_1.tags.count(), 2)
+    
+
+  # This test helped me find out that tags were unique
+  # globally, not only for the user
+  def test_tag_repeated_on_dif_user(self):
+    user = User.objects.get(username='test_user')
+    user_1 = User.objects.get(username='test_user_1')
+    tag = Tag.objects.create(name='Vue 3', user=user_1)
+    tag_2 = Tag.objects.create(name='Django', user=user)
+    self.assertTrue(tag)
+    self.assertTrue(tag_2)
+    
