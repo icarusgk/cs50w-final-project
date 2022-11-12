@@ -223,5 +223,38 @@ class ProjectTestCase(TestCase):
     self.assertEqual(self.user.projects.count(), 1)
 
 
+class SubtaskTestCase(TestCase):
+  def setUp(self):
+    user = User.objects.create(**{
+      'username': 'test_user',
+      'password': 'test_pass'
+    })
 
+    self.task = Task.objects.create(**{
+      'user': user,
+      'title': 'Study refs',
+      'description': 'Read more about refs',
+      'in_project': True
+    })
 
+    self.subtask_1 = Subtask.objects.create(**{
+      'task': self.task,
+      'title': 'Pinia',
+      'description': 'Find out more about Pinia'
+    })
+
+    self.subtask_2 = Subtask.objects.create(**{
+      'task': self.task,
+      'title': 'Router',
+      'description': 'Find out more about Vue Router'
+    })
+
+  
+  def test_subtask_done_status(self):
+    self.assertFalse(self.subtask_1.done)
+    self.assertFalse(self.subtask_2.done)
+
+  
+  def test_task_subtasks(self):
+    self.assertQuerysetEqual(self.task.subtasks.all(), [self.subtask_1, self.subtask_2], ordered=False)
+    self.assertEqual(self.task.subtasks.count(), 2)
