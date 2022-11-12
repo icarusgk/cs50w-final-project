@@ -124,7 +124,8 @@ class TagTestCase(TestCase):
     tag_2 = Tag.objects.create(name='Django', user=user)
     self.assertTrue(tag)
     self.assertTrue(tag_2)
-    
+
+
 class TaskTestCase(TestCase):
   def setUp(self):
     self.user = User.objects.create(**{
@@ -173,6 +174,54 @@ class TaskTestCase(TestCase):
   def test_task_not_in_project(self):
     self.assertFalse(self.task.in_project)
 
+
+
+class ProjectTestCase(TestCase):
+  def setUp(self):
+    self.user = User.objects.create(**{
+      'username': 'test_user',
+      'password': 'test_pass'
+    })
     
+    self.project = Project.objects.create(**{
+      'name': 'Learn Nuxt v3',
+      'user': self.user
+    })
     
   
+  def test_project_empty_tasks(self):
+    self.assertQuerysetEqual(self.project.tasks.all(), [])
+
+
+  def test_project_tasks(self):
+    task_1 = Task.objects.create(**{
+      'user': self.user,
+      'title': 'Study refs',
+      'description': 'Read more about refs',
+      'in_project': True
+    })
+
+    task_2 = Task.objects.create(**{
+      'user': self.user,
+      'title': 'Read about Nuxt 3 routing',
+      'description': 'Find out how the routing works',
+      'in_project': True
+    })
+
+
+    self.project.tasks.add(task_1)
+    self.project.tasks.add(task_2)
+
+    self.assertTrue(task_1.in_project)
+    self.assertTrue(task_2.in_project)
+    self.assertQuerysetEqual(self.project.tasks.all(), [task_1, task_2], ordered=False)
+    self.assertEqual(self.project.tasks.count(), 2)
+    self.assertEqual(task_1.project_tasks.first(), self.project)
+
+
+  def test_user_projects(self):
+    self.assertEqual(self.user.projects.count(), 1)
+
+
+
+
