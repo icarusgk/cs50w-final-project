@@ -1,9 +1,7 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from .models import Task, Project, Subtask, Tag, Stats, Mode, User
 import datetime
-from django.db.utils import IntegrityError
 
-# Create your tests here.
 
 class UserTestCase(TestCase):
   def setUp(self) -> None:
