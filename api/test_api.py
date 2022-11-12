@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from .models import Task, Project, Subtask, Tag, Stats, Mode, User
+from .serializers import *
 from .utils_api import AuthUtils
+from django.utils.timezone import now
 
 import json
 
@@ -62,7 +64,7 @@ class UserOperationsTestCase(TestCase):
     self.assertEqual(type(json.loads(response.content)), list)
 
 
-class APIModeTestCase(TestCase):
+class ModeOperationsTestCase(TestCase):
   def setUp(self):
     self.auth = AuthUtils()
     self.auth.auth()
@@ -91,3 +93,133 @@ class APIModeTestCase(TestCase):
 
     response = self.c.delete('/api/modes/1/')
     self.assertEqual(response.status_code, 204)
+
+
+class StatsOperationsTestCase(TestCase):
+  def setUp(self):
+    self.auth = AuthUtils()
+    self.auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
+    })
+
+  def test_stats_creation(self):
+    today = {
+      'day': '2022-11-11',
+    }
+
+    tomorrow = {
+      'day': '2022-11-12'
+    }
+
+    response_1 = self.c.post('/api/stats/', today)
+    response_2 = self.c.post('/api/stats/', tomorrow)
+    
+    self.assertEqual(response_1.status_code, 200)
+    self.assertEqual(response_2.status_code, 200)
+
+    self.assertEqual(json.loads(response_1.content), {
+      'id': 1,
+      'chores_done': 1,
+      **today
+    })
+
+    self.assertEqual(json.loads(response_2.content), {
+      'id': 2,
+      'chores_done': 1,
+      **tomorrow
+    })
+    
+
+  def test_stats_increase(self):
+    today = {
+      'day': '2022-11-11'
+    }
+
+    # Create the stat
+    self.c.post('/api/stats/', today)
+
+    # Increment the stat
+    response = self.c.post('/api/stats/', today)
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(json.loads(response.content), {
+      'id': 1,
+      'chores_done': 2,
+      **today
+    })
+
+  def test_stat_retrieval(self):
+    self.test_stats_creation()
+
+    response = self.c.get('/api/stats/')
+
+    stats = Stats.objects.all()
+
+    self.assertEqual(response.status_code, 200)
+    self.assertListEqual(json.loads(response.content), StatsSerializer(stats, many=True).data)
+
+  
+  # This test helped me find out that stats were
+  # shared
+  def test_stats_for_diff_users(self):
+    self.test_stat_retrieval()
+
+    c = Client()
+
+    # Create new user
+    new_user = {
+      'username': 'test_user_1',
+      'password': 'test_pass_1'
+    }
+
+    c.post('/api/register/', {
+      **new_user,
+      'passwordConfirmation': 'test_pass_1' 
+    })
+
+    login_response = c.post('/api/token/', new_user)
+
+    tokens = json.loads(login_response.content)
+
+    auth_headers = {
+      'HTTP_AUTHORIZATION': 'Bearer ' + tokens['access']
+    }
+
+    today = {
+      'day': '2022-11-11'
+    }
+
+    tomorrow = {
+      'day': '2022-11-12'
+    }
+
+    # Create same stats but for this user
+    response_1 = c.post('/api/stats/', today, **auth_headers)
+    response_2 = c.post('/api/stats/', tomorrow, **auth_headers)
+    
+    self.assertEqual(response_1.status_code, 200)
+    self.assertEqual(response_2.status_code, 200)
+
+    self.assertEqual(json.loads(response_1.content), {
+      'id': 3,
+      'chores_done': 1,
+      **today
+    })
+
+    self.assertEqual(json.loads(response_2.content), {
+      'id': 4,
+      'chores_done': 1,
+      **tomorrow
+    })
+
+
+
+
+
+
+
+
+
+
