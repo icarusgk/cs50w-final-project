@@ -125,3 +125,54 @@ class TagTestCase(TestCase):
     self.assertTrue(tag)
     self.assertTrue(tag_2)
     
+class TaskTestCase(TestCase):
+  def setUp(self):
+    self.user = User.objects.create(**{
+      'username': 'test_user',
+      'password': 'test_pass'
+    })
+
+    self.task = Task.objects.create(**{
+      'user': self.user,
+      'title': 'Learn refs',
+      'description': 'Study more about Vue 3 refs',
+      'estimated': 2,
+    })
+
+
+  def test_task_gone_through(self):
+    self.assertEqual(self.task.gone_through, 0)
+
+  
+  def test_task_empty_tags(self):
+    self.assertQuerysetEqual(self.task.tags.all(), [])
+
+
+  def test_task_tags_addition(self):
+    vue = Tag.objects.create(**{
+      'user': self.user,
+      'name': 'Vue 3'
+    })
+
+    nuxt = Tag.objects.create(**{
+      'user': self.user,
+      'name': 'Nuxt 3'
+    })
+
+    self.task.tags.add(vue)
+    self.task.tags.add(nuxt)
+
+    self.assertEqual(self.task.tags.count(), 2)
+    self.assertQuerysetEqual(self.task.tags.all(), [vue, nuxt], ordered=False)
+    
+
+  def test_task_not_done(self):
+    self.assertFalse(self.task.done)
+
+
+  def test_task_not_in_project(self):
+    self.assertFalse(self.task.in_project)
+
+    
+    
+  
