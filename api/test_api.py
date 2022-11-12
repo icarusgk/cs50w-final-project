@@ -2,7 +2,6 @@ from django.test import TestCase, Client
 from .models import Task, Project, Subtask, Tag, Stats, Mode, User
 from .serializers import *
 from .utils_api import AuthUtils
-from django.utils.timezone import now
 
 import json
 
@@ -216,10 +215,112 @@ class StatsOperationsTestCase(TestCase):
 
 
 
+class TagsTestCase(TestCase):
+  def setUp(self):
+    self.auth = AuthUtils()
+    self.auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access'],
+    })
+
+    user = User.objects.get(username='test_user')
+
+    self.task = Task.objects.create(**{
+      'user': user,
+      'title': 'Learn DRF',
+      'description': 'Study more about Django Rest Framework',
+      'estimated': 3
+    })
+
+  
+  def test_tag_creation(self):
+    vue_tag = { 'tag_name': 'Vue' }
+    nuxt_tag = { 'tag_name': 'Nuxt' }
+    django_tag = { 'tag_name': 'Django' }
+
+    options = { 'obj': 'tag', 'action': 'add' }
+
+    # Add the tags to the tags
+    response_1 = self.c.patch(f'/api/tasks/{self.task.id}/', {
+      **options,
+      **vue_tag
+    }, content_type="application/json")
+
+    response_2 = self.c.patch(f'/api/tasks/{self.task.id}/', {
+      **options,
+      **nuxt_tag
+    }, content_type="application/json")
+
+    response_3 = self.c.patch(f'/api/tasks/{self.task.id}/', {
+      **options,
+      **django_tag
+    }, content_type="application/json")
+
+    # Test Status codes
+    self.assertEqual(response_1.status_code, 200)
+    self.assertEqual(response_2.status_code, 200)
+    self.assertEqual(response_3.status_code, 200)
+
+    # Retrieve the models
+    model_vue_tag = Tag.objects.get(name=vue_tag['tag_name'])
+    model_nuxt_tag = Tag.objects.get(name=nuxt_tag['tag_name'])
+    model_django_tag = Tag.objects.get(name=django_tag['tag_name'])
+
+    # Test Serializers
+    self.assertEqual(TagSerializer(model_vue_tag).data, {
+      'id': model_vue_tag.id,
+      'name': vue_tag['tag_name']
+    })
+
+    self.assertEqual(TagSerializer(model_nuxt_tag).data, {
+      'id': model_nuxt_tag.id,
+      'name': nuxt_tag['tag_name']
+    })
+
+    self.assertEqual(TagSerializer(model_django_tag).data, {
+      'id': model_django_tag.id,
+      'name': django_tag['tag_name']
+    })
 
 
+  def test_task_tags(self):
+    self.test_tag_creation()
 
+    vue_tag = self.c.get('/api/tags/1/').json()
+    nuxt_tag = self.c.get('/api/tags/2/').json()
+    django_tag = self.c.get('/api/tags/3/').json()
 
+    self.assertEqual(TagSerializer(self.task.tags.all(), many=True).data, [
+      vue_tag, nuxt_tag, django_tag
+    ])
+
+  
+  def test_repeated_tag_on_task(self):
+    self.test_tag_creation()
+
+    repeated_tag = self.c.patch(f'/api/tasks/{self.task.id}/', {
+      'obj': 'tag', 'action': 'add', 'tag_name': 'Django'
+    }, content_type='application/json')
+
+    self.assertEqual(repeated_tag.json()['message'], 'tag already exists in task')
+    
+  
+  def test_tag_removal(self):
+    self.test_tag_creation()
+
+    vue_tag = self.c.get('/api/tags/1/').json()
+    nuxt_tag = self.c.get('/api/tags/2/').json()
+    django_tag = self.c.get('/api/tags/3/').json()
+
+    response_1 = self.c.delete(f'/api/tags/{vue_tag["id"]}/')
+    response_2 = self.c.delete(f'/api/tags/{nuxt_tag["id"]}/')
+    response_3 = self.c.delete(f'/api/tags/{django_tag["id"]}/')
+
+    self.assertEqual(response_1.status_code, 204)
+    self.assertEqual(response_2.status_code, 204)
+    self.assertEqual(response_3.status_code, 204)
+
+    self.assertEqual(self.task.tags.count(), 0)
 
 
 
