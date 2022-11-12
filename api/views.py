@@ -138,25 +138,28 @@ class TaskViewSet(viewsets.ModelViewSet):
         for the current user
         """
         serializer = TaskSerializer(data=request.data)
-        subtasks = request.data['subtasks']
-        tags = request.data['tags']
+        
+        subtasks = request.data.get('subtasks')
+        tags = request.data.get('tags')
 
         if serializer.is_valid():
             task = Task(user=request.user, **serializer.data)
             task.save()
 
             # Add tags
-            for tag in tags:
-                tag_obj = Tag.objects.filter(name=tag['name']).first()
-                if not tag_obj:
-                    # Create tag
-                    tag_obj = Tag.objects.create(
-                        user=request.user, name=tag['name'])
-                task.tags.add(tag_obj)
+            if tags:
+                for tag in tags:
+                    tag_obj = Tag.objects.filter(name=tag['name']).first()
+                    if not tag_obj:
+                        # Create tag
+                        tag_obj = Tag.objects.create(
+                            user=request.user, name=tag['name'])
+                    task.tags.add(tag_obj)
 
             # Add subtasks
-            for subtask in subtasks:
-                Subtask.objects.create(task=task, **subtask)
+            if subtasks:
+                for subtask in subtasks:
+                    Subtask.objects.create(task=task, **subtask)
 
             # Return the newly created task
             return Response(TaskSerializer(task).data)
