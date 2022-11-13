@@ -118,7 +118,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """
         Returns the current user's tasks
-        ordered descendingly
+        in descending order
         """
         return self.request.user.tasks.all().filter(in_project=False).order_by('-id')
 
