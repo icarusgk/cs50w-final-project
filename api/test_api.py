@@ -324,3 +324,404 @@ class TagsTestCase(TestCase):
 
 
 
+class TaskTestCase(TestCase):
+  def setUp(self):
+    self.auth = AuthUtils()
+    self.auth.auth()
+    
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
+    })
+
+    self.task_1 = {
+      'tags': [],
+      'title': 'Learn Vue',
+      'description': 'Read about refs',
+      'estimated': 2,
+      'subtasks': []
+    }
+
+    self.task_2 = {
+      'tags': [],
+      'title': 'Study Django Rest Framework',
+      'description': 'Read more about it',
+      'estimated': 4,
+      'subtasks': []
+    }
+
+    self.task_1_res = self.c.post('/api/tasks/', self.task_1)
+    self.task_2_res = self.c.post('/api/tasks/', self.task_2)
+
+    self.task_1_model = Task.objects.get(title=self.task_1.get('title'))
+    self.task_2_model = Task.objects.get(title=self.task_2.get('title'))
+
+
+
+  def options(self, obj, action):
+    return { 'obj': obj, 'action': action }
+
+
+ 
+  def test_tasks_creation(self):
+    self.assertEqual(self.task_1_res.status_code, 200)
+    self.assertEqual(self.task_2_res.status_code, 200)    
+
+    self.assertTrue(self.task_1_model)
+    self.assertTrue(self.task_2_model)
+
+
+
+  def test_task_serializer(self):
+    self.assertEqual(self.task_1_res.json(), {
+      **TaskSerializer(self.task_1).data,
+      'id': self.task_1_model.id,
+      'done': False,
+      'gone_through': 0,
+      'project_tasks': []
+    })
+
+    self.assertEqual(self.task_2_res.json(), {
+      **TaskSerializer(self.task_2).data,
+      'id': self.task_2_model.id,
+      'done': False,
+      'gone_through': 0,
+      'project_tasks': []
+    })
+
+
+  
+  def test_task_retrieval(self):
+    response = self.c.get('/api/tasks/')
+    self.assertEqual(response.status_code, 200)
+
+  
+
+  def test_task_retrieval_order(self):
+    response = self.c.get('/api/tasks/')
+
+    # Get results from paginated response
+    tasks = response.json().get('results')
+    
+    # Use QuerySet instead of just Equal, for ordered values
+    self.assertQuerysetEqual(
+      TaskSerializer(Task.objects.all().order_by('-id'), many=True).data,
+      tasks
+    )
+
+    return tasks
+
+  
+  def test_task_are_outside_projects(self):
+    tasks = self.test_task_retrieval_order()
+
+    for task in tasks:
+      self.assertFalse(task.get('in_project'))
+
+  
+
+  def test_task_single_retrieval(self):
+    res_1 = self.c.get(f'/api/tasks/{self.task_1_model.id}/')
+    res_2 = self.c.get(f'/api/tasks/{self.task_2_model.id}/')
+
+    self.assertEqual(res_1.status_code, 200)
+    self.assertEqual(res_2.status_code, 200)
+    
+    self.assertEqual(TaskSerializer(self.task_1_model).data, res_1.json())
+    self.assertEqual(TaskSerializer(self.task_2_model).data, res_2.json())
+
+
+
+  def test_task_update(self):
+    old_task_details = {
+      'title': 'Learn Vue',
+      'description': 'Read about refs',
+    }
+    
+    self.assertEqual(self.task_1.get('title'), old_task_details.get('title'))
+    self.assertEqual(self.task_1.get('description'), old_task_details.get('description'))
+
+    new_task_details = {
+      'title': 'Learn Vue 3 API',
+      'description': 'Read even more about refs'
+    }
+
+    response = self.c.put(f'/api/tasks/{self.task_1_model.id}/', {
+      **new_task_details
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    new_task = Task.objects.get(id=self.task_1_model.id)
+
+    self.assertEqual(new_task.title, new_task_details.get('title'))
+    self.assertEqual(new_task.description, new_task_details.get('description'))
+
+
+
+  def test_task_tag_removal(self):
+    tag = Tag.objects.create(name='Vue', user=User.objects.first())
+
+    self.task_1_model.tags.add(tag)
+
+    self.assertEqual(self.task_1_model.tags.count(), 1)
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('tag', 'remove'),
+      'tag_id': tag.id
+    }, content_type='application/json')
+
+    self.assertEqual(self.task_1_model.tags.count(), 0)
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json().get('message'), 'tag removed')
+
+
+  
+  def test_task_tag_addition(self):
+    self.assertEqual(self.task_1_model.tags.count(), 0)
+
+    tag_name = 'Astro'
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('tag', 'add'),
+      'tag_name': tag_name
+    }, content_type='application/json')
+
+    self.assertEqual(self.task_1_model.tags.count(), 1)
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(response.json(), {'message': 'new', 'tag': {
+      'id': 1,
+      'name': tag_name
+    }})
+
+
+  
+  def test_task_invalid_tag(self):
+    self.test_task_tag_addition()
+
+    self.assertEqual(self.task_1_model.tags.count(), 1)
+
+    tag_name = 'Astro'
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('tag', 'add'),
+      'tag_name': tag_name
+    }, content_type='application/json')
+
+    self.assertEqual(self.task_1_model.tags.count(), 1)
+    self.assertEqual(response.json().get('message'), 'tag already exists in task')
+
+
+
+  def test_task_tag_prev_created(self):
+    tag_name = 'Nuxt v3'
+    Tag.objects.create(name=tag_name, user=User.objects.first())
+
+    self.assertEqual(self.task_1_model.tags.count(), 0)
+    self.assertEqual(Tag.objects.count(), 1)
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('tag', 'add'),
+      'tag_name': tag_name
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json(), { 'tag': {
+      'id': 1,
+      'name': tag_name
+    }})
+
+    self.assertEqual(self.task_1_model.tags.count(), 1)
+    self.assertEqual(Tag.objects.count(), 1)
+
+  
+
+  def test_task_subtask_addition(self):
+    self.assertEqual(self.task_1_model.subtasks.count(), 0)
+
+    subtask = {
+      'title': 'Reactive alternative',
+      'description': 'Read more about the alternative of refs',
+    }
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('subtask', 'add'),
+      'subtask': subtask
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(self.task_1_model.subtasks.count(), 1)
+
+    self.assertEqual(response.json(), {
+      'id': 1,
+      **SubtaskSerializer(subtask).data,
+      'done': False
+    })
+
+
+
+  def test_task_subtask_removal(self):
+    subtask = {
+      'title': 'Reactive alternative',
+      'description': 'Read more about the alternative of refs',
+    }
+
+    sub = Subtask.objects.create(task=self.task_1_model, **subtask)
+
+    self.assertEqual(self.task_1_model.subtasks.count(), 1)
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('subtask', 'remove'),
+      'subtask_id': sub.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(self.task_1_model.subtasks.count(), 0)
+
+    self.assertEqual(response.json(), {
+      'message': 'subtask removed'
+    })
+
+
+
+  def test_task_subtask_update(self):
+    self.test_task_subtask_addition()
+
+    subtask = self.task_1_model.subtasks.first()
+
+    self.assertEqual(self.task_1_model.subtasks.count(), 1)
+
+    old_subtask_details = {
+      'title': 'Reactive alternative',
+      'description': 'Read more about the alternative of refs',
+    }
+
+    self.assertEqual(old_subtask_details.get('title'), subtask.title)
+    self.assertEqual(old_subtask_details.get('description'), subtask.description)
+
+    new_subtask_details = {
+      'title': 'Reactive Docs',
+      'description': 'Read more about the alternative of refs, \
+        and the better use cases'
+    }
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('subtask', 'update'),
+      'subtask': {
+        'id': subtask.id,
+        **new_subtask_details
+      }
+    }, content_type='application/json')
+
+    new_subtask = self.task_1_model.subtasks.first()
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(self.task_1_model.subtasks.count(), 1)
+
+    self.assertEqual(new_subtask_details.get('title'), new_subtask.title)
+    self.assertEqual(new_subtask_details.get('description'), new_subtask.description)
+
+    self.assertEqual(response.json(), {'message': 'updated'})
+
+
+  
+  def test_task_subtask_done(self):
+    self.test_task_subtask_addition()
+
+    def change_done_status():
+      return self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+        **self.options('subtask', 'done'),
+        'subtask_id': self.task_1_model.subtasks.first().id,
+      }, content_type='application/json')
+
+    
+    self.assertEqual(self.task_1_model.subtasks.first().done, False)
+
+    response = change_done_status()
+
+    self.assertEqual(self.task_1_model.subtasks.first().done, True)
+    self.assertEqual(response.json(), {'done': True})
+
+    response = change_done_status()
+
+    self.assertEqual(self.task_1_model.subtasks.first().done, False)
+    self.assertEqual(response.json(), {'done': False})
+
+
+
+  def test_task_done(self):
+    self.assertEqual(self.task_1_model.done, False)
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('task', 'done'),
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(Task.objects.first().done, True)
+    self.assertEqual(response.json(), {'done': True})
+
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+      **self.options('task', 'done'),
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(Task.objects.first().done, False)
+    self.assertEqual(response.json(), {'done': False})
+
+
+  
+  def test_task_gone_through(self):
+    def increment():
+      response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+        **self.options('task', 'increment_gone_through'),
+      }, content_type='application/json')
+
+      self.assertEqual(response.status_code, 200)
+      return response
+
+    self.assertEqual(self.task_1_model.gone_through, 0)
+
+    response = increment()
+    self.assertEqual(Task.objects.first().gone_through, 1)
+    self.assertEqual(response.json(), 1)
+
+    response = increment()
+    self.assertEqual(Task.objects.first().gone_through, 2)
+    self.assertEqual(response.json(), 2)
+
+    response = increment()
+    self.assertEqual(Task.objects.first().gone_through, 3)
+    self.assertEqual(response.json(), 3)
+
+
+  
+  def test_task_invalid_request(self):
+    response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
+        # 'projects' is not a valid obj
+        **self.options('projects', 'increment_gone_through'),
+      }, content_type='application/json')
+    
+    self.assertEqual(response.json(), {'message': 'error'})
+
+
+
+  def test_task_deletion(self):
+    response = self.c.delete(f'/api/tasks/{self.task_1_model.id}/')
+
+    self.assertEqual(response.status_code, 200)
+
+    try:
+      task = Task.objects.get(id=self.task_1_model.id)
+    except Task.DoesNotExist:
+      task = None
+
+    self.assertEqual(task, None)
+
+    
