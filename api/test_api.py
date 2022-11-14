@@ -725,3 +725,291 @@ class TaskTestCase(TestCase):
     self.assertEqual(task, None)
 
     
+class ProjectTestCase(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+    })
+
+    self.ex_project_1 = {
+      'name': 'Nuxt Project',
+      'user': User.objects.first(),
+      'tasks': []
+    }
+
+    self.ex_project_2 = {
+      'name': 'Astro Project',
+      'user': User.objects.first(),
+      'tasks': []
+    }
+
+    self.project_1 = self.c.post('/api/projects/', self.ex_project_1)
+    self.project_2 = self.c.post('/api/projects/', self.ex_project_2)
+
+    self.project_1_model = Project.objects.get(name=self.ex_project_1['name'])
+    self.project_2_model = Project.objects.get(name=self.ex_project_2['name'])
+    
+
+
+
+  def test_project_creation(self):
+    self.assertEqual(self.project_1.status_code, 201)    
+    self.assertEqual(self.project_1.json(), ProjectSerializer(self.project_1_model).data)
+
+    self.assertEqual(self.project_2.status_code, 201)
+    self.assertEqual(self.project_2.json(), ProjectSerializer(self.project_2_model).data)
+    
+
+  
+  def test_project_retrieval(self):
+    response = self.c.get('/api/projects/')
+    
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(Project.objects.count(), 2)
+
+    projects = response.json().get('results')
+
+    self.assertEqual(
+      ProjectSerializer(Project.objects.all().order_by('-id'), many=True).data,
+      projects
+    )
+
+
+  
+  def test_project_retrieval_order(self):
+    response = self.c.get('/api/projects/')
+    
+    self.assertEqual(response.status_code, 200)
+
+    projects = response.json().get('results')
+
+    self.assertQuerysetEqual(
+      ProjectSerializer(Project.objects.all().order_by('-id'), many=True).data,
+      projects,
+      ordered=True
+    )
+
+
+  def test_project_single_retrieval(self):
+    response_1 = self.c.get(f'/api/projects/{self.project_1_model.id}/')
+    response_2 = self.c.get(f'/api/projects/{self.project_2_model.id}/')
+    
+    self.assertTrue(response_1.status_code, 200)
+    self.assertTrue(response_2.status_code, 200)
+
+    self.assertEqual(response_1.json(), ProjectSerializer(self.project_1_model).data)
+    self.assertEqual(response_2.json(), ProjectSerializer(self.project_2_model).data)
+    
+
+
+  def test_project_modify_title(self):
+    new_title = 'Nuxt v3 Project'
+
+    self.assertNotEqual(self.project_1_model.name, new_title)
+
+    pk = self.project_1_model.id
+
+    response = self.c.patch(f'/api/projects/{pk}/modify_title/', {
+      'name': new_title
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(Project.objects.get(id=pk).name, new_title)
+
+    
+
+  def test_project_add_new_task(self):
+    task_1 = {
+      'tags': [{'name': 'vue', 'name': 'nuxt'}],
+      'title': 'Search more about Nuxt 3',
+      'description': 'Find out when the framework releases',
+      'subtasks': []
+    }
+    
+    task_2 = {
+      'tags': [{'name': 'files', 'name': 'framework'}],
+      'title': 'File structure',
+      'description': 'Find more about the file structure',
+      'subtasks': []
+    }
+
+    pk = self.project_1_model.id
+
+    project_1_model = Project.objects.get(id=pk)
+
+    response_1 = self.c.patch(f'/api/projects/{pk}/add_new_task/', {
+      'task': task_1
+    }, content_type='application/json')
+
+    self.assertEqual(response_1.status_code, 201)
+    self.assertEqual(project_1_model.tasks.count(), 1)
+
+    task_1_model = Task.objects.get(title=task_1.get('title'))
+
+    self.assertEqual(response_1.json(), TaskSerializer(task_1_model).data)
+    
+    response_2 = self.c.patch(f'/api/projects/{pk}/add_new_task/', {
+      'task': task_2
+    }, content_type='application/json')
+
+    
+    self.assertEqual(response_2.status_code, 201)
+    self.assertEqual(project_1_model.tasks.count(), 2)
+
+    task_2_model = Task.objects.get(title=task_2.get('title'))
+
+    self.assertEqual(response_2.json(), TaskSerializer(task_2_model).data)
+
+    return task_1_model
+
+
+
+  def test_project_update_task(self):
+    task_1_model = self.test_project_add_new_task()
+
+    task_1 = {
+      'tags': [{'name': 'vue', 'name': 'nuxt'}],
+      'title': 'Search more about Nuxt 3',
+      'description': 'Find out when the framework releases',
+      'subtasks': []
+    }
+
+    pk = self.project_1_model.id
+
+    self.assertEqual(task_1_model.title, task_1['title'])
+
+    new_details = {
+      'title': 'Read more about Nuxt 3',
+      'description': 'Find out the release date'
+    }
+
+    self.assertNotEqual(task_1_model.title, new_details['title'])
+    self.assertNotEqual(task_1_model.description, new_details['description'])
+    self.assertNotEqual(self.project_1_model.tasks.first().title, new_details['title'])
+    self.assertNotEqual(self.project_1_model.tasks.first().description, new_details['description'])
+
+    task_1_model.title = new_details['title']
+    task_1_model.description = new_details['description']
+
+    response = self.c.patch(f'/api/projects/{pk}/update_task/', {
+      'subtask': TaskSerializer(task_1_model).data
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(response.json().get('title'), new_details['title'])
+    self.assertEqual(response.json().get('description'), new_details['description'])
+    self.assertEqual(self.project_1_model.tasks.first().title, new_details['title'])
+    self.assertEqual(self.project_1_model.tasks.first().description, new_details['description'])
+
+
+  
+  def test_project_add_task_to_project(self):
+    # Create a blank project with in_project False
+    task = Task.objects.create(**{
+      'user': User.objects.first(),
+      'title': 'Tailwind docs',
+      'description': 'How to style with Tailwind',
+      'estimated': 2,
+      'in_project': False
+    })
+
+    pk = self.project_1_model.id
+
+    self.assertEqual(self.project_1_model.tasks.count(), 0)
+
+    # Add it to project with patch
+    response = self.c.patch(f'/api/projects/{pk}/add_to_project/', {
+      'task_id': task.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    self.assertEqual(self.project_1_model.tasks.count(), 1)
+
+    return task
+
+
+
+  def test_project_delete_task(self):
+    pk = self.project_1_model.id
+
+    task = self.test_project_add_task_to_project()
+
+    self.assertEqual(self.project_1_model.tasks.count(), 1)
+
+    response = self.c.patch(f'/api/projects/{pk}/delete_task/', {
+      'task_id': task.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.content, b'"task removed"')
+
+    self.assertEqual(self.project_1_model.tasks.count(), 0)
+
+    task_1_model = self.test_project_add_new_task()
+
+    self.assertEqual(self.project_1_model.tasks.count(), 2)
+
+    response = self.c.patch(f'/api/projects/{pk}/delete_task/', {
+      'task_id': task_1_model.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.content, b'"task deleted"')
+    
+    self.assertEqual(self.project_1_model.tasks.count(), 1)
+
+
+
+  def test_project_task_done(self):
+    pk = self.project_1_model.id
+
+    task_1_model = self.test_project_add_new_task()
+    self.assertFalse(task_1_model.done)
+
+    response = self.c.patch(f'/api/projects/{pk}/task_done/', {
+      'task_id': task_1_model.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    task_after_update = Task.objects.first()
+    self.assertEqual(response.json(), {'done': task_after_update.done})
+
+    self.assertTrue(task_after_update.done)
+
+    response = self.c.patch(f'/api/projects/{pk}/task_done/', {
+      'task_id': task_1_model.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+
+    task_after_update = Task.objects.first()
+    self.assertEqual(response.json(), {'done': task_after_update.done})
+
+    self.assertFalse(task_after_update.done)
+  
+
+  
+  def test_project_removal(self):
+    pk = self.project_1_model.id
+    self.test_project_add_new_task()
+
+    project_1 = Project.objects.get(id=pk)
+
+    self.assertEqual(project_1.tasks.count(), 2)
+    
+
+    response = self.c.delete(f'/api/projects/{pk}/')
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json(), {'data': 'project deleted'})
+
+    self.assertQuerysetEqual(Project.objects.filter(id=pk), [])
+    self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.first()), [])
+    self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.last()), [])
+
+ 
