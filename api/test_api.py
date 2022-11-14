@@ -1012,4 +1012,39 @@ class ProjectTestCase(TestCase):
     self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.first()), [])
     self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.last()), [])
 
- 
+
+
+class RegisterTestCase(TestCase):
+  def setUp(self):
+    self.user = {
+      'username': 'test_user',
+      'password': 'test_pass'
+    }
+
+  def test_register(self):
+    c = Client()
+    response = c.post('/api/register/', {
+      **self.user,
+      'passwordConfirmation': self.user['password']
+    })
+
+    expected_response = {'message': f'User Created {self.user["username"]}'}
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json(), expected_response)
+
+  
+  def test_registering_invalid_user(self):
+    self.test_register()
+
+    c = Client()
+    response = c.post('/api/register/', {
+      **self.user,
+      'passwordConfirmation': self.user['password']
+    })
+
+    expected_response = {'message': 'User already exists'}
+
+    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.json(), expected_response)
+
