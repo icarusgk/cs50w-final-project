@@ -310,7 +310,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """
         return self.request.user.projects.all().order_by('-id')
 
-    def get_object(self, pk):
+    def get_project(self, pk):
         """
         Tries to get the project object with the id of pk
         it if fails it raises a HTTP404 error
@@ -363,7 +363,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def modify_title(self, request, pk=None):
         """Modifies the project's title"""
-        project = self.get_object(pk)
+        project = self.get_project(pk)
         project.name = request.data['name']
         project.save()
 
@@ -372,7 +372,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def add_new_task(self, request, pk=None):
         """Adds a new task inside the project"""
-        project = self.get_object(pk)
+        project = self.get_project(pk)
 
         task_serializer = TaskSerializer(data=request.data['task'])
 
@@ -415,7 +415,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         # Remove task from project
         if not task.in_project:
-            project = self.get_object(pk)
+            project = self.get_project(pk)
             project.tasks.remove(task)
 
             return Response("task removed")
@@ -427,7 +427,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def add_to_project(self, request, pk=None):
         """Adds a task to a project from outside"""
-        project = self.get_object(pk)
+        project = self.get_project(pk)
         task = Task.objects.get(id=request.data['task_id'])
 
         project.tasks.add(task)
@@ -436,7 +436,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def task_done(self, request, pk=None):
         """Toggles a task done status"""
-        project = self.get_object(pk)
+        project = self.get_project(pk)
         task = project.tasks.get(id=request.data['task_id'])
 
         task.done = not task.done
@@ -448,7 +448,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """
         Deletes the project with an id of pk
         """
-        project = self.get_object(pk)
+        project = self.get_project(pk)
 
         for task in project.tasks.all():
             if task.in_project:
