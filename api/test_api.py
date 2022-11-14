@@ -1048,3 +1048,43 @@ class RegisterTestCase(TestCase):
     self.assertEqual(response.status_code, 400)
     self.assertEqual(response.json(), expected_response)
 
+
+
+class CurrentTaskTestCase(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+    })
+
+    self.task = Task.objects.create(**{
+      'user': User.objects.first(),
+      'title': 'Astro docs',
+      'description': 'How to style Astro with Tailwind',
+      'estimated': 1,
+      'in_project': False
+    })
+
+    
+  def test_current_task_put(self):
+    response = self.c.put('/api/currentTask/', {
+      'id': self.task.id
+    }, content_type='application/json')
+
+    self.assertEqual(response.status_code, 200)
+    user = User.objects.first()
+    self.assertEqual(response.json(), {'id': user.current_task_id})
+
+
+
+  def test_current_task_get(self):
+    self.test_current_task_put()
+    response = self.c.get('/api/currentTask/')
+
+    self.assertEqual(response.status_code, 200)
+    user = User.objects.first()
+    self.assertEqual(response.json(), {'id': user.current_task_id})
+
+
+
