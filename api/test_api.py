@@ -1088,3 +1088,48 @@ class CurrentTaskTestCase(TestCase):
 
 
 
+
+class CurrentModeTestCase(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+    })
+
+  
+  def test_no_mode(self):
+    response = self.c.get('/api/currentMode/')
+
+    self.assertEqual(response.status_code, 404)
+
+  
+  def test_mode_post(self):
+    mode_details = {
+      'user': User.objects.first(),
+      'name': 'Classes mode',
+      'pomo': 50,
+      'short_break': 10,
+      'long_break': 30
+    }
+
+    mode = Mode.objects.create(**mode_details)
+
+    response = self.c.post('/api/currentMode/', {
+      'mode_id': mode.id
+    })
+
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json(), ModesSerializer(mode).data)
+
+    return mode
+
+
+  def test_mode_get(self):
+    mode = self.test_mode_post()
+
+    response = self.c.get('/api/currentMode/')
+    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.json(), ModesSerializer(mode).data)
+
+
