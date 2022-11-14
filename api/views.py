@@ -330,25 +330,31 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project = Project.objects.create(
             user=request.user, name=request.data['name'])
 
-        for task in request.data['tasks']:
-            task_serializer = TaskSerializer(data=task)
+        tasks = request.data.get('tasks')
 
-            if task_serializer.is_valid():
-                task_obj = Task.objects.create(
-                    user=request.user, in_project=True, **task_serializer.data)
+        if tasks:
+            for task in tasks:
+                task_serializer = TaskSerializer(data=task)
 
-                for tag in task['tags']:
-                    tag_obj = Tag.objects.filter(name=tag['name']).first()
+                if task_serializer.is_valid():
+                    task_obj = Task.objects.create(
+                        user=request.user, in_project=True, **task_serializer.data)
 
-                    if not tag_obj:
-                        # Create tag
-                        tag_obj = Tag.objects.create(name=tag['name'])
+                    tags = task.get('tags')
 
-                    task_obj.tags.add(tag_obj)
+                    if tags:
+                        for tag in task['tags']:
+                            tag_obj = Tag.objects.filter(name=tag['name']).first()
 
-                # Add task to the project
-                project.tasks.add(task_obj)
-                project.save()
+                            if not tag_obj:
+                                # Create tag
+                                tag_obj = Tag.objects.create(name=tag['name'])
+
+                            task_obj.tags.add(tag_obj)
+
+                    # Add task to the project
+                    project.tasks.add(task_obj)
+                    project.save()
 
         return Response(
             ProjectSerializer(project).data,
