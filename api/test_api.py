@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from .models import Task, Project, Subtask, Tag, Stats, Mode, User
 from .serializers import *
 from .utils_api import AuthUtils
+from rest_framework import status
 
 
 
@@ -14,17 +15,17 @@ class UserCreationTestCase(TestCase):
 
     expected_response = {"message": f"User Created test_user"}
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), expected_response)
 
 
-  def test_user_login(self) -> dict:
+  def test_user_login(self):
     self.auth.register()
     login_response = self.auth.login()
 
     tokens = login_response.json()
 
-    self.assertEqual(login_response.status_code, 200)
+    self.assertEqual(login_response.status_code, status.HTTP_200_OK)
     self.assertTrue(tokens['access'])
     self.assertTrue(tokens['refresh'])
 
@@ -45,7 +46,7 @@ class UserOperationsTestCase(TestCase):
 
     new_tokens = response.json()
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertTrue(new_tokens['access'])
     self.assertTrue(new_tokens['refresh'])
 
@@ -53,14 +54,14 @@ class UserOperationsTestCase(TestCase):
   def test_user_self_info(self):
     response = self.c.get('/api/me/')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json()['username'], 'test_user')
 
 
   def test_user_retrieve_all(self):
     response = self.c.get('/api/users/')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(type(response.json()), list)
 
 
@@ -82,7 +83,7 @@ class ModeOperationsTestCase(TestCase):
     }
     response = self.c.post('/api/modes/', new_mode)
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), {
       # look back
       'id': 1,
@@ -94,7 +95,7 @@ class ModeOperationsTestCase(TestCase):
     self.test_mode_creation()
 
     response = self.c.delete('/api/modes/1/')
-    self.assertEqual(response.status_code, 204)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 
@@ -118,8 +119,8 @@ class StatsOperationsTestCase(TestCase):
     response_1 = self.c.post('/api/stats/', today)
     response_2 = self.c.post('/api/stats/', tomorrow)
     
-    self.assertEqual(response_1.status_code, 200)
-    self.assertEqual(response_2.status_code, 200)
+    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response_1.json(), {
       'id': 1,
@@ -145,7 +146,7 @@ class StatsOperationsTestCase(TestCase):
     # Increment the stat
     response = self.c.post('/api/stats/', today)
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response.json(), {
       'id': 1,
@@ -160,7 +161,7 @@ class StatsOperationsTestCase(TestCase):
 
     stats = Stats.objects.all()
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertListEqual(response.json(), StatsSerializer(stats, many=True).data)
 
   
@@ -202,8 +203,8 @@ class StatsOperationsTestCase(TestCase):
     response_1 = c.post('/api/stats/', today, **auth_headers)
     response_2 = c.post('/api/stats/', tomorrow, **auth_headers)
     
-    self.assertEqual(response_1.status_code, 200)
-    self.assertEqual(response_2.status_code, 200)
+    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response_1.json(), {
       'id': 3,
@@ -261,9 +262,9 @@ class TagsTestCase(TestCase):
     }, content_type="application/json")
 
     # Test Status codes
-    self.assertEqual(response_1.status_code, 200)
-    self.assertEqual(response_2.status_code, 200)
-    self.assertEqual(response_3.status_code, 200)
+    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_3.status_code, status.HTTP_200_OK)
 
     # Retrieve the models
     model_vue_tag = Tag.objects.get(name=vue_tag['tag_name'])
@@ -320,9 +321,9 @@ class TagsTestCase(TestCase):
     response_2 = self.c.delete(f'/api/tags/{nuxt_tag["id"]}/')
     response_3 = self.c.delete(f'/api/tags/{django_tag["id"]}/')
 
-    self.assertEqual(response_1.status_code, 204)
-    self.assertEqual(response_2.status_code, 204)
-    self.assertEqual(response_3.status_code, 204)
+    self.assertEqual(response_1.status_code, status.HTTP_204_NO_CONTENT)
+    self.assertEqual(response_2.status_code, status.HTTP_204_NO_CONTENT)
+    self.assertEqual(response_3.status_code, status.HTTP_204_NO_CONTENT)
 
     self.assertEqual(self.task.tags.count(), 0)
 
@@ -367,8 +368,8 @@ class TaskTestCase(TestCase):
 
  
   def test_tasks_creation(self):
-    self.assertEqual(self.task_1_res.status_code, 200)
-    self.assertEqual(self.task_2_res.status_code, 200)    
+    self.assertEqual(self.task_1_res.status_code, status.HTTP_200_OK)
+    self.assertEqual(self.task_2_res.status_code, status.HTTP_200_OK)    
 
     self.assertTrue(self.task_1_model)
     self.assertTrue(self.task_2_model)
@@ -396,7 +397,7 @@ class TaskTestCase(TestCase):
   
   def test_task_retrieval(self):
     response = self.c.get('/api/tasks/')
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
   
 
@@ -427,8 +428,9 @@ class TaskTestCase(TestCase):
     res_1 = self.c.get(f'/api/tasks/{self.task_1_model.id}/')
     res_2 = self.c.get(f'/api/tasks/{self.task_2_model.id}/')
 
-    self.assertEqual(res_1.status_code, 200)
-    self.assertEqual(res_2.status_code, 200)
+    self.assertEqual(res_1.status_code, status.HTTP_200_OK)
+    
+    self.assertEqual(res_2.status_code, status.HTTP_200_OK)
     
     self.assertEqual(TaskSerializer(self.task_1_model).data, res_1.json())
     self.assertEqual(TaskSerializer(self.task_2_model).data, res_2.json())
@@ -453,7 +455,7 @@ class TaskTestCase(TestCase):
       **new_task_details
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     new_task = Task.objects.get(id=self.task_1_model.id)
 
@@ -476,7 +478,7 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(self.task_1_model.tags.count(), 0)
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json().get('message'), 'tag removed')
 
 
@@ -493,7 +495,7 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(self.task_1_model.tags.count(), 1)
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response.json(), {'message': 'new', 'tag': {
       'id': 1,
@@ -531,7 +533,7 @@ class TaskTestCase(TestCase):
       'tag_name': tag_name
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), { 'tag': {
       'id': 1,
       'name': tag_name
@@ -555,7 +557,7 @@ class TaskTestCase(TestCase):
       'subtask': subtask
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
@@ -582,7 +584,7 @@ class TaskTestCase(TestCase):
       'subtask_id': sub.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 0)
 
@@ -623,7 +625,7 @@ class TaskTestCase(TestCase):
 
     new_subtask = self.task_1_model.subtasks.first()
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
@@ -665,7 +667,7 @@ class TaskTestCase(TestCase):
       **self.options('task', 'done'),
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(Task.objects.first().done, True)
     self.assertEqual(response.json(), {'done': True})
@@ -674,7 +676,7 @@ class TaskTestCase(TestCase):
       **self.options('task', 'done'),
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(Task.objects.first().done, False)
     self.assertEqual(response.json(), {'done': False})
@@ -687,7 +689,7 @@ class TaskTestCase(TestCase):
         **self.options('task', 'increment_gone_through'),
       }, content_type='application/json')
 
-      self.assertEqual(response.status_code, 200)
+      self.assertEqual(response.status_code, status.HTTP_200_OK)
       return response
 
     self.assertEqual(self.task_1_model.gone_through, 0)
@@ -719,7 +721,7 @@ class TaskTestCase(TestCase):
   def test_task_deletion(self):
     response = self.c.delete(f'/api/tasks/{self.task_1_model.id}/')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     try:
       task = Task.objects.get(id=self.task_1_model.id)
@@ -760,10 +762,11 @@ class ProjectTestCase(TestCase):
 
 
   def test_project_creation(self):
-    self.assertEqual(self.project_1.status_code, 201)    
+    self.assertEqual(self.project_1.status_code, status.HTTP_201_CREATED)    
     self.assertEqual(self.project_1.json(), ProjectSerializer(self.project_1_model).data)
 
-    self.assertEqual(self.project_2.status_code, 201)
+    self.assertEqual(self.project_2.status_code, status.HTTP_201_CREATED)
+    
     self.assertEqual(self.project_2.json(), ProjectSerializer(self.project_2_model).data)
     
 
@@ -771,7 +774,7 @@ class ProjectTestCase(TestCase):
   def test_project_retrieval(self):
     response = self.c.get('/api/projects/')
     
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(Project.objects.count(), 2)
 
     projects = response.json().get('results')
@@ -786,7 +789,7 @@ class ProjectTestCase(TestCase):
   def test_project_retrieval_order(self):
     response = self.c.get('/api/projects/')
     
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     projects = response.json().get('results')
 
@@ -801,8 +804,8 @@ class ProjectTestCase(TestCase):
     response_1 = self.c.get(f'/api/projects/{self.project_1_model.id}/')
     response_2 = self.c.get(f'/api/projects/{self.project_2_model.id}/')
     
-    self.assertTrue(response_1.status_code, 200)
-    self.assertTrue(response_2.status_code, 200)
+    self.assertTrue(response_1.status_code, status.HTTP_200_OK)
+    self.assertTrue(response_2.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response_1.json(), ProjectSerializer(self.project_1_model).data)
     self.assertEqual(response_2.json(), ProjectSerializer(self.project_2_model).data)
@@ -820,7 +823,7 @@ class ProjectTestCase(TestCase):
       'name': new_title
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(Project.objects.get(id=pk).name, new_title)
 
     
@@ -848,7 +851,7 @@ class ProjectTestCase(TestCase):
       'task': task_1
     }, content_type='application/json')
 
-    self.assertEqual(response_1.status_code, 201)
+    self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
     self.assertEqual(project_1_model.tasks.count(), 1)
 
     task_1_model = Task.objects.get(title=task_1.get('title'))
@@ -860,7 +863,7 @@ class ProjectTestCase(TestCase):
     }, content_type='application/json')
 
     
-    self.assertEqual(response_2.status_code, 201)
+    self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
     self.assertEqual(project_1_model.tasks.count(), 2)
 
     task_2_model = Task.objects.get(title=task_2.get('title'))
@@ -902,7 +905,7 @@ class ProjectTestCase(TestCase):
       'subtask': TaskSerializer(task_1_model).data
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(response.json().get('title'), new_details['title'])
     self.assertEqual(response.json().get('description'), new_details['description'])
@@ -930,7 +933,7 @@ class ProjectTestCase(TestCase):
       'task_id': task.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     self.assertEqual(self.project_1_model.tasks.count(), 1)
 
@@ -949,7 +952,7 @@ class ProjectTestCase(TestCase):
       'task_id': task.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.content, b'"task removed"')
 
     self.assertEqual(self.project_1_model.tasks.count(), 0)
@@ -962,7 +965,7 @@ class ProjectTestCase(TestCase):
       'task_id': task_1_model.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.content, b'"task deleted"')
     
     self.assertEqual(self.project_1_model.tasks.count(), 1)
@@ -979,7 +982,7 @@ class ProjectTestCase(TestCase):
       'task_id': task_1_model.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     task_after_update = Task.objects.first()
     self.assertEqual(response.json(), {'done': task_after_update.done})
@@ -990,7 +993,7 @@ class ProjectTestCase(TestCase):
       'task_id': task_1_model.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     task_after_update = Task.objects.first()
     self.assertEqual(response.json(), {'done': task_after_update.done})
@@ -1010,7 +1013,7 @@ class ProjectTestCase(TestCase):
 
     response = self.c.delete(f'/api/projects/{pk}/')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), {'data': 'project deleted'})
 
     self.assertQuerysetEqual(Project.objects.filter(id=pk), [])
@@ -1035,7 +1038,7 @@ class RegisterTestCase(TestCase):
 
     expected_response = {'message': f'User Created {self.user["username"]}'}
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), expected_response)
 
   
@@ -1050,7 +1053,7 @@ class RegisterTestCase(TestCase):
 
     expected_response = {'message': 'User already exists'}
 
-    self.assertEqual(response.status_code, 400)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     self.assertEqual(response.json(), expected_response)
 
 
@@ -1077,7 +1080,7 @@ class CurrentTaskTestCase(TestCase):
       'id': self.task.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     user = User.objects.first()
     self.assertEqual(response.json(), {'id': user.current_task_id})
 
@@ -1087,7 +1090,7 @@ class CurrentTaskTestCase(TestCase):
     self.test_current_task_put()
     response = self.c.get('/api/currentTask/')
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     user = User.objects.first()
     self.assertEqual(response.json(), {'id': user.current_task_id})
 
@@ -1105,7 +1108,7 @@ class CurrentModeTestCase(TestCase):
   def test_no_mode(self):
     response = self.c.get('/api/currentMode/')
 
-    self.assertEqual(response.status_code, 404)
+    self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
   
   def test_mode_post(self):
@@ -1123,7 +1126,7 @@ class CurrentModeTestCase(TestCase):
       'mode_id': mode.id
     })
 
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), ModesSerializer(mode).data)
 
     return mode
@@ -1133,7 +1136,7 @@ class CurrentModeTestCase(TestCase):
     mode = self.test_mode_post()
 
     response = self.c.get('/api/currentMode/')
-    self.assertEqual(response.status_code, 200)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), ModesSerializer(mode).data)
 
 
@@ -1172,8 +1175,8 @@ class TagInfoTestCase(TestCase):
 
 
   def test_tasks_creation(self):
-    self.assertEqual(self.response_task_1.status_code, 200)
-    self.assertEqual(self.response_task_2.status_code, 200)
+    self.assertEqual(self.response_task_1.status_code, status.HTTP_200_OK)
+    self.assertEqual(self.response_task_2.status_code, status.HTTP_200_OK)
 
     task_1 = Task.objects.get(title=self.task_1['title'])
     task_2 = Task.objects.get(title=self.task_2['title'])
@@ -1211,7 +1214,7 @@ class TagInfoTestCase(TestCase):
   def test_invalid_tag(self):
     invalid_tag = self.c.get('/api/tagInfo/angular/')
 
-    self.assertEqual(invalid_tag.status_code, 404)
+    self.assertEqual(invalid_tag.status_code, status.HTTP_404_NOT_FOUND)
 
 
 
