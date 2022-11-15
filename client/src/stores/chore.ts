@@ -75,7 +75,9 @@ export const useChoreStore = defineStore('chores', {
     },
     async fetchStats() {
       const { data, status } = await useFetch('stats', 'get');
-      if (status === 200) this.stats = data;
+      if (status === 200) {
+        this.stats = data;
+      }
     },
     async increaseTodayStats() {
       const date = new Date();
@@ -87,7 +89,9 @@ export const useChoreStore = defineStore('chores', {
       if (status === 200) {
         let stat = this.stats.find((stat) => stat.id === data.id);
 
-        if (stat) stat.chores_done = data.chores_done;
+        if (stat)  {
+          stat.chores_done = data.chores_done;
+        }
       }
     },
     async fetchTasks() {
@@ -167,7 +171,7 @@ export const useChoreStore = defineStore('chores', {
     async addProject(project: ProjectType) {
       const { status } = await useFetch('projects', 'post', project);
 
-      if (status == 201) {
+      if (status === 201) {
         useAlertStore().success(`Project ${project.name} created!`);
         this.fetchProjects();
       }
@@ -192,7 +196,7 @@ export const useChoreStore = defineStore('chores', {
     async addTag(tag: string) {
       const { data, status } = await useFetch('tags', 'post', tag);
 
-      if (status === 200) console.log(data);
+      if (status === 200) { console.log(data) };
     },
     incrementGoneThrough() {
       this.increaseTodayStats();
