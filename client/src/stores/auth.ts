@@ -87,11 +87,13 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await firstCalledInstance.get('me/', {
           headers: {
-            Authorization: 'Bearer ' + accessToken,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
-        if (response.status === 200) this.user = response.data;
+        if (response.status === 200) {
+          this.user = response.data;
+        }
       } catch (e) {
         // If refresh token is not longer valid, logout
         this.logout();
