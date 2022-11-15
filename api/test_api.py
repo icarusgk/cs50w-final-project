@@ -68,10 +68,11 @@ class UserOperationsTestCase(TestCase):
 
 class ModeOperationsTestCase(TestCase):
   def setUp(self):
-    self.auth = AuthUtils()
-    self.auth.auth()
+    auth = AuthUtils()
+    auth.auth()
+
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
   def test_mode_creation(self):    
@@ -99,10 +100,10 @@ class ModeOperationsTestCase(TestCase):
 
 class StatsOperationsTestCase(TestCase):
   def setUp(self):
-    self.auth = AuthUtils()
-    self.auth.auth()
+    auth = AuthUtils()
+    auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
   def test_stats_creation(self):
@@ -215,10 +216,10 @@ class StatsOperationsTestCase(TestCase):
 
 class TagsTestCase(TestCase):
   def setUp(self):
-    self.auth = AuthUtils()
-    self.auth.auth()
+    auth = AuthUtils()
+    auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access'],
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access'],
     })
 
     user = User.objects.get(username='test_user')
@@ -324,11 +325,11 @@ class TagsTestCase(TestCase):
 
 class TaskTestCase(TestCase):
   def setUp(self):
-    self.auth = AuthUtils()
-    self.auth.auth()
+    auth = AuthUtils()
+    auth.auth()
     
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
     self.task_1 = {
