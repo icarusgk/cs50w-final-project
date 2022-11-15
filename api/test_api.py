@@ -62,6 +62,7 @@ class UserOperationsTestCase(TestCase):
     response = self.c.get('/api/users/')
 
     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.json()), 1)
     self.assertEqual(type(response.json()), list)
 
 
@@ -794,7 +795,7 @@ class ProjectTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
     self.ex_project_1 = {
@@ -1188,7 +1189,7 @@ class CurrentTaskTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
     self.task = Task.objects.create(**{
@@ -1226,7 +1227,7 @@ class CurrentModeTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
   
@@ -1271,7 +1272,7 @@ class TagInfoTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
     self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
     })
 
     user = User.objects.first()
