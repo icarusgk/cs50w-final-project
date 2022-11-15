@@ -15,7 +15,7 @@ class UserCreationTestCase(TestCase):
 
     expected_response = {"message": f"User Created test_user"}
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response.json(), expected_response)
 
 
@@ -83,7 +83,7 @@ class ModeOperationsTestCase(TestCase):
     }
     response = self.c.post('/api/modes/', new_mode)
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response.json(), {
       # look back
       'id': 1,
@@ -119,8 +119,8 @@ class StatsOperationsTestCase(TestCase):
     response_1 = self.c.post('/api/stats/', today)
     response_2 = self.c.post('/api/stats/', tomorrow)
     
-    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
-    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(response_1.json(), {
       'id': 1,
@@ -146,7 +146,7 @@ class StatsOperationsTestCase(TestCase):
     # Increment the stat
     response = self.c.post('/api/stats/', today)
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(response.json(), {
       'id': 1,
@@ -203,8 +203,8 @@ class StatsOperationsTestCase(TestCase):
     response_1 = c.post('/api/stats/', today, **auth_headers)
     response_2 = c.post('/api/stats/', tomorrow, **auth_headers)
     
-    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
-    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(response_1.json(), {
       'id': 3,
@@ -262,9 +262,9 @@ class TagsTestCase(TestCase):
     }, content_type="application/json")
 
     # Test Status codes
-    self.assertEqual(response_1.status_code, status.HTTP_200_OK)
-    self.assertEqual(response_2.status_code, status.HTTP_200_OK)
-    self.assertEqual(response_3.status_code, status.HTTP_200_OK)
+    self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(response_3.status_code, status.HTTP_201_CREATED)
 
     # Retrieve the models
     model_vue_tag = Tag.objects.get(name=vue_tag['tag_name'])
@@ -368,8 +368,8 @@ class TaskTestCase(TestCase):
 
  
   def test_tasks_creation(self):
-    self.assertEqual(self.task_1_res.status_code, status.HTTP_200_OK)
-    self.assertEqual(self.task_2_res.status_code, status.HTTP_200_OK)    
+    self.assertEqual(self.task_1_res.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(self.task_2_res.status_code, status.HTTP_201_CREATED)    
 
     self.assertTrue(self.task_1_model)
     self.assertTrue(self.task_2_model)
@@ -495,7 +495,7 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(self.task_1_model.tags.count(), 1)
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(response.json(), {'message': 'new', 'tag': {
       'id': 1,
@@ -557,7 +557,7 @@ class TaskTestCase(TestCase):
       'subtask': subtask
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
@@ -584,13 +584,10 @@ class TaskTestCase(TestCase):
       'subtask_id': sub.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 0)
 
-    self.assertEqual(response.json(), {
-      'message': 'subtask removed'
-    })
 
 
 
@@ -721,7 +718,7 @@ class TaskTestCase(TestCase):
   def test_task_deletion(self):
     response = self.c.delete(f'/api/tasks/{self.task_1_model.id}/')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     try:
       task = Task.objects.get(id=self.task_1_model.id)
@@ -952,8 +949,7 @@ class ProjectTestCase(TestCase):
       'task_id': task.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(response.content, b'"task removed"')
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     self.assertEqual(self.project_1_model.tasks.count(), 0)
 
@@ -965,8 +961,7 @@ class ProjectTestCase(TestCase):
       'task_id': task_1_model.id
     }, content_type='application/json')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(response.content, b'"task deleted"')
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
     
     self.assertEqual(self.project_1_model.tasks.count(), 1)
 
@@ -1013,8 +1008,7 @@ class ProjectTestCase(TestCase):
 
     response = self.c.delete(f'/api/projects/{pk}/')
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(response.json(), {'data': 'project deleted'})
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     self.assertQuerysetEqual(Project.objects.filter(id=pk), [])
     self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.first()), [])
@@ -1038,7 +1032,7 @@ class RegisterTestCase(TestCase):
 
     expected_response = {'message': f'User Created {self.user["username"]}'}
 
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response.json(), expected_response)
 
   
@@ -1175,8 +1169,8 @@ class TagInfoTestCase(TestCase):
 
 
   def test_tasks_creation(self):
-    self.assertEqual(self.response_task_1.status_code, status.HTTP_200_OK)
-    self.assertEqual(self.response_task_2.status_code, status.HTTP_200_OK)
+    self.assertEqual(self.response_task_1.status_code, status.HTTP_201_CREATED)
+    self.assertEqual(self.response_task_2.status_code, status.HTTP_201_CREATED)
 
     task_1 = Task.objects.get(title=self.task_1['title'])
     task_2 = Task.objects.get(title=self.task_2['title'])
