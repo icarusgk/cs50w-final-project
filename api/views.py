@@ -51,7 +51,9 @@ class StatsViewSet(viewsets.ModelViewSet):
         stat.chores_done = 1 if created else stat.chores_done + 1
         stat.save()
 
-        return Response(StatsSerializer(stat).data)
+        return Response(
+            StatsSerializer(stat).data,
+            status=status.HTTP_201_CREATED)
 
 
 class ModeViewSet(viewsets.ModelViewSet):
@@ -76,18 +78,22 @@ class ModeViewSet(viewsets.ModelViewSet):
 
         if int(pomo) >= 60 or int(short_break) >= 60 or int(long_break) >= 60:
             return Response(
-                {'message': 'Not valid, timers can only be less than an hour long.'})
+                {'message': 'Not valid, timers can only be less than an hour long.'},
+                status=status.HTTP_400_BAD_REQUEST)
 
         if request.data['name'] == 'Default':
-            return Response({'message': 'There can only be one default mode.'})
+            return Response({'message': 'There can only be one default mode.'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         serializer = ModesSerializer(data=request.data)
 
         if serializer.is_valid():
             mode = Mode.objects.create(**serializer.data, user=request.user)
-            return Response(ModesSerializer(mode).data)
+            return Response(
+                ModesSerializer(mode).data,
+                status=status.HTTP_201_CREATED)
 
-        return Response('not valid')
+        return Response('not valid', status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         """
@@ -129,8 +135,9 @@ class TaskViewSet(viewsets.ModelViewSet):
         """
         task = Task.objects.filter(id=pk).first()
         if task.user != request.user:
-            return Response({"data": "error"})
-        return Response(TaskSerializer(task).data)
+            return Response({"data": "error"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
 
     def create(self, request):
         """
@@ -138,7 +145,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         for the current user
         """
         serializer = TaskSerializer(data=request.data)
-        
+
         subtasks = request.data.get('subtasks')
         tags = request.data.get('tags')
 
@@ -162,8 +169,11 @@ class TaskViewSet(viewsets.ModelViewSet):
                     Subtask.objects.create(task=task, **subtask)
 
             # Return the newly created task
-            return Response(TaskSerializer(task).data)
-        return Response({'message': 'error'})
+            return Response(
+                TaskSerializer(task).data,
+                status=status.HTTP_201_CREATED)
+        return Response({'message': 'error'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk=None):
         """
@@ -190,7 +200,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                     task.tags.remove(tag_obj)
                     task.save()
 
-                    return Response({'message': f'tag removed'})
+                    return Response({'message': f'tag removed'},
+                                    status=status.HTTP_200_OK)
 
                 if data['action'] == 'add':
                     # Get or create the tag
@@ -200,7 +211,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     # If tag already exists, check if tag is in obj already
                     if not is_new and tag_obj in task.tags.all():
                         return Response(
-                            {'message': 'tag already exists in task'})
+                            {'message': 'tag already exists in task'}, status=status.HTTP_400_BAD_REQUEST)
 
                     # Add tag
                     task.tags.add(tag_obj)
@@ -211,9 +222,10 @@ class TaskViewSet(viewsets.ModelViewSet):
                     if is_new:
                         return Response({
                             'message': 'new',
-                            'tag': serialized_tag
-                        })
-                    return Response({'tag': serialized_tag})
+                            'tag': serialized_tag,
+                        }, status=status.HTTP_201_CREATED)
+                    return Response({'tag': serialized_tag},
+                                    status=status.HTTP_200_OK)
             # Live update subtasks
             elif obj == 'subtask':
                 task = Task.objects.get(id=pk)
@@ -224,13 +236,16 @@ class TaskViewSet(viewsets.ModelViewSet):
                     subtask = Subtask.objects.create(task=task, **subtask)
                     task.save()
 
-                    return Response(SubtaskSerializer(subtask).data)
+                    return Response(
+                        SubtaskSerializer(subtask).data,
+                        status=status.HTTP_201_CREATED)
                 # Remove subtask
                 elif data['action'] == 'remove':
                     subtask_obj = Subtask.objects.get(id=data['subtask_id'])
                     subtask_obj.delete()
 
-                    return Response({"message": "subtask removed"})
+                    return Response({"message": "subtask removed"},
+                                    status=status.HTTP_204_NO_CONTENT)
                 # Update subtask
                 elif data['action'] == 'update':
                     subtask = data['subtask']
@@ -248,7 +263,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                     subtask_obj.done = not subtask_obj.done
                     subtask_obj.save()
 
-                    return Response({"done": subtask_obj.done})
+                    return Response({"done": subtask_obj.done},
+                                    status=status.HTTP_200_OK)
             elif obj == 'task':
                 if data['action'] == 'done':
                     task = Task.objects.get(id=pk)
@@ -256,14 +272,17 @@ class TaskViewSet(viewsets.ModelViewSet):
                     task.done = not task.done
                     task.save()
 
-                    return Response({"done": task.done})
+                    return Response({"done": task.done},
+                                    status=status.HTTP_200_OK)
                 if data['action'] == 'increment_gone_through':
                     task = Task.objects.get(id=pk)
 
                     task.gone_through += 1
                     task.save()
 
-                    return Response(task.gone_through)
+                    return Response(
+                        task.gone_through,
+                        status=status.HTTP_200_OK)
 
             return Response({'message': 'error'})
 
@@ -283,7 +302,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         task.delete()
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -344,7 +363,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
                     if tags:
                         for tag in task['tags']:
-                            tag_obj = Tag.objects.filter(name=tag['name']).first()
+                            tag_obj = Tag.objects.filter(
+                                name=tag['name']).first()
 
                             if not tag_obj:
                                 # Create tag
@@ -403,7 +423,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])
     def delete_task(self, request, pk=None):
@@ -418,11 +438,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
             project = self.get_project(pk)
             project.tasks.remove(task)
 
-            return Response("task removed")
+            return Response("task removed", status=status.HTTP_204_NO_CONTENT)
         # delete task totally
         task.delete()
 
-        return Response("task deleted")
+        return Response("task deleted", status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True, methods=['patch'])
     def add_to_project(self, request, pk=None):
@@ -456,7 +476,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         project.delete()
 
-        return Response({'data': 'project deleted'})
+        return Response({'data': 'project deleted'},
+                        status=status.HTTP_204_NO_CONTENT)
 
 
 class RegisterView(APIView):
@@ -478,9 +499,11 @@ class RegisterView(APIView):
                 username=username, password=password)
             user.save()
 
-            return Response({'message': f'User Created {username}'})
+            return Response({'message': f'User Created {username}'},
+                            status=status.HTTP_201_CREATED)
 
-        return Response({'message': 'error creating user'})
+        return Response({'message': 'error creating user'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class CurrentUserView(APIView):
@@ -490,7 +513,10 @@ class CurrentUserView(APIView):
         """
         Returns the current user's info
         """
-        return Response(UserSerializer(request.user).data)
+        return Response(
+            UserSerializer(
+                request.user).data,
+            status=status.HTTP_200_OK)
 
 
 class CurrentTaskView(APIView):
@@ -500,7 +526,8 @@ class CurrentTaskView(APIView):
         """
         Returns the current user's current task id
         """
-        return Response({'id': request.user.current_task_id})
+        return Response({'id': request.user.current_task_id},
+                        status=status.HTTP_200_OK)
 
     def put(self, request):
         """
@@ -510,7 +537,8 @@ class CurrentTaskView(APIView):
         user.current_task_id = request.data['id']
         user.save()
 
-        return Response({'id': user.current_task_id})
+        return Response({'id': user.current_task_id},
+                        status=status.HTTP_200_OK)
 
 
 class CurrentModeView(APIView):
@@ -526,7 +554,9 @@ class CurrentModeView(APIView):
         """
         try:
             mode = Mode.objects.get(id=id)
-            return Response(ModesSerializer(mode).data)
+            return Response(
+                ModesSerializer(mode).data,
+                status=status.HTTP_200_OK)
         except Mode.DoesNotExist:
             raise Http404
 
@@ -559,6 +589,10 @@ class TagInfo(APIView):
         """
         try:
             tag = Tag.objects.get(name=name)
-            return Response(TaskSerializer(tag.tasks, many=True).data)
+            return Response(
+                TaskSerializer(
+                    tag.tasks,
+                    many=True).data,
+                status=status.HTTP_200_OK)
         except Tag.DoesNotExist:
             raise Http404
