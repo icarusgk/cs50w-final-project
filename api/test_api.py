@@ -84,11 +84,9 @@ class ModeOperationsTestCase(TestCase):
     response = self.c.post('/api/modes/', new_mode)
 
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    self.assertEqual(response.json(), {
-      # look back
-      'id': 1,
-      **new_mode
-    })
+
+    mode_model = Mode.objects.get(**new_mode)
+    self.assertEqual(response.json(), ModesSerializer(mode_model).data)
 
 
   def test_mode_deletion(self):
@@ -122,17 +120,11 @@ class StatsOperationsTestCase(TestCase):
     self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
 
-    self.assertEqual(response_1.json(), {
-      'id': 1,
-      'chores_done': 1,
-      **today
-    })
+    stat_1 = Stats.objects.get(**today)
+    stat_2 = Stats.objects.get(**tomorrow)
 
-    self.assertEqual(response_2.json(), {
-      'id': 2,
-      'chores_done': 1,
-      **tomorrow
-    })
+    self.assertEqual(response_1.json(), StatsSerializer(stat_1).data)
+    self.assertEqual(response_2.json(), StatsSerializer(stat_2).data)
     
 
   def test_stats_increase(self):
@@ -148,11 +140,11 @@ class StatsOperationsTestCase(TestCase):
 
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    self.assertEqual(response.json(), {
-      'id': 1,
-      'chores_done': 2,
-      **today
-    })
+    stat = Stats.objects.get(**today)
+
+    self.assertEqual(response.json(), StatsSerializer(stat).data)
+
+
 
   def test_stat_retrieval(self):
     self.test_stats_creation()
@@ -206,16 +198,17 @@ class StatsOperationsTestCase(TestCase):
     self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
 
+    user = User.objects.get(username='test_user_1')
+
+    stat_today = Stats.objects.get(**today, user=user)
+    stat_tomorrow = Stats.objects.get(**tomorrow, user=user)
+
     self.assertEqual(response_1.json(), {
-      'id': 3,
-      'chores_done': 1,
-      **today
+      **StatsSerializer(stat_today).data
     })
 
     self.assertEqual(response_2.json(), {
-      'id': 4,
-      'chores_done': 1,
-      **tomorrow
+      **StatsSerializer(stat_tomorrow).data
     })
 
 
@@ -496,10 +489,13 @@ class TaskTestCase(TestCase):
     self.assertEqual(self.task_1_model.tags.count(), 1)
 
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    
+    user = User.objects.first()
+    tag = Tag.objects.get(name=tag_name, user=user)
+    serialized_tag = TagSerializer(tag).data
 
     self.assertEqual(response.json(), {'message': 'new', 'tag': {
-      'id': 1,
-      'name': tag_name
+      **serialized_tag
     }})
 
 
@@ -523,7 +519,7 @@ class TaskTestCase(TestCase):
 
   def test_task_tag_prev_created(self):
     tag_name = 'Nuxt v3'
-    Tag.objects.create(name=tag_name, user=User.objects.first())
+    tag = Tag.objects.create(name=tag_name, user=User.objects.first())
 
     self.assertEqual(self.task_1_model.tags.count(), 0)
     self.assertEqual(Tag.objects.count(), 1)
@@ -535,8 +531,7 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.json(), { 'tag': {
-      'id': 1,
-      'name': tag_name
+      **TagSerializer(tag).data
     }})
 
     self.assertEqual(self.task_1_model.tags.count(), 1)
@@ -547,24 +542,24 @@ class TaskTestCase(TestCase):
   def test_task_subtask_addition(self):
     self.assertEqual(self.task_1_model.subtasks.count(), 0)
 
-    subtask = {
+    subtask_details = {
       'title': 'Reactive alternative',
       'description': 'Read more about the alternative of refs',
     }
 
     response = self.c.patch(f'/api/tasks/{self.task_1_model.id}/', {
       **self.options('subtask', 'add'),
-      'subtask': subtask
+      'subtask': subtask_details
     }, content_type='application/json')
 
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
+    subtask = Subtask.objects.get(**subtask_details)
+
     self.assertEqual(response.json(), {
-      'id': 1,
       **SubtaskSerializer(subtask).data,
-      'done': False
     })
 
 
