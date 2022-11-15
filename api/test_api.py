@@ -3,7 +3,7 @@ from .models import Task, Project, Subtask, Tag, Stats, Mode, User
 from .serializers import *
 from .utils_api import AuthUtils
 
-import json
+
 
 class UserCreationTestCase(TestCase):
   def setUp(self):
@@ -15,18 +15,19 @@ class UserCreationTestCase(TestCase):
     expected_response = {"message": f"User Created test_user"}
 
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(json.loads(response.content), expected_response)
+    self.assertEqual(response.json(), expected_response)
 
 
   def test_user_login(self) -> dict:
     self.auth.register()
     login_response = self.auth.login()
 
-    tokens = json.loads(login_response.content)
+    tokens = login_response.json()
 
     self.assertEqual(login_response.status_code, 200)
     self.assertTrue(tokens['access'])
     self.assertTrue(tokens['refresh'])
+
 
 
 class UserOperationsTestCase(TestCase):
@@ -42,7 +43,7 @@ class UserOperationsTestCase(TestCase):
       'refresh': self.auth.tokens['refresh']
     })
 
-    new_tokens = json.loads(response.content)
+    new_tokens = response.json()
 
     self.assertEqual(response.status_code, 200)
     self.assertTrue(new_tokens['access'])
@@ -53,14 +54,15 @@ class UserOperationsTestCase(TestCase):
     response = self.c.get('/api/me/')
 
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(json.loads(response.content)['username'], 'test_user')
+    self.assertEqual(response.json()['username'], 'test_user')
 
 
   def test_user_retrieve_all(self):
     response = self.c.get('/api/users/')
 
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(type(json.loads(response.content)), list)
+    self.assertEqual(type(response.json()), list)
+
 
 
 class ModeOperationsTestCase(TestCase):
@@ -81,7 +83,8 @@ class ModeOperationsTestCase(TestCase):
     response = self.c.post('/api/modes/', new_mode)
 
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(json.loads(response.content), {
+    self.assertEqual(response.json(), {
+      # look back
       'id': 1,
       **new_mode
     })
@@ -92,6 +95,7 @@ class ModeOperationsTestCase(TestCase):
 
     response = self.c.delete('/api/modes/1/')
     self.assertEqual(response.status_code, 204)
+
 
 
 class StatsOperationsTestCase(TestCase):
@@ -117,13 +121,13 @@ class StatsOperationsTestCase(TestCase):
     self.assertEqual(response_1.status_code, 200)
     self.assertEqual(response_2.status_code, 200)
 
-    self.assertEqual(json.loads(response_1.content), {
+    self.assertEqual(response_1.json(), {
       'id': 1,
       'chores_done': 1,
       **today
     })
 
-    self.assertEqual(json.loads(response_2.content), {
+    self.assertEqual(response_2.json(), {
       'id': 2,
       'chores_done': 1,
       **tomorrow
@@ -143,7 +147,7 @@ class StatsOperationsTestCase(TestCase):
 
     self.assertEqual(response.status_code, 200)
 
-    self.assertEqual(json.loads(response.content), {
+    self.assertEqual(response.json(), {
       'id': 1,
       'chores_done': 2,
       **today
@@ -157,7 +161,7 @@ class StatsOperationsTestCase(TestCase):
     stats = Stats.objects.all()
 
     self.assertEqual(response.status_code, 200)
-    self.assertListEqual(json.loads(response.content), StatsSerializer(stats, many=True).data)
+    self.assertListEqual(response.json(), StatsSerializer(stats, many=True).data)
 
   
   # This test helped me find out that stats were
@@ -180,7 +184,7 @@ class StatsOperationsTestCase(TestCase):
 
     login_response = c.post('/api/token/', new_user)
 
-    tokens = json.loads(login_response.content)
+    tokens = login_response.json()
 
     auth_headers = {
       'HTTP_AUTHORIZATION': 'Bearer ' + tokens['access']
@@ -201,13 +205,13 @@ class StatsOperationsTestCase(TestCase):
     self.assertEqual(response_1.status_code, 200)
     self.assertEqual(response_2.status_code, 200)
 
-    self.assertEqual(json.loads(response_1.content), {
+    self.assertEqual(response_1.json(), {
       'id': 3,
       'chores_done': 1,
       **today
     })
 
-    self.assertEqual(json.loads(response_2.content), {
+    self.assertEqual(response_2.json(), {
       'id': 4,
       'chores_done': 1,
       **tomorrow
@@ -724,7 +728,8 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(task, None)
 
-    
+
+
 class ProjectTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
@@ -1088,7 +1093,6 @@ class CurrentTaskTestCase(TestCase):
 
 
 
-
 class CurrentModeTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
@@ -1208,4 +1212,6 @@ class TagInfoTestCase(TestCase):
     invalid_tag = self.c.get('/api/tagInfo/angular/')
 
     self.assertEqual(invalid_tag.status_code, 404)
+
+
 
