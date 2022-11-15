@@ -720,6 +720,75 @@ class TaskTestCase(TestCase):
 
 
 
+class TaskPagination(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
+    })
+
+    user = User.objects.first()
+
+    # Create 11 tasks
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+    Task.objects.create(title='a', description='a', estimated=2, user=user)
+
+
+  def test_task_default_pagination(self):
+    default_pagination = 4
+    response = self.c.get('/api/tasks/')
+
+    self.assertEqual(response.json()['count'], 11)
+    self.assertEqual(len(response.json()['results']), default_pagination)
+
+  
+  def test_task_custom_pagination(self):
+    page_size_1 = 10
+    page_size_2 = 7
+    response_1 = self.c.get('/api/tasks/', {'page_size': page_size_1})
+    response_2 = self.c.get('/api/tasks/', {'page_size': page_size_2})
+
+    self.assertEqual(len(response_1.json()['results']), page_size_1)
+    self.assertEqual(len(response_2.json()['results']), page_size_2)
+   
+
+  def test_task_greater_page_size(self):
+    page_size_1 = 11
+    response_1 = self.c.get('/api/tasks/', {'page_size': page_size_1})
+    
+    # Defaults to 10
+    self.assertEqual(len(response_1.json()['results']), 10)
+
+
+  def test_task_next_page(self):
+    total_tasks = Task.objects.count()
+    page_size_1 = 10
+    page_size_2 = 7
+
+    response_1 = self.c.get('/api/tasks/', {'page_size': page_size_1})
+    response_2 = self.c.get('/api/tasks/', {'page_size': page_size_2})
+
+    self.assertEqual(len(response_1.json()['results']), page_size_1)
+    self.assertEqual(len(response_2.json()['results']), page_size_2)
+
+    next_page_1 = self.c.get(response_1.json()['next'])
+    next_page_2 = self.c.get(response_2.json()['next'])
+
+    self.assertEqual(len(next_page_1.json()['results']), total_tasks - page_size_1)
+    self.assertEqual(len(next_page_2.json()['results']), total_tasks - page_size_2)
+
+
+
 class ProjectTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
@@ -1005,6 +1074,77 @@ class ProjectTestCase(TestCase):
     self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.first()), [])
     self.assertQuerysetEqual(Task.objects.filter(id=project_1.tasks.last()), [])
 
+
+
+class ProjectPagination(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
+    })
+
+    user = User.objects.first()
+    
+    # Create 11 projects
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+    Project.objects.create(name='p', user=user)
+
+
+  def test_project_default_pagination(self):
+    default_pagination = 2
+
+    response = self.c.get('/api/projects/')
+
+    self.assertEqual(response.json()['count'], 11)
+    self.assertEqual(len(response.json()['results']), default_pagination)
+
+
+
+  def test_project_custom_pagination(self):
+    page_size_1 = 10
+    page_size_2 = 4
+    response_1 = self.c.get('/api/projects/', {'page_size': page_size_1})
+    response_2 = self.c.get('/api/projects/', {'page_size': page_size_2})
+
+    self.assertEqual(len(response_1.json()['results']), page_size_1)
+    self.assertEqual(len(response_2.json()['results']), page_size_2)
+
+
+
+  def test_project_greater_page_size(self):
+    page_size_1 = 11
+    response_1 = self.c.get('/api/projects/', {'page_size': page_size_1})
+    
+    # Defaults to 10
+    self.assertEqual(len(response_1.json()['results']), 10)
+
+
+  def test_project_next_page(self):
+    total_tasks = Project.objects.count()
+    page_size_1 = 10
+    page_size_2 = 7
+
+    response_1 = self.c.get('/api/projects/', {'page_size': page_size_1})
+    response_2 = self.c.get('/api/projects/', {'page_size': page_size_2})
+
+    self.assertEqual(len(response_1.json()['results']), page_size_1)
+    self.assertEqual(len(response_2.json()['results']), page_size_2)
+
+    next_page_1 = self.c.get(response_1.json()['next'])
+    next_page_2 = self.c.get(response_2.json()['next'])
+
+    self.assertEqual(len(next_page_1.json()['results']), total_tasks - page_size_1)
+    self.assertEqual(len(next_page_2.json()['results']), total_tasks - page_size_2)
 
 
 class RegisterTestCase(TestCase):
