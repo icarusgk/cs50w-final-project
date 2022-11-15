@@ -720,12 +720,7 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    try:
-      task = Task.objects.get(id=self.task_1_model.id)
-    except Task.DoesNotExist:
-      task = None
-
-    self.assertEqual(task, None)
+    self.assertQuerysetEqual(Task.objects.filter(id=self.task_1_model.id), [])
 
 
 
