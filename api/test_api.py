@@ -830,14 +830,14 @@ class ProjectTestCase(TestCase):
 
   def test_project_add_new_task(self):
     task_1 = {
-      'tags': [{'name': 'vue', 'name': 'nuxt'}],
+      'tags': [{'name': 'vue'}, {'name': 'nuxt'}],
       'title': 'Search more about Nuxt 3',
       'description': 'Find out when the framework releases',
       'subtasks': []
     }
     
     task_2 = {
-      'tags': [{'name': 'files', 'name': 'framework'}],
+      'tags': [{'name': 'files'}, {'name': 'framework'}],
       'title': 'File structure',
       'description': 'Find more about the file structure',
       'subtasks': []
@@ -878,7 +878,7 @@ class ProjectTestCase(TestCase):
     task_1_model = self.test_project_add_new_task()
 
     task_1 = {
-      'tags': [{'name': 'vue', 'name': 'nuxt'}],
+      'tags': [{'name': 'vue'}, {'name': 'nuxt'}],
       'title': 'Search more about Nuxt 3',
       'description': 'Find out when the framework releases',
       'subtasks': []
