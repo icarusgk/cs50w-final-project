@@ -1133,3 +1133,79 @@ class CurrentModeTestCase(TestCase):
     self.assertEqual(response.json(), ModesSerializer(mode).data)
 
 
+
+class TagInfoTestCase(TestCase):
+  def setUp(self):
+    auth = AuthUtils()
+    auth.auth()
+    self.c = Client(**{
+      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens.get('access')
+    })
+
+    user = User.objects.first()
+
+    self.task_1 = {
+      'tags': [{'name': 'django'}, {'name': 'rest'}, {'name': 'docs'}],
+      'title': 'Read DRF\'s Docs',
+      'description': 'Read Django Rest Framework Docs',
+      'estimated': 3,
+    }
+
+    self.task_2 = {
+      'tags': [{'name': 'django'}, {'name': 'auth'}, {'name': 'docs'}],
+      'title': 'Read Django Auth Docs',
+      'description': 'Read more about auth',
+      'estimated': 1,
+    }
+
+    self.response_task_1 = self.c.post('/api/tasks/', {
+      **self.task_1
+    }, content_type='application/json')
+    self.response_task_2 = self.c.post('/api/tasks/', {
+      **self.task_2
+    }, content_type='application/json')
+
+
+
+  def test_tasks_creation(self):
+    self.assertEqual(self.response_task_1.status_code, 200)
+    self.assertEqual(self.response_task_2.status_code, 200)
+
+    task_1 = Task.objects.get(title=self.task_1['title'])
+    task_2 = Task.objects.get(title=self.task_2['title'])
+
+    self.assertEqual(self.response_task_1.json(), TaskSerializer(task_1).data)
+    self.assertEqual(self.response_task_2.json(), TaskSerializer(task_2).data)
+
+
+
+  def test_tasks_inside_tag(self):
+    django = self.c.get('/api/tagInfo/django/')
+    rest = self.c.get('/api/tagInfo/rest/')
+    docs = self.c.get('/api/tagInfo/docs/')
+    auth = self.c.get('/api/tagInfo/auth/')
+
+
+    django_tag = Tag.objects.get(name='django')
+    self.assertEqual(django.json(), TaskSerializer(django_tag.tasks, many=True).data)
+    self.assertEqual(django_tag.tasks.count(), 2)
+    # docs 2
+    docs_tag = Tag.objects.get(name='docs')
+    self.assertEqual(docs.json(), TaskSerializer(docs_tag.tasks, many=True).data)
+    self.assertEqual(docs_tag.tasks.count(), 2)
+
+    # auth 1
+    auth_tag = Tag.objects.get(name='auth')
+    self.assertEqual(auth.json(), TaskSerializer(auth_tag.tasks, many=True).data)
+    self.assertEqual(auth_tag.tasks.count(), 1)
+    # rest 1
+    rest_tag = Tag.objects.get(name='rest')
+    self.assertEqual(rest.json(), TaskSerializer(rest_tag.tasks, many=True).data)
+    self.assertEqual(rest_tag.tasks.count(), 1)
+    
+  
+  def test_invalid_tag(self):
+    invalid_tag = self.c.get('/api/tagInfo/angular/')
+
+    self.assertEqual(invalid_tag.status_code, 404)
+
