@@ -103,7 +103,7 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       try {
         const response = await axios.post('register/', credentials);
-        if (response.status === 200) {
+        if (response.status === 201) {
           // If the user is created, log him in
           this.login({
             username: credentials.username,
