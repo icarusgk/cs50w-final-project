@@ -59,7 +59,10 @@ async function deleteTask() {
         </Popper>
       </div>
       <div class="icon-container">
-        <div class="task-icon" @click="deleteTask()" style="margin-top: 0.3rem">
+          <div class="counter-in-container">
+            <span class="single-counter">{{ task.gone_through }} / {{ task.estimated }}</span>
+          </div>
+        <div class="task-icon" @click="deleteTask()">
           <DeleteIcon />
         </div>
         <div class="task-icon" @click="open = true">
@@ -103,6 +106,15 @@ async function deleteTask() {
 
     .icon-container {
       display: flex;
+      align-items: center;
+
+        .counter-in-container {
+          margin-right: 1rem;
+        }
+  
+        .single-counter {
+          margin-left: 5px;
+        }
     }
 
     .title-container {
@@ -122,6 +134,7 @@ async function deleteTask() {
         cursor: pointer;
       }
     }
+    
   }
 
   .done {
