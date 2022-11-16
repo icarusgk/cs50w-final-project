@@ -63,7 +63,7 @@ async function addTag() {
             tag_name: newTag.value,
           });
 
-          if (response?.status === 200) {
+          if (response?.status === 201 || response.status === 200) {
             if (response.data?.message === 'new') {
               alert.success('Tag created');
               chore.tags.push(response.data?.tag);
@@ -84,21 +84,31 @@ async function addTag() {
 }
 
 async function deleteTag(tag: TagType) {
+  // In the opened subtask / task is not new
   if (!props.new) {
-    // TODO: Ask for confirmation
-    const response = await axios.patch(`tasks/${props.id}/`, {
-      obj: 'tag',
-      action: 'remove',
-      tag_id: tag.id,
-    });
-    if (response?.status === 200) {
-      // emit the deletion of the tag
-      alert.error('Tag deleted');
-      emit('removeTag', tag);
+    // Ask for confirmation
+    if (window.confirm('Are you sure?')) {
+      const response = await axios.patch(`tasks/${props.id}/`, {
+        obj: 'tag',
+        action: 'remove',
+        tag_id: tag.id,
+      });
+      if (response?.status === 200) {
+        // emit the deletion of the tag
+        alert.info('Tag removed');
+        emit('removeTag', tag);
+
+        // Repopulate tags
+        chore.fetchTags();
+      }
+      else {
+        // Remove tag visually from the tag list
+        emit('removeTag', tag);
+      }
     }
   } else {
-    // Remove tag visually from the tag list
-    emit('removeTag', tag);
+    // If is new, just remove it
+    props.task.tags = props.task.tags.filter((tag: TagType) => tag.name === newTag.value)    
   }
 }
 
