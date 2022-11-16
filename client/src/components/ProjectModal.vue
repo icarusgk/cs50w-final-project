@@ -49,6 +49,7 @@ function exitModal() {
           type="text"
           name="title"
           id="task-input-title"
+          maxlength="30"
           v-model="title"
           @keyup.ctrl.enter="saveAndExit()"
         />
