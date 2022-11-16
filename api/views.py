@@ -588,7 +588,7 @@ class TagInfo(APIView):
         name -- the name of the tag
         """
         try:
-            tag = Tag.objects.get(name=name)
+            tag = Tag.objects.get(name=name, user=self.request.user)
             return Response(
                 TaskSerializer(
                     tag.tasks,
