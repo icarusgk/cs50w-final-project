@@ -193,11 +193,6 @@ export const useChoreStore = defineStore('chores', {
         this.fetchProjects();
       }
     },
-    async addTag(tag: string) {
-      const { data, status } = await useFetch('tags', 'post', tag);
-
-      if (status === 200) { console.log(data) };
-    },
     incrementGoneThrough() {
       this.increaseTodayStats();
       const auth = useAuthStore();
