@@ -14,26 +14,32 @@ const chore = useChoreStore();
 
 const tasks = ref<TaskType[]>([]);
 const fetchedTags = ref(false);
-const urlTag = route.params.name;
 
 watchEffect(async () => {
+  const urlTag = route.params.name;
+
   if (urlTag) {
-    const { data } = await useFetch(`tagInfo/${route.params.name}`, 'get');
+    const { data } = await useFetch(`tagInfo/${urlTag}`, 'get');
     tasks.value = data as TaskType[];
     fetchedTags.value = true;
   }
 });
 
 async function deleteTag() {
+  const urlTag = route.params.name;
+
   const tagFound = chore.tags.find((t: TagType) => t.name === urlTag);
   
   if (window.confirm('Are you sure?')) {
     const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
     if (status === 204) {
-      router.push('/tags');
-      
-      // Refresh the current displayed tasks
-      chore.fetchTasks();
+      router.back();
+      // Refresh the current tasks, project and tags
+      if (tasks.value.length > 0) {
+        chore.fetchTasks();
+        chore.fetchProjects();
+      }
+      chore.fetchTags();
     }
   }
 }
