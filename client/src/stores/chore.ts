@@ -86,7 +86,7 @@ export const useChoreStore = defineStore('chores', {
       const { data, status } = await useFetch('stats', 'post', {
         day: date.toISOString().slice(0, 10)
       });
-      if (status === 200) {
+      if (status === 201) {
         let stat = this.stats.find((stat) => stat.id === data.id);
 
         if (stat)  {
@@ -141,7 +141,7 @@ export const useChoreStore = defineStore('chores', {
     // Adds tasks with tags and subtasks
     async addTask(task: TaskType) {
       const { status } = await useFetch('tasks', 'post', task);
-      if (status === 200) {
+      if (status === 201) {
         useAlertStore().success(`Task ${task.title} created!`);
         this.fetchTasks();
       }
@@ -156,7 +156,7 @@ export const useChoreStore = defineStore('chores', {
     async deleteTask(task: TaskType) {
       const { status } = await useFetch('tasks', 'delete', null, task.id);
 
-      if (status === 200) {
+      if (status === 204) {
         const auth = useAuthStore();
 
         useAlertStore().info(`Task '${task.title}' deleted`);
@@ -188,7 +188,7 @@ export const useChoreStore = defineStore('chores', {
     async deleteProject(id: number) {
       const { status } = await useFetch('projects', 'delete', null, id);
 
-      if (status === 200) {
+      if (status === 204) {
         useAlertStore().info('Project deleted!');
         this.fetchProjects();
       }
