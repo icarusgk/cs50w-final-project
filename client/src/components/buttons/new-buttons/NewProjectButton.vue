@@ -31,7 +31,9 @@ function resetProject() {
 }
 
 function saveProject() {
-  useChoreStore().addProject(newProject.value);
+  if (newProject.value.name) {
+    useChoreStore().addProject(newProject.value);
+  }
   resetProject();
 }
 </script>
