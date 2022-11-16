@@ -74,7 +74,7 @@ defineEmits([
             <!-- Emit the close event -->
             <!-- Cancel -->
             <button @click="$emit('close')" class="cancel-button">
-              Cancel
+              Close
             </button>
             <!-- Save -->
             <button
