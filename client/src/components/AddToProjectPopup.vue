@@ -31,8 +31,6 @@ async function addToProject(project: ProjectType) {
     });
 
     if (response?.status === 200) {
-      console.log('added', response.data);
-
       // Refetch
       chore.fetchProjects();
       // Visual changes
@@ -61,7 +59,8 @@ async function addToProject(project: ProjectType) {
       <div>
         <span class="text">Add to Project</span>
       </div>
-      <template #content="{ close }">
+      <template>
+        <!-- Popper Content -->
         <div class="project-select">
           <div
             class="project"
@@ -73,6 +72,7 @@ async function addToProject(project: ProjectType) {
             {{ project.name }}
           </div>
         </div>
+        <!-- Popper Content -->
       </template>
     </Popper>
   </div>
