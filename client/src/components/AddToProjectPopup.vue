@@ -59,7 +59,7 @@ async function addToProject(project: ProjectType) {
       <div>
         <span class="text">Add to Project</span>
       </div>
-      <template>
+      <template #content>
         <!-- Popper Content -->
         <div class="project-select">
           <div
