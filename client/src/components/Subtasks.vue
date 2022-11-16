@@ -38,7 +38,7 @@ const newChoreOpened = ref(false);
 
 const activeChore = reactive<{
   opened: boolean;
-  chore: any;
+  chore: TaskType | null;
 }>({
   opened: false,
   chore: null,
@@ -67,7 +67,7 @@ function openNewChore() {
 }
 
 // Open chore details
-function openDetails(chore: TaskType | SubtaskType) {
+function openDetails(chore: TaskType) {
   // Assign the current task details
   activeChore.chore = chore;
 
@@ -139,10 +139,10 @@ async function addTaskToProject() {
     activeChore.chore.estimated =
       tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
 
-    // Make the api call
+    // Make the api call    
     const response = await axios.patch(`projects/${props.project.id}/update_task/`, {
       subtask: activeChore.chore,
-    });
+    }).catch(err => console.log(err));
 
     if (response?.status === 200) {
       alert.success(`Task ${activeChore.chore.title} saved!`);
@@ -174,7 +174,7 @@ async function saveSubtaskToTask() {
         action: 'add',
         subtask: subtaskModel.value,
       });
-      if (response?.status === 200) {
+      if (response?.status === 201) {
         existingTask.value.subtasks.push(response.data);
         alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
@@ -212,7 +212,7 @@ async function deleteChore() {
       const response = await axios.patch(`/projects/${props.project.id}/delete_task/`, {
         task_id: activeChore.chore?.id,
       });
-      if (response?.status === 200) {
+      if (response?.status === 204) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
         existingProject.value.tasks = existingProject.value.tasks.filter(
           (task: TaskType) => task.id !== activeChore.chore?.id
@@ -220,19 +220,21 @@ async function deleteChore() {
       }
     }
   } else {
-    // If subtask
-    const response = await axios.patch(`/tasks/${props.task.id}/`, {
-      obj: 'subtask',
-      action: 'remove',
-      subtask_id: activeChore.chore?.id,
-    });
+    if (window.confirm('Are you sure?')) {
+      // If subtask
+      const response = await axios.patch(`/tasks/${props.task.id}/`, {
+        obj: 'subtask',
+        action: 'remove',
+        subtask_id: activeChore.chore?.id,
+      });
 
-    if (response?.status === 200) {
-      // If is task
-      alert.success(`Subtask ${activeChore.chore?.title} deleted!`);
-      existingTask.value.subtasks = existingTask.value.subtasks.filter(
-        (sub: TaskType) => sub !== activeChore.chore
-      );
+      if (response?.status === 204) {
+        // If is task
+        alert.success(`Subtask ${activeChore.chore?.title} deleted!`);
+        existingTask.value.subtasks = existingTask.value.subtasks.filter(
+          (sub: TaskType) => sub !== activeChore.chore
+        );
+      }
     }
   }
   activeChore.opened = false;
@@ -305,7 +307,7 @@ function removeTag(tag: TagType) {
   if (props.isProject) {
     // When a existing chore is opened
     if (activeChore.opened) {
-      activeChore.chore.tags = activeChore.chore.tags.filter(
+      activeChore.chore!.tags = activeChore.chore!.tags.filter(
         (t: TagType) => t.name !== tag.name
       );
       return;
