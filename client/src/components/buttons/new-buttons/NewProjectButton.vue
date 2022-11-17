@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import { useAuthStore } from '@/stores/auth';
+import { useAlertStore } from '@/stores/alerts';
 import type { ProjectType } from '@/types';
 
 import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
@@ -17,6 +18,7 @@ const newProject = ref<ProjectType>({
 
 const open = ref(false);
 const auth = useAuthStore();
+const alert = useAlertStore();
 
 watch(open, () => {
   useModalStore().toggle();
@@ -33,8 +35,10 @@ function resetProject() {
 function saveProject() {
   if (newProject.value.name) {
     useChoreStore().addProject(newProject.value);
+    resetProject();
+  } else {
+    alert.error('Your project must have a name');
   }
-  resetProject();
 }
 </script>
 
