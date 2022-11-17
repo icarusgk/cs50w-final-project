@@ -35,9 +35,13 @@ async function toggleDone() {
   }
 }
 
-async function deleteTask() {
+function deleteTask() {
   if (window.confirm('Are you sure you want to delete this task?')) {
     chore.deleteTask(props.task);
+
+    if (chore.taskPagination.page === chore.totalTaskPages && chore.tasks.length === 1) {
+      chore.decreaseTaskPagination();
+    }
   }
 }
 </script>
@@ -75,6 +79,7 @@ async function deleteTask() {
       :open="open"
       @exit="open = false"
       @toggle-done="toggleDone()"
+      @deleteTask="deleteTask()"
     />
   </div>
 </template>

@@ -12,6 +12,8 @@ defineProps<{
   task: TaskType;
 }>();
 
+defineEmits(['deleteTask'])
+
 const open = ref(false);
 
 watch(open,  () => {
@@ -40,7 +42,12 @@ watch(open,  () => {
       <span class="title">{{ task.title }}</span>
       <span>{{ task.description }}</span>
     </div>
-    <TaskModal :task="task" :open="open" @exit="open = false" />
+    <TaskModal
+      :task="task"
+      :open="open"
+      @exit="open = false"
+      @deleteTask="$emit('deleteTask', task)"
+    />
   </div>
 </template>
 
