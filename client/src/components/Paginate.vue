@@ -19,7 +19,7 @@ function increaseCurrentPage(): void {
     emit('setPage', props.page + 1);
   }
 
-  if (props.page >= 4 && props.page < props.pages - 2) {
+  if (props.page >= (TOTAL_PAGES + 1) && props.page < props.pages - (TOTAL_PAGES - 1)) {
     nextMoveBy(1);
   }
 }
@@ -33,11 +33,11 @@ function setCurrentPage(newPage: number): void {
     if (newPage === 1 || newPage === 3) emit('setAdded', 1);
     if (newPage === 4) emit('setAdded', 2);
   } else {
-    if (newPage > 4 && newPage > props.page && newPage !== props.pages) {
+    if (newPage > (TOTAL_PAGES + 1) && newPage > props.page && newPage !== props.pages) {
       nextMoveBy(1);
     }
     if (newPage < props.page) {
-      if (newPage === props.pages - 2) {
+      if (newPage === props.pages - (TOTAL_PAGES - 1)) {
         emit('setAdded', props.added)
       } else {
         prevMoveBy(1);
@@ -46,17 +46,16 @@ function setCurrentPage(newPage: number): void {
   }
 
   if (newPage === props.pages - 1) {
-    emit('setAdded', props.pages - 4);
+    emit('setAdded', props.pages - (TOTAL_PAGES + 1));
   }
 }
 
 function decreaseCurrentPage(): void {
   if (props.page > 1) {
-    // currentPage.value -= 1;
     emit('setPage', props.page - 1);
   }
 
-  if (props.page <= props.pages - 3) {
+  if (props.page <= props.pages - TOTAL_PAGES) {
     prevMoveBy(1);
   }
 }
@@ -73,7 +72,7 @@ function prevMoveBy(decreasedBy: number): void {
 
   // By 3
   if (decreasedBy > 1) {
-    props.added <= 3
+    props.added <= TOTAL_PAGES
       ? emit('setAdded', 1)
       : emit('setAdded', props.added - decreasedBy);
 
@@ -89,26 +88,25 @@ function prevMoveBy(decreasedBy: number): void {
 function nextMoveBy(increasedBy: number): void {
   // By 3
   if (increasedBy > 1) {
-    // Check if currentPage value is 7 or more
-    if (props.page >= props.pages - 4) {
+    if (props.page >= props.pages - (TOTAL_PAGES + 1)) {
       // Move the range to the final
       emit('setPage', props.pages);
-      emit('setAdded', props.pages - 4);
+      emit('setAdded', props.pages - (TOTAL_PAGES + 1));
     }
     
-    // If added is less than TOTAL_PAGES - 2 move by n (3)
-    if (props.added < props.pages - 5) {
+    // If added is less than TOTAL_PAGES - 2 move by n
+    if (props.added < props.pages - (TOTAL_PAGES + 2)) {
       emit('setAdded', props.added + increasedBy - 1);
-      emit('setPage', props.added + 4);
+      emit('setPage', props.added + (TOTAL_PAGES + 1));
     } else {
       // For short pages
-      emit('setAdded', props.pages - 4);
-      emit('setPage', props.pages - 2);
+      emit('setAdded', props.pages - (TOTAL_PAGES + 1));
+      emit('setPage', props.pages - (TOTAL_PAGES - 1));
     }
   }
 
   // By 1
-  if (increasedBy === 1 && props.page <= props.pages - 2) {
+  if (increasedBy === 1 && props.page <= props.pages - (TOTAL_PAGES - 1)) {
     emit('setAdded', props.added + 1);
   }
 }
@@ -136,7 +134,7 @@ function nextMoveBy(increasedBy: number): void {
         1
       </div>
       <!-- Prev ... Dots -->
-      <div v-if="props.added > 1" @click="prevMoveBy(3)" class="paginate-btn">
+      <div v-if="props.added > 1" @click="prevMoveBy(TOTAL_PAGES)" class="paginate-btn">
         ...
       </div>
       <!-- 3 pages range -->
@@ -149,15 +147,15 @@ function nextMoveBy(increasedBy: number): void {
       </div>
       <!-- Next ... Dots -->
       <div
-        v-if="props.added + 4 !== props.pages"
-        @click="nextMoveBy(3)"
+        v-if="props.added + (TOTAL_PAGES + 1) !== props.pages"
+        @click="nextMoveBy(TOTAL_PAGES)"
         class="paginate-btn"
       >
         ...
       </div>
       <!-- Last page -->
       <div
-        @click="$emit('setPage', props.pages), $emit('setAdded', props.pages - 4)"
+        @click="$emit('setPage', props.pages), $emit('setAdded', props.pages - (TOTAL_PAGES + 1))"
         :class="{ active: props.page === props.pages, 'paginate-btn': true }"
       >
         {{ props.pages }}
