@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from '@vue/reactivity';
 import { useChoreStore } from '@/stores/chore';
+import type { TaskType } from '@/types';
 
 import TaskInfo from '@/components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
@@ -14,6 +15,24 @@ chore.taskPagination.page_size = 10;
 chore.taskPagination.added = 1;
 
 const tasks = computed(() => chore.tasks);
+
+function setPage(newPage: number) {
+  chore.setTaskPage(newPage);
+}
+
+function setAdded(newAdded: number) {
+  chore.setTaskAdded(newAdded);
+}
+
+function deleteTask(task: TaskType) {
+  if (window.confirm('Are you sure you want to delete this task??????')) {
+    chore.deleteTask(task);
+
+    if (chore.taskPagination.page === chore.totalTaskPages && chore.tasks.length === 1) {
+      chore.decreaseTaskPagination();
+    }
+  }
+}
 </script>
 
 <template>
@@ -24,15 +43,16 @@ const tasks = computed(() => chore.tasks);
     </div>
     <div v-if="chore.tasks.length > 0">
       <div class="all-tasks-container">
-        <TaskInfo v-for="task in tasks" :task="task" :key="task.id" />
+        <TaskInfo v-for="task in tasks" :task="task" :key="task.id" @deleteTask="deleteTask($event)"/>
       </div>
       <Paginate
         :pages="chore.totalTaskPages"
         :page="chore.taskPagination.page"
         :added="chore.taskPagination.added"
-        @prev="chore.previousTaskPage"
-        @setPage="(page) => chore.setTaskPage(page)"
-        @next="chore.nextTaskPage"
+        @prev="chore.previousTaskPage()"
+        @setPage="setPage($event)"
+        @setAdded="setAdded($event)"
+        @next="chore.nextTaskPage()"
       />
     </div>
     <div v-else>
