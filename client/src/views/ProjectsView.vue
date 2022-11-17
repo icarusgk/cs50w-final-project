@@ -38,7 +38,7 @@ function setAdded(newAdded: number) {
       <span class="title">Projects</span>
     </div>
     <div v-if="chore.projects.length > 0" class="all-projects-container">
-      <ProjectInfo v-for="project in projects" :project="project" />
+      <ProjectInfo v-for="project in projects" :project="project" :key="project.id" />
     </div>
     <div v-else>
       <h1 class="white">No Projects</h1>
