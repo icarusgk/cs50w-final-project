@@ -21,6 +21,10 @@ function deleteProject() {
   if (window.confirm('Are you sure?')) {
     chore.deleteProject(props.project.id as number);
     emit('exit');
+
+    if (chore.projectPagination.page === chore.totalProjectPages && chore.projects.length === 1) {
+      chore.decreaseProjectPagination();
+    }
   }
 }
 
