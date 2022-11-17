@@ -12,17 +12,25 @@ chore.projectPagination.page_size = 10;
 chore.projectPagination.added = 1;
 
 const projects = computed(() => chore.projects);
+
+function setPage(newPage: number) {
+  chore.setProjectPage(newPage);
+}
+
+function setAdded(newAdded: number) {
+  chore.setProjectAdded(newAdded);
+}
 </script>
 
 <template>
   <div class="projects-view">
     <Paginate
       :pages="chore.totalProjectPages"
-      v-model:page="chore.projectPagination.page"
+      :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
-      @setPage="(page: number) => chore.setProjectPage(page)"
-      @setAdded="(number: number) => chore.projectPagination.added = number"
+      @setPage="setPage($event)"
+      @setAdded="setAdded($event)"
       @next="chore.nextProjectPage"
     />
     <div class="go-back">
