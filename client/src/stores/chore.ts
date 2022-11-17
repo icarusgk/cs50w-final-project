@@ -33,6 +33,16 @@ export const useChoreStore = defineStore('chores', {
       Math.ceil(state.taskPagination.count / state.taskPagination.page_size),
   },
   actions: {
+    decreaseProjectPagination() {
+      this.projectPagination.page -= 1;
+      this.projectPagination.count -= 1;
+      this.projectPagination.added -= 1;
+    },
+    decreaseTaskPagination() {
+      this.taskPagination.page -= 1;
+      this.taskPagination.count -= 1;
+      this.taskPagination.added -= 1;
+    },
     previousProjectPage() {
       if (this.projectPagination.page > 1) {
         this.projectPagination.page--;
@@ -41,7 +51,9 @@ export const useChoreStore = defineStore('chores', {
     },
     setProjectPage(page: number) {
       this.projectPagination.page = page;
-      this.fetchProjects();
+    },
+    setProjectAdded(added: number) {
+      this.projectPagination.added = added;
     },
     nextProjectPage() {
       if (this.projectPagination.page < this.totalProjectPages) {
@@ -58,6 +70,9 @@ export const useChoreStore = defineStore('chores', {
     setTaskPage(page: number) {
       this.taskPagination.page = page;
       this.fetchTasks();
+    },
+    setTaskAdded(added: number) {
+      this.taskPagination.added = added;
     },
     nextTaskPage() {
       if (this.taskPagination.page < this.totalTaskPages) {
