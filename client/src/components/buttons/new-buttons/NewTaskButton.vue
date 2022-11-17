@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import { useAuthStore } from '@/stores/auth';
+import { useAlertStore } from '@/stores/alerts';
 
 import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
 import Modal from '@/components/modals/Modal.vue';
@@ -15,6 +16,7 @@ import type { TagType, TaskType } from '@/types';
 const open = ref(false);
 const taskStore = useChoreStore();
 const auth = useAuthStore();
+const alert = useAlertStore();
 
 watch(open, () => {
   useModalStore().toggle();
@@ -42,8 +44,10 @@ function resetTask() {
 function saveTask() {
   if (initialTask.value.title) {
     taskStore.addTask(initialTask.value);
-  }
-  resetTask();
+    resetTask();
+  } else {
+    alert.error('Your task must have a title');
+  }  
 }
 
 function removeTag(tag: TagType) {
