@@ -16,7 +16,7 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-const emit = defineEmits(['exit', 'toggleDone']);
+const emit = defineEmits(['exit', 'toggleDone', 'deleteTask']);
 let tmpNewTitle = '';
 let tmpNewDesc = '';
 let tmpEstimated: number;
@@ -37,10 +37,8 @@ function saveTask() {
 }
 
 function deleteTask() {
-  if (window.confirm('Are you sure?')) {
-    chore.deleteTask(props.task);
-    emit('exit');
-  }
+  emit('deleteTask');
+  emit('exit');
 }
 
 function removeTag(tag: TagType) {
