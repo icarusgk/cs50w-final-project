@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import Project from '@/components/buttons/Project.vue';
@@ -14,6 +14,14 @@ chore.projectPagination.page_size = 2;
 chore.projectPagination.added = 1;
 
 const projects = computed(() => chore.projects.slice(0, 2));
+
+function setPage(newPage: number) {
+  chore.setProjectPage(newPage);
+}
+
+function setAdded(newAdded: number) {
+  chore.setProjectAdded(newAdded);
+}
 </script>
 
 <template>
@@ -48,12 +56,12 @@ const projects = computed(() => chore.projects.slice(0, 2));
     </div>
     <Paginate
       :pages="chore.totalProjectPages"
-      v-model:page="chore.projectPagination.page"
+      :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
-      @prev="chore.previousProjectPage"
-      @setPage="(page) => chore.setProjectPage(page)"
-      @setAdded="(number) => (chore.projectPagination.added = number)"
-      @next="chore.nextProjectPage"
+      @prev="chore.previousProjectPage()"
+      @setPage="setPage($event)"
+      @setAdded="setAdded($event)"
+      @next="chore.nextProjectPage()"
     />
   </div>
 </template>

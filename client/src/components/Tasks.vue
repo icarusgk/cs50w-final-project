@@ -26,6 +26,14 @@ watch(currentTask, (prevId, curId) => {
     chore.changeCurrentTask(currentTask.value);
   }
 });
+
+function setPage(newPage: number) {
+  chore.setTaskPage(newPage);
+}
+
+function setAdded(newAdded: number) {
+  chore.setTaskAdded(newAdded);
+}
 </script>
 
 <template>
@@ -57,10 +65,11 @@ watch(currentTask, (prevId, curId) => {
 
     <Paginate
       :pages="chore.totalTaskPages"
-      v-model:page="chore.taskPagination.page"
+      :page="chore.taskPagination.page"
       :added="chore.taskPagination.added"
       @prev="chore.previousTaskPage"
-      @setPage="(page) => chore.setTaskPage(page)"
+      @setPage="setPage($event)"
+      @setAdded="setAdded($event)"
       @next="chore.nextTaskPage"
     />
   </div>
