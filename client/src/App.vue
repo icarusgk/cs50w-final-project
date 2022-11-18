@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
@@ -15,12 +14,8 @@ if (auth.isAuthenticated) {
   auth.getUser();
 }
 
-watchEffect(() => {
-  if (auth.isAuthenticated) {
-    chore.fetchTasks();
-    chore.fetchProjects();
-  }
-});
+chore.fetchProjects();
+chore.fetchTasks();
 </script>
 
 <template>
