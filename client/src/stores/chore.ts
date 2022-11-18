@@ -51,6 +51,7 @@ export const useChoreStore = defineStore('chores', {
     },
     setProjectPage(page: number) {
       this.projectPagination.page = page;
+      this.fetchProjects();
     },
     setProjectAdded(added: number) {
       this.projectPagination.added = added;
@@ -172,15 +173,21 @@ export const useChoreStore = defineStore('chores', {
       const { status } = await useFetch('tasks', 'delete', null, task.id);
 
       if (status === 204) {
+        // if it is the last
+        if (this.tasks.length === 1) {
+          this.tasks = this.tasks.filter((t: TaskType) => t.id !== task.id);
+          this.taskPagination.page = 1;
+        } else {
+          this.fetchTasks();
+        }
+
         const auth = useAuthStore();
 
         useAlertStore().info(`Task '${task.title}' deleted`);
 
         if (task.id === auth.user!.current_task_id) {
           auth.user!.current_task_id = 0;
-        }
-
-        this.fetchTasks();
+        }        
       }
     },
     async addProject(project: ProjectType) {
@@ -204,8 +211,13 @@ export const useChoreStore = defineStore('chores', {
       const { status } = await useFetch('projects', 'delete', null, id);
 
       if (status === 204) {
+        if (this.projects.length === 1) {
+          this.projects = this.projects.filter((p: ProjectType) => p.id !== id);
+          this.projectPagination.page = 1;
+        } else {
+          this.fetchProjects();
+        }
         useAlertStore().info('Project deleted!');
-        this.fetchProjects();
       }
     },
     incrementGoneThrough() {
