@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
@@ -12,10 +13,23 @@ const chore = useChoreStore();
 
 if (auth.isAuthenticated) {
   auth.getUser();
+  chore.fetchProjects();
+  chore.fetchTasks();
 }
 
-chore.fetchProjects();
-chore.fetchTasks();
+watch([
+  () => chore.projectPagination.page,
+  () => chore.taskPagination.page,
+  () => chore.projectPagination.page_size,
+  () => chore.taskPagination.page_size,
+], ([newProjectPage, newTaskPage],[oldProjectPage, oldTaskPage]) => {
+  if (chore.projectPagination.count > 1 && newProjectPage !== oldProjectPage) {    
+    chore.fetchProjects();
+  }
+  if (chore.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
+    chore.fetchTasks();
+  }
+})
 </script>
 
 <template>
