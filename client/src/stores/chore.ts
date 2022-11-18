@@ -46,12 +46,10 @@ export const useChoreStore = defineStore('chores', {
     previousProjectPage() {
       if (this.projectPagination.page > 1) {
         this.projectPagination.page--;
-        this.fetchProjects();
       }
     },
     setProjectPage(page: number) {
       this.projectPagination.page = page;
-      this.fetchProjects();
     },
     setProjectAdded(added: number) {
       this.projectPagination.added = added;
@@ -59,18 +57,15 @@ export const useChoreStore = defineStore('chores', {
     nextProjectPage() {
       if (this.projectPagination.page < this.totalProjectPages) {
         this.projectPagination.page++;
-        this.fetchProjects();
       }
     },
     previousTaskPage() {
       if (this.taskPagination.page > 1) {
         this.taskPagination.page--;
-        this.fetchTasks();
       }
     },
     setTaskPage(page: number) {
       this.taskPagination.page = page;
-      this.fetchTasks();
     },
     setTaskAdded(added: number) {
       this.taskPagination.added = added;
@@ -78,7 +73,6 @@ export const useChoreStore = defineStore('chores', {
     nextTaskPage() {
       if (this.taskPagination.page < this.totalTaskPages) {
         this.taskPagination.page++;
-        this.fetchTasks();
       }
     },
     // fetchers
@@ -159,6 +153,8 @@ export const useChoreStore = defineStore('chores', {
       const { status } = await useFetch('tasks', 'post', task);
       if (status === 201) {
         useAlertStore().success(`Task ${task.title} created!`);
+        // Send user to the first page
+        this.taskPagination.page = 1;
         this.fetchTasks();
       }
     },
@@ -174,7 +170,7 @@ export const useChoreStore = defineStore('chores', {
 
       if (status === 204) {
         // if it is the last
-        if (this.tasks.length === 1) {
+        if (this.tasks.length === 1 && this.taskPagination.count === 0) {
           this.tasks = this.tasks.filter((t: TaskType) => t.id !== task.id);
           this.taskPagination.page = 1;
         } else {
@@ -195,6 +191,8 @@ export const useChoreStore = defineStore('chores', {
 
       if (status === 201) {
         useAlertStore().success(`Project ${project.name} created!`);
+        // Send user to the first page
+        this.projectPagination.page = 1;
         this.fetchProjects();
       }
     },
@@ -211,7 +209,7 @@ export const useChoreStore = defineStore('chores', {
       const { status } = await useFetch('projects', 'delete', null, id);
 
       if (status === 204) {
-        if (this.projects.length === 1) {
+        if (this.projects.length === 1 && this.projectPagination.count === 0) {
           this.projects = this.projects.filter((p: ProjectType) => p.id !== id);
           this.projectPagination.page = 1;
         } else {
