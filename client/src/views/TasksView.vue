@@ -5,6 +5,7 @@ import type { TaskType } from '@/types';
 
 import TaskInfo from '@/components/TaskInfo.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
+import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import Paginate from '../components/Paginate.vue';
 
 const chore = useChoreStore();
@@ -55,8 +56,9 @@ function deleteTask(task: TaskType) {
         @next="chore.nextTaskPage()"
       />
     </div>
-    <div v-else>
-      <h1 class="white">No tasks</h1>
+    <div class="no-tasks" v-else>
+      <TaskInfoIcon />
+      <span class="white">No Tasks</span>
     </div>
   </div>
 </template>
@@ -88,6 +90,17 @@ function deleteTask(task: TaskType) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+  }
+
+  .no-tasks {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    span {
+      margin-left: 1rem;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
   }
 }
 

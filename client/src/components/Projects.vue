@@ -5,6 +5,7 @@ import { useChoreStore } from '@/stores/chore';
 import Project from '@/components/buttons/Project.vue';
 import TaskType from '@/components/slots/TaskType.vue';
 import ProjectIcon from '@/components/icons/ProjectIcon.vue';
+import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Paginate from '@/components/Paginate.vue';
 
 const chore = useChoreStore();
@@ -42,7 +43,8 @@ function setAdded(newAdded: number) {
       </template>
     </TaskType>
     <div>
-      <div v-if="projects.length === 0">
+      <div class="no-project" v-if="projects.length === 0">
+        <TaskInfoIcon />
         <span>There are no projects</span>
       </div>
       <!-- List of projects -->
@@ -72,6 +74,18 @@ function setAdded(newAdded: number) {
   &:focus,
   &:active {
     cursor: pointer;
+  }
+}
+
+.no-project {
+  display: flex;
+  align-items: center;
+  background-color: var(--light-gray);
+  width: 80%;
+  padding: 1rem;
+  border-radius: 10px;
+  span {
+    margin-left: 1rem;
   }
 }
 </style>

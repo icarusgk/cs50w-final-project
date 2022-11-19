@@ -2,6 +2,7 @@
 import { computed } from '@vue/reactivity';
 import BackIcon from '@/components/icons/BackIcon.vue';
 import ProjectInfo from '@/components/ProjectInfo.vue';
+import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import Paginate from '@/components/Paginate.vue';
 import { useChoreStore } from '@/stores/chore';
 
@@ -40,8 +41,9 @@ function setAdded(newAdded: number) {
     <div v-if="chore.projects.length > 0" class="all-projects-container">
       <ProjectInfo v-for="project in projects" :project="project" :key="project.id" />
     </div>
-    <div v-else>
-      <h1 class="white">No Projects</h1>
+    <div class="no-projects" v-else>
+      <TaskInfoIcon />
+      <span class="white">No Projects</span>
     </div>
   </div>
 </template>
@@ -66,7 +68,7 @@ function setAdded(newAdded: number) {
 
   .title {
     color: white;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 800;
   }
 
@@ -77,6 +79,17 @@ function setAdded(newAdded: number) {
     color: white;
     margin-top: 1rem;
     gap: 1rem;
+  }
+
+  .no-projects {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    span {
+      margin-left: 1rem;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
   }
 }
 

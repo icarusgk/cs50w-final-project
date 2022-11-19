@@ -4,6 +4,7 @@ import { useChoreStore } from '@/stores/chore';
 
 import TaskType from '@/components/slots/TaskType.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
+import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Task from '@/components/buttons/Task.vue';
 import Paginate from '@/components/Paginate.vue';
 
@@ -51,8 +52,9 @@ function setAdded(newAdded: number) {
         </span>
       </template>
     </TaskType>
-    <div v-if="tasks.length === 0">
-      <span>The are no tasks</span>
+    <div class="no-tasks" v-if="tasks.length === 0">
+      <TaskInfoIcon />
+      <span>There are no tasks</span>
     </div>
     <div v-auto-animate>
       <Task
@@ -81,6 +83,18 @@ function setAdded(newAdded: number) {
   &:focus,
   &:active {
     cursor: pointer;
+  }
+}
+
+.no-tasks {
+  display: flex;
+  align-items: center;
+  background-color: var(--light-gray);
+  width: 80%;
+  padding: 1rem;
+  border-radius: 10px;
+  span {
+    margin-left: 1rem;
   }
 }
 </style>
