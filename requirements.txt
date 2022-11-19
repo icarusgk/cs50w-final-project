@@ -2,3 +2,4 @@ django
 djangorestframework
 django-cors-headers
 djangorestframework-simplejwt
+python-dotenv==0.21.0
