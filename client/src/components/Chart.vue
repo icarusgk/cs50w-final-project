@@ -33,7 +33,7 @@ const options = ref({
     type: 'solid',
   },
   title: {
-    text: 'Tasks done',
+    text: chore.stats.length > 0 ? 'Tasks done' : "You don't have any tasks done yet!",
     align: 'center',
     margin: 10,
     style: {
