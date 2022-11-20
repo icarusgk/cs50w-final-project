@@ -81,9 +81,9 @@ function setTimer(type: string) {
 
 <template>
   <div id="timer-container">
-    <p v-if="!timer.currentMode.includes('Default')" id="mode-title">
+    <span v-if="!timer.currentMode.includes('Default')" id="mode-title">
       Current Mode: {{ timer.currentMode }}
-    </p>
+    </span>
     <!-- Timer buttons -->
     <div id="timer-setters">
       <div id="normal-pomo" @click="setTimer('pomo')">Pomo</div>
@@ -151,8 +151,10 @@ function setTimer(type: string) {
 
 #timer-container {
   #mode-title {
+    display: block;
     font-size: 1.5rem;
     font-weight: 700;
+    margin-bottom: 1rem;
   }
   #timer-setters {
     display: flex;
