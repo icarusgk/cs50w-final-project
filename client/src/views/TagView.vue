@@ -144,4 +144,10 @@ async function deleteTag() {
     }
   }
 }
+
+@media (max-width: 480px) {
+  .tag-info-container {
+    padding: 1rem;
+  }
+}
 </style>

@@ -118,7 +118,7 @@ function deleteTask() {
         }
   
         .single-counter {
-          margin-left: 5px;
+          margin-left: 5rem;
         }
     }
 
@@ -145,6 +145,19 @@ function deleteTask() {
   .done {
     background-color: var(--vivid-red);
     opacity: 0.4;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-container {
+    
+    .task-title-container {
+      .icon-container {
+        .single-counter {
+          display: none;
+        }
+      }
+    }
   }
 }
 </style>

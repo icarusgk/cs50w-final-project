@@ -41,8 +41,9 @@ import AddIcon from '@/components/icons/AddIcon.vue';
 
 @media (max-width: 768px) {
   .add-item-btn {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 600;
+    width: 100%;
   }
 }
 </style>

@@ -15,6 +15,8 @@ chore.taskPagination.page = 1;
 chore.taskPagination.page_size = 10;
 chore.taskPagination.added = 1;
 
+chore.fetchTasks();
+
 const tasks = computed(() => chore.tasks);
 
 function setPage(newPage: number) {
@@ -42,6 +44,16 @@ function deleteTask(task: TaskType) {
       <BackIcon class="button" @click="$router.back()" />
       <span class="title">Tasks</span>
     </div>
+    <Paginate
+      class="top-paginate"
+      :pages="chore.totalTaskPages"
+      :page="chore.taskPagination.page"
+      :added="chore.taskPagination.added"
+      @prev="chore.previousTaskPage()"
+      @setPage="setPage($event)"
+      @setAdded="setAdded($event)"
+      @next="chore.nextTaskPage()"
+    />
     <div v-if="chore.tasks.length > 0">
       <div class="all-tasks-container">
         <TaskInfo v-for="task in tasks" :task="task" :key="task.id" @deleteTask="deleteTask($event)"/>
@@ -84,6 +96,9 @@ function deleteTask(task: TaskType) {
     color: white;
     font-size: 3rem;
     font-weight: 800;
+  }
+  .top-paginate {
+    margin-bottom: 1rem;
   }
   .all-tasks-container {
     display: flex;

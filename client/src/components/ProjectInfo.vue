@@ -35,4 +35,10 @@ watch(open, () => {
     cursor: pointer;
   }
 }
+
+@media (max-width: 480px) {
+  .single-project {
+    width: 100%;
+  }
+}
 </style>
