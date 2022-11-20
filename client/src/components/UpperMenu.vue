@@ -78,6 +78,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
     list-style-type: none;
     margin-block: 0 0;
     margin-inline: 0 0;
+    margin-top: 0.45rem;
     padding-inline-start: 0px;
 
     li {
@@ -199,7 +200,6 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
     ul {
       li {
         transform: scale(0.7);
-        margin-right: -0.8rem;
         .login {
           .user-info {
             margin-right: 0;

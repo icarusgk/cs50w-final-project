@@ -89,4 +89,10 @@ function exitModal() {
     cursor: pointer;
   }
 }
+
+@media (max-width: 480px) {
+  #task-input-title {
+    width: 95%;
+  }
+}
 </style>

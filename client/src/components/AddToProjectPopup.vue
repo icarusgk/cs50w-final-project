@@ -62,14 +62,19 @@ async function addToProject(project: ProjectType) {
       <template #content>
         <!-- Popper Content -->
         <div class="project-select">
+
           <div
             class="project"
+            v-if="chore.projects.length > 0"
             :class="{ inside: taskProjects.includes(project) }"
             v-for="project in allProjects"
             :key="project.id"
             @click="addToProject(project)"
           >
             {{ project.name }}
+          </div>
+          <div v-else>
+            <span>No projects</span>
           </div>
         </div>
         <!-- Popper Content -->

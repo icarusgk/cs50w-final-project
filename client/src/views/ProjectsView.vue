@@ -12,6 +12,8 @@ chore.projectPagination.page = 1;
 chore.projectPagination.page_size = 10;
 chore.projectPagination.added = 1;
 
+chore.fetchProjects();
+
 const projects = computed(() => chore.projects);
 
 function setPage(newPage: number) {
@@ -25,6 +27,10 @@ function setAdded(newAdded: number) {
 
 <template>
   <div class="projects-view">
+    <div class="go-back">
+      <BackIcon class="button" @click="$router.back()" />
+      <span class="title">Projects</span>
+    </div>
     <Paginate
       :pages="chore.totalProjectPages"
       :page="chore.projectPagination.page"
@@ -34,10 +40,6 @@ function setAdded(newAdded: number) {
       @setAdded="setAdded($event)"
       @next="chore.nextProjectPage"
     />
-    <div class="go-back">
-      <BackIcon class="button" @click="$router.back()" />
-      <span class="title">Projects</span>
-    </div>
     <div v-if="chore.projects.length > 0" class="all-projects-container">
       <ProjectInfo v-for="project in projects" :project="project" :key="project.id" />
     </div>
@@ -45,6 +47,15 @@ function setAdded(newAdded: number) {
       <TaskInfoIcon />
       <span class="white">No Projects</span>
     </div>
+    <Paginate
+      :pages="chore.totalProjectPages"
+      :page="chore.projectPagination.page"
+      :added="chore.projectPagination.added"
+      @prev="chore.previousProjectPage"
+      @setPage="setPage($event)"
+      @setAdded="setAdded($event)"
+      @next="chore.nextProjectPage"
+    />
   </div>
 </template>
 
@@ -100,6 +111,11 @@ function setAdded(newAdded: number) {
 @media (max-width: 768px) {
   .projects-view {
     padding: 0.5rem;
+
+    .all-projects-container {
+      width: 100%;
+      gap: 0.5rem;
+    }
   }
 }
 </style>

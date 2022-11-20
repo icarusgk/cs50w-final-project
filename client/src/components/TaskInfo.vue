@@ -101,6 +101,8 @@ watch(open,  () => {
 @media (max-width: 768px) {
   .single-task-info {
     height: min-content;
+    width: 100%;
+    
   }
 }
 </style>

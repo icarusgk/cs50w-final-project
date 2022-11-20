@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue';
+
 import { useChoreStore } from '@/stores/chore';
 import type { TagType, TaskType } from '@/types';
 
@@ -52,6 +54,16 @@ function handleInput(event: any) {
 const handleDesc = (desc: any) => (tmpNewDesc = desc);
 
 const handlePomos = (pomos: number) => (tmpEstimated = pomos);
+
+const width = ref(window.innerWidth);
+
+onMounted(() => {
+  window.addEventListener('resize', () => width.value = window.innerWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => width.value = window.innerWidth)
+});
 </script>
 
 <template>
@@ -94,6 +106,9 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
+        <div class="pomos-done" v-if="width < 480">
+          <span>Pomos done: {{ task.gone_through }}</span>
+        </div>
         <SaveButton @click="saveTask()" />
       </template>
     </Modal>
@@ -133,6 +148,16 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
 
   &:focus {
     outline: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .pomos-done {
+    text-align: center;
+    span {
+      font-size: 1.2rem;
+      font-weight: 600;;
+    }
   }
 }
 </style>

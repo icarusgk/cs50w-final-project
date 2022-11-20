@@ -15,6 +15,8 @@ chore.taskPagination.page = 1;
 chore.taskPagination.page_size = 4;
 chore.taskPagination.added = 1;
 
+chore.fetchTasks();
+
 const tasks = computed(() => chore.tasks.slice(0, 4));
 
 const currentTask = ref();
@@ -95,6 +97,12 @@ function setAdded(newAdded: number) {
   border-radius: 10px;
   span {
     margin-left: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .no-tasks {
+    width: 100%;
   }
 }
 </style>

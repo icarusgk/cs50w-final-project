@@ -14,6 +14,8 @@ chore.projectPagination.page = 1;
 chore.projectPagination.page_size = 2;
 chore.projectPagination.added = 1;
 
+chore.fetchProjects();
+
 const projects = computed(() => chore.projects.slice(0, 2));
 
 function setPage(newPage: number) {
@@ -43,7 +45,7 @@ function setAdded(newAdded: number) {
       </template>
     </TaskType>
     <div>
-      <div class="no-project" v-if="projects.length === 0">
+      <div class="no-projects" v-if="projects.length === 0">
         <TaskInfoIcon />
         <span>There are no projects</span>
       </div>
@@ -77,7 +79,7 @@ function setAdded(newAdded: number) {
   }
 }
 
-.no-project {
+.no-projects {
   display: flex;
   align-items: center;
   background-color: var(--light-gray);
@@ -86,6 +88,12 @@ function setAdded(newAdded: number) {
   border-radius: 10px;
   span {
     margin-left: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .no-projects {
+    width: 100%;
   }
 }
 </style>

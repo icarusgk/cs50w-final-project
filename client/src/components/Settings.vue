@@ -72,7 +72,7 @@ async function deleteMode(id) {
 async function createMode() {
   const { status, data } = await axios.post('modes/', newMode);
 
-  if (status === 200) {
+  if (status === 201) {
     modes.value.push(data);
     localStorage.setItem('modes', JSON.stringify(modes.value));
 
@@ -95,20 +95,20 @@ function backToDefault() {
     <div>
       <input
         type="checkbox"
-        id="auto_start_pomos"
+        id="auto-start-pomos"
         @change="changeAutoStartPomos"
         v-model="auth.user.auto_start_pomos"
       />
-      <label for="auto_start_pomos">Auto start pomos</label>
+      <label for="auto-start-pomos">Auto start pomos</label>
     </div>
     <div>
       <input
         type="checkbox"
-        id="auto_start_breaks"
+        id="auto-start-breaks"
         @change="changeAutoStartBreaks()"
         v-model="auth.user.auto_start_breaks"
       />
-      <label for="auto_start_breaks">Auto start breaks</label>
+      <label for="auto-start-breaks">Auto start breaks</label>
     </div>
     <div v-if="Object.keys(modes).length > 0">
       <button class="back-to-default-button" @click="backToDefault()">
@@ -214,6 +214,10 @@ function backToDefault() {
   }
 }
 
+#auto-start-pomos, #auto-start-breaks {
+  margin-right: 1rem;
+}
+
 .back-to-default-button {
   @include btn(white, 0.5rem);
   margin-bottom: 1rem;
@@ -281,6 +285,15 @@ function backToDefault() {
     margin-right: 1rem;
     background: rgb(87, 87, 87);
     color: white;
+  }
+}
+
+@media (max-width: 480px) {
+  .modes {
+    .mode-input {
+      width: 80%;
+      margin-right: 0.5rem;
+    }
   }
 }
 </style>
