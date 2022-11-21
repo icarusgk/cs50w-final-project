@@ -368,7 +368,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
                             if not tag_obj:
                                 # Create tag
-                                tag_obj = Tag.objects.create(name=tag['name'])
+                                tag_obj = Tag.objects.create(name=tag['name'], user=request.user)
 
                             task_obj.tags.add(tag_obj)
 
