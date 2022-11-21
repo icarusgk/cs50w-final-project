@@ -128,6 +128,19 @@ Most of the serializers do the same, except from the following two:
 
 - In `ProjectSerializer` I overrode the `get_fields` function to serialize the data inside the `tasks` field with the `TaskSerializer`. Inside the `Meta` class I included the extra option of `depth` with a value of 2 to access the tags and tasks info inside the project.
 
+> 📄 `test_api.py`
+
+This file testes the API endpoints of my app. It uses:
+- The `Client` class provided by `django.test` to call the API endpoints
+- The models contained in my app, and tests them against the responses returned by the endpoint.
+- The `serializers` module to compared the response's `.json()` data to the serialized data.
+- The `AuthUtils` helper class to auth in the `setUp()` function of some Test Cases.
+- The `status` module inside the `rest_framework` to manage the returned responses status.
+
+> 📄 `test_models.py`
+
+This file mainly tests the correct functionality of the models inside my app. Their correct creation with the correct data and existence inside each other with the Foreign Key and Many to Many fields.
+
 >  📄 `urls.py`
 
 The urls of my api application. Here I imported the `DefaultRouter` from `rest_framework.routers` to register the ViewSets created on the `views.py` file which I will later explain.
@@ -185,6 +198,10 @@ When these tokens expire we need to hit the `token/refresh/` route with the `ref
 ```
 
 The `access` token is valid for 1 week and the `refresh` token is valid for a month. After the `refresh` token expires the user is logged out from the client.
+
+> 📄 `utils_api.py`
+
+This file contains the `AuthUtils` helper function that can be used inside the `setUp()` function of a TestCase in order to auth an user that needs to make a request that has to have an `Authorization` header.
 
 > 📄 `views.py`
 
@@ -437,6 +454,10 @@ Finally we call the `mount()` function and we pass the id of the element when we
 
 In the last of the file we fetch all the modes, tags and the user's stats with the `fetchAll()` function from the `chore` store.
 
+> 📄 `.env`
+
+I created this file to practice with environment variables inside the Vite server. It contains the server URL.
+
 > `.prettierrc`
 
 I specified the styling rules for the app in here. We can easily format all of the files with these rules in the `src/` directory with the command:
@@ -459,18 +480,79 @@ TypeScript configuration files required by the app and Vite.
 
 Vite configuration file. It uses the `vue()` plugin and an alias of `@` for importing from the `./src` directory. 
 
+
+## 📂 `main/`
+
+The boilerplate Django `django-admin startproject` code. 
+
+> 📄 `settings.py`
+
+The settings for the project. I decided to use environment variables with the package `python-dotenv` (listed on the requirements.txt), to retrieve this variables. This variables exists in the `.env` file at the root of the project.
+
+> 📄 `urls.py`
+
+In this file I registered the routes inside the `api` application, and the urls needed for the rest_framework module authentication.
+
 # 🤔 How to run my application
 
-Setting up the server
+**Setting up the server**
+
 - Create a virtual environment
+
+```
+python -m venv env
+```
+
 - Activate the virtual environment
+
+```
+source env/bin/activate
+```
+
 - Install the requirements
 
-Setting up the client
+```
+pip install -r requirements.txt
+```
+
+- Run migrations
+
+```
+python manage.py makemigrations api
+python manage.py migrate
+```
+
+- Run the server
+
+```
+python manage.py runserver
+```
+
+**Setting up the client**
+
 - Change directory to the client folder
+
+```
+cd client
+```
+
 - Install the dependencies
+
+```
+npm i
+```
+
 - Run the project
 
+```
+npm run dev
+```
 
-# Any other additional information the staff should know about your project.
+- Go the project URL
+
+```
+http://localhost:3000/
+```
+
+
 
