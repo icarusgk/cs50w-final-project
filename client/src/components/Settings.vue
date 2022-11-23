@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useTimerStore } from '@/stores/timer';
 import { useAlertStore } from '@/stores/alerts';
@@ -15,7 +15,7 @@ const modes = ref(JSON.parse(localStorage.getItem('modes') || '[]'));
 const currentMode = ref(JSON.parse(localStorage.getItem('timer') || '{}'));
 const showForm = ref(false);
 
-const newMode = reactive({
+const newMode = ref({
   name: '',
   pomo: 25,
   short_break: 5,
@@ -33,6 +33,15 @@ function changeAutoStartBreaks() {
   axios.patch(`users/${auth.user?.id}/`, {
     auto_start_breaks: auth.user?.auto_start_breaks,
   });
+}
+
+function resetMode() {
+  newMode.value = {
+    name: '',
+    pomo: 25,
+    short_break: 5,
+    long_break: 15
+  }
 }
 
 async function changeMode(id) {
@@ -70,7 +79,7 @@ async function deleteMode(id) {
 }
 
 async function createMode() {
-  const { status, data } = await axios.post('modes/', newMode);
+  const { status, data } = await axios.post('modes/', newMode.value);
 
   if (status === 201) {
     modes.value.push(data);
@@ -79,7 +88,7 @@ async function createMode() {
     if (!timer.ongoing) {
       changeMode(data.id);
     }
-
+    resetMode();
     showForm.value = false;
   }
 }
