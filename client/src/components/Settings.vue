@@ -52,6 +52,7 @@ async function changeMode(id) {
   if (status === 200) {
     timer.setNewTimer(data);
     currentMode.value = data;
+    timer.current = 'pomo';
   }
 }
 

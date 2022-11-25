@@ -218,12 +218,12 @@ export const useChoreStore = defineStore('chores', {
         useAlertStore().info('Project deleted!');
       }
     },
-    incrementGoneThrough() {
+    async incrementGoneThrough() {
       this.increaseTodayStats();
       const auth = useAuthStore();
 
       if (auth.user?.current_task_id) {
-        useFetch(
+        const { status } = await useFetch(
           'tasks',
           'patch',
           {
@@ -232,6 +232,10 @@ export const useChoreStore = defineStore('chores', {
           },
           auth.user!.current_task_id
         );
+        
+        if (status === 200) {
+          this.fetchTasks();
+        }
       }
     },
   },

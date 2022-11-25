@@ -110,6 +110,7 @@ export const useTimerStore = defineStore('timer', {
       this.setTo(defaultTimer);
       this.currentTimer.timer = minutes(defaultTimer.pomo);
       this.currentTimer.seconds = defaultTimer.pomo;
+      this.current = 'pomo';
       localStorage.removeItem('timer');
     },
     setTimer(name: string) {
