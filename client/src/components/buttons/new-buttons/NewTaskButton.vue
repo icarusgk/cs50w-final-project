@@ -52,7 +52,7 @@ function saveTask() {
 
 function removeTag(tag: TagType) {
   initialTask.value.tags = initialTask.value.tags.filter(
-    (t: TagType) => t.id !== tag.id
+    (t: TagType) => t.name !== tag.name
   );
 }
 

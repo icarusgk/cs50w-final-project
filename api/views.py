@@ -156,11 +156,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             # Add tags
             if tags:
                 for tag in tags:
-                    tag_obj = Tag.objects.filter(name=tag['name']).first()
-                    if not tag_obj:
-                        # Create tag
-                        tag_obj = Tag.objects.create(
-                            user=request.user, name=tag['name'])
+                    tag_obj, _ = Tag.objects.get_or_create(name=tag['name'], user=request.user)
                     task.tags.add(tag_obj)
 
             # Add subtasks
