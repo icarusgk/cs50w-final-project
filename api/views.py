@@ -86,10 +86,13 @@ class ModeViewSet(viewsets.ModelViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
 
-        mode = Mode.objects.create(**request.data, user=request.user)
-        return Response(
-            ModesSerializer(mode).data,
-            status=status.HTTP_201_CREATED)
+        serializer = ModesSerializer(data=request.data)
+
+        if serializer.is_valid():
+            mode = Mode.objects.create(**serializer.data, user=request.user)
+            return Response(
+                ModesSerializer(mode).data,
+                status=status.HTTP_201_CREATED)
 
         return Response('not valid', status=status.HTTP_400_BAD_REQUEST)
 
