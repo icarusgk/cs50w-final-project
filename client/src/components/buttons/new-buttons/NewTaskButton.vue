@@ -14,7 +14,7 @@ import SaveButton from '@/components/SaveButton.vue';
 import type { TagType, TaskType } from '@/types';
 
 const open = ref(false);
-const taskStore = useChoreStore();
+const chore = useChoreStore();
 const auth = useAuthStore();
 const alert = useAlertStore();
 
@@ -43,7 +43,7 @@ function resetTask() {
 
 function saveTask() {
   if (initialTask.value.title) {
-    taskStore.addTask(initialTask.value);
+    chore.addTask(initialTask.value).then(() => chore.fetchTags());    
     resetTask();
   } else {
     alert.error('Your task must have a title');
