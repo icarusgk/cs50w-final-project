@@ -89,7 +89,7 @@ class Mode(models.Model):
         User,
         on_delete=models.CASCADE,
         related_name='modes')
-    name = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=40)
     pomo = models.IntegerField(default=25)
     short_break = models.IntegerField(default=5)
     long_break = models.IntegerField(default=15)

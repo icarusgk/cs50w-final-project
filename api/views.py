@@ -85,13 +85,11 @@ class ModeViewSet(viewsets.ModelViewSet):
             return Response({'message': 'There can only be one default mode.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = ModesSerializer(data=request.data)
 
-        if serializer.is_valid():
-            mode = Mode.objects.create(**serializer.data, user=request.user)
-            return Response(
-                ModesSerializer(mode).data,
-                status=status.HTTP_201_CREATED)
+        mode = Mode.objects.create(**request.data, user=request.user)
+        return Response(
+            ModesSerializer(mode).data,
+            status=status.HTTP_201_CREATED)
 
         return Response('not valid', status=status.HTTP_400_BAD_REQUEST)
 
