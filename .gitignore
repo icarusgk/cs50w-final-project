@@ -12,3 +12,6 @@ media
 env/
 .vscode/
 .obsidian/
+.fleet/
+.env-secrets.env
+.env
