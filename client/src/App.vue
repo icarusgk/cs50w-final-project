@@ -37,7 +37,7 @@ watch([
   <div class="body">
     <div class="menu-and-content" :class="{ blur: useModalStore().isOpened }">
       <UpperMenu class="upper-menu" />
-      <router-view @vnodeUpdated="useModalStore().close()"></router-view>
+      <RouterView @vnodeUpdated="useModalStore().close()"></RouterView>
     </div>
     <Alerts />
   </div>
