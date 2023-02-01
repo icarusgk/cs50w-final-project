@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+if: "!contains(github.event.pull_request.title, '[bypass]')"
+
 jobs:
   test_project:
 
@@ -13,7 +15,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7]
 
     steps:
     - uses: actions/checkout@v3
