@@ -277,7 +277,7 @@ Contains the info part of the Task Modal, (description, subtasks, and the estima
 
 These are wrapper components for buttons or labels used inside the app that need tweaking depending where they are used.
 
-> `MenuIcon.vue`
+> `SidebarItem.vue`
 
 A wrapper component for the icons in the sidebar, it includes a slot for the icon and a title of the icon.
 
@@ -285,7 +285,7 @@ A wrapper component for the icons in the sidebar, it includes a slot for the ico
 
 A wrapper component that displays differently depending on the props being passed.<br>`isTask`: For adding and displaying subtasks inside the task modal or tasks inside the project modal.<br>`isTag`: For displaying tags inside the task modal.<br>`isAdd`: For adding a tag.
 
-> `TaskType.vue`
+> `Title.vue`
 
 A wrapper component for the header displayed on top of the projects and tasks lists . It accepts an icon and a title. I created this file because I wanted to work with Vue slots.
 

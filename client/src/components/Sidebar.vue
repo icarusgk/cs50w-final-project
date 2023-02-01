@@ -2,7 +2,7 @@
 import HomeIcon from '@/components/icons/HomeIcon.vue';
 import StatsIcon from '@/components/icons/StatsIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
-import MenuIcon from '@/components/slots/MenuIcon.vue';
+import SidebarItem from '@/components/slots/SidebarItem.vue';
 </script>
 
 <template>
@@ -14,28 +14,28 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
     </RouterLink>
     <div class="menu-container">
       <RouterLink to="/" aria-label="Home">
-        <MenuIcon>
+        <SidebarItem>
           <template #icon>
             <HomeIcon />
           </template>
           <template #heading>Home</template>
-        </MenuIcon>
+        </SidebarItem>
       </RouterLink>
       <RouterLink to="/stats" aria-label="Stats">
-        <MenuIcon>
+        <SidebarItem>
           <template #icon>
             <StatsIcon />
           </template>
           <template #heading>Stats</template>
-        </MenuIcon>
+        </SidebarItem>
       </RouterLink>
       <RouterLink to="/about" aria-label="About">
-        <MenuIcon>
+        <SidebarItem>
           <template #icon>
             <AboutIcon />
           </template>
           <template #heading>About</template>
-        </MenuIcon>
+        </SidebarItem>
       </RouterLink>
     </div>
   </div>
