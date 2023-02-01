@@ -13,7 +13,7 @@ const modal = useModalStore();
 
 modal.close()
 
-if (auth.isAuthenticated) {
+if (auth.isAuthed) {
   auth.getUser();
   chore.fetchProjects();
   chore.fetchTasks();

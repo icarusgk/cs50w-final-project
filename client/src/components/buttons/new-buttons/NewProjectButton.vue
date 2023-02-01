@@ -43,7 +43,7 @@ function saveProject() {
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
+  <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
     <template #type> Add new project </template>
   </ChoreButton>
 

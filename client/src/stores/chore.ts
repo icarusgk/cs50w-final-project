@@ -143,7 +143,7 @@ export const useChoreStore = defineStore('chores', {
     // Fetch all chores from user (request.user in django)
     fetchAll() {
       const auth = useAuthStore();
-      if (auth.isAuthenticated) {
+      if (auth.isAuthed) {
         this.fetchModes();
         this.fetchTags();
       }

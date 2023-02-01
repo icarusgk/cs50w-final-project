@@ -51,10 +51,10 @@ export const useTimerStore = defineStore('timer', {
     ongoing: false,
     current: 'pomo',
     sessions: 0,
-    auto_start_pomo: useAuthStore().isAuthenticated
+    auto_start_pomo: useAuthStore().isAuthed
       ? useAuthStore().user!.auto_start_pomos
       : false,
-    auto_start_breaks: useAuthStore().isAuthenticated
+    auto_start_breaks: useAuthStore().isAuthed
       ? useAuthStore().user!.auto_start_breaks
       : false,
   }),

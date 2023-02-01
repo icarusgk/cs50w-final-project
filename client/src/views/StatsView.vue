@@ -9,8 +9,8 @@ const auth = useAuthStore();
 
 <template>
   <div class="stats">
-    <h1 v-if="auth.isAuthenticated">Stats</h1>
-    <div class="fake-chart-container" v-if="!auth.isAuthenticated">
+    <h1 v-if="auth.isAuthed">Stats</h1>
+    <div class="fake-chart-container" v-if="!auth.isAuthed">
       <div class="message">
         <UnauthedLogin> To see your stats! </UnauthedLogin>
       </div>

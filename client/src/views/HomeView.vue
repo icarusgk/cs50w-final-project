@@ -21,16 +21,16 @@ const auth = useAuthStore();
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->
-      <div id="task-btn-container" :class="{ opaque: !auth.isAuthenticated }">
+      <div id="task-btn-container" :class="{ opaque: !auth.isAuthed }">
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
         <NewProjectButton />
       </div>
-      <div id="message" v-if="!auth.isAuthenticated">
+      <div id="message" v-if="!auth.isAuthed">
         <UnauthedLogin> To add tasks and projects </UnauthedLogin>
       </div>
-      <div v-if="auth.isAuthenticated">
+      <div v-if="auth.isAuthed">
         <Projects />
         <Tasks />
       </div>

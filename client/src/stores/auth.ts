@@ -54,7 +54,7 @@ type UserCredentials = {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
-    isAuthenticated: Boolean(localStorage.getItem('jwt')),
+    isAuthed: Boolean(localStorage.getItem('jwt')),
     error: null,
   }),
   actions: {

@@ -28,7 +28,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         <div class="login">
           <div class="login">
             <Popper hover arrow placement="bottom">
-              <div class="user-info" v-if="auth.isAuthenticated">
+              <div class="user-info" v-if="auth.isAuthed">
                 <UserIcon />
                 <span>{{ auth.user?.username }}</span>
               </div>
@@ -44,7 +44,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
               </template>
             </Popper>
           </div>
-          <div v-if="!auth.isAuthenticated" class="user-actions-container">
+          <div v-if="!auth.isAuthed" class="user-actions-container">
             <div @click="$router.push('/login')">
               <span class="login-btn">Login</span>
             </div>
@@ -55,7 +55,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         </div>
       </li>
       <!-- Settings -->
-      <li @click="settingsOpen = true" v-if="auth.isAuthenticated">
+      <li @click="settingsOpen = true" v-if="auth.isAuthed">
         <SettingsIcon />
       </li>
     </ul>

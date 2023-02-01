@@ -59,7 +59,7 @@ router.beforeEach(async (to) => {
   // Prevent visit to register and login when auth
   if (to.name === 'Login' || to.name === 'Register') {
     const auth = useAuthStore();
-    if (auth.isAuthenticated) {
+    if (auth.isAuthed) {
       return { name: 'Home' };
     }
   };

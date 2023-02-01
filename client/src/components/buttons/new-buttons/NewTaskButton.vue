@@ -60,7 +60,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
+  <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
   <Modal
