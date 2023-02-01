@@ -105,6 +105,7 @@ function deleteTask(task: TaskType) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 1rem;
   }
 
   .no-tasks {
