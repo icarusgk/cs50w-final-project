@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import Project from '@/components/buttons/Project.vue';
