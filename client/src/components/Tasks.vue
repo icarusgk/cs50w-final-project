@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
-import TaskType from '@/components/slots/TaskType.vue';
+import Title from '@/components/slots/Title.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Task from '@/components/buttons/Task.vue';
@@ -42,7 +42,7 @@ function setAdded(newAdded: number) {
 <template>
   <div id="tasks-container">
     <!-- Tasks Title -->
-    <TaskType class="button" @click="$router.push('/tasks')">
+    <Title class="button" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
       </template>
@@ -54,7 +54,7 @@ function setAdded(newAdded: number) {
           Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages }}
         </span>
       </template>
-    </TaskType>
+    </Title>
     <!-- Task List Container -->
     <div>
       <div class="no-tasks" v-if="tasks.length === 0">

@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
 import Project from '@/components/buttons/Project.vue';
-import TaskType from '@/components/slots/TaskType.vue';
+import Title from '@/components/slots/Title.vue';
 import ProjectIcon from '@/components/icons/ProjectIcon.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Paginate from '@/components/Paginate.vue';
@@ -30,7 +30,7 @@ function setAdded(newAdded: number) {
 <template>
   <div id="projects-container">
     <!-- Projects Title -->
-    <TaskType class="projects-button">
+    <Title class="projects-button">
       <template #icon>
         <ProjectIcon />
       </template>
@@ -43,7 +43,7 @@ function setAdded(newAdded: number) {
           {{ chore.totalProjectPages }}
         </span>
       </template>
-    </TaskType>
+    </Title>
     <!-- Project List Container -->
     <div>
       <div class="no-projects" v-if="projects.length === 0">
