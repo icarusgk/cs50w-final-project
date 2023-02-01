@@ -7,36 +7,36 @@ import MenuIcon from '@/components/slots/MenuIcon.vue';
 
 <template>
   <div class="sidebar">
-    <router-link to="/" aria-label="Pomo">
+    <RouterLink to="/" aria-label="Pomo">
       <div class="logo-container">
         <img src="../assets/tomato-logo.png" class="logo-img" alt="Pomo Logo" />
       </div>
-    </router-link>
+    </RouterLink>
     <div class="menu-container">
-      <router-link to="/">
+      <RouterLink to="/" aria-label="Home">
         <MenuIcon>
           <template #icon>
             <HomeIcon />
           </template>
           <template #heading>Home</template>
         </MenuIcon>
-      </router-link>
-      <router-link to="/stats">
+      </RouterLink>
+      <RouterLink to="/stats" aria-label="Stats">
         <MenuIcon>
           <template #icon>
             <StatsIcon />
           </template>
           <template #heading>Stats</template>
         </MenuIcon>
-      </router-link>
-      <router-link to="/about">
+      </RouterLink>
+      <RouterLink to="/about" aria-label="About">
         <MenuIcon>
           <template #icon>
             <AboutIcon />
           </template>
           <template #heading>About</template>
         </MenuIcon>
-      </router-link>
+      </RouterLink>
     </div>
   </div>
 </template>
