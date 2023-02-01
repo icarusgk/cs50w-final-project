@@ -7,9 +7,11 @@ import SideBar from '@/components/Sidebar.vue';
 import UpperMenu from '@/components/UpperMenu.vue';
 import Alerts from './components/Alerts.vue';
 
-useModalStore().close();
 const auth = useAuthStore();
 const chore = useChoreStore();
+const modal = useModalStore();
+
+modal.close()
 
 if (auth.isAuthenticated) {
   auth.getUser();
@@ -35,9 +37,9 @@ watch([
 <template>
   <SideBar />
   <div class="body">
-    <div class="menu-and-content" :class="{ blur: useModalStore().isOpened }">
+    <div class="menu-and-content" :class="{ blur: modal.isOpened }">
       <UpperMenu class="upper-menu" />
-      <RouterView @vnodeUpdated="useModalStore().close()"></RouterView>
+      <RouterView @vnodeUpdated="modal.close()"></RouterView>
     </div>
     <Alerts />
   </div>
