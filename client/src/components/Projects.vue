@@ -28,8 +28,8 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div>
-    <!-- Title -->
+  <div id="projects-container">
+    <!-- Projects Title -->
     <TaskType class="projects-button">
       <template #icon>
         <ProjectIcon />
@@ -44,6 +44,7 @@ function setAdded(newAdded: number) {
         </span>
       </template>
     </TaskType>
+    <!-- Project List Container -->
     <div>
       <div class="no-projects" v-if="projects.length === 0">
         <TaskInfoIcon />
@@ -58,6 +59,7 @@ function setAdded(newAdded: number) {
         />
       </div>
     </div>
+    <!-- Paginator -->
     <Paginate
       :pages="chore.totalProjectPages"
       :page="chore.projectPagination.page"
@@ -71,6 +73,10 @@ function setAdded(newAdded: number) {
 </template>
 
 <style scoped lang="scss">
+#projects-container {
+  margin-top: 0.5rem;
+}
+
 .projects-button {
   &:hover,
   &:focus,

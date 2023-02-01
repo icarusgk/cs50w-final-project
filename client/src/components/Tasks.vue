@@ -40,7 +40,8 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div>
+  <div id="tasks-container">
+    <!-- Tasks Title -->
     <TaskType class="button" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
@@ -54,19 +55,23 @@ function setAdded(newAdded: number) {
         </span>
       </template>
     </TaskType>
-    <div class="no-tasks" v-if="tasks.length === 0">
-      <TaskInfoIcon />
-      <span>There are no tasks</span>
+    <!-- Task List Container -->
+    <div>
+      <div class="no-tasks" v-if="tasks.length === 0">
+        <TaskInfoIcon />
+        <span>There are no tasks</span>
+      </div>
+      <!-- List of Tasks -->
+      <div v-auto-animate>
+        <Task
+          v-for="task in tasks"
+          :task="task"
+          :key="task.id"
+          @setCurrent="setCurrent"
+        />
+      </div>
     </div>
-    <div v-auto-animate>
-      <Task
-        v-for="task in tasks"
-        :task="task"
-        :key="task.id"
-        @setCurrent="setCurrent"
-      />
-    </div>
-
+    <!-- Pagination -->
     <Paginate
       :pages="chore.totalTaskPages"
       :page="chore.taskPagination.page"
@@ -80,6 +85,9 @@ function setAdded(newAdded: number) {
 </template>
 
 <style lang="scss" scoped>
+#tasks-container {
+  margin-top: 0.5rem;
+}
 .button {
   &:hover,
   &:focus,

@@ -30,6 +30,7 @@ const auth = useAuthStore();
       <div id="message" v-if="!auth.isAuthed">
         <UnauthedLogin> To add tasks and projects </UnauthedLogin>
       </div>
+      <!-- Projects and Tasks if user is authed -->
       <div v-if="auth.isAuthed">
         <Projects />
         <Tasks />
