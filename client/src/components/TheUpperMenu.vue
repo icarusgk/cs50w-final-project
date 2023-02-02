@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import UserIcon from '@/components/icons/UserIcon.vue';
-import SettingsIcon from '@/components/icons/SettingsIcon.vue';
-import TheSettings from '@/components/TheSettings.vue';
-import AppTitle from '@/components/AppTitle.vue';
-import AppModal from '@/components/AppModal.vue';
-
 const userOpen = ref(false);
 const settingsOpen = ref(false);
 const auth = useAuthStore();

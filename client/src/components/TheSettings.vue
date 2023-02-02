@@ -1,6 +1,4 @@
 <script setup>
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-
 const auth = useAuthStore();
 const timer = useTimerStore();
 const alert = useAlertStore();

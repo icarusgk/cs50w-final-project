@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Subchores from '@/components/Subchores.vue';
-
 defineProps<{
   project: any;
   isNew?: boolean;

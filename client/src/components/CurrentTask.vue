@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import TheTaskModal from './TheTaskModal.vue';
-import TaskInfoIcon from './icons/TaskInfoIcon.vue';
-import CloseIcon from './icons/CloseIcon.vue';
-
 const task = ref();
 const auth = useAuthStore();
 const chore = useChoreStore();

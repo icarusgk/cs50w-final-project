@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import CloseIcon from '@/components/icons/CloseIcon.vue';
-
 defineProps<{
   open: Boolean;
   isTask?: Boolean;

@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type { TaskType } from '@/types';
 
-import Tags from '@/components/buttons/Tags.vue';
-import TasksDoneIcon from '@/components/icons/TasksDoneIcon.vue';
-import TotalTasksIcon from '@/components/icons/TotalTasksIcon.vue';
-import TheTaskModal from '@/components/TheTaskModal.vue';
-
 defineProps<{
   task: TaskType;
 }>();

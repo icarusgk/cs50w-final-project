@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { ProjectType } from '@/types';
 
-import TheProjectModal from '@/components/TheProjectModal.vue';
-
 defineProps<{
   project: ProjectType;
 }>();

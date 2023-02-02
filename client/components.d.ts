@@ -14,7 +14,6 @@ declare module '@vue/runtime-core' {
     AppChart: typeof import('./src/components/AppChart.vue')['default']
     AppModal: typeof import('./src/components/AppModal.vue')['default']
     AppProjects: typeof import('./src/components/AppProjects.vue')['default']
-    AppSidebar: typeof import('./src/components/AppSidebar.vue')['default']
     AppTasks: typeof import('./src/components/AppTasks.vue')['default']
     AppTitle: typeof import('./src/components/AppTitle.vue')['default']
     BackIcon: typeof import('./src/components/icons/BackIcon.vue')['default']

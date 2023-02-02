@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import Project from '@/components/buttons/Project.vue';
-import Title from '@/components/slots/Title.vue';
-import ProjectIcon from '@/components/icons/ProjectIcon.vue';
-import TaskInfoIcon from './icons/TaskInfoIcon.vue';
-import Paginate from '@/components/Paginate.vue';
-
 const chore = useChoreStore();
 
 chore.projectPagination.page = 1;

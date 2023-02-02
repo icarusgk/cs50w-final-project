@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import LightingIcon from '@/components/icons/LightingIcon.vue';
-</script>
-
 <template>
   <!-- Pomo Title -->
   <div @click="$router.push('/')" id="pomodoro-title-container">

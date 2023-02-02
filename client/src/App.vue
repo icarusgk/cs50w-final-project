@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import TheSideBar from '@/components/TheSidebar.vue';
-import TheUpperMenu from '@/components/TheUpperMenu.vue';
-import TheAlerts from './components/TheAlerts.vue';
-
 const auth = useAuthStore();
 const chore = useChoreStore();
 const modal = useModalStore();
@@ -31,7 +27,7 @@ watch([
 </script>
 
 <template>
-  <TheSideBar />
+  <TheSidebar />
   <div class="body">
     <div class="menu-and-content" :class="{ blur: modal.isOpened }">
       <TheUpperMenu class="upper-menu" />
