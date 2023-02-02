@@ -1,6 +1,4 @@
 <script setup>
-import ApexChart from 'apexcharts';
-
 const chore = useChoreStore();
 await chore.fetchStats();
 

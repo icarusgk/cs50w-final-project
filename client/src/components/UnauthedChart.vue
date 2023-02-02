@@ -1,6 +1,4 @@
 <script setup>
-import ApexChart from 'apexcharts';
-
 // a template ref
 const unauthedChart = ref(null);
 

@@ -1,5 +1,6 @@
 {
   "globals": {
+    "ApexChart": true,
     "EffectScope": true,
     "Popper": true,
     "axios": true,

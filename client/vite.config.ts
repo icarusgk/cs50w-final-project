@@ -19,6 +19,9 @@ export default defineConfig({
         ],
         'vue3-popper': [
           ['default', 'Popper']
+        ],
+        'apexcharts': [
+          ['default', 'ApexChart']
         ]
       }
     ],
