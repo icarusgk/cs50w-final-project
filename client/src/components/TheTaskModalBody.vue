@@ -74,6 +74,21 @@ defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
     color: white;
     border: none;
     resize: none;
+
+    $placeholderColor: rgb(190, 190, 190);
+
+    &::-webkit-input-placeholder {
+      color: $placeholderColor
+    }
+    &::-moz-input-placeholder {
+      color: $placeholderColor
+    }
+    &::-ms-input-placeholder {
+      color: $placeholderColor
+    }
+    &::placeholder {
+      color: $placeholderColor
+    }
   }
 }
 
