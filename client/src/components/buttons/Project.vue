@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useModalStore } from '@/stores/modal';
 import type { ProjectType } from '@/types';
 
-import ProjectModal from '@/components/ProjectModal.vue';
+import TheProjectModal from '@/components/TheProjectModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 defineProps<{
@@ -31,7 +31,7 @@ watch(open, () => {
       </div>
     </div>
 
-    <ProjectModal :project="project" :open="open" @exit="open = false" />
+    <TheProjectModal :project="project" :open="open" @exit="open = false" />
   </div>
 </template>
 

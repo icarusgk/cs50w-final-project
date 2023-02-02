@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from '@vue/reactivity';
 import BackIcon from '@/components/icons/BackIcon.vue';
-import ProjectInfo from '@/components/ProjectInfo.vue';
+import BaseViewProject from '@/components/BaseViewProject.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import Paginate from '@/components/Paginate.vue';
 import { useChoreStore } from '@/stores/chore';
@@ -41,7 +41,7 @@ function setAdded(newAdded: number) {
       @next="chore.nextProjectPage"
     />
     <div v-if="chore.projects.length > 0" class="all-projects-container">
-      <ProjectInfo v-for="project in projects" :project="project" :key="project.id" />
+      <BaseViewProject v-for="project in projects" :project="project" :key="project.id" />
     </div>
     <div class="no-projects" v-else>
       <TaskInfoIcon />

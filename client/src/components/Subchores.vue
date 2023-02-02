@@ -5,7 +5,7 @@ import { useAlertStore } from '@/stores/alerts';
 import axios from 'axios';
 import type { TaskType, SubtaskType, TagType } from '@/types';
 
-import Subtask from '@/components/Subtask.vue';
+import Subchore from '@/components/Subchore.vue';
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DoneIcon from '@/components/icons/DoneIcon.vue';
@@ -367,7 +367,7 @@ function removeTag(tag: TagType) {
   <!-- If the a new chore is opened -->
   <div v-if="newChoreOpened">
     <!-- A new fresh chore -->
-    <Subtask
+    <Subchore
       @close="closeNew()"
       @save="saveSubtaskToTask()"
       @saveTask="addTaskToProject()"
@@ -388,7 +388,7 @@ function removeTag(tag: TagType) {
   </div>
   <!-- If an existing chore is opened -->
   <div v-if="activeChore.opened">
-    <Subtask
+    <Subchore
       @close="closeDetails()"
       @save="saveSubtaskToTask()"
       @saveTask="addTaskToProject()"

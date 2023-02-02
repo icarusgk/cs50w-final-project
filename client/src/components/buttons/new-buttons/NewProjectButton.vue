@@ -6,10 +6,10 @@ import { useAuthStore } from '@/stores/auth';
 import { useAlertStore } from '@/stores/alerts';
 import type { ProjectType } from '@/types';
 
-import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
-import Modal from '@/components/modals/Modal.vue';
+import TheProjectModalBody from '@/components/TheProjectModalBody.vue';
+import AppModal from '@/components/AppModal.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
-import SaveButton from '@/components/SaveButton.vue';
+import SaveButton from '@/components/buttons/SaveButton.vue';
 
 const newProject = ref<ProjectType>({
   name: '',
@@ -47,7 +47,7 @@ function saveProject() {
     <template #type> Add new project </template>
   </ChoreButton>
 
-  <Modal :open="open" @exit-modal="resetProject()">
+  <AppModal :open="open" @exit-modal="resetProject()">
     <template #title>
       <input
         type="text"
@@ -61,11 +61,11 @@ function saveProject() {
     </template>
 
     <!-- Rest of modal -->
-    <ProjectModalInfo :project="newProject" :isNew="true" />
+    <TheProjectModalBody :project="newProject" :isNew="true" />
     <template #save-button>
       <SaveButton @click="saveProject()" />
     </template>
-  </Modal>
+  </AppModal>
 </template>
 
 <style scoped lang="scss">

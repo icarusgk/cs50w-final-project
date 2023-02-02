@@ -5,9 +5,9 @@ import { useAuthStore } from '@/stores/auth';
 
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
-import Settings from '@/components/Settings.vue';
-import Title from '@/components/Title.vue';
-import Modal from '@/components/modals/Modal.vue';
+import TheSettings from '@/components/TheSettings.vue';
+import AppTitle from '@/components/AppTitle.vue';
+import AppModal from '@/components/AppModal.vue';
 
 const userOpen = ref(false);
 const settingsOpen = ref(false);
@@ -20,7 +20,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
 
 <template>
   <div id="icons">
-    <Title />
+    <AppTitle />
     <ul>
       <!-- Four icons -->
       <!-- User -->
@@ -59,12 +59,12 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         <SettingsIcon />
       </li>
     </ul>
-    <Modal :open="settingsOpen" @exit-modal="settingsOpen = false">
+    <AppModal :open="settingsOpen" @exit-modal="settingsOpen = false">
       <template #title>
         <h1>Settings</h1>
       </template>
-      <Settings />
-    </Modal>
+      <TheSettings />
+    </AppModal>
   </div>
 </template>
 

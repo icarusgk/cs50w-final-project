@@ -3,9 +3,9 @@ import { watch } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
-import SideBar from '@/components/Sidebar.vue';
-import UpperMenu from '@/components/UpperMenu.vue';
-import Alerts from './components/Alerts.vue';
+import TheSideBar from '@/components/TheSidebar.vue';
+import TheUpperMenu from '@/components/TheUpperMenu.vue';
+import TheAlerts from './components/TheAlerts.vue';
 
 const auth = useAuthStore();
 const chore = useChoreStore();
@@ -35,13 +35,13 @@ watch([
 </script>
 
 <template>
-  <SideBar />
+  <TheSideBar />
   <div class="body">
     <div class="menu-and-content" :class="{ blur: modal.isOpened }">
-      <UpperMenu class="upper-menu" />
+      <TheUpperMenu class="upper-menu" />
       <RouterView @vnodeUpdated="modal.close()"></RouterView>
     </div>
-    <Alerts />
+    <TheAlerts />
   </div>
 </template>
 

@@ -7,7 +7,7 @@ import type { TaskType } from '@/types';
 
 import DoneIcon from '../icons/DoneIcon.vue';
 import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
-import TaskModal from '../TaskModal.vue';
+import TheTaskModal from '../TheTaskModal.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import DeleteIcon from '../icons/DeleteIcon.vue';
 
@@ -74,7 +74,7 @@ function deleteTask() {
         </div>
       </div>
     </div>
-    <TaskModal
+    <TheTaskModal
       :task="props.task"
       :open="open"
       @exit="open = false"
