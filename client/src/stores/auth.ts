@@ -4,7 +4,7 @@ import router from '@/router';
 import { useChoreStore } from './chore';
 
 const firstCalledInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: import.meta.env.VITE_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
   },
