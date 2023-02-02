@@ -22,12 +22,12 @@ class UserCreationTestCase(TestCase):
   def test_user_login(self):
     self.auth.register()
     login_response = self.auth.login()
-
-    tokens = login_response.json()
+    
+    expected_response = {"message": "Successfully logged in!"}
 
     self.assertEqual(login_response.status_code, status.HTTP_200_OK)
-    self.assertTrue(tokens['access'])
-    self.assertTrue(tokens['refresh'])
+    self.assertEqual(login_response.json(), expected_response)
+    self.assertTrue(self.auth.access_token)
 
 
 
@@ -35,20 +35,8 @@ class UserOperationsTestCase(TestCase):
   def setUp(self):
     self.auth = AuthUtils()
     self.auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + self.auth.tokens['access']
-    })
-
-  def test_user_refresh_token(self):    
-    response = self.c.post('/api/token/refresh/', {
-      'refresh': self.auth.tokens['refresh']
-    })
-
-    new_tokens = response.json()
-
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertTrue(new_tokens['access'])
-    self.assertTrue(new_tokens['refresh'])
+    self.c = Client()
+    self.c.cookies['access_token'] = self.auth.access_token
 
 
   def test_user_self_info(self):
@@ -72,9 +60,8 @@ class ModeOperationsTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
 
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
   def test_mode_creation(self):    
     new_mode = {
@@ -103,9 +90,8 @@ class StatsOperationsTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
   def test_stats_creation(self):
     today = {
@@ -172,18 +158,15 @@ class StatsOperationsTestCase(TestCase):
       'password': 'test_pass_1'
     }
 
-    c.post('/api/register/', {
+    # Register diff user
+    c.post('/api/auth/register/', {
       **new_user,
       'passwordConfirmation': 'test_pass_1' 
     })
 
-    login_response = c.post('/api/token/', new_user)
+    login_response = c.post('/api/auth/login/', new_user)
 
-    tokens = login_response.json()
-
-    auth_headers = {
-      'HTTP_AUTHORIZATION': 'Bearer ' + tokens['access']
-    }
+    c.cookies['access_token'] = login_response.cookies['access_token']
 
     today = {
       'day': '2022-11-11'
@@ -194,8 +177,8 @@ class StatsOperationsTestCase(TestCase):
     }
 
     # Create same stats but for this user
-    response_1 = c.post('/api/stats/', today, **auth_headers)
-    response_2 = c.post('/api/stats/', tomorrow, **auth_headers)
+    response_1 = c.post('/api/stats/', today)
+    response_2 = c.post('/api/stats/', tomorrow)
     
     self.assertEqual(response_1.status_code, status.HTTP_201_CREATED)
     self.assertEqual(response_2.status_code, status.HTTP_201_CREATED)
@@ -219,9 +202,8 @@ class TagsTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access'],
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     user = User.objects.get(username='test_user')
 
@@ -329,9 +311,8 @@ class TaskTestCase(TestCase):
     auth = AuthUtils()
     auth.auth()
     
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     self.task_1 = {
       'tags': [],
@@ -725,9 +706,8 @@ class TaskPagination(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     user = User.objects.first()
 
@@ -794,9 +774,8 @@ class ProjectTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     self.ex_project_1 = {
       'name': 'Nuxt Project',
@@ -1081,9 +1060,8 @@ class ProjectPagination(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     user = User.objects.first()
     
@@ -1157,7 +1135,7 @@ class RegisterTestCase(TestCase):
 
   def test_register(self):
     c = Client()
-    response = c.post('/api/register/', {
+    response = c.post('/api/auth/register/', {
       **self.user,
       'passwordConfirmation': self.user['password']
     })
@@ -1172,7 +1150,7 @@ class RegisterTestCase(TestCase):
     self.test_register()
 
     c = Client()
-    response = c.post('/api/register/', {
+    response = c.post('/api/auth/register/', {
       **self.user,
       'passwordConfirmation': self.user['password']
     })
@@ -1188,9 +1166,8 @@ class CurrentTaskTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     self.task = Task.objects.create(**{
       'user': User.objects.first(),
@@ -1226,9 +1203,8 @@ class CurrentModeTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
   
   def test_no_mode(self):
@@ -1271,9 +1247,8 @@ class TagInfoTestCase(TestCase):
   def setUp(self):
     auth = AuthUtils()
     auth.auth()
-    self.c = Client(**{
-      'HTTP_AUTHORIZATION': 'Bearer ' + auth.tokens['access']
-    })
+    self.c = Client()
+    self.c.cookies['access_token'] = auth.access_token
 
     user = User.objects.first()
 
