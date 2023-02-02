@@ -1,8 +1,4 @@
 <script setup>
-import { reactive } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useAlertStore } from '@/stores/alerts';
-
 const creds = reactive({
   username: '',
   password: '',

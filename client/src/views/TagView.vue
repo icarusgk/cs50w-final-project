@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useFetch } from '@/composables/useFetch';
-import { useChoreStore } from '@/stores/chore';
-import BaseViewTask from '../components/BaseViewTask.vue';
-import BackIcon from '@/components/icons/BackIcon.vue';
 import type { TaskType, TagType } from '@/types';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const route = useRoute();
 const router = useRouter();

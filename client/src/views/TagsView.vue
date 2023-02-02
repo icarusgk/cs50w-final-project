@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useFetch } from '@/composables/useFetch';
 import type { TagType } from '@/types';
-import BackIcon from '@/components/icons/BackIcon.vue';
 
 const tags = ref<TagType[]>([]);
 

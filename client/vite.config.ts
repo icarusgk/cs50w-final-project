@@ -14,6 +14,7 @@ export default defineConfig({
       ],
       imports: [
         'vue',
+        'vue-router',
         {
           'axios': [
             // default imports
@@ -27,7 +28,7 @@ export default defineConfig({
           ]
         }
       ],
-      dirs: ['./src/stores'],
+      dirs: ['./src/stores', './src/composables'],
       vueTemplate: true,
       dts: 'auto-imports.d.ts',
       eslintrc: {

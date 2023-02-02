@@ -1,9 +1,4 @@
 <script setup>
-import { useAuthStore } from '@/stores/auth';
-import AppChart from '@/components/AppChart.vue';
-import UnauthedChart from '@/components/UnauthedChart.vue';
-import UnauthedLogin from '../components/UnauthedLogin.vue';
-
 const auth = useAuthStore();
 </script>
 

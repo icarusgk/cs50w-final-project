@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth';
-import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue';
-import TheTimer from '@/components/TheTimer.vue';
-import UnauthedLogin from '@/components/UnauthedLogin.vue';
-import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue';
-import AppProjects from '@/components/AppProjects.vue';
-import AppTasks from '@/components/AppTasks.vue';
-
 const auth = useAuthStore();
 </script>
 <template>

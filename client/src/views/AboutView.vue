@@ -1,7 +1,3 @@
-<script setup>
-import AboutIcon from '@/components/icons/AboutIcon.vue'
-</script>
-
 <template>
   <div class="about">
     <div class="title">

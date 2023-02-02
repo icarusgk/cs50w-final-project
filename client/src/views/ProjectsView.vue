@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
-import BackIcon from '@/components/icons/BackIcon.vue';
-import BaseViewProject from '@/components/BaseViewProject.vue';
-import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
-import Paginate from '@/components/Paginate.vue';
-import { useChoreStore } from '@/stores/chore';
-
 const chore = useChoreStore();
 
 chore.projectPagination.page = 1;

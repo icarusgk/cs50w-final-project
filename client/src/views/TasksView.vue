@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
-import { useChoreStore } from '@/stores/chore';
 import type { TaskType } from '@/types';
-
-import BaseViewTask from '@/components/BaseViewTask.vue';
-import BackIcon from '@/components/icons/BackIcon.vue';
-import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
-import Paginate from '../components/Paginate.vue';
 
 const chore = useChoreStore();
 
