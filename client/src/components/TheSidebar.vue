@@ -1,10 +1,3 @@
-<script setup>
-import HomeIcon from '@/components/icons/HomeIcon.vue';
-import StatsIcon from '@/components/icons/StatsIcon.vue';
-import AboutIcon from '@/components/icons/AboutIcon.vue';
-import SidebarItem from '@/components/slots/SidebarItem.vue';
-</script>
-
 <template>
   <div class="sidebar">
     <RouterLink to="/" aria-label="Pomo">

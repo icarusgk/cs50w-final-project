@@ -1,17 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-
-import { useChoreStore } from '@/stores/chore';
 import type { TagType, TaskType } from '@/types';
-
-import Tags from '@/components/buttons/Tags.vue';
-import Modal from '@/components/AppModal.vue';
-import TheTaskModalBody from '@/components/TheTaskModalBody.vue';
-import SaveButton from '@/components/buttons/SaveButton.vue';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import AddToProjectPopup from '@/components/AddToProjectPopup.vue';
-import DoneIcon from '@/components/icons/DoneIcon.vue';
-import MarkedDoneIcon from '@/components/icons/MarkedDoneIcon.vue';
 
 const props = defineProps<{
   task: TaskType;
@@ -69,13 +57,13 @@ onUnmounted(() => {
 <template>
   <div class="task-container">
     <!-- Modal -->
-    <Modal :open="open" @exit-modal="$emit('exit')" :is-task="true">
+    <AppModal :open="open" @exit-modal="$emit('exit')" :is-task="true">
       <!-- Tags -->
       <template #tags>
         <Tags
           :task="props.task"
           :id="props.task.id"
-          @remove-tag="(tag) => removeTag(tag)"
+          @remove-tag="(tag: TagType) => removeTag(tag)"
           @close="$emit('exit')"
         />
         <div class="buttons">
@@ -111,7 +99,7 @@ onUnmounted(() => {
         </div>
         <SaveButton @click="saveTask()" />
       </template>
-    </Modal>
+    </AppModal>
   </div>
 </template>
 

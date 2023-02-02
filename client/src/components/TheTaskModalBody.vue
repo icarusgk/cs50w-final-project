@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Subchores from '@/components/Subchores.vue';
-import PomoCountSetter from '@/components/PomoCountSetter.vue';
 import type { TaskType } from '@/types';
 
 defineProps<{

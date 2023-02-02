@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useTimerStore } from '@/stores/timer';
 // import start from '@/assets/start-timer.mp3';
 // import finished from '@/assets/finished-timer.mp3';
-import CurrentTask from '@/components/CurrentTask.vue';
 
 const timer = useTimerStore();
 // New audios to be found

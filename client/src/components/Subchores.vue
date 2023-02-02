@@ -1,17 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-import { useAlertStore } from '@/stores/alerts';
-import axios from 'axios';
 import type { TaskType, SubtaskType, TagType } from '@/types';
-
-import Subchore from '@/components/Subchore.vue';
-import MiniLabel from '@/components/slots/MiniLabel.vue';
-import AddTagIcon from '@/components/icons/AddTagIcon.vue';
-import DoneIcon from '@/components/icons/DoneIcon.vue';
-import MarkedDoneIcon from '@/components/icons/MarkedDoneIcon.vue';
-
-import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 
 const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew']);
 

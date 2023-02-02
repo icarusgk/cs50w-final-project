@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios';
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
-import { useChoreStore } from '@/stores/chore';
 import type { TaskType } from '@/types';
 
 import DoneIcon from '../icons/DoneIcon.vue';

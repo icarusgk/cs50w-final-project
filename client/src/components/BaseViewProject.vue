@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
 import type { ProjectType } from '@/types';
-
-import TheProjectModal from '@/components/TheProjectModal.vue';
 
 defineProps<{
   project: ProjectType;

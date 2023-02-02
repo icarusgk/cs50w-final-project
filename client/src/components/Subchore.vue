@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import PomoCountSetter from '@/components/PomoCountSetter.vue';
-import Tags from '@/components/buttons/Tags.vue';
-
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
 defineEmits([
   'save',

@@ -1,5 +1,4 @@
 <script setup>
-import { useAlertStore } from '@/stores/alerts';
 import DoneIcon from './icons/DoneIcon.vue';
 const alerts = useAlertStore();
 </script>

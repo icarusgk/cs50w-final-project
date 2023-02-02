@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-
 import type { ProjectType } from '@/types';
-
-import AppModal from '@/components/AppModal.vue';
-import TheProjectModalBody from '@/components/TheProjectModalBody.vue';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const props = defineProps<{
   project: ProjectType;

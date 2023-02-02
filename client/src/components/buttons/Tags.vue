@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-import { useAlertStore } from '@/stores/alerts';
 import type { TagType, TaskType } from '@/types';
 
 import MiniLabel from '@/components/slots/MiniLabel.vue';
 import AddTagIcon from '@/components/icons/AddTagIcon.vue';
 import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
-import axios from 'axios';
+
 import router from '@/router';
 import CloseIcon from '../icons/CloseIcon.vue';
 

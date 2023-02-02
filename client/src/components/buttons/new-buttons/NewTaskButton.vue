@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
-import { useChoreStore } from '@/stores/chore';
-import { useAuthStore } from '@/stores/auth';
-import { useAlertStore } from '@/stores/alerts';
-
 import TheTaskModalBody from '@/components/TheTaskModalBody.vue';
 import AppModal from '@/components/AppModal.vue';
 import Tags from '@/components/buttons/Tags.vue';

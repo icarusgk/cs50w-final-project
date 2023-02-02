@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-
 const props = defineProps(['chore']);
 const emit = defineEmits(['newPomoCount']);
 

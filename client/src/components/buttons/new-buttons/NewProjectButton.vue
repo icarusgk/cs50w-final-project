@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
-import { useChoreStore } from '@/stores/chore';
-import { useAuthStore } from '@/stores/auth';
-import { useAlertStore } from '@/stores/alerts';
 import type { ProjectType } from '@/types';
 
 import TheProjectModalBody from '@/components/TheProjectModalBody.vue';

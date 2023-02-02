@@ -1,12 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useTimerStore } from '@/stores/timer';
-import { useAlertStore } from '@/stores/alerts';
-import axios from 'axios';
-import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import Popper from 'vue3-popper';
-
 const auth = useAuthStore();
 const timer = useTimerStore();
 const alert = useAlertStore();
