@@ -3,27 +3,32 @@ const auth = useAuthStore();
 const chore = useChoreStore();
 const modal = useModalStore();
 
-modal.close()
+// Close any previously opened modal
+modal.close();
+
+auth.getUser();
 
 if (auth.isAuthed) {
-  auth.getUser();
   chore.fetchProjects();
   chore.fetchTasks();
 }
 
-watch([
-  () => chore.projectPagination.page,
-  () => chore.taskPagination.page,
-  () => chore.projectPagination.page_size,
-  () => chore.taskPagination.page_size,
-], ([newProjectPage, newTaskPage],[oldProjectPage, oldTaskPage]) => {
-  if (chore.projectPagination.count > 1 && newProjectPage !== oldProjectPage) {    
-    chore.fetchProjects();
+watch(
+  [
+    () => chore.projectPagination.page,
+    () => chore.taskPagination.page,
+    () => chore.projectPagination.page_size,
+    () => chore.taskPagination.page_size,
+  ],
+  ([newProjectPage, newTaskPage], [oldProjectPage, oldTaskPage]) => {
+    if (chore.projectPagination.count > 1 && newProjectPage !== oldProjectPage) {
+      chore.fetchProjects();
+    }
+    if (chore.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
+      chore.fetchTasks();
+    }
   }
-  if (chore.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
-    chore.fetchTasks();
-  }
-})
+);
 </script>
 
 <template>
@@ -39,15 +44,15 @@ watch([
 
 <style lang="scss">
 /* variables */
-@import './assets/base.css';
+@import "./assets/base.css";
 
 /* Popper theme */
-@import './assets/popper-theme.css';
+@import "./assets/popper-theme.css";
 
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -59,7 +64,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type='number'] {
+input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
