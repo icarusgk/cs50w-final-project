@@ -3,7 +3,7 @@ import { computed } from '@vue/reactivity';
 import { useChoreStore } from '@/stores/chore';
 import type { TaskType } from '@/types';
 
-import TaskInfo from '@/components/TaskInfo.vue';
+import BaseViewTask from '@/components/BaseViewTask.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
 import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
 import Paginate from '../components/Paginate.vue';
@@ -56,7 +56,7 @@ function deleteTask(task: TaskType) {
     />
     <div v-if="chore.tasks.length > 0">
       <div class="all-tasks-container">
-        <TaskInfo v-for="task in tasks" :task="task" :key="task.id" @deleteTask="deleteTask($event)"/>
+        <BaseViewTask v-for="task in tasks" :task="task" :key="task.id" @deleteTask="deleteTask($event)"/>
       </div>
       <Paginate
         :pages="chore.totalTaskPages"
@@ -105,6 +105,7 @@ function deleteTask(task: TaskType) {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 1rem;
   }
 
   .no-tasks {

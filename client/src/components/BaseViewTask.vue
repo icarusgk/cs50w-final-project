@@ -6,7 +6,7 @@ import type { TaskType } from '@/types';
 import Tags from '@/components/buttons/Tags.vue';
 import TasksDoneIcon from '@/components/icons/TasksDoneIcon.vue';
 import TotalTasksIcon from '@/components/icons/TotalTasksIcon.vue';
-import TaskModal from '@/components/TaskModal.vue';
+import TheTaskModal from '@/components/TheTaskModal.vue';
 
 defineProps<{
   task: TaskType;
@@ -42,7 +42,7 @@ watch(open,  () => {
       <span class="title">{{ task.title }}</span>
       <span>{{ task.description }}</span>
     </div>
-    <TaskModal
+    <TheTaskModal
       :task="task"
       :open="open"
       @exit="open = false"

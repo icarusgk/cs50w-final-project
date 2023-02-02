@@ -5,9 +5,9 @@ import { useChoreStore } from '@/stores/chore';
 import type { TagType, TaskType } from '@/types';
 
 import Tags from '@/components/buttons/Tags.vue';
-import Modal from '@/components/modals/Modal.vue';
-import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
-import SaveButton from '@/components/SaveButton.vue';
+import Modal from '@/components/AppModal.vue';
+import TheTaskModalBody from '@/components/TheTaskModalBody.vue';
+import SaveButton from '@/components/buttons/SaveButton.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 import AddToProjectPopup from '@/components/AddToProjectPopup.vue';
 import DoneIcon from '@/components/icons/DoneIcon.vue';
@@ -97,8 +97,8 @@ onUnmounted(() => {
           @keyup.ctrl.enter="saveTask()"
         />
       </template>
-      <!-- Modal -->
-      <TaskModalInfo
+      <!-- Body -->
+      <TheTaskModalBody
         :task="props.task"
         @description-input="handleDesc"
         @newPomoCount="handlePomos($event)"

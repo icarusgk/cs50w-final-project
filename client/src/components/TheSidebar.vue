@@ -2,41 +2,41 @@
 import HomeIcon from '@/components/icons/HomeIcon.vue';
 import StatsIcon from '@/components/icons/StatsIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
-import MenuIcon from '@/components/slots/MenuIcon.vue';
+import SidebarItem from '@/components/slots/SidebarItem.vue';
 </script>
 
 <template>
   <div class="sidebar">
-    <router-link to="/" aria-label="Pomo">
+    <RouterLink to="/" aria-label="Pomo">
       <div class="logo-container">
         <img src="../assets/tomato-logo.png" class="logo-img" alt="Pomo Logo" />
       </div>
-    </router-link>
+    </RouterLink>
     <div class="menu-container">
-      <router-link to="/">
-        <MenuIcon>
+      <RouterLink to="/" aria-label="Home">
+        <SidebarItem>
           <template #icon>
             <HomeIcon />
           </template>
           <template #heading>Home</template>
-        </MenuIcon>
-      </router-link>
-      <router-link to="/stats">
-        <MenuIcon>
+        </SidebarItem>
+      </RouterLink>
+      <RouterLink to="/stats" aria-label="Stats">
+        <SidebarItem>
           <template #icon>
             <StatsIcon />
           </template>
           <template #heading>Stats</template>
-        </MenuIcon>
-      </router-link>
-      <router-link to="/about">
-        <MenuIcon>
+        </SidebarItem>
+      </RouterLink>
+      <RouterLink to="/about" aria-label="About">
+        <SidebarItem>
           <template #icon>
             <AboutIcon />
           </template>
           <template #heading>About</template>
-        </MenuIcon>
-      </router-link>
+        </SidebarItem>
+      </RouterLink>
     </div>
   </div>
 </template>

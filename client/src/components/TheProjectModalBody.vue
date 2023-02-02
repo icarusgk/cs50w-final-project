@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Subtasks from '@/components/Subtasks.vue';
+import Subchores from '@/components/Subchores.vue';
 
 defineProps<{
   project: any;
@@ -13,7 +13,7 @@ defineProps<{
     <span class="task-heading">Tasks</span>
     <!-- Add tasks button -->
     <div>
-      <Subtasks
+      <Subchores
         :is-project="true"
         :chores="project.tasks"
         :project="project"

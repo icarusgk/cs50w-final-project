@@ -252,7 +252,7 @@ The various icons used throughout the app, I made them as a Vue component for it
 #### 📂 `modals/`
 The modals used throughout the application.
 
-> `Modal.vue`
+> `AppModal.vue`
 
 > 💡 This is a blank slate that can be used to create a modal anywhere in the app.
 
@@ -262,22 +262,22 @@ This component uses the `<Teleport>` Vue built-in component to go the body of th
 
 When the app is visited from a phone or a tablet, the modal automatically adjusts itself to the proper size through media queries.
 
-> `ProjectModalInfo.vue`
+> `TheProjectModalBody.vue`
 
-This file contains the info part of the Project Modal, the tasks list. It uses the `Subtasks` component to manage the tasks. 
+This file contains the info part of the Project Modal, the tasks list. It uses the `Subchores` component to manage the tasks. 
 
-❕ Because subtasks and tasks are similar visually, the `Subtasks` component can handle tasks and subtasks.
+❕ Because subtasks and tasks are similar visually, the `Subchores` component can handle tasks and subtasks.
 
-> `TaskModalInfo.vue`
+> `TheTaskModalBody.vue`
 
-Contains the info part of the Task Modal, (description, subtasks, and the estimated pomos counter). I decided to create this different file to unclutter the main `TaskModal.vue` file and practice separation of concerns in components.
+Contains the info part of the Task Modal, (description, subtasks, and the estimated pomos counter). I decided to create this different file to unclutter the main `TheTaskModal.vue` file and practice separation of concerns in components.
 
 
 #### 📂 `slots/`
 
 These are wrapper components for buttons or labels used inside the app that need tweaking depending where they are used.
 
-> `MenuIcon.vue`
+> `SidebarItem.vue`
 
 A wrapper component for the icons in the sidebar, it includes a slot for the icon and a title of the icon.
 
@@ -285,7 +285,7 @@ A wrapper component for the icons in the sidebar, it includes a slot for the ico
 
 A wrapper component that displays differently depending on the props being passed.<br>`isTask`: For adding and displaying subtasks inside the task modal or tasks inside the project modal.<br>`isTag`: For displaying tags inside the task modal.<br>`isAdd`: For adding a tag.
 
-> `TaskType.vue`
+> `AppTitle.vue`
 
 A wrapper component for the header displayed on top of the projects and tasks lists . It accepts an icon and a title. I created this file because I wanted to work with Vue slots.
 
@@ -294,27 +294,27 @@ Rest of the files inside the `components/` folder
 | Filename                | Description                                                                                                                                                                                                                                                                                                                                   |
 |-------------------------|--------------|
 | `AddToProjectPopup.vue` | Adds the current opened task to a project, and if the task is already inside the project it highlights it.                                                                                                                                                                                                                                    |
-| `Alerts.vue`            | The component for showing alerts globally when an action is done, it transitions at the top right of the page. It uses the alert store which I will later talk about. It has three styles: alert, error and info.                                                                                                                             |
-| `Chart.vue`             | The main component for the displaying the stats in a chart. It uses the [`apexcharts`](https://apexcharts.com/) library. This chart resizes automatically based on the window height and width. It is included in the `StatsView`.                                                                                                              |
+| `TheAlerts.vue`            | The component for showing alerts globally when an action is done, it transitions at the top right of the page. It uses the alert store which I will later talk about. It has three styles: alert, error and info.                                                                                                                             |
+| `AppChart.vue`             | The main component for the displaying the stats in a chart. It uses the [`apexcharts`](https://apexcharts.com/) library. This chart resizes automatically based on the window height and width. It is included in the `StatsView`.                                                                                                              |
 | `CurrentTask.vue`       | Displays the current task the user is working on below the timer, it includes a button for removing the task as being the one the user is currently working on.                                                                                                                                                                               |
 | `Paginate.vue`          | The pagination component showed below each of the projects and tasks lists. It conditionally based on the number of pages displays a ... button that moves 3 pages when clicked.                                                                                                                                                              |
-| `ProjectInfo.vue`       | Displays the project's name and when clicked it opens its modal. It is used in the `ProjectView`.                                                                                                                                                                                                                                               |
-| `ProjectModal.vue`      | Controls whether the Project Modal is showed and displays its info.                                                                                                                                                                                                                                                                           |
-| `Projects.vue`          | The component that shows the `TaskType`, the page count, iterates over the projects and shows the pagination component.                                                                                                                                                                                                                         |
+| `BaseViewProject.vue`       | Displays the project's name and when clicked it opens its modal. It is used in the `ProjectView`.                                                                                                                                                                                                                                               |
+| `TheProjectModal.vue`      | Controls whether the Project Modal is showed and displays its info.                                                                                                                                                                                                                                                                           |
+| `AppProjects.vue`          | The component that shows the `TaskType`, the page count, iterates over the projects and shows the pagination component.                                                                                                                                                                                                                         |
 | `SaveButton.vue`        | The save button used in the Task and Project Modal.                                                                                                                                                                                                                                                                                           |
-| `Settings.vue`          | Displays the settings modal to control whether to auto start pomos or breaks and create,change and delete modes.                                                                                                                                                                                                                              |
-| `Sidebar.vue`           | The sidebar displayed at the left of the page, it includes links to the stats and the info of the app.                                                                                                                                                                                                                                        |
-| `Subtask.vue`           | Controls the subtask or task being showed, it is the info part of the subtask/task. It contains the tags if its a task inside a project, it handles the title and description input to clear if the task or subtask is not saved. Conditionally shows pomo counter if it's a task.                                                            |
-| `Subtasks.vue`          | This is the most complex component in the project, this is because this component is used in two cases: the parent component is a project or task. If the parent component is a task it handles the creation and deletion of subtasks. If the parent component is a project it handles the creation and deletion of tasks inside the project. |
-| `TaskInfo.vue`          | The component that is displayed when the user is on the `TaskView`. It shows the tags, the number of pomos done and the number of estimated pomos, as well as the title and description. When clicked it opens the task modal info.                                                                                                             |
-| `TaskModal.vue`         | The whole task modal being displayed with the tags, done, delete and close icons. As well as the title, description and `TaskModalInfo` mentioned previously, as well as the add to project and save buttons.                                                                                                                                   |
-| `Tasks.vue`             | The component that shows the `TaskType`, the page count, iterates over the tasks and shows the pagination component.                                                                                                                                                                                                                            |
-| `Timer.vue`             | The main timer component, it starts, restarts and stops the timer. It sets the type of timer and displays the Current Task                                                                                                                                                                                                                    |
-| `TimerSetter.vue`       | The pomo count setter inside the task modal.                                                                                                                                                                                                                                                                                                  |
+| `TheSettings.vue`          | Displays the settings modal to control whether to auto start pomos or breaks and create,change and delete modes.                                                                                                                                                                                                                              |
+| `TheSidebar.vue`           | The sidebar displayed at the left of the page, it includes links to the stats and the info of the app.                                                                                                                                                                                                                                        |
+| `Subchore.vue`           | Controls the subtask or task being showed, it is the info part of the subtask/task. It contains the tags if its a task inside a project, it handles the title and description input to clear if the task or subtask is not saved. Conditionally shows pomo counter if it's a task.                                                            |
+| `Subchores.vue`          | This is the most complex component in the project, this is because this component is used in two cases: the parent component is a project or task. If the parent component is a task it handles the creation and deletion of subtasks. If the parent component is a project it handles the creation and deletion of tasks inside the project. |
+| `BaseViewTask.vue`          | The component that is displayed when the user is on the `TaskView`. It shows the tags, the number of pomos done and the number of estimated pomos, as well as the title and description. When clicked it opens the task modal info.                                                                                                             |
+| `TheTaskModal.vue`         | The whole task modal being displayed with the tags, done, delete and close icons. As well as the title, description and `TheTaskModalBody` mentioned previously, as well as the add to project and save buttons.                                                                                                                                   |
+| `AppTasks.vue`             | The component that shows the `TaskType`, the page count, iterates over the tasks and shows the pagination component.                                                                                                                                                                                                                            |
+| `TheTimer.vue`             | The main timer component, it starts, restarts and stops the timer. It sets the type of timer and displays the Current Task                                                                                                                                                                                                                    |
+| `PomoCountSetter.vue`       | The pomo count setter inside the task modal.                                                                                                                                                                                                                                                                                                  |
 | `Title.vue`             | The title "Pomodoro Timer" displayed at the top of the app. When clicked it returns to the '/' route.                                                                                                                                                                                                                                         |
 | `UnauthedChart.vue`     | The blurred chart showed when the user is not registered/logged out.                                                                                                                                                                                                                                                                          |
 | `UnauthedLogin.vue`     | The component displayed in the Home page and above the blurred chart to Sign up or Login.                                                                                                                                                                                                                                                     |
-| `UpperMenu.vue`         | The menu showed at the top of the app, where the title, user info, settings, and log in / register buttons are displayed.                                                                                                                                                                                                                     |
+| `TheUpperMenu.vue`         | The menu showed at the top of the app, where the title, user info, settings, and log in / register buttons are displayed.                                                                                                                                                                                                                     |
 | `UserInfo.vue`          | The modal where the user can log out.                                                                                                                                                                                                                                                                                                         |
 
 
@@ -386,7 +386,7 @@ Manages a global state of the modal so that only one modal opens a time.
 
 > `timer.ts`
 
-> 💡The store for managing a global timer that retains state even when the page is changed. It has a `timerId` as part of the state that is set to the returned value of `window.setInterval` in Timer.vue's `initTimer()` function and is used when clearing the Interval in the `stopTimer()` function.
+> 💡The store for managing a global timer that retains state even when the page is changed. It has a `timerId` as part of the state that is set to the returned value of `window.setInterval` in TheTimer.vue's `initTimer()` function and is used when clearing the Interval in the `stopTimer()` function.
 
 I'm using the [`dayjs`](https://github.com/iamkun/dayjs/) library to easily manage time in the store.
 
@@ -402,7 +402,7 @@ And the `auto_start_pomo` and `auto_start_breaks` use the `auth` store to retrie
 
 I created store `getters` for order to retrieve the minutes and seconds from the `currentTimer.timer` and the `formattedTime` for displaying the time in the pages tab title in the format of `mm:ss`
 
-As the final part of the store I have the timer actions to set a timer to the data passed, setting a timer to a new mode, decrementing a second from the `currentTimer`, setting the next timer based on the `sessions` and `current` state variables, setting the timer to the default one declared at the top, and setting a timer based on the passed name. I use most of these methods in the `Timer.vue` component.
+As the final part of the store I have the timer actions to set a timer to the data passed, setting a timer to a new mode, decrementing a second from the `currentTimer`, setting the next timer based on the `sessions` and `current` state variables, setting the timer to the default one declared at the top, and setting a timer based on the passed name. I use most of these methods in the `TheTimer.vue` component.
 
 
 ### 📂 `types/`
@@ -437,9 +437,9 @@ The file I import all the files in the directory and export them.
 
 In this file, I render the whole app. 
 
-I have the `SideBar` component, the `UpperMenu` by the right side positioned at the top and the rest of the content is displayed as a view by the `router-view` component, being the `HomeView` the default one on the `/` route.
+I have the `SideBar` component, the `TheUpperMenu` by the right side positioned at the top and the rest of the content is displayed as a view by the `router-view` component, being the `HomeView` the default one on the `/` route.
 
-I added the `Alerts` component in here so that they were accessible throughout the app.
+I added the `TheAlerts` component in here so that they were accessible throughout the app.
 
 > `axios.ts`
 

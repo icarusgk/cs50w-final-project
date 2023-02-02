@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
-import TimerSetter from '@/components/TimerSetter.vue';
+import PomoCountSetter from '@/components/PomoCountSetter.vue';
 import Tags from '@/components/buttons/Tags.vue';
 
 const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
@@ -62,7 +62,7 @@ defineEmits([
           <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
         </div>
         <div v-if="props.isProject">
-          <TimerSetter
+          <PomoCountSetter
             :chore="chore"
             @newPomoCount="$emit('newPomoCount', $event)"
           />

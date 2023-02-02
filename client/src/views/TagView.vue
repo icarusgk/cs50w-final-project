@@ -3,7 +3,7 @@ import { ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useFetch } from '@/composables/useFetch';
 import { useChoreStore } from '@/stores/chore';
-import TaskInfo from '../components/TaskInfo.vue';
+import BaseViewTask from '../components/BaseViewTask.vue';
 import BackIcon from '@/components/icons/BackIcon.vue';
 import type { TaskType, TagType } from '@/types';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
@@ -58,7 +58,7 @@ async function deleteTag() {
       </div>
     </div>
     <div class="all-tasks-container">
-      <TaskInfo v-if="fetchedTags" 
+      <BaseViewTask v-if="fetchedTags" 
         v-for="task in tasks" :task="task" :key="task.id" 
       />
       <div v-else>

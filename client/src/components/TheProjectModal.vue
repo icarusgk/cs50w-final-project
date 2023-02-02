@@ -4,8 +4,8 @@ import { useChoreStore } from '@/stores/chore';
 
 import type { ProjectType } from '@/types';
 
-import Modal from '@/components/modals/Modal.vue';
-import ProjectModalInfo from '@/components/modals/ProjectModalInfo.vue';
+import AppModal from '@/components/AppModal.vue';
+import TheProjectModalBody from '@/components/TheProjectModalBody.vue';
 import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 
 const props = defineProps<{
@@ -46,7 +46,7 @@ function exitModal() {
 <template>
   <div class="project-container">
     <!-- Modal -->
-    <Modal :open="open" @exit-modal="exitModal()">
+    <AppModal :open="open" @exit-modal="exitModal()">
       <!-- Title -->
       <template #title>
         <input
@@ -62,8 +62,8 @@ function exitModal() {
         <DeleteIcon @click="deleteProject()" class="delete-icon" />
       </template>
       <!-- Modal Info -->
-      <ProjectModalInfo :project="project" @close-modal="$emit('exit')" />
-    </Modal>
+      <TheProjectModalBody :project="project" @close-modal="$emit('exit')" />
+    </AppModal>
   </div>
 </template>
 

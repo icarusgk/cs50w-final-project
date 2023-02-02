@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Subtasks from '@/components/Subtasks.vue';
-import TimerSetter from '@/components/TimerSetter.vue';
+import Subchores from '@/components/Subchores.vue';
+import PomoCountSetter from '@/components/PomoCountSetter.vue';
 import type { TaskType } from '@/types';
 
 defineProps<{
@@ -30,7 +30,7 @@ defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
-        <Subtasks
+        <Subchores
           :is-project="false"
           :chores="task.subtasks"
           :task="task"
@@ -46,7 +46,7 @@ defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
           <span style="font-weight: 800">Estimated pomos</span>
         </div>
         <!-- Counter -->
-        <TimerSetter
+        <PomoCountSetter
           :chore="task"
           @newPomoCount="$emit('newPomoCount', $event)"
         />

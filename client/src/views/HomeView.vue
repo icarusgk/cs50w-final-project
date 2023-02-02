@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
 import NewTaskButton from '@/components/buttons/new-buttons/NewTaskButton.vue';
-import Timer from '@/components/Timer.vue';
+import TheTimer from '@/components/TheTimer.vue';
 import UnauthedLogin from '@/components/UnauthedLogin.vue';
 import NewProjectButton from '@/components/buttons/new-buttons/NewProjectButton.vue';
-import Projects from '@/components/Projects.vue';
-import Tasks from '@/components/Tasks.vue';
+import AppProjects from '@/components/AppProjects.vue';
+import AppTasks from '@/components/AppTasks.vue';
 
 const auth = useAuthStore();
 </script>
@@ -15,24 +15,25 @@ const auth = useAuthStore();
     <div id="timer-and-tasks">
       <!-- Timer -->
       <div id="main-timer">
-        <Timer />
+        <TheTimer />
       </div>
     </div>
     <!-- Add Tasks -->
     <div id="main-tasks-container">
       <!-- Buttons -->
-      <div id="task-btn-container" :class="{ opaque: !auth.isAuthenticated }">
+      <div id="task-btn-container" :class="{ opaque: !auth.isAuthed }">
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
         <NewProjectButton />
       </div>
-      <div id="message" v-if="!auth.isAuthenticated">
+      <div id="message" v-if="!auth.isAuthed">
         <UnauthedLogin> To add tasks and projects </UnauthedLogin>
       </div>
-      <div v-if="auth.isAuthenticated">
-        <Projects />
-        <Tasks />
+      <!-- Projects and Tasks if user is authed -->
+      <div v-if="auth.isAuthed">
+        <AppProjects />
+        <AppTasks />
       </div>
     </div>
   </div>

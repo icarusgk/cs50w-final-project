@@ -2,7 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import { useChoreStore } from '@/stores/chore';
 
-import TaskType from '@/components/slots/TaskType.vue';
+import Title from '@/components/slots/Title.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import Task from '@/components/buttons/Task.vue';
@@ -40,8 +40,9 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div>
-    <TaskType class="button" @click="$router.push('/tasks')">
+  <div id="tasks-container">
+    <!-- Tasks Title -->
+    <Title class="button" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
       </template>
@@ -53,20 +54,24 @@ function setAdded(newAdded: number) {
           Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages }}
         </span>
       </template>
-    </TaskType>
-    <div class="no-tasks" v-if="tasks.length === 0">
-      <TaskInfoIcon />
-      <span>There are no tasks</span>
+    </Title>
+    <!-- Task List Container -->
+    <div>
+      <div class="no-tasks" v-if="tasks.length === 0">
+        <TaskInfoIcon />
+        <span>There are no tasks</span>
+      </div>
+      <!-- List of Tasks -->
+      <div v-auto-animate>
+        <Task
+          v-for="task in tasks"
+          :task="task"
+          :key="task.id"
+          @setCurrent="setCurrent"
+        />
+      </div>
     </div>
-    <div v-auto-animate>
-      <Task
-        v-for="task in tasks"
-        :task="task"
-        :key="task.id"
-        @setCurrent="setCurrent"
-      />
-    </div>
-
+    <!-- Pagination -->
     <Paginate
       :pages="chore.totalTaskPages"
       :page="chore.taskPagination.page"
@@ -80,6 +85,9 @@ function setAdded(newAdded: number) {
 </template>
 
 <style lang="scss" scoped>
+#tasks-container {
+  margin-top: 0.5rem;
+}
 .button {
   &:hover,
   &:focus,

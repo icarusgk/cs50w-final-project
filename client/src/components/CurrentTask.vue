@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useModalStore } from '@/stores/modal';
 import { useChoreStore } from '@/stores/chore';
 import axios from 'axios';
-import TaskModal from './TaskModal.vue';
+import TheTaskModal from './TheTaskModal.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import CloseIcon from './icons/CloseIcon.vue';
 import Popper from 'vue3-popper';
@@ -47,7 +47,7 @@ watch(open, () => {
           <template #content> Remove current task </template>
         </Popper>
       </div>
-      <TaskModal :open="open" :task="task" @exit="open = false" />
+      <TheTaskModal :open="open" :task="task" @exit="open = false" />
     </div>
   </Transition>
 </template>

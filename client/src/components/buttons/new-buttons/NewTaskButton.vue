@@ -5,11 +5,11 @@ import { useChoreStore } from '@/stores/chore';
 import { useAuthStore } from '@/stores/auth';
 import { useAlertStore } from '@/stores/alerts';
 
-import TaskModalInfo from '@/components/modals/TaskModalInfo.vue';
-import Modal from '@/components/modals/Modal.vue';
+import TheTaskModalBody from '@/components/TheTaskModalBody.vue';
+import AppModal from '@/components/AppModal.vue';
 import Tags from '@/components/buttons/Tags.vue';
 import ChoreButton from '@/components/buttons/ChoreButton.vue';
-import SaveButton from '@/components/SaveButton.vue';
+import SaveButton from '@/components/buttons/SaveButton.vue';
 
 import type { TagType, TaskType } from '@/types';
 
@@ -60,10 +60,10 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthenticated ? (open = true) : (open = false)">
+  <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
-  <Modal
+  <AppModal
     :open="open"
     @exit-modal="resetTask()"
     :is-task="true"
@@ -87,7 +87,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       />
     </template>
     <!-- Rest of modal -->
-    <TaskModalInfo
+    <TheTaskModalBody
       :task="initialTask"
       :isNew="true"
       @saveTask="saveTask()"
@@ -98,7 +98,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
     <template #save-button>
       <SaveButton @click="saveTask()">Save!</SaveButton>
     </template>
-  </Modal>
+  </AppModal>
 </template>
 
 <style scoped lang="scss">
