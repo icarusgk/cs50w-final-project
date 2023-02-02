@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type { ProjectType } from '@/types';
 
-import TheProjectModalBody from '@/components/TheProjectModalBody.vue';
-import AppModal from '@/components/AppModal.vue';
-import ChoreButton from '@/components/buttons/ChoreButton.vue';
-import SaveButton from '@/components/buttons/SaveButton.vue';
-
 const newProject = ref<ProjectType>({
   name: '',
   tasks: [],

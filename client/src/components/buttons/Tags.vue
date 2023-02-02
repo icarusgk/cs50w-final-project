@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import type { TagType, TaskType } from '@/types';
 
-import MiniLabel from '@/components/slots/MiniLabel.vue';
-import AddTagIcon from '@/components/icons/AddTagIcon.vue';
-import DeleteTagIcon from '../icons/DeleteTagIcon.vue';
-
 import router from '@/router';
-import CloseIcon from '../icons/CloseIcon.vue';
 
 const props = defineProps<{
   id?: number;
