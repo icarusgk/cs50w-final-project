@@ -9,18 +9,17 @@ creds = {
 class AuthUtils():
   def __init__(self):
     self.c = Client()
-    self.tokens = {} 
+    self.access_token = {} 
 
   def register(self, creds=creds):
-    return self.c.post('/api/register/', {
+    return self.c.post('/api/auth/register/', {
       **creds,
       'passwordConfirmation': creds['password']
     })
     
-
   def login(self, creds=creds):
-    response = self.c.post('/api/token/', creds)
-    self.tokens = loads(response.content)
+    response = self.c.post('/api/auth/login/', creds)
+    self.access_token = self.c.cookies['access_token']
     return response
 
   def auth(self):
