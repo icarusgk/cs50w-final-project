@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import AddIcon from '@/components/icons/AddIcon.vue';
-</script>
-
 <template>
   <div class="add-item-btn">
     <!-- Icon -->

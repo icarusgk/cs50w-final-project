@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { ProjectType } from '@/types';
 
-import TheProjectModal from '@/components/TheProjectModal.vue';
-import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
-
 defineProps<{
   project: ProjectType;
 }>();

@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import type { TaskType } from '@/types';
 
-import DoneIcon from '../icons/DoneIcon.vue';
-import MarkedDoneIcon from '../icons/MarkedDoneIcon.vue';
-import TheTaskModal from '../TheTaskModal.vue';
-import TaskInfoIcon from '@/components/icons/TaskInfoIcon.vue';
-import DeleteIcon from '../icons/DeleteIcon.vue';
-
 const props = defineProps<{
   task: TaskType;
 }>();

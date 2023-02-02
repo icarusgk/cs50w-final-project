@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import TheTaskModalBody from '@/components/TheTaskModalBody.vue';
-import AppModal from '@/components/AppModal.vue';
-import Tags from '@/components/buttons/Tags.vue';
-import ChoreButton from '@/components/buttons/ChoreButton.vue';
-import SaveButton from '@/components/buttons/SaveButton.vue';
-
 import type { TagType, TaskType } from '@/types';
 
 const open = ref(false);
@@ -66,7 +60,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       <Tags
         :task="initialTask"
         :new="true"
-        @remove-tag="(tag) => removeTag(tag)"
+        @remove-tag="(tag: TagType) => removeTag(tag)"
       />
     </template>
     <!-- New task title input -->
