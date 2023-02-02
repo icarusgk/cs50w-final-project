@@ -1,6 +1,7 @@
 {
   "globals": {
     "EffectScope": true,
+    "Popper": true,
     "axios": true,
     "computed": true,
     "createApp": true,
@@ -55,7 +56,6 @@
     "useModalStore": true,
     "useSlots": true,
     "useTimerStore": true,
-    "vue3-popper": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
