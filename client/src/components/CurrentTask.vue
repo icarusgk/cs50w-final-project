@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { ref, watch, computed, watchEffect } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useModalStore } from '@/stores/modal';
-import { useChoreStore } from '@/stores/chore';
-import axios from 'axios';
 import TheTaskModal from './TheTaskModal.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';
 import CloseIcon from './icons/CloseIcon.vue';
-import Popper from 'vue3-popper';
 
 const task = ref();
 const auth = useAuthStore();

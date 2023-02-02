@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue';
 import ApexChart from 'apexcharts';
 
 // a template ref

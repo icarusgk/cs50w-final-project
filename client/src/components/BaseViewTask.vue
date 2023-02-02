@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
 import type { TaskType } from '@/types';
 
 import Tags from '@/components/buttons/Tags.vue';

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-
 import Title from '@/components/slots/Title.vue';
 import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
 import TaskInfoIcon from './icons/TaskInfoIcon.vue';

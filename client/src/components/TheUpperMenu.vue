@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useModalStore } from '@/stores/modal';
-import { useAuthStore } from '@/stores/auth';
-
 import UserIcon from '@/components/icons/UserIcon.vue';
 import SettingsIcon from '@/components/icons/SettingsIcon.vue';
 import TheSettings from '@/components/TheSettings.vue';

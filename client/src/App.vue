@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useModalStore } from '@/stores/modal';
-import { useChoreStore } from '@/stores/chore';
 import TheSideBar from '@/components/TheSidebar.vue';
 import TheUpperMenu from '@/components/TheUpperMenu.vue';
 import TheAlerts from './components/TheAlerts.vue';

@@ -1,6 +1,4 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useChoreStore } from '@/stores/chore';
 import ApexChart from 'apexcharts';
 
 const chore = useChoreStore();

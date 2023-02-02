@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useChoreStore } from '@/stores/chore';
 import type { ProjectType } from '@/types';
-import axios from 'axios';
 
 const props = defineProps<{
   taskId?: number;

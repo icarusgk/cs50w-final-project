@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-import { useAlertStore } from '@/stores/alerts';
-import axios from 'axios';
 import type { TaskType, SubtaskType, TagType } from '@/types';
 
 import Subchore from '@/components/Subchore.vue';

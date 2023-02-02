@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useChoreStore } from '@/stores/chore';
-
 import Project from '@/components/buttons/Project.vue';
 import Title from '@/components/slots/Title.vue';
 import ProjectIcon from '@/components/icons/ProjectIcon.vue';
