@@ -5,8 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-if: "!contains(github.event.pull_request.title, '[bypass]')"
+    if: "!contains(github.event.pull_request.title, '[bypass]')"
 
 jobs:
   test_project:
