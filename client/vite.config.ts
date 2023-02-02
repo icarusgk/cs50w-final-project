@@ -17,6 +17,9 @@ export default defineConfig({
           // default imports
           ['default', 'axios'], // import { default as axios } from 'axios',
         ],
+        'Popper': [
+          ['default', 'vue3-popper']
+        ]
       }
     ],
     dirs: ['./src/stores'],

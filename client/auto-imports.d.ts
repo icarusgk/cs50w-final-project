@@ -56,6 +56,7 @@ declare global {
   const useModalStore: typeof import('./src/stores/modal')['useModalStore']
   const useSlots: typeof import('vue')['useSlots']
   const useTimerStore: typeof import('./src/stores/timer')['useTimerStore']
+  const vue3-popper: typeof import('Popper')['default']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
@@ -120,6 +121,7 @@ declare module 'vue' {
     readonly useModalStore: UnwrapRef<typeof import('./src/stores/modal')['useModalStore']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTimerStore: UnwrapRef<typeof import('./src/stores/timer')['useTimerStore']>
+    readonly vue3-popper: UnwrapRef<typeof import('Popper')['default']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>

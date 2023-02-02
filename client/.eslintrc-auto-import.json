@@ -55,6 +55,7 @@
     "useModalStore": true,
     "useSlots": true,
     "useTimerStore": true,
+    "vue3-popper": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
