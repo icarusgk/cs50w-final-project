@@ -7,6 +7,8 @@ from rest_framework.decorators import action
 from rest_framework import permissions, status
 from rest_framework.pagination import PageNumberPagination
 from django.http import Http404
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.conf import settings
 
 
 class ProjectResultsSetPagination(PageNumberPagination):
@@ -477,30 +479,75 @@ class ProjectViewSet(viewsets.ModelViewSet):
                         status=status.HTTP_204_NO_CONTENT)
 
 
-class RegisterView(APIView):
-    """
-    Register an user with an username and password
-    """
-
+class RegisterJWTView(APIView):
     def post(self, request):
         username = request.data['username']
         password = request.data['password']
         confirmation = request.data['passwordConfirmation']
 
         if User.objects.filter(username=username):
-            return Response({'message': 'User already exists'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if password == confirmation:
-            user = User.objects.create_user(
-                username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
             user.save()
 
-            return Response({'message': f'User Created {username}'},
-                            status=status.HTTP_201_CREATED)
+            return Response({'message': f'User Created {username}'}, status=status.HTTP_201_CREATED)
 
-        return Response({'message': 'error creating user'},
-                        status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'error creating user'}, status=status.HTTP_400_BAD_REQUEST)
+
+# The user's login, it inherits from TokenObtainPairView
+class LoginJWTView(TokenObtainPairView):
+  def finalize_response(self, request, response, *args, **kwargs):
+    """
+    Customize the response of the JWT tokens
+
+    So that instead of returning the tokens in the response
+    the access token is set as a cookie and the refresh token
+    is stored in the user session.
+    """
+    # Check for the 'refresh' key from the response
+    if response.data.get('refresh'):
+      # Set the cookie
+      response.set_cookie('access_token', response.data['access'], max_age=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'], httponly=True, samesite='None', secure=True)
+
+      # Set the session token
+      request.session['refresh'] = response.data['refresh']
+
+      # Add a message to the response
+      response.data['message'] = 'Successfully logged in!'
+
+      # Remove the tokens from the JSON response
+      del response.data['access']
+      del response.data['refresh']
+      # Call the super method
+    return super().finalize_response(request, response, *args, **kwargs)
+
+
+class LogoutJWTView(APIView):
+    def post(self, request):
+        """
+        Logs out the user and deletes the cookies
+        from the client
+        """
+        response = Response()
+
+        # Check if the user is logged in
+        if request.COOKIES.get('sessionid'):
+            # Delete the token and the session
+            response.delete_cookie('access_token')
+            response.delete_cookie('sessionid')
+
+            # Delete the refresh token from the session
+            request.session = {}
+
+            response.data = { 'message': 'You are logged out' }
+            response.status_code = 200
+        else:
+            # If user is not logged in
+            response.data = { 'message': 'You are not logged in' }
+            response.status_code = 200
+        return response
 
 
 class CurrentUserView(APIView):

@@ -3,37 +3,9 @@ import axios from 'axios';
 import router from '@/router';
 import { useChoreStore } from './chore';
 
-const firstCalledInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// An interceptor that refreshes the token credentials only on getUser()
-
-firstCalledInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response.status === 401) {
-      const jwt = localStorage.getItem('jwt');
-      const refresh = jwt ? JSON.parse(jwt).refresh : null;
-      // Change the tokens here
-      const response = await firstCalledInstance.post('token/refresh/', {
-        refresh,
-      });
-
-      if (response.status === 200) {
-        localStorage.setItem('jwt', JSON.stringify(response.data));
-        location.reload();
-      }
-      return axios(error.response);
-    }
-
-    // This has to be obligatory
-    return Promise.reject(error);
-  }
-);
+axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true;
 
 type User = {
   id: number;
@@ -54,45 +26,34 @@ type UserCredentials = {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null as User | null,
-    isAuthed: Boolean(localStorage.getItem('jwt')),
+    isAuthed: null as Boolean | null,
     error: null,
   }),
   actions: {
     // First is login in, this will not have an error
     async login(credentials: UserCredentials) {
       try {
-        // Grab the access and refresh token
-        const response = await axios.post('token/', credentials);
-        // Set the localStorage key to the jwt
+        const response = await axios.post('auth/login/', credentials);
         if (response.status === 200) {
-          // { refresh: '', access: '' }
-          localStorage.setItem('jwt', JSON.stringify(response.data));
-
           // After the user logs in, we get its user
           await this.getUser();
+
           this.error = null;
           // And we push the user to the main / page
           await router.push('/');
-
-          location.reload();
         }
       } catch (e: any) {
         this.error = e;
       }
     },
+    // Runs at start
     async getUser() {
-      const jwt = localStorage.getItem('jwt');
-      const accessToken = jwt ? JSON.parse(jwt).access : null;
-
       try {
-        const response = await firstCalledInstance.get('me/', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await axios.get('me/');
 
         if (response.status === 200) {
           this.user = response.data;
+          this.isAuthed = true;
         }
       } catch (e) {
         // If refresh token is not longer valid, logout
@@ -102,7 +63,7 @@ export const useAuthStore = defineStore('auth', {
     async register(credentials: UserCredentials) {
       this.error = null;
       try {
-        const response = await axios.post('register/', credentials);
+        const response = await axios.post('auth/register/', credentials);
         if (response.status === 201) {
           // If the user is created, log him in
           this.login({
@@ -116,17 +77,20 @@ export const useAuthStore = defineStore('auth', {
       router.push('/register');
     },
     async logout() {
-      // Reset user state
-      this.user = null;
+      const response = await axios.post('auth/logout/');
+      console.log(response);
+      if (response.status === 200) {
+        // Reset user state
+        this.user = null;
+        this.isAuthed = false;
 
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('timer');
-      localStorage.removeItem('modes');
+        localStorage.removeItem('timer');
+        localStorage.removeItem('modes');
 
-      useChoreStore().$reset();
+        useChoreStore().$reset();
 
-      await router.push('/');
-      location.reload();
+        await router.push('/');
+      }
     },
   },
 });
