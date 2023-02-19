@@ -14,16 +14,34 @@
 <style lang="scss" scoped>
 .item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 30px 30px;
-  border-radius: 8px;
+  width: 100%;
   color: white;
-  transition: all 0.1s ease-in-out;
+  padding: 1rem;
+  padding-left: 1.7rem;
+  // This transition is being applied to the background color
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  .title {
+    opacity: 0;
+    position: absolute;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0s ease-in-out 0.1s;
+    left: 4rem;
+  }
 
   &:hover {
     background-color: var(--vivid-red);
-    padding: 30px 30px;
+    border-radius: 0 10px 10px 0;
+    width: 180%;
+
+    .title {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+      
+    }
   }
 }
 

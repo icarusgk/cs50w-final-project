@@ -6,30 +6,34 @@
       </div>
     </RouterLink>
     <div class="menu-container">
-      <RouterLink to="/" aria-label="Home">
-        <SidebarItem>
-          <template #icon>
-            <HomeIcon />
-          </template>
-          <template #heading>Home</template>
-        </SidebarItem>
-      </RouterLink>
-      <RouterLink to="/stats" aria-label="Stats">
-        <SidebarItem>
-          <template #icon>
-            <StatsIcon />
-          </template>
-          <template #heading>Stats</template>
-        </SidebarItem>
-      </RouterLink>
-      <RouterLink to="/about" aria-label="About">
-        <SidebarItem>
-          <template #icon>
-            <AboutIcon />
-          </template>
-          <template #heading>About</template>
-        </SidebarItem>
-      </RouterLink>
+      <div class="main-icons">
+        <RouterLink to="/" aria-label="Home">
+          <SidebarItem>
+            <template #icon>
+              <HomeIcon />
+            </template>
+            <template #heading>Home</template>
+          </SidebarItem>
+        </RouterLink>
+        <RouterLink to="/stats" aria-label="Stats">
+          <SidebarItem>
+            <template #icon>
+              <StatsIcon />
+            </template>
+            <template #heading>Stats</template>
+          </SidebarItem>
+        </RouterLink>
+      </div>
+      <div class="info-container">
+        <RouterLink to="/about" aria-label="About">
+          <SidebarItem>
+            <template #icon>
+              <AboutIcon />
+            </template>
+            <template #heading>About</template>
+          </SidebarItem>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>
@@ -37,28 +41,46 @@
 <style lang="scss" scoped>
 .sidebar {
   background-color: #2f2f2f;
-  width: 130px;
+  width: 80px;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: fixed;
 
+  // The div that surrounds the logo
   .logo-container {
     margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    
 
+    // Pomo image at the top
     .logo-img {
-      width: 100%;
+      width: 70%;
       height: 100%;
     }
   }
 
+  // All the icons on the sidebar
   .menu-container {
     display: flex;
     flex-direction: column;
-    height: 60%;
+    height: 100%;
     margin-top: 4rem;
     align-items: center;
+    justify-content: space-between;
+    
+    .main-icons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 80px;
+    }
+
+    .info-container {
+      width: 80px;
+    }
 
     a {
       text-decoration: none;
@@ -66,11 +88,12 @@
 
     .router-link-active {
       background-color: var(--vivid-red);
-      border-radius: 8px;
+      border-radius: 0 10px 10px 0;
     }
   }
 }
 
+// TODO: Fix mobile view
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
