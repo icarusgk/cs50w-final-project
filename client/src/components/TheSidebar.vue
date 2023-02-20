@@ -103,15 +103,31 @@
     bottom: 0;
     z-index: 3;
 
+    .logo-container {
+      display: none;
+    }
+
     flex-direction: row;
     justify-content: center;
 
     .menu-container {
       flex-direction: row;
+      justify-content: center;
       margin-bottom: 4rem;
+      width: 100%;
+
+      .main-icons {
+        flex-direction: row;
+        gap: 5rem;
+        width: 50%;
+      }
+
+      .info-container {
+        width: 30%;
+        margin-left: 1.5rem;
+      }
 
       a {
-        transform: scale(70%);
         margin: 0 -2rem;
       }
 
@@ -129,10 +145,6 @@
         }
       }
     }
-  }
-
-  .logo-container {
-    display: none;
   }
 }
 </style>
