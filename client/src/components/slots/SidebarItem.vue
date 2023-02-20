@@ -40,27 +40,27 @@
       opacity: 1;
       visibility: visible;
       transition-delay: 0s;
-      
     }
   }
 }
 
 @media (max-width: 768px) {
   .item {
-    transform: scale(50%);
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
+    // reset the things made on desktop
     transition: none;
+    flex-direction: row;
 
-    &:hover {
-      background-color: transparent;
-      padding: 0;
+    .title {
+      opacity: 1;
+      position: static;
+      visibility: visible;
+      transition: none;
+      margin-left: 0.5rem;
     }
-  }
-  .title {
-    font-size: 2rem;
-    margin-left: 1rem;
+    
+    &:hover {
+      width: 100%;
+    }
   }
 }
 </style>
