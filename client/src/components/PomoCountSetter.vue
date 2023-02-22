@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const props = defineProps(['chore']);
+import type { ITask } from '@/types';
+
+const props = defineProps<{
+  chore: ITask
+}>()
+
 const emit = defineEmits(['newPomoCount']);
 
 const pomoLimits = reactive({ min: 1, max: 99 });
