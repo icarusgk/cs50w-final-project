@@ -24,7 +24,10 @@ function deleteTask(task: ITask) {
   if (window.confirm('Are you sure you want to delete this task??????')) {
     chore.deleteTask(task);
 
-    if (chore.taskPagination.page === chore.totalTaskPages && chore.tasks.length === 1) {
+    if (
+      chore.taskPagination.page === chore.totalTaskPages &&
+      chore.tasks.length === 1
+    ) {
       chore.decreaseTaskPagination();
     }
   }
@@ -49,7 +52,12 @@ function deleteTask(task: ITask) {
     />
     <div v-if="chore.tasks.length > 0">
       <div class="all-tasks-container">
-        <BaseViewTask v-for="task in tasks" :task="task" :key="task.id" @deleteTask="deleteTask($event)"/>
+        <BaseViewTask
+          v-for="task in tasks"
+          :task="task"
+          :key="task.id"
+          @deleteTask="deleteTask($event)"
+        />
       </div>
       <Paginate
         :pages="chore.totalTaskPages"

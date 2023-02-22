@@ -4,6 +4,6 @@ interface IMode {
   pomo: number;
   short_break: number;
   long_break: number;
-};
+}
 
 export default IMode;

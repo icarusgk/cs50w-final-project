@@ -2,8 +2,8 @@
 import type { ITask } from '@/types';
 
 const props = defineProps<{
-  chore: ITask
-}>()
+  chore: ITask;
+}>();
 
 const emit = defineEmits(['newPomoCount']);
 
@@ -27,7 +27,7 @@ function decreasePomos() {
   emit('newPomoCount', localPomos.value);
 }
 
-function setPomos(count: any) {  
+function setPomos(count: any) {
   if (parseInt(count) <= pomoLimits.max) {
     localPomos.value = parseInt(count);
     emit('newPomoCount', localPomos.value);
@@ -36,7 +36,7 @@ function setPomos(count: any) {
   if (parseInt(count) > pomoLimits.max) {
     localPomos.value = pomoLimits.max;
     emit('newPomoCount', localPomos.value);
-  }  
+  }
 }
 </script>
 

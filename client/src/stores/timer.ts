@@ -4,11 +4,11 @@ import dayjs from 'dayjs';
 import { useAuthStore } from './auth';
 
 type TimerType = {
-  name: string,
-  pomo: number,
-  short_break: number,
-  long_break: number
-}
+  name: string;
+  pomo: number;
+  short_break: number;
+  long_break: number;
+};
 
 // In case the timer object is empty
 export const defaultTimer: TimerType = {
@@ -61,7 +61,7 @@ export const useTimerStore = defineStore('timer', {
   getters: {
     minutes: (state) => state.currentTimer.timer.minute(),
     seconds: (state) => state.currentTimer.timer.second(),
-    formattedTime: (state) => state.currentTimer.timer.format('mm:ss')
+    formattedTime: (state) => state.currentTimer.timer.format('mm:ss'),
   },
   actions: {
     setTo(data: TimerType) {
@@ -86,7 +86,7 @@ export const useTimerStore = defineStore('timer', {
     },
     decrementSecond() {
       this.currentTimer.timer = this.currentTimer.timer.subtract(1, 'second');
-      document.title = `Pomo.do ${this.formattedTime}`
+      document.title = `Pomo.do ${this.formattedTime}`;
     },
     toggleOngoing() {
       this.ongoing = !this.ongoing;

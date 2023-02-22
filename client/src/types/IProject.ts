@@ -5,6 +5,6 @@ interface Project {
   name: string;
   tasks?: Task[];
   user?: number;
-};
+}
 
 export default Project;

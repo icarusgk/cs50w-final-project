@@ -22,7 +22,7 @@ async function deleteTag() {
   const urlTag = route.params.name;
 
   const tagFound = chore.tags.find((t: ITag) => t.name === urlTag);
-  
+
   if (window.confirm('Are you sure?')) {
     const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
     if (status === 204) {
@@ -51,8 +51,11 @@ async function deleteTag() {
       </div>
     </div>
     <div class="all-tasks-container">
-      <BaseViewTask v-if="fetchedTags" 
-        v-for="task in tasks" :task="task" :key="task.id" 
+      <BaseViewTask
+        v-if="fetchedTags"
+        v-for="task in tasks"
+        :task="task"
+        :key="task.id"
       />
       <div v-else>
         <span class="info">Loading...</span>

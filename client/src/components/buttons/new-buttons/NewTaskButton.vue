@@ -31,11 +31,11 @@ function resetTask() {
 
 function saveTask() {
   if (initialTask.value.title) {
-    chore.addTask(initialTask.value).then(() => chore.fetchTags());    
+    chore.addTask(initialTask.value).then(() => chore.fetchTags());
     resetTask();
   } else {
     alert.error('Your task must have a title');
-  }  
+  }
 }
 
 function removeTag(tag: ITag) {
@@ -51,11 +51,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
   <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
-  <AppModal
-    :open="open"
-    @exit-modal="resetTask()"
-    :is-task="true"
-  >
+  <AppModal :open="open" @exit-modal="resetTask()" :is-task="true">
     <template #tags>
       <Tags
         :task="initialTask"
@@ -105,18 +101,18 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
   }
 
   $placeholderColor: rgb(190, 190, 190);
-  
+
   &::-webkit-input-placeholder {
-    color: $placeholderColor
+    color: $placeholderColor;
   }
   &::-moz-input-placeholder {
-    color: $placeholderColor
+    color: $placeholderColor;
   }
   &::-ms-input-placeholder {
-    color: $placeholderColor
+    color: $placeholderColor;
   }
   &::placeholder {
-    color: $placeholderColor
+    color: $placeholderColor;
   }
 }
 </style>

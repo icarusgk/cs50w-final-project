@@ -45,12 +45,12 @@ const router = createRouter({
     {
       path: '/tags',
       component: () => import('../views/TagsView.vue'),
-      name: 'Tags'
+      name: 'Tags',
     },
     {
       path: '/tags/:name',
       component: () => import('../views/TagView.vue'),
-      name: 'Tag'
+      name: 'Tag',
     },
   ],
 });
@@ -62,14 +62,14 @@ router.beforeEach(async (to) => {
     if (auth.isAuthed) {
       return { name: 'Home' };
     }
-  };
+  }
 
   if (to.name === 'Tag') {
     const tag = to.params.name;
     const chore = useChoreStore();
 
     const tags = await chore.fetchTags();
-    
+
     if (!tags.find((t: ITag) => t.name === tag)) {
       return { name: 'Tags' };
     }

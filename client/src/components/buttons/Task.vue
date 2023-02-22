@@ -29,7 +29,10 @@ function deleteTask() {
   if (window.confirm('Are you sure you want to delete this task?')) {
     chore.deleteTask(props.task);
 
-    if (chore.taskPagination.page === chore.totalTaskPages && chore.tasks.length === 1) {
+    if (
+      chore.taskPagination.page === chore.totalTaskPages &&
+      chore.tasks.length === 1
+    ) {
       chore.decreaseTaskPagination();
     }
   }
@@ -47,15 +50,15 @@ function deleteTask() {
       <div @click="$emit('setCurrent', task.id)" class="title-container">
         <Popper hover arrow placement="bottom" openDelay="1000">
           <span class="title">{{ props.task.title }}</span>
-          <template #content>
-            Click to set it to current
-          </template>
+          <template #content> Click to set it to current </template>
         </Popper>
       </div>
       <div class="icon-container">
-          <div class="counter-in-container">
-            <span class="single-counter">{{ task.gone_through }} / {{ task.estimated }}</span>
-          </div>
+        <div class="counter-in-container">
+          <span class="single-counter"
+            >{{ task.gone_through }} / {{ task.estimated }}</span
+          >
+        </div>
         <div class="task-icon" @click="deleteTask()">
           <DeleteIcon />
         </div>
@@ -103,13 +106,13 @@ function deleteTask() {
       display: flex;
       align-items: center;
 
-        .counter-in-container {
-          margin-right: 1rem;
-        }
-  
-        .single-counter {
-          margin-left: 5rem;
-        }
+      .counter-in-container {
+        margin-right: 1rem;
+      }
+
+      .single-counter {
+        margin-left: 5rem;
+      }
     }
 
     .title-container {
@@ -129,7 +132,6 @@ function deleteTask() {
         cursor: pointer;
       }
     }
-    
   }
 
   .done {
@@ -140,7 +142,6 @@ function deleteTask() {
 
 @media (max-width: 480px) {
   .task-container {
-    
     .task-title-container {
       .icon-container {
         .single-counter {

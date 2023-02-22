@@ -53,7 +53,6 @@
     margin-top: 2rem;
     display: flex;
     justify-content: center;
-    
 
     // Pomo image at the top
     .logo-img {
@@ -70,7 +69,7 @@
     margin-top: 4rem;
     align-items: center;
     justify-content: space-between;
-    
+
     .main-icons {
       display: flex;
       flex-direction: column;

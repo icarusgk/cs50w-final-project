@@ -10,23 +10,29 @@
       <div class="info">
         <div class="image">
           <div class="image-and-title">
-            <img src="@/assets/tomato.png" alt="">
+            <img src="@/assets/tomato.png" alt="" />
             <p><b>Pomodoro</b></p>
             <span>is the italian word for tomato</span>
           </div>
         </div>
         <div class="meaning">
           <h2>The Pomodoro Technique</h2>
-          <p>Pomodoro is a time management method where we divide the tasks we need to do into small sections of time with regular, brief breaks to encourage sustained focus and prevent mental weariness.</p>
+          <p>
+            Pomodoro is a time management method where we divide the tasks we
+            need to do into small sections of time with regular, brief breaks to
+            encourage sustained focus and prevent mental weariness.
+          </p>
         </div>
       </div>
       <div class="steps-container">
         <div class="heading">
           <span class="question">How to use this technique?</span>
-          <p>This technique was developed in the late 1980 by Francesco Cirillio, he described its bigges strength is its simplicity:</p>
+          <p>
+            This technique was developed in the late 1980 by Francesco Cirillio,
+            he described its bigges strength is its simplicity:
+          </p>
         </div>
         <div class="steps">
-
           <div class="step-container">
             <span class="title">Step 1</span>
             <span class="step-body">Pick a task to be done</span>
@@ -34,12 +40,17 @@
 
           <div class="step-container">
             <span class="title">Step 2</span>
-            <span class="step-body">Start the Pomodoro Timer and focus on a single task until the timer rings</span>
+            <span class="step-body"
+              >Start the Pomodoro Timer and focus on a single task until the
+              timer rings</span
+            >
           </div>
 
           <div class="step-container">
             <span class="title">Step 3</span>
-            <span class="step-body">When the timer is up, reflect on what you have completed</span>
+            <span class="step-body"
+              >When the timer is up, reflect on what you have completed</span
+            >
           </div>
 
           <div class="step-container">
@@ -49,9 +60,10 @@
 
           <div class="step-container">
             <span class="title">Step 5</span>
-            <span class="step-body">Every 4 pomodoros, take a longer 15 minute break</span>
+            <span class="step-body"
+              >Every 4 pomodoros, take a longer 15 minute break</span
+            >
           </div>
-
         </div>
       </div>
     </div>
@@ -72,11 +84,17 @@
         </li>
         <li>
           <span>📚</span>
-          <p>Have lots of open-ended work that could take unlimited amounts of time (e.g., studying for an exam, research for a blog post, etc.).</p>
+          <p>
+            Have lots of open-ended work that could take unlimited amounts of
+            time (e.g., studying for an exam, research for a blog post, etc.).
+          </p>
         </li>
         <li>
           <span>😅</span>
-          <p>Are overly optimistic when it comes to how much you can get done in a day</p>
+          <p>
+            Are overly optimistic when it comes to how much you can get done in
+            a day
+          </p>
         </li>
       </ul>
     </div>
@@ -106,9 +124,8 @@
   justify-content: center;
   align-items: center;
   margin: 0 4rem;
-  
+
   .main-info {
-    
     .info {
       display: flex;
 
@@ -120,7 +137,7 @@
             padding-bottom: 1rem;
           }
         }
-      }      
+      }
 
       .meaning {
         width: 600px;
@@ -145,12 +162,12 @@
         display: flex;
         margin-top: 1rem;
         text-align: center;
-          
+
         .step-container {
           display: flex;
           flex-direction: column;
           margin-right: 2rem;
-          
+
           .title {
             display: block;
             font-weight: 600;
@@ -191,12 +208,12 @@
       width: 80%;
       justify-content: center;
     }
-    
+
     .try-list {
       margin: 4rem 0;
       width: 70%;
     }
-  }  
+  }
 }
 
 @media (max-width: 1400px) {

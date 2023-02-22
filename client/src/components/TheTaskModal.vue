@@ -46,11 +46,11 @@ const handlePomos = (pomos: number) => (tmpEstimated = pomos);
 const width = ref(window.innerWidth);
 
 onMounted(() => {
-  window.addEventListener('resize', () => width.value = window.innerWidth);
+  window.addEventListener('resize', () => (width.value = window.innerWidth));
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => width.value = window.innerWidth)
+  window.removeEventListener('resize', () => (width.value = window.innerWidth));
 });
 </script>
 
@@ -144,7 +144,7 @@ onUnmounted(() => {
     text-align: center;
     span {
       font-size: 1.2rem;
-      font-weight: 600;;
+      font-weight: 600;
     }
   }
 }

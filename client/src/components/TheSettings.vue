@@ -32,8 +32,8 @@ function resetMode() {
     name: '',
     pomo: 25,
     short_break: 5,
-    long_break: 15
-  }
+    long_break: 15,
+  };
 }
 
 async function changeMode(id) {
@@ -216,7 +216,8 @@ function backToDefault() {
   }
 }
 
-#auto-start-pomos, #auto-start-breaks {
+#auto-start-pomos,
+#auto-start-breaks {
   margin-right: 1rem;
 }
 

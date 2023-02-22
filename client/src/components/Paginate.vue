@@ -19,7 +19,10 @@ function increaseCurrentPage(): void {
     emit('setPage', props.page + 1);
   }
 
-  if (props.page >= (TOTAL_PAGES + 1) && props.page < props.pages - (TOTAL_PAGES - 1)) {
+  if (
+    props.page >= TOTAL_PAGES + 1 &&
+    props.page < props.pages - (TOTAL_PAGES - 1)
+  ) {
     nextMoveBy(1);
   }
 }
@@ -33,12 +36,16 @@ function setCurrentPage(newPage: number): void {
     if (newPage === 1 || newPage === 3) emit('setAdded', 1);
     if (newPage === 4) emit('setAdded', 2);
   } else {
-    if (newPage > (TOTAL_PAGES + 1) && newPage > props.page && newPage !== props.pages) {
+    if (
+      newPage > TOTAL_PAGES + 1 &&
+      newPage > props.page &&
+      newPage !== props.pages
+    ) {
       nextMoveBy(1);
     }
     if (newPage < props.page) {
       if (newPage === props.pages - (TOTAL_PAGES - 1)) {
-        emit('setAdded', props.added)
+        emit('setAdded', props.added);
       } else {
         prevMoveBy(1);
       }
@@ -93,7 +100,7 @@ function nextMoveBy(increasedBy: number): void {
       emit('setPage', props.pages);
       emit('setAdded', props.pages - (TOTAL_PAGES + 1));
     }
-    
+
     // If added is less than TOTAL_PAGES - 2 move by n
     if (props.added < props.pages - (TOTAL_PAGES + 2)) {
       emit('setAdded', props.added + increasedBy - 1);
@@ -134,13 +141,20 @@ function nextMoveBy(increasedBy: number): void {
         1
       </div>
       <!-- Prev ... Dots -->
-      <div v-if="props.added > 1" @click="prevMoveBy(TOTAL_PAGES)" class="paginate-btn">
+      <div
+        v-if="props.added > 1"
+        @click="prevMoveBy(TOTAL_PAGES)"
+        class="paginate-btn"
+      >
         ...
       </div>
       <!-- 3 pages range -->
       <div
         v-for="page in TOTAL_PAGES"
-        :class="{ active: page + props.added === props.page, 'paginate-btn': true }"
+        :class="{
+          active: page + props.added === props.page,
+          'paginate-btn': true,
+        }"
         @click="setCurrentPage(page + props.added)"
       >
         {{ page + props.added }}
@@ -155,7 +169,10 @@ function nextMoveBy(increasedBy: number): void {
       </div>
       <!-- Last page -->
       <div
-        @click="$emit('setPage', props.pages), $emit('setAdded', props.pages - (TOTAL_PAGES + 1))"
+        @click="
+          $emit('setPage', props.pages),
+            $emit('setAdded', props.pages - (TOTAL_PAGES + 1))
+        "
         :class="{ active: props.page === props.pages, 'paginate-btn': true }"
       >
         {{ props.pages }}

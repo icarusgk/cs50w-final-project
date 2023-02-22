@@ -21,7 +21,7 @@ useFetch('tags', 'get').then((res) => {
       <div
         v-for="tag in tags"
         v-if="fetched"
-        :key="tag.id" 
+        :key="tag.id"
         @click="$router.push(`/tags/${tag.name}`)"
         class="tag"
       >
@@ -66,20 +66,20 @@ useFetch('tags', 'get').then((res) => {
     flex-wrap: wrap;
     gap: 10px;
     padding-top: 1rem;
-  
+
     .tag {
       background-color: var(--light-gray);
       padding: 1rem;
       border-radius: 8px;
       font-weight: 600;
       transition: background-color 0.2s ease-in-out;
-  
+
       &:hover,
       &:focus,
       &:active {
         cursor: pointer;
       }
-  
+
       &:hover {
         background-color: var(--vivid-red);
       }

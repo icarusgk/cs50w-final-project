@@ -34,7 +34,11 @@ function setAdded(newAdded: number) {
       @next="chore.nextProjectPage"
     />
     <div v-if="chore.projects.length > 0" class="all-projects-container">
-      <BaseViewProject v-for="project in projects" :project="project" :key="project.id" />
+      <BaseViewProject
+        v-for="project in projects"
+        :project="project"
+        :key="project.id"
+      />
     </div>
     <div class="no-projects" v-else>
       <TaskInfoIcon />

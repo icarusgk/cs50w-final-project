@@ -13,6 +13,6 @@ interface Task extends Subtask {
   done?: boolean;
   subtasks: Subtask[];
   project_tasks?: Project[];
-};
+}
 
 export default Task;

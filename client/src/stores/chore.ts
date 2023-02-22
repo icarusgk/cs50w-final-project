@@ -94,12 +94,12 @@ export const useChoreStore = defineStore('chores', {
       date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
 
       const { data, status } = await useFetch('stats', 'post', {
-        day: date.toISOString().slice(0, 10)
+        day: date.toISOString().slice(0, 10),
       });
       if (status === 201) {
         let stat = this.stats.find((stat) => stat.id === data.id);
 
-        if (stat)  {
+        if (stat) {
           stat.chores_done = data.chores_done;
         }
       }
@@ -183,7 +183,7 @@ export const useChoreStore = defineStore('chores', {
 
         if (task.id === auth.user!.current_task_id) {
           auth.user!.current_task_id = 0;
-        }        
+        }
       }
     },
     async addProject(project: IProject) {
@@ -197,9 +197,12 @@ export const useChoreStore = defineStore('chores', {
       }
     },
     async saveProject(project: IProject, newProjectName: string) {
-      const { status } = await axios.patch(`/projects/${project.id}/modify_title/`, {
-        name: newProjectName,
-      });
+      const { status } = await axios.patch(
+        `/projects/${project.id}/modify_title/`,
+        {
+          name: newProjectName,
+        }
+      );
 
       if (status === 200) {
         useAlertStore().success('Project saved!');
@@ -232,7 +235,7 @@ export const useChoreStore = defineStore('chores', {
           },
           auth.user!.current_task_id
         );
-        
+
         if (status === 200) {
           this.fetchTasks();
         }
