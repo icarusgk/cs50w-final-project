@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ProjectType } from '@/types';
+import type { IProject } from '@/types';
 
 const props = defineProps<{
   taskId?: number;
@@ -9,10 +9,10 @@ const chore = useChoreStore();
 
 const allProjects = chore.projects;
 
-const taskProjects = ref<ProjectType[]>([]);
+const taskProjects = ref<IProject[]>([]);
 
 // Detect if is in project
-allProjects.forEach((project: ProjectType) => {
+allProjects.forEach((project: IProject) => {
   project.tasks?.forEach((task) => {
     if (task.id === props?.taskId) {
       taskProjects.value.push(project);
@@ -20,7 +20,7 @@ allProjects.forEach((project: ProjectType) => {
   });
 });
 
-async function addToProject(project: ProjectType) {
+async function addToProject(project: IProject) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
     const response = await axios.patch(`projects/${project.id}/add_to_project/`, {

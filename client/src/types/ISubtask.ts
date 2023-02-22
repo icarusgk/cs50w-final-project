@@ -1,4 +1,4 @@
-type Subtask = {
+interface Subtask {
   id?: number;
   title: string;
   description: string;

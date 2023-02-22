@@ -1,4 +1,4 @@
-type ModeType = {
+interface IMode {
   id?: number;
   name: string;
   pomo: number;
@@ -6,4 +6,4 @@ type ModeType = {
   long_break: number;
 };
 
-export default ModeType;
+export default IMode;

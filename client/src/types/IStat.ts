@@ -1,7 +1,7 @@
-type StatType = {
+interface IStat {
   id?: number;
   day: string;
   chores_done?: number;
 };
 
-export default StatType;
+export default IStat;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { TaskType, TagType } from '@/types';
+import type { ITask, ITag } from '@/types';
 
 const route = useRoute();
 const router = useRouter();
 const chore = useChoreStore();
 
-const tasks = ref<TaskType[]>([]);
+const tasks = ref<ITask[]>([]);
 const fetchedTags = ref(false);
 
 watchEffect(async () => {
@@ -13,7 +13,7 @@ watchEffect(async () => {
 
   if (urlTag) {
     const { data } = await useFetch(`tagInfo/${urlTag}`, 'get');
-    tasks.value = data as TaskType[];
+    tasks.value = data as ITask[];
     fetchedTags.value = true;
   }
 });
@@ -21,7 +21,7 @@ watchEffect(async () => {
 async function deleteTag() {
   const urlTag = route.params.name;
 
-  const tagFound = chore.tags.find((t: TagType) => t.name === urlTag);
+  const tagFound = chore.tags.find((t: ITag) => t.name === urlTag);
   
   if (window.confirm('Are you sure?')) {
     const { status } = await useFetch('tags', 'delete', null, tagFound?.id);

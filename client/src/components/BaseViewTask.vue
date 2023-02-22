@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TaskType } from '@/types';
+import type { ITask } from '@/types';
 
 defineProps<{
-  task: TaskType;
+  task: ITask;
 }>();
 
 defineEmits(['deleteTask'])

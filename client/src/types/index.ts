@@ -1,8 +1,8 @@
-import type ProjectType from './ProjectType';
-import type TaskType from './TaskType';
-import type TagType from './TagType';
-import type SubtaskType from './SubtaskType';
-import type StatType from './StatType';
-import type ModeType from './ModeType';
+import type IProject from './IProject';
+import type ITask from './ITask';
+import type ITag from './ITag';
+import type ISubtask from './ISubtask';
+import type IStat from './IStat';
+import type IMode from './IMode';
 
-export { ProjectType, TaskType, TagType, SubtaskType, StatType, ModeType };
+export { IProject, ITask, ITag, ISubtask, IStat, IMode };

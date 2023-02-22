@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ProjectType } from '@/types';
+import type { IProject } from '@/types';
 
 defineProps<{
-  project: ProjectType;
+  project: IProject;
 }>();
 
 const open = ref(false);

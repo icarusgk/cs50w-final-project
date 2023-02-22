@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { TagType, TaskType } from '@/types';
+import type { ITag, ITask } from '@/types';
 
 import router from '@/router';
 
 const props = defineProps<{
   id?: number;
-  task: TaskType;
+  task: ITask;
   info?: boolean;
   new?: boolean;
 }>();
@@ -21,10 +21,10 @@ const newTag = ref('');
 // Base all the tags out of the tags in the store
 const allTags = ref(chore.tags);
 
-function removeRepeatedTags(tags: TagType[]) {
-  tags.forEach((taskTag: TagType) => {
+function removeRepeatedTags(tags: ITag[]) {
+  tags.forEach((taskTag: ITag) => {
   allTags.value = allTags.value.filter(
-    (tag: TagType) => tag.name !== taskTag.name
+    (tag: ITag) => tag.name !== taskTag.name
   );});
 }
 
@@ -38,13 +38,13 @@ watch(() => props.task.tags, (newTags) => removeRepeatedTags(newTags), { deep: t
 
 
 const selectedTags = computed(() => {
-  return allTags.value.filter((tag: TagType) =>
+  return allTags.value.filter((tag: ITag) =>
     tag.name.includes(newTag.value.toLowerCase())
   );
 });
 
 
-const hasNotTag = () => !props.task.tags.some((tag: TagType) => tag.name === newTag.value)
+const hasNotTag = () => !props.task.tags.some((tag: ITag) => tag.name === newTag.value)
 
 async function addTag() {
   if (newTag.value) {
@@ -85,7 +85,7 @@ async function addTag() {
   newTagVisible.value = true;
 }
 
-async function deleteTag(tag: TagType) {  
+async function deleteTag(tag: ITag) {  
   // In the opened subtask / task is not new
   if (!props.new) {
     // Ask for confirmation
@@ -112,7 +112,7 @@ async function deleteTag(tag: TagType) {
   }
 }
 
-function addSelectedTag(tag: TagType) {
+function addSelectedTag(tag: ITag) {
   newTag.value = tag.name;
   addTag();
 }

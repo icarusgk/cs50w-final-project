@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { TagType } from '@/types';
+import type { ITag } from '@/types';
 
-const tags = ref<TagType[]>([]);
+const tags = ref<ITag[]>([]);
 
 const fetched = ref(false);
 

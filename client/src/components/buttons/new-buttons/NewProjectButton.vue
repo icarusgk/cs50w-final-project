@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ProjectType } from '@/types';
+import type { IProject } from '@/types';
 
-const newProject = ref<ProjectType>({
+const newProject = ref<IProject>({
   name: '',
   tasks: [],
 });

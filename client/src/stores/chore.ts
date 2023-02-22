@@ -1,4 +1,4 @@
-import type { ProjectType, TagType, TaskType, StatType } from '@/types';
+import type { IProject, ITag, ITask, IStat } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
@@ -7,9 +7,9 @@ import { useAuthStore } from './auth';
 
 export const useChoreStore = defineStore('chores', {
   state: () => ({
-    tasks: [] as TaskType[],
-    projects: [] as ProjectType[],
-    tags: [] as TagType[],
+    tasks: [] as ITask[],
+    projects: [] as IProject[],
+    tags: [] as ITag[],
     projectPagination: {
       count: 0,
       page: 1,
@@ -22,7 +22,7 @@ export const useChoreStore = defineStore('chores', {
       added: 1,
       page_size: 4,
     },
-    stats: [] as StatType[],
+    stats: [] as IStat[],
   }),
   getters: {
     totalProjectPages: (state) =>
@@ -149,7 +149,7 @@ export const useChoreStore = defineStore('chores', {
       }
     },
     // Adds tasks with tags and subtasks
-    async addTask(task: TaskType) {
+    async addTask(task: ITask) {
       const { status } = await useFetch('tasks', 'post', task);
       if (status === 201) {
         useAlertStore().success(`Task ${task.title} created!`);
@@ -158,20 +158,20 @@ export const useChoreStore = defineStore('chores', {
         this.fetchTasks();
       }
     },
-    async saveTask(task: TaskType) {
+    async saveTask(task: ITask) {
       const { status } = await axios.put(`tasks/${task.id}/`, task);
       if (status === 200) {
         useAlertStore().success(`'${task.title}' saved!`);
         this.fetchTasks();
       }
     },
-    async deleteTask(task: TaskType) {
+    async deleteTask(task: ITask) {
       const { status } = await useFetch('tasks', 'delete', null, task.id);
 
       if (status === 204) {
         // if it is the last
         if (this.tasks.length === 1 && this.taskPagination.count === 0) {
-          this.tasks = this.tasks.filter((t: TaskType) => t.id !== task.id);
+          this.tasks = this.tasks.filter((t: ITask) => t.id !== task.id);
           this.taskPagination.page = 1;
         } else {
           this.fetchTasks();
@@ -186,7 +186,7 @@ export const useChoreStore = defineStore('chores', {
         }        
       }
     },
-    async addProject(project: ProjectType) {
+    async addProject(project: IProject) {
       const { status } = await useFetch('projects', 'post', project);
 
       if (status === 201) {
@@ -196,7 +196,7 @@ export const useChoreStore = defineStore('chores', {
         this.fetchProjects();
       }
     },
-    async saveProject(project: ProjectType, newProjectName: string) {
+    async saveProject(project: IProject, newProjectName: string) {
       const { status } = await axios.patch(`/projects/${project.id}/modify_title/`, {
         name: newProjectName,
       });
@@ -210,7 +210,7 @@ export const useChoreStore = defineStore('chores', {
 
       if (status === 204) {
         if (this.projects.length === 1 && this.projectPagination.count === 0) {
-          this.projects = this.projects.filter((p: ProjectType) => p.id !== id);
+          this.projects = this.projects.filter((p: IProject) => p.id !== id);
           this.projectPagination.page = 1;
         } else {
           this.fetchProjects();

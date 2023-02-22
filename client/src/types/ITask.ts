@@ -1,8 +1,8 @@
-import type Tag from './TagType';
-import type Subtask from './SubtaskType';
-import type Project from './ProjectType';
+import type Tag from './ITag';
+import type Subtask from './ISubtask';
+import type Project from './IProject';
 
-type Task = {
+interface Task {
   id?: number;
   tags: Tag[];
   title: string;
