@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TagType, TaskType } from '@/types';
+import type { ITag, ITask } from '@/types';
 
 const props = defineProps<{
-  task: TaskType;
+  task: ITask;
   open: boolean;
 }>();
 
@@ -31,8 +31,8 @@ function deleteTask() {
   emit('exit');
 }
 
-function removeTag(tag: TagType) {
-  props.task.tags = props.task.tags.filter((t: TagType) => t.id !== tag.id);
+function removeTag(tag: ITag) {
+  props.task.tags = props.task.tags.filter((t: ITag) => t.id !== tag.id);
 }
 
 function handleInput(event: any) {
@@ -63,7 +63,7 @@ onUnmounted(() => {
         <Tags
           :task="props.task"
           :id="props.task.id"
-          @remove-tag="(tag: TagType) => removeTag(tag)"
+          @remove-tag="(tag: ITag) => removeTag(tag)"
           @close="$emit('exit')"
         />
         <div class="buttons">

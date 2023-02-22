@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TagType, TaskType } from '@/types';
+import type { ITag, ITask } from '@/types';
 
 const open = ref(false);
 const chore = useChoreStore();
@@ -10,7 +10,7 @@ watch(open, () => {
   useModalStore().toggle();
 });
 
-const initialTask = ref<TaskType>({
+const initialTask = ref<ITask>({
   tags: [],
   title: '',
   description: '',
@@ -38,9 +38,9 @@ function saveTask() {
   }  
 }
 
-function removeTag(tag: TagType) {
+function removeTag(tag: ITag) {
   initialTask.value.tags = initialTask.value.tags.filter(
-    (t: TagType) => t.name !== tag.name
+    (t: ITag) => t.name !== tag.name
   );
 }
 
@@ -60,7 +60,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       <Tags
         :task="initialTask"
         :new="true"
-        @remove-tag="(tag: TagType) => removeTag(tag)"
+        @remove-tag="(tag: ITag) => removeTag(tag)"
       />
     </template>
     <!-- New task title input -->

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ProjectType } from '@/types';
+import type { IProject } from '@/types';
 
 const props = defineProps<{
-  project: ProjectType;
+  project: IProject;
   open: boolean;
 }>();
 

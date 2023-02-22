@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { TaskType } from '@/types';
+import type { ITask } from '@/types';
 
 const props = defineProps<{
-  task: TaskType;
+  task: ITask;
 }>();
 
 const emit = defineEmits(['setCurrent']);

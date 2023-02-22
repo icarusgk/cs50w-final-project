@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useChoreStore } from '@/stores/chore';
-import type { TagType } from '@/types';
+import type { ITag } from '@/types';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -70,7 +70,7 @@ router.beforeEach(async (to) => {
 
     const tags = await chore.fetchTags();
     
-    if (!tags.find((t: TagType) => t.name === tag)) {
+    if (!tags.find((t: ITag) => t.name === tag)) {
       return { name: 'Tags' };
     }
   }

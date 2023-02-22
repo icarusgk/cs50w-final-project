@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TaskType } from '@/types';
+import type { ITask } from '@/types';
 
 const chore = useChoreStore();
 
@@ -20,7 +20,7 @@ function setAdded(newAdded: number) {
   chore.setTaskAdded(newAdded);
 }
 
-function deleteTask(task: TaskType) {
+function deleteTask(task: ITask) {
   if (window.confirm('Are you sure you want to delete this task??????')) {
     chore.deleteTask(task);
 

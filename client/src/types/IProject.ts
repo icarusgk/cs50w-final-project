@@ -1,6 +1,6 @@
-import type Task from './TaskType';
+import type Task from './ITask';
 
-type Project = {
+interface Project {
   id?: number;
   name: string;
   tasks?: Task[];
