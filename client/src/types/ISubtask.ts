@@ -3,6 +3,6 @@ interface Subtask {
   title: string;
   description: string;
   done?: boolean;
-};
+}
 
 export default Subtask;

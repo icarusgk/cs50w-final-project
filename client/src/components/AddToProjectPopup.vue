@@ -23,9 +23,12 @@ allProjects.forEach((project: IProject) => {
 async function addToProject(project: IProject) {
   if (!taskProjects.value.includes(project)) {
     // Make API call to add the current task to project
-    const response = await axios.patch(`projects/${project.id}/add_to_project/`, {
-      task_id: props.taskId,
-    });
+    const response = await axios.patch(
+      `projects/${project.id}/add_to_project/`,
+      {
+        task_id: props.taskId,
+      }
+    );
 
     if (response?.status === 200) {
       // Refetch
@@ -59,7 +62,6 @@ async function addToProject(project: IProject) {
       <template #content>
         <!-- Popper Content -->
         <div class="project-select">
-
           <div
             class="project"
             v-if="chore.projects.length > 0"

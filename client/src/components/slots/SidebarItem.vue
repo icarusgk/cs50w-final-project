@@ -57,7 +57,7 @@
       transition: none;
       margin-left: 0.5rem;
     }
-    
+
     &:hover {
       width: 100%;
     }

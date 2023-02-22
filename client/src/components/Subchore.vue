@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ITask } from '@/types';
 const props = defineProps<{
-  chore: ITask,
-  newChore: boolean,
-  isProject: boolean,
-  parentNew: boolean
+  chore: ITask;
+  newChore: boolean;
+  isProject: boolean;
+  parentNew: boolean;
 }>();
 defineEmits([
   'save',
@@ -15,7 +15,7 @@ defineEmits([
   'removeTag',
   'titleChange',
   'descChange',
-  'newPomoCount'
+  'newPomoCount',
 ]);
 </script>
 
@@ -75,9 +75,7 @@ defineEmits([
           <div class="buttons">
             <!-- Emit the close event -->
             <!-- Cancel -->
-            <button @click="$emit('close')" class="cancel-button">
-              Close
-            </button>
+            <button @click="$emit('close')" class="cancel-button">Close</button>
             <!-- Save -->
             <button
               v-if="!isProject"
@@ -111,7 +109,7 @@ defineEmits([
   &:active {
     cursor: pointer;
   }
-  
+
   &:active {
     box-shadow: 0 0 $color;
   }

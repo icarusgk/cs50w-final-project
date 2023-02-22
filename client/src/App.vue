@@ -21,7 +21,10 @@ watch(
     () => chore.taskPagination.page_size,
   ],
   ([newProjectPage, newTaskPage], [oldProjectPage, oldTaskPage]) => {
-    if (chore.projectPagination.count > 1 && newProjectPage !== oldProjectPage) {
+    if (
+      chore.projectPagination.count > 1 &&
+      newProjectPage !== oldProjectPage
+    ) {
       chore.fetchProjects();
     }
     if (chore.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
@@ -44,16 +47,16 @@ watch(
 
 <style lang="scss">
 /* variables */
-@import "./assets/base.css";
+@import './assets/base.css';
 
 /* Popper theme */
-@import "./assets/popper-theme.css";
+@import './assets/popper-theme.css';
 
 /* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
-  font-family: "Lexend", sans-serif;
+  font-family: 'Lexend', sans-serif;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -65,7 +68,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   appearance: textfield;
   -moz-appearance: textfield;
 }

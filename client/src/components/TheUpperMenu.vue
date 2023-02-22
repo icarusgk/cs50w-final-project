@@ -27,9 +27,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
                   <div class="tags" @click="$router.push('/tags')">
                     Manage tags
                   </div>
-                  <button id="logout-btn" @click="auth.logout();">
-                    Logout
-                  </button>
+                  <button id="logout-btn" @click="auth.logout()">Logout</button>
                 </div>
               </template>
             </Popper>
@@ -103,7 +101,6 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
             border-radius: 8px;
             background-color: rgb(92, 92, 92);
             color: white;
-            
           }
 
           #logout-btn {
@@ -115,7 +112,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
             color: white;
             font-weight: 500;
             transition: background-color 0.15s ease-in;
-          
+
             &:hover,
             &:focus,
             &:active {
@@ -124,8 +121,6 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
             }
           }
         }
-
-        
 
         .user-actions-container {
           display: flex;
@@ -193,7 +188,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         .login {
           .user-info {
             margin-right: 0;
-            }
+          }
         }
       }
     }

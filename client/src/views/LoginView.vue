@@ -89,26 +89,26 @@ function login() {
 
   .login {
     text-align: center;
-  
+
     form {
       margin-top: 1rem;
     }
-  
+
     .fade-enter-active,
     .fade-leave-active {
       transition: opacity 0.7s ease;
     }
-  
+
     .fade-enter-from,
     .fade-leave-to {
       opacity: 0;
     }
-  
+
     .error-message {
       color: rgb(249, 122, 90);
       display: block;
     }
-  
+
     .form-input {
       padding: 1rem;
       background-color: rgba(92, 92, 92, 0.5);
@@ -118,7 +118,7 @@ function login() {
       margin-bottom: 1rem;
       border-radius: 8px;
     }
-  
+
     #submit {
       padding: 0.8rem 4rem;
       background-color: var(--vivid-red);
@@ -137,7 +137,7 @@ function login() {
         background-color: #ff4b4b9f;
       }
     }
-  
+
     #route-to-register {
       margin-top: 2rem;
     }

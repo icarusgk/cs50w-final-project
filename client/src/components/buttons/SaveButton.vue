@@ -1,7 +1,5 @@
 <template>
-  <button class="close-modal-button">
-    Save!
-  </button>
+  <button class="close-modal-button">Save!</button>
 </template>
 
 <style scoped lang="scss">

@@ -16,7 +16,7 @@ watch(
       timer.setNextTimer();
       finishedAudio.play();
       stopTimer();
-      document.title = 'Pomo.do - Done!'
+      document.title = 'Pomo.do - Done!';
 
       // Auto start pomo
       if (timer.current == 'pomo') {
@@ -92,7 +92,10 @@ function setTimer(type: string) {
     <div>
       <h1 id="timer-count">{{ timer.formattedTime }}</h1>
       <button
-        @click="startTimer(); startAudio.play();"
+        @click="
+          startTimer();
+          startAudio.play();
+        "
         v-if="!timer.ongoing"
         :class="timer.current"
       >

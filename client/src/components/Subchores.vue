@@ -2,14 +2,14 @@
 import type { ITask, ISubtask, ITag, IProject } from '@/types';
 
 const props = defineProps<{
-  chores: ITask[],
-  isProject: boolean,
-  task: ITask,
-  project: IProject,
-  isNew: boolean
+  chores: ITask[];
+  isProject: boolean;
+  task: ITask;
+  project: IProject;
+  isNew: boolean;
 }>();
 
-const { task: existingTask, project: existingProject } = toRefs(props)
+const { task: existingTask, project: existingProject } = toRefs(props);
 
 // Initial mold for a task
 const taskModel = ref<ITask>({
@@ -17,7 +17,7 @@ const taskModel = ref<ITask>({
   title: '',
   description: '',
   estimated: 1,
-  subtasks: []
+  subtasks: [],
 });
 
 // Initial mold for a subtask
@@ -89,7 +89,7 @@ function resetTaskModel() {
     title: '',
     description: '',
     estimated: 1,
-    subtasks: []
+    subtasks: [],
   };
 }
 
@@ -107,12 +107,15 @@ async function addTaskToProject() {
 
     // Add new task to an existing project
     // LIVE
-    if (props.isProject && !props.isNew) {      
+    if (props.isProject && !props.isNew) {
       try {
-        const response = await axios.patch(`projects/${props.project.id}/add_new_task/`, {
-          task: taskModel.value,
-        });
-        if (response?.status === 201) {          
+        const response = await axios.patch(
+          `projects/${props.project.id}/add_new_task/`,
+          {
+            task: taskModel.value,
+          }
+        );
+        if (response?.status === 201) {
           // Returns a task inside the project
           existingProject.value.tasks?.push(response.data);
           alert.success(`Task ${taskModel.value.title} saved!`);
@@ -134,10 +137,12 @@ async function addTaskToProject() {
     activeChore.chore.estimated =
       tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
 
-    // Make the api call    
-    const response = await axios.patch(`projects/${props.project.id}/update_task/`, {
-      subtask: activeChore.chore,
-    }).catch(err => console.log(err));
+    // Make the api call
+    const response = await axios
+      .patch(`projects/${props.project.id}/update_task/`, {
+        subtask: activeChore.chore,
+      })
+      .catch((err) => console.log(err));
 
     if (response?.status === 200) {
       alert.success(`Task ${activeChore.chore.title} saved!`);
@@ -204,9 +209,12 @@ async function deleteChore() {
   if (props.isProject) {
     // Delete task
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(`/projects/${props.project.id}/delete_task/`, {
-        task_id: activeChore.chore?.id,
-      });
+      const response = await axios.patch(
+        `/projects/${props.project.id}/delete_task/`,
+        {
+          task_id: activeChore.chore?.id,
+        }
+      );
       if (response?.status === 204) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
         existingProject!.value.tasks = existingProject.value.tasks?.filter(
@@ -254,9 +262,12 @@ function removeChore() {
 async function toggleChoreDone(chore: ITask | ISubtask) {
   if (props.isProject) {
     try {
-      const response = await axios.patch(`projects/${props.project.id}/task_done/`, {
-        task_id: chore.id,
-      });
+      const response = await axios.patch(
+        `projects/${props.project.id}/task_done/`,
+        {
+          task_id: chore.id,
+        }
+      );
       if (response?.status === 200) {
         chore.done = response.data.done;
         // Visual changes

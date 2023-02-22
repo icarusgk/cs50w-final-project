@@ -5,11 +5,11 @@ defineProps<{
   task: ITask;
 }>();
 
-defineEmits(['deleteTask'])
+defineEmits(['deleteTask']);
 
 const open = ref(false);
 
-watch(open,  () => {
+watch(open, () => {
   useModalStore().toggle();
 });
 </script>
@@ -95,7 +95,6 @@ watch(open,  () => {
   .single-task-info {
     height: min-content;
     width: 100%;
-    
   }
 }
 </style>

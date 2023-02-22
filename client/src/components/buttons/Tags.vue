@@ -23,9 +23,10 @@ const allTags = ref(chore.tags);
 
 function removeRepeatedTags(tags: ITag[]) {
   tags.forEach((taskTag: ITag) => {
-  allTags.value = allTags.value.filter(
-    (tag: ITag) => tag.name !== taskTag.name
-  );});
+    allTags.value = allTags.value.filter(
+      (tag: ITag) => tag.name !== taskTag.name
+    );
+  });
 }
 
 // On opening of the task
@@ -34,8 +35,11 @@ removeRepeatedTags(props.task.tags);
 // When the task changes
 
 // Watch for changes in the props
-watch(() => props.task.tags, (newTags) => removeRepeatedTags(newTags), { deep: true });
-
+watch(
+  () => props.task.tags,
+  (newTags) => removeRepeatedTags(newTags),
+  { deep: true }
+);
 
 const selectedTags = computed(() => {
   return allTags.value.filter((tag: ITag) =>
@@ -43,8 +47,8 @@ const selectedTags = computed(() => {
   );
 });
 
-
-const hasNotTag = () => !props.task.tags.some((tag: ITag) => tag.name === newTag.value)
+const hasNotTag = () =>
+  !props.task.tags.some((tag: ITag) => tag.name === newTag.value);
 
 async function addTag() {
   if (newTag.value) {
@@ -55,7 +59,9 @@ async function addTag() {
       // if not new
     } else {
       // filter if not in taskTags
-      if (!(props.task.tags.filter((tag) => tag.name === newTag.value).length > 0)) {
+      if (
+        !(props.task.tags.filter((tag) => tag.name === newTag.value).length > 0)
+      ) {
         // Make the request
         try {
           // Add the new tag to the existing task
@@ -85,7 +91,7 @@ async function addTag() {
   newTagVisible.value = true;
 }
 
-async function deleteTag(tag: ITag) {  
+async function deleteTag(tag: ITag) {
   // In the opened subtask / task is not new
   if (!props.new) {
     // Ask for confirmation
@@ -133,9 +139,7 @@ function goToTag(tag: string) {
     </MiniLabel>
     <MiniLabel v-else v-for="tag in task.tags" :is-tag="true">
       <template #title>
-        <span @click="goToTag(tag.name)">
-          #{{ tag.name }}
-        </span>
+        <span @click="goToTag(tag.name)"> #{{ tag.name }} </span>
       </template>
       <template #icon>
         <DeleteTagIcon
@@ -162,7 +166,9 @@ function goToTag(tag: string) {
 
     <!-- Replace the button with input -->
     <MiniLabel
-      v-if="!info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible"
+      v-if="
+        !info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible
+      "
       @click="newTagVisible = false"
       :is-add="true"
     >
@@ -188,9 +194,12 @@ function goToTag(tag: string) {
           <!-- Pre fetched tags -->
           <div>
             <span class="add-new-tag-text">Add a new tag:</span>
-            <div 
+            <div
               class="tag-results"
-              @click="addSelectedTag(tag); close();"
+              @click="
+                addSelectedTag(tag);
+                close();
+              "
               v-for="tag in selectedTags.slice(0, 5)"
             >
               <div class="tag-result">

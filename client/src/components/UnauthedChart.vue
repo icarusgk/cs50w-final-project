@@ -54,7 +54,7 @@ const options = ref({
       '25-oct',
       '26-oct',
       '27-oct',
-    ]
+    ],
   },
   legend: {
     position: 'right',
@@ -84,7 +84,7 @@ const options = ref({
 onMounted(() => {
   const chart = new ApexChart(unauthedChart.value, options.value);
   chart.render();
-})
+});
 </script>
 
 <template>
