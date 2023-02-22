@@ -2,7 +2,7 @@ import type Tag from './ITag';
 import type Subtask from './ISubtask';
 import type Project from './IProject';
 
-interface Task {
+interface Task extends Subtask {
   id?: number;
   tags: Tag[];
   title: string;

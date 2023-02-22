@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { IProject } from '@/types';
 defineProps<{
-  project: any;
+  project: IProject;
   isNew?: boolean;
 }>();
 </script>
