@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const props = defineProps(['chore', 'newChore', 'isProject', 'parentNew']);
+import type { ITask } from '@/types';
+const props = defineProps<{
+  chore: ITask,
+  newChore: boolean,
+  isProject: boolean,
+  parentNew: boolean
+}>();
 defineEmits([
   'save',
   'saveTask',
