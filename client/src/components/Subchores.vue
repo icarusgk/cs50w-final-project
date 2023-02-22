@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import type { TaskType, SubtaskType, TagType } from '@/types';
+import type { ITask, ISubtask, ITag, IProject } from '@/types';
 
-const props = defineProps(['chores', 'isProject', 'task', 'project', 'isNew']);
+const props = defineProps<{
+  chores: ITask[],
+  isProject: boolean,
+  task: ITask,
+  project: IProject,
+  isNew: boolean
+}>();
 
-const existingTask = ref(props.task);
-const existingProject = ref(props.project);
+const { task: existingTask, project: existingProject } = toRefs(props)
 
 // Initial mold for a task
-const taskModel = ref({
+const taskModel = ref<ITask>({
   tags: [],
   title: '',
   description: '',
   estimated: 1,
+  subtasks: []
 });
 
 // Initial mold for a subtask
@@ -26,7 +32,7 @@ const newChoreOpened = ref(false);
 
 const activeChore = reactive<{
   opened: boolean;
-  chore: TaskType | null;
+  chore: ITask | null;
 }>({
   opened: false,
   chore: null,
@@ -55,7 +61,7 @@ function openNewChore() {
 }
 
 // Open chore details
-function openDetails(chore: TaskType) {
+function openDetails(chore: ITask) {
   // Assign the current task details
   activeChore.chore = chore;
 
@@ -83,6 +89,7 @@ function resetTaskModel() {
     title: '',
     description: '',
     estimated: 1,
+    subtasks: []
   };
 }
 
@@ -93,7 +100,7 @@ async function addTaskToProject() {
   if (taskModel.value.title) {
     // Push new task to new project
     if (props.isProject && props.isNew) {
-      existingProject.value.tasks.push(taskModel.value);
+      existingProject.value.tasks?.push(taskModel.value);
       alert.info('Task added!');
       resetTaskModel();
     }
@@ -107,7 +114,7 @@ async function addTaskToProject() {
         });
         if (response?.status === 201) {          
           // Returns a task inside the project
-          existingProject.value.tasks.push(response.data);
+          existingProject.value.tasks?.push(response.data);
           alert.success(`Task ${taskModel.value.title} saved!`);
           // Reset and close
           closeNew();
@@ -150,7 +157,7 @@ async function saveSubtaskToTask() {
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
-      existingTask.value.subtasks.push(subtaskModel.value);
+      existingTask?.value.subtasks.push(subtaskModel.value);
       alert.info(`${subtaskModel.value.title} added!`);
       resetSubtaskModel();
     }
@@ -163,7 +170,7 @@ async function saveSubtaskToTask() {
         subtask: subtaskModel.value,
       });
       if (response?.status === 201) {
-        existingTask.value.subtasks.push(response.data);
+        existingTask?.value.subtasks.push(response.data);
         alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
       }
@@ -202,8 +209,8 @@ async function deleteChore() {
       });
       if (response?.status === 204) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        existingProject.value.tasks = existingProject.value.tasks.filter(
-          (task: TaskType) => task.id !== activeChore.chore?.id
+        existingProject!.value.tasks = existingProject.value.tasks?.filter(
+          (task: ITask) => task.id !== activeChore.chore?.id
         );
       }
     }
@@ -219,8 +226,9 @@ async function deleteChore() {
       if (response?.status === 204) {
         // If is task
         alert.success(`Subtask ${activeChore.chore?.title} deleted!`);
-        existingTask.value.subtasks = existingTask.value.subtasks.filter(
-          (sub: TaskType) => sub !== activeChore.chore
+        // TO solve
+        existingTask!.value.subtasks = existingTask?.value.subtasks.filter(
+          (sub: ISubtask) => sub !== activeChore.chore
         );
       }
     }
@@ -231,19 +239,19 @@ async function deleteChore() {
 // Remove (visually) chore from parent component
 function removeChore() {
   if (props.isProject) {
-    existingProject.value.tasks = existingProject.value.tasks.filter(
-      (task: TaskType) => task.title !== activeChore.chore?.title
+    existingProject!.value.tasks = existingProject.value.tasks?.filter(
+      (task: ITask) => task.title !== activeChore.chore?.title
     );
   } else {
-    existingTask.value.subtasks = existingTask.value.subtasks.filter(
-      (subtask: SubtaskType) => subtask.title !== activeChore.chore?.title
+    existingTask!.value.subtasks = existingTask?.value.subtasks.filter(
+      (subtask: ISubtask) => subtask.title !== activeChore.chore?.title
     );
   }
   closeDetails();
 }
 
 // Toggle done on Chore
-async function toggleChoreDone(chore: TaskType | SubtaskType) {
+async function toggleChoreDone(chore: ITask | ISubtask) {
   if (props.isProject) {
     try {
       const response = await axios.patch(`projects/${props.project.id}/task_done/`, {
@@ -253,7 +261,7 @@ async function toggleChoreDone(chore: TaskType | SubtaskType) {
         chore.done = response.data.done;
         // Visual changes
         let project_task = useChoreStore().tasks.find(
-          (task: TaskType) => task.id === chore.id
+          (task: ITask) => task.id === chore.id
         );
 
         if (project_task) {
@@ -291,19 +299,19 @@ function closeNew() {
   props.isProject ? resetTaskModel() : resetSubtaskModel();
 }
 
-function removeTag(tag: TagType) {
+function removeTag(tag: ITag) {
   if (props.isProject) {
     // When a existing chore is opened
     if (activeChore.opened) {
       activeChore.chore!.tags = activeChore.chore!.tags.filter(
-        (t: TagType) => t.name !== tag.name
+        (t: ITag) => t.name !== tag.name
       );
       return;
     }
 
     // When a fresh chore is opened, just remove it
     taskModel.value.tags = taskModel.value.tags.filter(
-      (t: TagType) => t.name !== tag.name
+      (t: ITag) => t.name !== tag.name
     );
   }
 }
@@ -370,7 +378,7 @@ function removeTag(tag: TagType) {
       "
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
-      :key="isProject ? existingProject.tasks.length : task.subtasks.length"
+      :key="isProject ? existingProject.tasks?.length : task.subtasks?.length"
       :isProject="isProject"
     />
   </div>
