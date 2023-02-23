@@ -6,7 +6,11 @@ defineProps<{
   isNew?: boolean;
 }>();
 
-defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
+defineEmits<{
+  (e: 'input:description'): void
+  (e: 'change:pomoCount'): void
+  (e: 'save:task'): void
+}>();
 </script>
 
 <template>
@@ -14,8 +18,8 @@ defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
     <!-- Description -->
     <div class="new-task-description">
       <textarea
-        @input="event => $emit('descriptionInput', (event.target as HTMLInputElement).value)"
-        @keyup.ctrl.enter="$emit('saveTask')"
+        @input="event => $emit('input:description', (event.target as HTMLInputElement).value)"
+        @keyup.ctrl.enter="$emit('save:task')"
         :value="task.description"
         placeholder="Description"
         class="new-task-textarea-description"
@@ -46,7 +50,7 @@ defineEmits(['descriptionInput', 'newPomoCount', 'saveTask']);
         <!-- Counter -->
         <PomoCountSetter
           :chore="task"
-          @newPomoCount="$emit('newPomoCount', $event)"
+          @change:pomoCount="(count: number) => $emit('change:pomoCount', count)"
         />
       </div>
     </div>

@@ -5,6 +5,13 @@ const props = defineProps<{
   added: number;
 }>();
 
+const emit = defineEmits<{
+  (e: 'prev'): void
+  (e: 'next'): void
+  (e: 'set:page', page: number): void
+  (e: 'set:added', added: number): void
+}>();
+
 // Total of pages to display
 // Example:
 // ... 2, 3, 4 ...
@@ -12,11 +19,9 @@ const props = defineProps<{
 // ... 4, 5, 6 ...
 const TOTAL_PAGES = 3;
 
-const emit = defineEmits(['prev', 'next', 'setPage', 'setAdded']);
-
 function increaseCurrentPage(): void {
   if (props.page < props.pages) {
-    emit('setPage', props.page + 1);
+    emit('set:page', props.page + 1);
   }
 
   if (
@@ -29,12 +34,12 @@ function increaseCurrentPage(): void {
 
 function setCurrentPage(newPage: number): void {
   if (newPage <= props.pages || newPage >= 1) {
-    emit('setPage', newPage);
+    emit('set:page', newPage);
   }
 
   if (newPage <= 4) {
-    if (newPage === 1 || newPage === 3) emit('setAdded', 1);
-    if (newPage === 4) emit('setAdded', 2);
+    if (newPage === 1 || newPage === 3) emit('set:added', 1);
+    if (newPage === 4) emit('set:added', 2);
   } else {
     if (
       newPage > TOTAL_PAGES + 1 &&
@@ -45,7 +50,7 @@ function setCurrentPage(newPage: number): void {
     }
     if (newPage < props.page) {
       if (newPage === props.pages - (TOTAL_PAGES - 1)) {
-        emit('setAdded', props.added);
+        emit('set:added', props.added);
       } else {
         prevMoveBy(1);
       }
@@ -53,13 +58,13 @@ function setCurrentPage(newPage: number): void {
   }
 
   if (newPage === props.pages - 1) {
-    emit('setAdded', props.pages - (TOTAL_PAGES + 1));
+    emit('set:added', props.pages - (TOTAL_PAGES + 1));
   }
 }
 
 function decreaseCurrentPage(): void {
   if (props.page > 1) {
-    emit('setPage', props.page - 1);
+    emit('set:page', props.page - 1);
   }
 
   if (props.page <= props.pages - TOTAL_PAGES) {
@@ -73,22 +78,22 @@ function prevMoveBy(decreasedBy: number): void {
 
   // Reset range
   if (props.page <= 4) {
-    emit('setAdded', 1);
+    emit('set:added', 1);
     return;
   }
 
   // By 3
   if (decreasedBy > 1) {
     props.added <= TOTAL_PAGES
-      ? emit('setAdded', 1)
-      : emit('setAdded', props.added - decreasedBy);
+      ? emit('set:added', 1)
+      : emit('set:added', props.added - decreasedBy);
 
-    emit('setPage', props.added - 1);
+    emit('set:page', props.added - 1);
   }
 
   // By 1
   if (decreasedBy === 1) {
-    emit('setAdded', props.added - 1);
+    emit('set:added', props.added - 1);
   }
 }
 
@@ -97,24 +102,24 @@ function nextMoveBy(increasedBy: number): void {
   if (increasedBy > 1) {
     if (props.page >= props.pages - (TOTAL_PAGES + 1)) {
       // Move the range to the final
-      emit('setPage', props.pages);
-      emit('setAdded', props.pages - (TOTAL_PAGES + 1));
+      emit('set:page', props.pages);
+      emit('set:added', props.pages - (TOTAL_PAGES + 1));
     }
 
     // If added is less than TOTAL_PAGES - 2 move by n
     if (props.added < props.pages - (TOTAL_PAGES + 2)) {
-      emit('setAdded', props.added + increasedBy - 1);
-      emit('setPage', props.added + (TOTAL_PAGES + 1));
+      emit('set:added', props.added + increasedBy - 1);
+      emit('set:page', props.added + (TOTAL_PAGES + 1));
     } else {
       // For short pages
-      emit('setAdded', props.pages - (TOTAL_PAGES + 1));
-      emit('setPage', props.pages - (TOTAL_PAGES - 1));
+      emit('set:added', props.pages - (TOTAL_PAGES + 1));
+      emit('set:page', props.pages - (TOTAL_PAGES - 1));
     }
   }
 
   // By 1
   if (increasedBy === 1 && props.page <= props.pages - (TOTAL_PAGES - 1)) {
-    emit('setAdded', props.added + 1);
+    emit('set:added', props.added + 1);
   }
 }
 </script>
@@ -170,8 +175,8 @@ function nextMoveBy(increasedBy: number): void {
       <!-- Last page -->
       <div
         @click="
-          $emit('setPage', props.pages),
-            $emit('setAdded', props.pages - (TOTAL_PAGES + 1))
+          $emit('set:page', props.pages),
+            $emit('set:added', props.pages - (TOTAL_PAGES + 1))
         "
         :class="{ active: props.page === props.pages, 'paginate-btn': true }"
       >

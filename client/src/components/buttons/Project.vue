@@ -26,7 +26,7 @@ watch(open, () => {
       </div>
     </div>
 
-    <TheProjectModal :project="project" :open="open" @exit="open = false" />
+    <TheProjectModal :project="project" :open="open" @exit:modal="open = false" />
   </div>
 </template>
 

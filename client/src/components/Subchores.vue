@@ -4,8 +4,8 @@ import type { ITask, ISubtask, ITag, IProject } from '@/types';
 const props = defineProps<{
   chores: ITask[];
   isProject: boolean;
-  task: ITask;
-  project: IProject;
+  task?: ITask;
+  project?: IProject;
   isNew: boolean;
 }>();
 
@@ -100,7 +100,7 @@ async function addTaskToProject() {
   if (taskModel.value.title) {
     // Push new task to new project
     if (props.isProject && props.isNew) {
-      existingProject.value.tasks?.push(taskModel.value);
+      existingProject?.value?.tasks?.push(taskModel.value);
       alert.info('Task added!');
       resetTaskModel();
     }
@@ -110,14 +110,14 @@ async function addTaskToProject() {
     if (props.isProject && !props.isNew) {
       try {
         const response = await axios.patch(
-          `projects/${props.project.id}/add_new_task/`,
+          `projects/${props.project?.id}/add_new_task/`,
           {
             task: taskModel.value,
           }
         );
         if (response?.status === 201) {
           // Returns a task inside the project
-          existingProject.value.tasks?.push(response.data);
+          existingProject?.value?.tasks?.push(response.data);
           alert.success(`Task ${taskModel.value.title} saved!`);
           // Reset and close
           closeNew();
@@ -139,7 +139,7 @@ async function addTaskToProject() {
 
     // Make the api call
     const response = await axios
-      .patch(`projects/${props.project.id}/update_task/`, {
+      .patch(`projects/${props.project?.id}/update_task/`, {
         subtask: activeChore.chore,
       })
       .catch((err) => console.log(err));
@@ -162,20 +162,20 @@ async function saveSubtaskToTask() {
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
-      existingTask?.value.subtasks.push(subtaskModel.value);
+      existingTask?.value?.subtasks.push(subtaskModel.value);
       alert.info(`${subtaskModel.value.title} added!`);
       resetSubtaskModel();
     }
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
       // Make the API call
-      const response = await axios.patch(`tasks/${props.task.id}/`, {
+      const response = await axios.patch(`tasks/${props.task?.id}/`, {
         obj: 'subtask',
         action: 'add',
         subtask: subtaskModel.value,
       });
       if (response?.status === 201) {
-        existingTask?.value.subtasks.push(response.data);
+        existingTask?.value?.subtasks.push(response.data);
         alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
       }
@@ -191,7 +191,7 @@ async function saveSubtaskToTask() {
         tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
 
       // Make the api call
-      const response = await axios.patch(`/tasks/${props.task.id}/`, {
+      const response = await axios.patch(`/tasks/${props.task?.id}/`, {
         obj: 'subtask',
         action: 'update',
         subtask: activeChore.chore,
@@ -210,14 +210,14 @@ async function deleteChore() {
     // Delete task
     if (window.confirm('Are you sure?')) {
       const response = await axios.patch(
-        `/projects/${props.project.id}/delete_task/`,
+        `/projects/${props.project?.id}/delete_task/`,
         {
           task_id: activeChore.chore?.id,
         }
       );
       if (response?.status === 204) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        existingProject!.value.tasks = existingProject.value.tasks?.filter(
+        existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
           (task: ITask) => task.id !== activeChore.chore?.id
         );
       }
@@ -225,7 +225,7 @@ async function deleteChore() {
   } else {
     if (window.confirm('Are you sure?')) {
       // If subtask
-      const response = await axios.patch(`/tasks/${props.task.id}/`, {
+      const response = await axios.patch(`/tasks/${props.task?.id}/`, {
         obj: 'subtask',
         action: 'remove',
         subtask_id: activeChore.chore?.id,
@@ -234,10 +234,12 @@ async function deleteChore() {
       if (response?.status === 204) {
         // If is task
         alert.success(`Subtask ${activeChore.chore?.title} deleted!`);
-        // TO solve
-        existingTask!.value.subtasks = existingTask?.value.subtasks.filter(
-          (sub: ISubtask) => sub !== activeChore.chore
-        );
+        
+        if (existingTask?.value?.subtasks) {
+          existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
+            (sub: ISubtask) => sub !== activeChore.chore
+          );
+        }
       }
     }
   }
@@ -247,13 +249,15 @@ async function deleteChore() {
 // Remove (visually) chore from parent component
 function removeChore() {
   if (props.isProject) {
-    existingProject!.value.tasks = existingProject.value.tasks?.filter(
+    existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
       (task: ITask) => task.title !== activeChore.chore?.title
     );
   } else {
-    existingTask!.value.subtasks = existingTask?.value.subtasks.filter(
-      (subtask: ISubtask) => subtask.title !== activeChore.chore?.title
-    );
+    if (existingTask?.value?.subtasks) {
+      existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
+        (subtask: ISubtask) => subtask.title !== activeChore.chore?.title
+      );
+    }
   }
   closeDetails();
 }
@@ -263,7 +267,7 @@ async function toggleChoreDone(chore: ITask | ISubtask) {
   if (props.isProject) {
     try {
       const response = await axios.patch(
-        `projects/${props.project.id}/task_done/`,
+        `projects/${props.project?.id}/task_done/`,
         {
           task_id: chore.id,
         }
@@ -284,7 +288,7 @@ async function toggleChoreDone(chore: ITask | ISubtask) {
     }
   } else {
     try {
-      const response = await axios.patch(`tasks/${props.task.id}/`, {
+      const response = await axios.patch(`tasks/${props.task?.id}/`, {
         obj: 'subtask',
         action: 'done',
         subtask_id: chore.id,
@@ -375,36 +379,36 @@ function removeTag(tag: ITag) {
   <div v-if="newChoreOpened">
     <!-- A new fresh chore -->
     <Subchore
-      @close="closeNew()"
-      @save="saveSubtaskToTask()"
-      @saveTask="addTaskToProject()"
-      @removeTag="removeTag($event)"
-      @titleChange="
+      @close:details="closeNew()"
+      @save:project="saveSubtaskToTask()"
+      @save:task="addTaskToProject()"
+      @remove:tag="removeTag($event)"
+      @change:title="
         isProject ? (taskModel.title = $event) : (subtaskModel.title = $event)
       "
-      @descChange="
+      @change:description="
         isProject
           ? (taskModel.description = $event)
           : (subtaskModel.description = $event)
       "
       :chore="isProject ? taskModel : subtaskModel"
       :newChore="true"
-      :key="isProject ? existingProject.tasks?.length : task.subtasks?.length"
+      :key="isProject ? existingProject?.tasks?.length : task?.subtasks?.length"
       :isProject="isProject"
     />
   </div>
   <!-- If an existing chore is opened -->
   <div v-if="activeChore.opened">
     <Subchore
-      @close="closeDetails()"
-      @save="saveSubtaskToTask()"
-      @saveTask="addTaskToProject()"
-      @remove="removeChore()"
-      @delete="deleteChore()"
-      @removeTag="removeTag($event)"
-      @titleChange="handleTitle"
-      @descChange="handleDesc"
-      @newPomoCount="handleEstimated"
+      @close:details="closeDetails()"
+      @save:project="saveSubtaskToTask()"
+      @save:task="addTaskToProject()"
+      @remove:chore="removeChore()"
+      @delete:chore="deleteChore()"
+      @remove:tag="removeTag($event)"
+      @change:title="handleTitle"
+      @change:description="handleDesc"
+      @change:pomoCount="handleEstimated"
       :chore="activeChore.chore"
       :parentNew="isNew"
       :newChore="isNew"

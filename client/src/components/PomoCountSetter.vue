@@ -5,38 +5,26 @@ const props = defineProps<{
   chore: ITask;
 }>();
 
-const emit = defineEmits(['newPomoCount']);
+const { estimated: localPomos } = toRefs(props.chore)
+const emit = defineEmits<{
+  (e: 'change:pomoCount', newValue: number): void
+}>();
 
-const pomoLimits = reactive({ min: 1, max: 99 });
-
-const localPomos = ref(props.chore.estimated);
+const limits = reactive({ min: 1, max: 99 });
 
 function increasePomos() {
-  if (localPomos.value < pomoLimits.max) {
-    localPomos.value++;
-  } else {
-    localPomos.value = pomoLimits.max;
-  }
-  emit('newPomoCount', localPomos.value);
+  localPomos.value = Math.min(localPomos.value + 1, limits.max)
+  emit('change:pomoCount', localPomos.value);
 }
 
 function decreasePomos() {
-  if (localPomos.value > pomoLimits.min) {
-    localPomos.value--;
-  }
-  emit('newPomoCount', localPomos.value);
+  localPomos.value = Math.max(localPomos.value - 1, limits.min)
+  emit('change:pomoCount', localPomos.value);
 }
 
-function setPomos(count: any) {
-  if (parseInt(count) <= pomoLimits.max) {
-    localPomos.value = parseInt(count);
-    emit('newPomoCount', localPomos.value);
-  }
-
-  if (parseInt(count) > pomoLimits.max) {
-    localPomos.value = pomoLimits.max;
-    emit('newPomoCount', localPomos.value);
-  }
+function setPomos(count: string) {
+  localPomos.value = Math.min(parseInt(count), limits.max);
+  emit('change:pomoCount', localPomos.value);
 }
 </script>
 
@@ -46,8 +34,8 @@ function setPomos(count: any) {
     <input
       type="number"
       class="estimated-timers"
-      :min="pomoLimits.min"
-      :max="pomoLimits.max"
+      :min="limits.min"
+      :max="limits.max"
       :value="localPomos"
       @input="e => setPomos(((e.target) as HTMLInputElement).value)"
     />

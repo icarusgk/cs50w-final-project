@@ -6,7 +6,13 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-const emit = defineEmits(['exit', 'toggleDone', 'deleteTask']);
+// const emit = defineEmits(['exit', 'toggleDone', 'deleteTask']);
+const emit = defineEmits<{
+  (e: 'exit:modal'): void
+  (e: 'toggle:done'): void
+  (e: 'delete:task'): void
+}>();
+
 let tmpNewTitle = '';
 let tmpNewDesc = '';
 let tmpEstimated: number;
@@ -23,12 +29,12 @@ function saveTask() {
 
   chore.saveTask(props.task);
 
-  emit('exit');
+  emit('exit:modal');
 }
 
 function deleteTask() {
-  emit('deleteTask');
-  emit('exit');
+  emit('delete:task');
+  emit('exit:modal');
 }
 
 function removeTag(tag: ITag) {
@@ -57,19 +63,19 @@ onUnmounted(() => {
 <template>
   <div class="task-container">
     <!-- Modal -->
-    <AppModal :open="open" @exit-modal="$emit('exit')" :is-task="true">
+    <AppModal :open="open" @exit:modal="$emit('exit:modal')" :is-task="true">
       <!-- Tags -->
       <template #tags>
         <Tags
           :task="props.task"
           :id="props.task.id"
-          @remove-tag="(tag: ITag) => removeTag(tag)"
-          @close="$emit('exit')"
+          @remove:tag="(tag: ITag) => removeTag(tag)"
+          @close:modal="$emit('exit:modal')"
         />
         <div class="buttons">
           <div class="done-buttons" v-auto-animate>
-            <DoneIcon @click="$emit('toggleDone')" v-if="!props.task.done" />
-            <MarkedDoneIcon @click="$emit('toggleDone')" v-else />
+            <DoneIcon @click="$emit('toggle:done')" v-if="!props.task.done" />
+            <MarkedDoneIcon @click="$emit('toggle:done')" v-else />
           </div>
           <DeleteIcon @click="deleteTask()" class="delete-icon" />
         </div>
@@ -88,9 +94,9 @@ onUnmounted(() => {
       <!-- Body -->
       <TheTaskModalBody
         :task="props.task"
-        @description-input="handleDesc"
-        @newPomoCount="handlePomos($event)"
-        @saveTask="saveTask()"
+        @input:description="handleDesc"
+        @change:pomoCount="handlePomos($event)"
+        @save:task="saveTask()"
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />

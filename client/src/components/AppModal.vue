@@ -4,10 +4,12 @@ defineProps<{
   isTask?: Boolean;
 }>();
 
-const emit = defineEmits(['exitModal']);
+const emit = defineEmits<{
+  (e: 'exit:modal'): void
+}>();
 
 function exit(event: any) {
-  if (event.key === 'Escape') emit('exitModal');
+  if (event.key === 'Escape') emit('exit:modal');
 }
 </script>
 
@@ -29,7 +31,7 @@ function exit(event: any) {
           <slot name="delete-icon"></slot>
         </div>
 
-        <div @click="$emit('exitModal')" class="close-icon">
+        <div @click="$emit('exit:modal')" class="close-icon">
           <CloseIcon />
         </div>
       </div>

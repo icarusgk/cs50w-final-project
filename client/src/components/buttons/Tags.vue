@@ -10,7 +10,11 @@ const props = defineProps<{
   new?: boolean;
 }>();
 
-const emit = defineEmits(['addTag', 'removeTag', 'close']);
+const emit = defineEmits<{
+  (e: 'add:tag', tag: ITag): void
+  (e: 'remove:tag', tag: ITag): void
+  (e: 'close:modal'): void
+}>(); 
 
 const chore = useChoreStore();
 const alert = useAlertStore();
@@ -104,7 +108,7 @@ async function deleteTag(tag: ITag) {
       if (response?.status === 200) {
         // emit the deletion of the tag
         alert.info('Tag removed');
-        emit('removeTag', tag);
+        emit('remove:tag', tag);
 
         // Repopulate tags
         chore.fetchTags();
@@ -113,7 +117,7 @@ async function deleteTag(tag: ITag) {
     }
   } else {
     // If is new, just remove it
-    emit('removeTag', tag);
+    emit('remove:tag', tag);
     allTags.value.push(tag);
   }
 }
@@ -125,7 +129,7 @@ function addSelectedTag(tag: ITag) {
 
 function goToTag(tag: string) {
   router.push(`/tags/${tag}`);
-  emit('close');
+  emit('close:modal');
 }
 </script>
 
