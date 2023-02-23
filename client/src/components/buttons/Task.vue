@@ -49,7 +49,7 @@ function deleteTask() {
     </div>
     <!-- Name -->
     <div class="task-title-container" :class="{ done: task.done }">
-      <div @click="$emit('set:currentTask', task.id)" class="title-container">
+      <div @click="$emit('set:currentTask', task.id as number)" class="title-container">
         <Popper hover arrow placement="bottom" openDelay="1000">
           <span class="title">{{ props.task.title }}</span>
           <template #content> Click to set it to current </template>
