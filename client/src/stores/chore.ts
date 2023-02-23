@@ -242,4 +242,5 @@ export const useChoreStore = defineStore('chores', {
       }
     },
   },
+  persist: true
 });
