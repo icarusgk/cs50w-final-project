@@ -46,8 +46,8 @@ function deleteTask(task: ITask) {
       :page="chore.taskPagination.page"
       :added="chore.taskPagination.added"
       @prev="chore.previousTaskPage()"
-      @setPage="setPage($event)"
-      @setAdded="setAdded($event)"
+      @set:page="(page: number) => setPage(page)"
+      @set:added="(added: number) => setAdded(added)"
       @next="chore.nextTaskPage()"
     />
     <div v-if="chore.tasks.length > 0">
@@ -64,8 +64,8 @@ function deleteTask(task: ITask) {
         :page="chore.taskPagination.page"
         :added="chore.taskPagination.added"
         @prev="chore.previousTaskPage()"
-        @setPage="setPage($event)"
-        @setAdded="setAdded($event)"
+        @set:page="(page: number) => setPage(page)"
+        @set:added="(added: number) => setAdded(added)"
         @next="chore.nextTaskPage()"
       />
     </div>

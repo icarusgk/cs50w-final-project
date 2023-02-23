@@ -64,7 +64,7 @@ function setAdded(newAdded: number) {
           v-for="task in tasks"
           :task="task"
           :key="task.id"
-          @setCurrent="setCurrent"
+          @set:currentTask="(id: number) => setCurrent(id)"
         />
       </div>
     </div>
@@ -74,8 +74,8 @@ function setAdded(newAdded: number) {
       :page="chore.taskPagination.page"
       :added="chore.taskPagination.added"
       @prev="chore.previousTaskPage"
-      @setPage="setPage($event)"
-      @setAdded="setAdded($event)"
+      @set:page="(page: number) => setPage(page)"
+      @set:added="(added: number) => setAdded(added)"
       @next="chore.nextTaskPage"
     />
   </div>

@@ -37,7 +37,7 @@ function saveProject() {
     <template #type> Add new project </template>
   </ChoreButton>
 
-  <AppModal :open="open" @exit-modal="resetProject()">
+  <AppModal :open="open" @exit:modal="resetProject()">
     <template #title>
       <input
         type="text"

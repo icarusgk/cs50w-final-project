@@ -29,8 +29,8 @@ function setAdded(newAdded: number) {
       :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
-      @setPage="setPage($event)"
-      @setAdded="setAdded($event)"
+      @set:page="(page: number) => setPage(page)"
+      @set:added="(added: number) => setAdded(added)"
       @next="chore.nextProjectPage"
     />
     <div v-if="chore.projects.length > 0" class="all-projects-container">
@@ -49,8 +49,8 @@ function setAdded(newAdded: number) {
       :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
-      @setPage="setPage($event)"
-      @setAdded="setAdded($event)"
+      @set:page="(page: number) => setPage(page)"
+      @set:added="(added: number) => setAdded(added)"
       @next="chore.nextProjectPage"
     />
   </div>

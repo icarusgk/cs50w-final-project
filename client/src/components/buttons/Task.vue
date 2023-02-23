@@ -5,7 +5,9 @@ const props = defineProps<{
   task: ITask;
 }>();
 
-const emit = defineEmits(['setCurrent']);
+defineEmits<{
+  (e: 'set:currentTask', id: number): void
+}>();
 
 const open = ref(false);
 const chore = useChoreStore();
@@ -47,7 +49,7 @@ function deleteTask() {
     </div>
     <!-- Name -->
     <div class="task-title-container" :class="{ done: task.done }">
-      <div @click="$emit('setCurrent', task.id)" class="title-container">
+      <div @click="$emit('set:currentTask', task.id)" class="title-container">
         <Popper hover arrow placement="bottom" openDelay="1000">
           <span class="title">{{ props.task.title }}</span>
           <template #content> Click to set it to current </template>
@@ -70,9 +72,9 @@ function deleteTask() {
     <TheTaskModal
       :task="props.task"
       :open="open"
-      @exit="open = false"
-      @toggle-done="toggleDone()"
-      @deleteTask="deleteTask()"
+      @exit:modal="open = false"
+      @toggle:done="toggleDone()"
+      @delete:Task="deleteTask()"
     />
   </div>
 </template>

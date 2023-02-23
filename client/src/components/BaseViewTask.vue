@@ -5,7 +5,9 @@ defineProps<{
   task: ITask;
 }>();
 
-defineEmits(['deleteTask']);
+defineEmits<{
+  (e: 'delete:task', task: ITask): void
+}>();
 
 const open = ref(false);
 
@@ -38,8 +40,8 @@ watch(open, () => {
     <TheTaskModal
       :task="task"
       :open="open"
-      @exit="open = false"
-      @deleteTask="$emit('deleteTask', task)"
+      @exit:modal="open = false"
+      @delete:task="$emit('delete:task', task)"
     />
   </div>
 </template>

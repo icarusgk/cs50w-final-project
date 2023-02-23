@@ -51,12 +51,12 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
   <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
     <template #type> Add new task </template>
   </ChoreButton>
-  <AppModal :open="open" @exit-modal="resetTask()" :is-task="true">
+  <AppModal :open="open" @exit:modal="resetTask()" :is-task="true">
     <template #tags>
       <Tags
         :task="initialTask"
         :new="true"
-        @remove-tag="(tag: ITag) => removeTag(tag)"
+        @remove:tag="(tag: ITag) => removeTag(tag)"
       />
     </template>
     <!-- New task title input -->
@@ -74,11 +74,11 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
     <TheTaskModalBody
       :task="initialTask"
       :isNew="true"
-      @saveTask="saveTask()"
-      @newPomoCount="handlePomos($event)"
-      @descriptionInput="initialTask.description = $event"
+      @save:task="saveTask()"
+      @change:pomoCount="handlePomos($event)"
+      @input:description="initialTask.description = $event"
     />
-    <!-- Button -->
+  <!-- Button -->
     <template #save-button>
       <SaveButton @click="saveTask()">Save!</SaveButton>
     </template>

@@ -47,7 +47,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
         <SettingsIcon />
       </li>
     </ul>
-    <AppModal :open="settingsOpen" @exit-modal="settingsOpen = false">
+    <AppModal :open="settingsOpen" @exit:modal="settingsOpen = false">
       <template #title>
         <h1>Settings</h1>
       </template>

@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import type { ITask } from '@/types';
+import type { ITag, ITask } from '@/types';
 const props = defineProps<{
   chore: ITask;
   newChore: boolean;
   isProject: boolean;
   parentNew: boolean;
 }>();
-defineEmits([
-  'save',
-  'saveTask',
-  'close',
-  'delete',
-  'remove',
-  'removeTag',
-  'titleChange',
-  'descChange',
-  'newPomoCount',
-]);
+
+defineEmits<{
+  (e: 'save:project'): void;
+  (e: 'save:task'): void;
+  (e: 'close:details'): void;
+  (e: 'delete:chore'): void;
+  (e: 'remove:chore'): void;
+  (e: 'remove:tag', tag: ITag): void;
+  (e: 'change:title'): void;
+  (e: 'change:description'): void;
+  (e: 'change:pomoCount', pomoCount: number): void;
+}>();
 </script>
 
 <template>
@@ -29,7 +30,7 @@ defineEmits([
           :id="props.chore.id"
           :task="props.chore"
           :new="newChore"
-          @removeTag="$emit('removeTag', $event)"
+          @remove:tag="$emit('removeTag', $event)"
         />
       </div>
       <!-- Title and description -->
@@ -42,7 +43,9 @@ defineEmits([
           type="text"
           autofocus
           class="new-subtask-title"
-          @keyup.ctrl.enter="isProject ? $emit('saveTask') : $emit('save')"
+          @keyup.ctrl.enter="
+            isProject ? $emit('save:task') : $emit('save:project')
+          "
         />
         <!-- Description -->
         <textarea
@@ -50,7 +53,9 @@ defineEmits([
           @input="event => $emit('descChange', (event.target as HTMLInputElement).value)"
           class="new-subtask-description"
           placeholder="Description"
-          @keyup.ctrl.enter="isProject ? $emit('saveTask') : $emit('save')"
+          @keyup.ctrl.enter="
+            isProject ? $emit('save:task') : $emit('save:project')
+          "
         >
         </textarea>
       </div>
@@ -59,32 +64,32 @@ defineEmits([
           <DeleteIcon
             class="delete-button"
             v-if="!newChore"
-            @click="$emit('delete')"
+            @click="$emit('delete:chore')"
           />
-          <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove')" />
+          <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove:chore')" />
         </div>
         <div v-if="props.isProject">
           <PomoCountSetter
             :chore="chore"
-            @newPomoCount="$emit('newPomoCount', $event)"
+            @change:pomoCount="(count: number) => $emit('change:pomoCount', count)"
           />
         </div>
         <!-- Estimated Timers and save button -->
-        <div class="timers-and-buttons-container">
+        <div class="buttons-container">
           <!-- Buttons -->
           <div class="buttons">
             <!-- Emit the close event -->
             <!-- Cancel -->
-            <button @click="$emit('close')" class="cancel-button">Close</button>
+            <button @click="$emit('close:details')" class="cancel-button">Close</button>
             <!-- Save -->
             <button
               v-if="!isProject"
-              @click="$emit('save')"
+              @click="$emit('save:project')"
               class="save-button"
             >
               Save!
             </button>
-            <button v-else class="save-button" @click="$emit('saveTask')">
+            <button v-else class="save-button" @click="$emit('save:task')">
               Save!
             </button>
           </div>
@@ -178,7 +183,7 @@ defineEmits([
         }
       }
 
-      .timers-and-buttons-container {
+      .buttons-container {
         display: flex;
         flex-direction: column;
         align-self: flex-end;

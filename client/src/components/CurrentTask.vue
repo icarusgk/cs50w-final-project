@@ -37,7 +37,7 @@ watch(open, () => {
           <template #content> Remove current task </template>
         </Popper>
       </div>
-      <TheTaskModal :open="open" :task="task" @exit="open = false" />
+      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" />
     </div>
   </Transition>
 </template>
