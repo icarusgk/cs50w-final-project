@@ -38,7 +38,7 @@ defineEmits<{
         <!-- Title -->
         <input
           :value="props.chore.title"
-          @input="event => $emit('titleChange', (event.target as HTMLInputElement).value)"
+          @input="event => $emit('change:title', (event.target as HTMLInputElement).value)"
           placeholder="Title"
           type="text"
           autofocus
