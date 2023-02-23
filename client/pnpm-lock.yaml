@@ -23,6 +23,7 @@ specifiers:
   node-sass: ^7.0.3
   npm-run-all: ^4.1.5
   pinia: ^2.0.30
+  pinia-plugin-persistedstate: ^3.1.0
   prettier: ^2.8.4
   sass: ^1.58.3
   sass-loader: ^13.2.0
@@ -47,6 +48,7 @@ dependencies:
   dayjs: 1.11.7
   install: 0.13.0
   pinia: 2.0.30_5yi2kxxaqg74pgvs6b75qdtvru
+  pinia-plugin-persistedstate: 3.1.0_pinia@2.0.30
   uuid: 9.0.0
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
@@ -4583,6 +4585,14 @@ packages:
     resolution: {integrity: sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==}
     engines: {node: '>=4'}
     dev: true
+
+  /pinia-plugin-persistedstate/3.1.0_pinia@2.0.30:
+    resolution: {integrity: sha512-8UN+vYMEPBdgNLwceY08mi5olI0wkYaEb8b6hD6xW7SnBRuPydWHlEhZvUWgNb/ibuf4PvufpvtS+dmhYjJQOw==}
+    peerDependencies:
+      pinia: ^2.0.0
+    dependencies:
+      pinia: 2.0.30_5yi2kxxaqg74pgvs6b75qdtvru
+    dev: false
 
   /pinia/2.0.30_5yi2kxxaqg74pgvs6b75qdtvru:
     resolution: {integrity: sha512-q6DUmxWwe/mQgg+55QQjykpKC+aGeGdaJV3niminl19V08dE+LRTvSEuqi6/NLSGCKHI49KGL6tMNEOssFiMyA==}
