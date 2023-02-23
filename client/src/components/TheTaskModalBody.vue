@@ -7,8 +7,8 @@ defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'input:description'): void
-  (e: 'change:pomoCount'): void
+  (e: 'input:description', description: string): void
+  (e: 'change:pomoCount', count: number): void
   (e: 'save:task'): void
 }>();
 </script>

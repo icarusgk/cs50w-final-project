@@ -14,8 +14,8 @@ defineEmits<{
   (e: 'delete:chore'): void;
   (e: 'remove:chore'): void;
   (e: 'remove:tag', tag: ITag): void;
-  (e: 'change:title'): void;
-  (e: 'change:description'): void;
+  (e: 'change:title', newTitle: string): void;
+  (e: 'change:description', newDescription: string): void;
   (e: 'change:pomoCount', pomoCount: number): void;
 }>();
 </script>
@@ -30,7 +30,7 @@ defineEmits<{
           :id="props.chore.id"
           :task="props.chore"
           :new="newChore"
-          @remove:tag="$emit('removeTag', $event)"
+          @remove:tag="$emit('remove:tag', $event)"
         />
       </div>
       <!-- Title and description -->
@@ -50,7 +50,7 @@ defineEmits<{
         <!-- Description -->
         <textarea
           :value="props.chore.description"
-          @input="event => $emit('descChange', (event.target as HTMLInputElement).value)"
+          @input="event => $emit('change:description', (event.target as HTMLInputElement).value)"
           class="new-subtask-description"
           placeholder="Description"
           @keyup.ctrl.enter="
