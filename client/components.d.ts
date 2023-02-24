@@ -65,6 +65,5 @@ declare module '@vue/runtime-core' {
     UnauthedChart: typeof import('./src/components/UnauthedChart.vue')['default']
     UnauthedLogin: typeof import('./src/components/UnauthedLogin.vue')['default']
     UserIcon: typeof import('./src/components/icons/UserIcon.vue')['default']
-    UserInfo: typeof import('./src/components/UserInfo.vue')['default']
   }
 }
