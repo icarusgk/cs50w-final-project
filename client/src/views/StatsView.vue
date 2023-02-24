@@ -1,5 +1,7 @@
 <script setup>
 const auth = useAuthStore();
+const Unauthed = defineAsyncComponent(() => import('../components/UnauthedChart.vue'));
+const Authed = defineAsyncComponent(() => import('../components/AppChart.vue'));
 </script>
 
 <template>
@@ -9,11 +11,11 @@ const auth = useAuthStore();
       <div class="message">
         <UnauthedLogin> To see your stats! </UnauthedLogin>
       </div>
-      <UnauthedChart class="blur" />
+      <Unauthed class="blur" />
     </div>
     <div v-else class="chart-container">
       <Suspense>
-        <AppChart id="the-chart" />
+        <Authed id="the-chart" />
       </Suspense>
     </div>
   </div>
