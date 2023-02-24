@@ -2,24 +2,19 @@
 const auth = useAuthStore();
 </script>
 <template>
-  <div id="home">
-    <!-- Third box -->
-    <div id="timer-and-tasks">
-      <!-- Timer -->
-      <div id="main-timer">
-        <TheTimer />
-      </div>
-    </div>
-    <!-- Add Tasks -->
-    <div id="main-tasks-container">
+  <div class="flex flex-col justify-center items-center p-4 text-white lg:flex-row lg:px-16 lg:w-full lg:p-0 lg:items-start">
+    <!-- Timer -->
+    <TheTimer class="w-[550px] mt-4 flex-wrap lg:mt-12" />
+    <!-- Tasks and Projects -->
+    <div class="w-[450px] mt-8 mx-4 sm:w-lg md:w-lg lg:mt-0 lg:w-[500px]">
       <!-- Buttons -->
-      <div id="task-btn-container" :class="{ opaque: !auth.isAuthed }">
+      <div :class="['flex', { 'opacity-10': !auth.isAuthed }]">
         <!-- New Task -->
         <NewTaskButton />
         <!-- New Project -->
         <NewProjectButton />
       </div>
-      <div id="message" v-if="!auth.isAuthed">
+      <div class="w-4/5 mt-32" v-if="!auth.isAuthed">
         <UnauthedLogin> To add tasks and projects </UnauthedLogin>
       </div>
       <!-- Projects and Tasks if user is authed -->
@@ -30,84 +25,3 @@ const auth = useAuthStore();
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-#home {
-  color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  padding: 0 4rem 0 4rem;
-  width: 100%;
-}
-
-#pomodoro-title-container {
-  display: flex;
-  align-items: center;
-}
-
-#timer-and-tasks {
-  display: flex;
-  flex-direction: row;
-  width: 550px;
-  margin-top: 3rem;
-}
-
-#main-tasks-container {
-  width: 500px;
-
-  #message {
-    width: 80%;
-    margin-top: 8rem;
-  }
-}
-
-#task-btn-container {
-  display: flex;
-}
-
-.opaque {
-  opacity: 0.1;
-}
-
-@media (max-width: 1160px) {
-  #home {
-    flex-direction: column;
-  }
-
-  #main-tasks-container {
-    margin: 2rem 0 2rem 0;
-    width: 600px;
-  }
-}
-
-@media (max-width: 768px) {
-  #home {
-    padding: 0 0 0 1rem;
-    align-items: unset;
-    flex-direction: column;
-  }
-  #timer-and-tasks {
-    flex-wrap: wrap;
-    width: 110px;
-  }
-
-  #main-timer {
-    margin-left: 0;
-  }
-
-  #title {
-    font-size: 1.5rem;
-  }
-
-  #main-tasks-container {
-    margin: 0;
-    width: 85vw;
-
-    #task-btn-container {
-      margin: 2rem 0 2rem 0;
-    }
-  }
-}
-</style>
