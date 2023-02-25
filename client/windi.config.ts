@@ -100,12 +100,18 @@ export default defineConfig({
           '&:active': {
             'box-shadow': '0 0 #000'
           }
+        },
+        '.modal': {
+          'background': 'rgba(136, 136, 136, 0.3)',
+          'box-shadow': '0 4px 30px rgba(0, 0, 0, 0.1)',
+          'backdrop-filter': 'blur(11.2px)',
         }
       }
       addComponents(buttons)
     }),
   ],
   shortcuts: {
-    'pointer': 'hover:cursor-pointer active:cursor-pointer focus:cursor-pointer'
+    'pointer': 'hover:cursor-pointer active:cursor-pointer focus:cursor-pointer',
+    'responsive-modal': 'fixed left-[5%] right-[5%] w-[90%] h-[90%] top-[3%] overflow-y-scroll sm:overflow-auto md:left-[23%] md:top-1/8 md:w-[600px] md:h-auto lg:absolute lg:top-1/5 lg:z-10 lg:left-[5%] lg:right-0 lg:mx-auto lg:w-[700px] lg:h-auto text-white p-8 rounded-2xl'
   }
 })
