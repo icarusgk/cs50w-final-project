@@ -19,9 +19,9 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div id="projects-container">
+  <div class="mt-2">
     <!-- Projects Title -->
-    <Title class="projects-button">
+    <Title class="pointer">
       <template #icon>
         <ProjectIcon />
       </template>
@@ -37,9 +37,9 @@ function setAdded(newAdded: number) {
     </Title>
     <!-- Project List Container -->
     <div>
-      <div class="no-projects" v-if="projects.length === 0">
+      <div class="flex items-center bg-light-gray w-full p-4 rounded-xl lg:w-4/5" v-if="projects.length === 0">
         <TaskInfoIcon />
-        <span>There are no projects</span>
+        <span class="ml-4">There are no projects</span>
       </div>
       <!-- List of projects -->
       <div v-auto-animate>
@@ -62,35 +62,3 @@ function setAdded(newAdded: number) {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-#projects-container {
-  margin-top: 0.5rem;
-}
-
-.projects-button {
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-.no-projects {
-  display: flex;
-  align-items: center;
-  background-color: var(--light-gray);
-  width: 80%;
-  padding: 1rem;
-  border-radius: 10px;
-  span {
-    margin-left: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .no-projects {
-    width: 100%;
-  }
-}
-</style>

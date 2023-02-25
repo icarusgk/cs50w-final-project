@@ -37,9 +37,9 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div id="tasks-container">
+  <div class="mt-2">
     <!-- Tasks Title -->
-    <Title class="button" @click="$router.push('/tasks')">
+    <Title class="pointer" @click="$router.push('/tasks')">
       <template #icon>
         <SingleTaskIcon />
       </template>
@@ -54,7 +54,7 @@ function setAdded(newAdded: number) {
     </Title>
     <!-- Task List Container -->
     <div>
-      <div class="no-tasks" v-if="tasks.length === 0">
+      <div class="flex items-center bg-light-gray w-full p-4 rounded-xl lg:w-4/5" v-if="tasks.length === 0">
         <TaskInfoIcon />
         <span>There are no tasks</span>
       </div>
@@ -81,33 +81,3 @@ function setAdded(newAdded: number) {
   </div>
 </template>
 
-<style lang="scss" scoped>
-#tasks-container {
-  margin-top: 0.5rem;
-}
-.button {
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-.no-tasks {
-  display: flex;
-  align-items: center;
-  background-color: var(--light-gray);
-  width: 80%;
-  padding: 1rem;
-  border-radius: 10px;
-  span {
-    margin-left: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .no-tasks {
-    width: 100%;
-  }
-}
-</style>
