@@ -78,7 +78,7 @@ function setTimer(type: string) {
 </script>
 
 <template>
-  <div class="w-3/4 lg:w-[550px]">
+  <div>
     <span v-if="!timer.currentMode.includes('Default')" class="block text-2xl font-bold">
       Current Mode: {{ timer.currentMode }}
     </span>
