@@ -19,10 +19,10 @@ function setAdded(newAdded: number) {
 </script>
 
 <template>
-  <div class="projects-view">
-    <div class="go-back">
-      <BackIcon class="button" @click="$router.back()" />
-      <span class="title">Projects</span>
+  <div class="p-2 lg:p-6">
+    <div class="flex items-center gap-4 text-white">
+      <BackIcon class="pointer" @click="$router.back()" />
+      <span class="text-white text-5xl font-extrabold">Projects</span>
     </div>
     <Paginate
       :pages="chore.totalProjectPages"
@@ -33,16 +33,16 @@ function setAdded(newAdded: number) {
       @set:added="(added: number) => setAdded(added)"
       @next="chore.nextProjectPage"
     />
-    <div v-if="chore.projects.length > 0" class="all-projects-container">
+    <div v-if="chore.projects.length > 0" class="flex flex-row flex-wrap text-white mt-4 gap-2">
       <BaseViewProject
         v-for="project in projects"
         :project="project"
         :key="project.id"
       />
     </div>
-    <div class="no-projects" v-else>
+    <div class="m-4 flex items-center" v-else>
       <TaskInfoIcon />
-      <span class="white">No Projects</span>
+      <span class="ml-4 font-semibold text-2xl">No Projects</span>
     </div>
     <Paginate
       :pages="chore.totalProjectPages"
@@ -55,64 +55,3 @@ function setAdded(newAdded: number) {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-.projects-view {
-  padding: 1.5rem;
-  .go-back {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: white;
-
-    .button {
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-    }
-  }
-
-  .title {
-    color: white;
-    font-size: 3rem;
-    font-weight: 800;
-  }
-
-  .all-projects-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    color: white;
-    margin-top: 1rem;
-    gap: 1rem;
-  }
-
-  .no-projects {
-    margin: 1rem;
-    display: flex;
-    align-items: center;
-    span {
-      margin-left: 1rem;
-      font-weight: 600;
-      font-size: 1.5rem;
-    }
-  }
-}
-
-.white {
-  color: white;
-}
-
-@media (max-width: 768px) {
-  .projects-view {
-    padding: 0.5rem;
-
-    .all-projects-container {
-      width: 100%;
-      gap: 0.5rem;
-    }
-  }
-}
-</style>
