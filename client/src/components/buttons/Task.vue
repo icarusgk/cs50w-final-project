@@ -42,29 +42,29 @@ function deleteTask() {
 </script>
 
 <template>
-  <div class="task-container">
-    <div @click="toggleDone()" class="task-checkbox" v-auto-animate>
+  <div class="flex items-center my-2 mb-2">
+    <div @click="toggleDone()" class="pointer mr-4" v-auto-animate>
       <DoneIcon v-if="!task.done" />
       <MarkedDoneIcon v-else />
     </div>
     <!-- Name -->
-    <div class="task-title-container" :class="{ done: task.done }">
+    <div :class="[{ 'opacity-40': task.done }, 'flex items-center justify-between py-1.5 px-4 bg-vivid-red w-full rounded-lg transition druation-200 ease']">
       <div @click="$emit('set:currentTask', task.id as number)" class="title-container">
         <Popper hover arrow placement="bottom" openDelay="1000">
-          <span class="title">{{ props.task.title }}</span>
+          <span class="title pointer">{{ props.task.title }}</span>
           <template #content> Click to set it to current </template>
         </Popper>
       </div>
-      <div class="icon-container">
-        <div class="counter-in-container">
-          <span class="single-counter"
+      <div class="flex items-center">
+        <div class="mr-4">
+          <span class="hidden ml-20 xs:block"
             >{{ task.gone_through }} / {{ task.estimated }}</span
           >
         </div>
-        <div class="task-icon" @click="deleteTask()">
+        <div class="pointer mr-1" @click="deleteTask()">
           <DeleteIcon />
         </div>
-        <div class="task-icon" @click="open = true">
+        <div class="pointer" @click="open = true">
           <TaskInfoIcon />
         </div>
       </div>
@@ -78,79 +78,3 @@ function deleteTask() {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-.task-container {
-  display: flex;
-  align-items: center;
-  margin: 0 0.2rem 0.5rem 0.2rem;
-
-  .task-checkbox {
-    margin-right: 1rem;
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-
-  .task-title-container {
-    padding: 0.2rem 0.8rem;
-    border-radius: 8px;
-    background-color: var(--vivid-red);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: all 0.2s ease;
-
-    .icon-container {
-      display: flex;
-      align-items: center;
-
-      .counter-in-container {
-        margin-right: 1rem;
-      }
-
-      .single-counter {
-        margin-left: 5rem;
-      }
-    }
-
-    .title-container {
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-    }
-
-    .task-icon {
-      margin-top: 0.2rem;
-      margin-right: 0.2rem;
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-    }
-  }
-
-  .done {
-    background-color: var(--vivid-red);
-    opacity: 0.4;
-  }
-}
-
-@media (max-width: 480px) {
-  .task-container {
-    .task-title-container {
-      .icon-container {
-        .single-counter {
-          display: none;
-        }
-      }
-    }
-  }
-}
-</style>
