@@ -96,12 +96,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="responsiveChart" ref="responsiveChart"></div>
+  <div class="max-w-5xl my-9 mx-auto" ref="responsiveChart"></div>
 </template>
 
-<style scoped lang="scss">
-#responsiveChart {
-  max-width: 760px;
-  margin: 35px auto;
-}
-</style>
