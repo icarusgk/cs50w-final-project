@@ -92,9 +92,19 @@ export default defineConfig({
         '.short_break': timerButton('#1ba7b1', '#22d1dd'),
         '.long_break': timerButton('#1eaf58', '#26da6e'),
         '.stop-timer-btn': timerButton('#1b6eb1', '#228add'),
-        '.restart-timer-btn': timerButton('#ff8c00', '#ffa333')
+        '.restart-timer-btn': timerButton('#ff8c00', '#ffa333'),
+        '.add-item-btn': {
+          'box-shadow': '3px 4px rgba(208, 208, 208)',
+          'transition': 'box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1)',
+          '&:active': {
+            'box-shadow': '0 0 #000'
+          }
+        }
       }
       addComponents(buttons)
-    })
-  ]
+    }),
+  ],
+  shortcuts: {
+    'pointer': 'hover:cursor-pointer active:cursor-pointer focus:cursor-pointer'
+  }
 })
