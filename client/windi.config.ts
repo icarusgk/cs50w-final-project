@@ -34,6 +34,8 @@ export default defineConfig({
         'md': '768px',
         'lg': '1024px',
         'xl': '1160px',
+        '2xl': '1400px',
+        '3xl': '1600px'
       },
       fontFamily: {
         sans: ['Lexend', 'sans-serif'],
