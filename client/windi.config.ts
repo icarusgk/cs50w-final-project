@@ -125,6 +125,7 @@ export default defineConfig({
   ],
   shortcuts: {
     'pointer': 'hover:cursor-pointer active:cursor-pointer focus:cursor-pointer',
-    'responsive-modal': 'fixed left-[5%] right-[5%] w-[90%] h-[90%] top-[3%] overflow-y-scroll sm:overflow-auto md:left-[23%] md:top-1/8 md:w-[600px] md:h-auto lg:absolute lg:top-1/5 lg:z-10 lg:left-[5%] lg:right-0 lg:mx-auto lg:w-[700px] lg:h-auto text-white p-8 rounded-2xl'
+    'responsive-modal': 'fixed left-[5%] right-[5%] w-[90%] h-[90%] top-[3%] overflow-y-scroll sm:overflow-auto md:left-[23%] md:top-1/8 md:w-[600px] md:h-auto lg:absolute lg:top-1/5 lg:z-10 lg:left-[5%] lg:right-0 lg:mx-auto lg:w-[700px] lg:h-auto text-white p-8 rounded-2xl',
+    'paginate-btn': 'py-1 px-2 lg:py-2 lg:px-4 bg-[rgb(67,67,67)] text-white ml-3 rounded-lg pointer transition-all duration-100 ease-in-out hover:text-black hover:bg-white active:text-black active:bg-white',
   }
 })
