@@ -75,6 +75,17 @@ export default defineConfig({
           ...button(baseColor, lighterColor)
         }
       }
+
+      function actionButton(baseColor: string, ligherColor: string) {
+        return {
+          ...button(baseColor, ligherColor),
+          padding: '.5rem .7rem',
+          color: '#fff',
+          borderRadius: '8px',
+          fontWeight: '500',
+          transition: 'box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)',
+        }
+      }
       const buttons = {
         '.timer-btn': {
           padding: '.5rem .8rem',
@@ -105,7 +116,9 @@ export default defineConfig({
           'background': 'rgba(136, 136, 136, 0.3)',
           'box-shadow': '0 4px 30px rgba(0, 0, 0, 0.1)',
           'backdrop-filter': 'blur(11.2px)',
-        }
+        },
+        '.cancel-btn': actionButton('#636363', '#303030'),
+        '.save-btn': actionButton('#ed4747', '#bc1212')
       }
       addComponents(buttons)
     }),
