@@ -71,9 +71,9 @@ function register() {
 </script>
 
 <template>
-  <div class="register">
+  <div class="text-center text-white">
     <h1>Register</h1>
-    <form @submit.prevent="register()">
+    <form class="mt-4" @submit.prevent="register()">
       <div>
         <input
           v-model="creds.username"
@@ -81,10 +81,10 @@ function register() {
           type="username"
           name="username"
           id="username"
-          class="form-input"
+          class="p-4 bg-[rgba(92,92,92,0.5)] outline-none border-none text-white mb-4 rounded-lg"
         />
         <Transition name="fade">
-          <span v-if="errors.username" class="error-message">
+          <span v-if="errors.username" class="text-vivid-red block">
             {{ errors.username }}
           </span>
         </Transition>
@@ -97,10 +97,10 @@ function register() {
           name="password"
           id="password"
           autocomplete="true"
-          class="form-input"
+          class="p-4 bg-[rgba(92,92,92,0.5)] outline-none border-none text-white mb-4 rounded-lg"
         />
         <Transition name="fade">
-          <span v-if="errors.password" class="error-message">
+          <span v-if="errors.password" class="text-vivid-red block">
             {{ errors.password }}
           </span>
         </Transition>
@@ -113,83 +113,35 @@ function register() {
           name="passwordConfirmation"
           id="passwordConfirmation"
           autocomplete="true"
-          class="form-input"
+          class="p-4 bg-[rgba(92,92,92,0.5)] outline-none border-none text-white mb-4 rounded-lg"
         />
         <Transition name="fade">
-          <span class="error-message">
+          <span class="text-vivid-red block">
             {{ errors.passwordConfirmation }}
           </span>
         </Transition>
       </div>
       <div>
-        <input type="submit" value="Submit" id="submit" />
+        <input type="submit" value="Submit" class="py-3 px-16 bg-vivid-red text-white border-none rounded-lg transition-all duration-200 ease-in-out pointer hover:bg-[#ff4b4b9f]" />
       </div>
     </form>
-    <div id="route-to-login">
+    <div class="mt-8">
       <span
         >Already have an account?
-        <router-link to="/login">Login here!</router-link>
+        <router-link class="text-vivid-red" to="/login">Login here!</router-link>
       </span>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-* {
-  color: white;
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s ease;
 }
-.register {
-  text-align: center;
 
-  form {
-    margin-top: 1rem;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.7s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .error-message {
-    color: rgb(249, 122, 90);
-    display: block;
-  }
-
-  .form-input {
-    padding: 1rem;
-    background-color: rgba(92, 92, 92, 0.5);
-    outline: none;
-    border: none;
-    color: white;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-  }
-
-  #submit {
-    padding: 0.8rem 4rem;
-    background-color: var(--vivid-red);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-
-    &:hover {
-      background-color: #ff4b4b9f;
-    }
-  }
-  #route-to-login {
-    margin-top: 2rem;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
