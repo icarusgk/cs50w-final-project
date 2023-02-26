@@ -16,19 +16,19 @@ defineEmits<{
 <template>
   <div>
     <!-- Description -->
-    <div class="new-task-description">
+    <div class="mt-2 mb-0 lg:my-4 lg:mx-0">
       <textarea
         @input="event => $emit('input:description', (event.target as HTMLInputElement).value)"
         @keyup.ctrl.enter="$emit('save:task')"
         :value="task.description"
         placeholder="Description"
-        class="new-task-textarea-description"
+        class="h-[80px] placeholder-gray-300 w-full outline-none border-b-gray-400 border-b-[1px] bg-transparent lg:h-[50px]"
       >
       </textarea>
     </div>
     <!-- Subtasks -->
-    <div class="new-task-subtasks-container">
-      <h2 class="title">Subtasks</h2>
+    <div class="my-4 mx-0">
+      <h2>Subtasks</h2>
       <!-- Add subtask button -->
       <div>
         <!-- Subtasks list -->
@@ -41,11 +41,11 @@ defineEmits<{
       </div>
     </div>
     <!-- Bottom container -->
-    <div class="bottom-container">
+    <div class="flex flex-col">
       <!-- Estimated Pomos -->
-      <div class="estimated-pomos-container">
+      <div class="flex">
         <div>
-          <span style="font-weight: 800">Estimated pomos</span>
+          <span class="font-extrabold">Estimated pomos</span>
         </div>
         <!-- Counter -->
         <PomoCountSetter
