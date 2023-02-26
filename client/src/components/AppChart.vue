@@ -96,6 +96,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-5xl my-9 mx-auto" ref="responsiveChart"></div>
+  <div class="max-w-5xl my-2 mx-auto" ref="responsiveChart"></div>
 </template>
 
