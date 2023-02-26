@@ -9,35 +9,35 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
 </script>
 
 <template>
-  <div id="icons">
+  <div class="flex justify-between mb-4 lg:mb-1">
     <AppTitle />
-    <ul>
+    <ul class="flex text-right list-none mt-2">
       <!-- Four icons -->
       <!-- User -->
-      <li>
-        <div class="login">
-          <div class="login">
+      <li class="inline-block mr-1 pointer">
+        <div class="flex items-center">
+          <div class="flex items-center">
             <Popper hover arrow placement="bottom">
-              <div class="user-info" v-if="auth.isAuthed">
+              <div class="flex items-center mr-4" v-if="auth.isAuthed">
                 <UserIcon />
                 <span>{{ auth.user?.username }}</span>
               </div>
               <template #content>
-                <div class="user-menu">
-                  <div class="tags" @click="$router.push('/tags')">
+                <div class="flex flex-col justify-center items-center">
+                  <div class="p-[0.7rem] m-2 rounded-lg bg-[rgb(92,92,92)] transition duration-150 hover:bg-dark-100 text-white" @click="$router.push('/tags')">
                     Manage tags
                   </div>
-                  <button id="logout-btn" @click="auth.logout()">Logout</button>
+                  <button class="py-2 px-4 mb-2 rounded-lg border-none bg-vivid-red text-white font-medium transition duration-100 ease-in pointer hover:bg-[#ff4b4b9f] focus:bg-[#ff4b4b9f] active:bg-[#ff4b4b9f]" @click="auth.logout()">Logout</button>
                 </div>
               </template>
             </Popper>
           </div>
-          <div v-if="!auth.isAuthed" class="user-actions-container">
+          <div v-if="!auth.isAuthed" class="flex gap-4">
             <div @click="$router.push('/login')">
-              <span class="login-btn">Login</span>
+              <span class="py-[0.8rem] px-4 rounded-lg transition duration-250 ease-in-out hover:bg-[rgb(60,60,60)]">Login</span>
             </div>
             <div @click="$router.push('/register')">
-              <span class="register-btn">Register</span>
+              <span class="py-[0.8rem] px-4 rounded-lg transition duration-250 ease-in-out bg-[rgb(60,60,60)] hover:bg-vivid-red">Register</span>
             </div>
           </div>
         </div>
@@ -55,143 +55,3 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
     </AppModal>
   </div>
 </template>
-
-<style lang="scss" scoped>
-#icons {
-  display: flex;
-  justify-content: space-between;
-
-  ul {
-    text-align: right;
-    list-style-type: none;
-    margin-block: 0 0;
-    margin-inline: 0 0;
-    margin-top: 0.45rem;
-    padding-inline-start: 0px;
-
-    li {
-      display: inline-block;
-      margin-right: 0.1rem;
-
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-
-      .login {
-        display: flex;
-        align-items: center;
-
-        .user-info {
-          display: flex;
-          align-items: center;
-          margin-right: 1rem;
-        }
-
-        .user-menu {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-
-          .tags {
-            padding: 0.7rem;
-            margin: 0.5rem;
-            border-radius: 8px;
-            background-color: rgb(92, 92, 92);
-            color: white;
-          }
-
-          #logout-btn {
-            padding: 0.5rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            border: none;
-            background-color: var(--vivid-red);
-            color: white;
-            font-weight: 500;
-            transition: background-color 0.15s ease-in;
-
-            &:hover,
-            &:focus,
-            &:active {
-              cursor: pointer;
-              background-color: #ff4b4b9f;
-            }
-          }
-        }
-
-        .user-actions-container {
-          display: flex;
-          gap: 1rem;
-          margin-top: 1.5rem;
-
-          .login-btn {
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
-            transition: background-color 0.25s ease-in-out;
-
-            &:hover {
-              background-color: rgb(60, 60, 60);
-            }
-          }
-
-          .register-btn {
-            background-color: rgb(60, 60, 60);
-            padding: 0.8rem 1rem;
-            border-radius: 10px;
-            transition: background-color 0.25s ease-in-out;
-
-            &:hover {
-              background-color: var(--vivid-red);
-            }
-          }
-        }
-      }
-
-      #streaks-icon {
-        display: flex;
-        align-items: center;
-        margin-right: 2rem;
-
-        #streaks-days-info {
-          margin-left: 1rem;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 1160px) {
-  #icons {
-    ul {
-      text-align: left;
-
-      li {
-        margin-left: -8px;
-        margin-right: 10px;
-        #streaks-icon {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  #icons {
-    ul {
-      li {
-        transform: scale(0.7);
-        .login {
-          .user-info {
-            margin-right: 0;
-          }
-        }
-      }
-    }
-  }
-}
-</style>
