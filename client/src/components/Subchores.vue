@@ -333,21 +333,21 @@ function removeTag(tag: ITag) {
 </script>
 
 <template>
-  <div class="new-task-minitask-container" v-auto-animate>
+  <div class="flex flex-wrap my-2 mx-0 gap-2.5" v-auto-animate>
     <!-- Display each subtask list -->
     <MiniLabel v-for="chore in chores" :is-task="true">
       <template #icon>
-        <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="icon" />
+        <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="ml-4 mt-0.5" />
         <div v-auto-animate>
           <DoneIcon
             @click="toggleChoreDone(chore)"
             v-if="!chore.done && !isNew"
-            class="icon"
+            class="ml-4 mt-0.5"
           />
           <MarkedDoneIcon
             @click="toggleChoreDone(chore)"
             v-if="chore.done"
-            class="icon"
+            class="ml-4 mt-0.5"
           />
         </div>
       </template>
@@ -358,19 +358,19 @@ function removeTag(tag: ITag) {
     <!-- Add new subtask or task -->
     <MiniLabel v-if="chores.length === 0" @click="openNewChore" :is-task="true">
       <template #title>
-        <span class="add-subtask">{{
+        <span class="mr-4">{{
           isProject ? 'Add task' : 'Add subtask'
         }}</span>
       </template>
       <template #icon>
-        <AddTagIcon class="new-subtask" />
+        <AddTagIcon class="w-4 h-4 mt-0.5" />
       </template>
     </MiniLabel>
     <!-- Add new subtask or task but just show the icon -->
     <div v-else>
       <MiniLabel @click="openNewChore" :is-task="true">
         <template #icon>
-          <AddTagIcon class="new-subtask" />
+          <AddTagIcon class="w-4 h-4 mt-0.5" />
         </template>
       </MiniLabel>
     </div>
@@ -417,32 +417,3 @@ function removeTag(tag: ITag) {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-.new-task-minitask-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0.5rem 0;
-  height: 100%;
-  gap: 10px;
-
-  .add-subtask {
-    margin-right: 1rem;
-  }
-
-  .icon {
-    margin-left: 1rem;
-    margin-top: 2px;
-  }
-
-  .new-subtask {
-    width: 15px;
-    height: 15px;
-    margin-top: 2px;
-  }
-  .done {
-    background-color: var(--vivid-red);
-    opacity: 0.4;
-  }
-}
-</style>

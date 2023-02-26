@@ -22,10 +22,10 @@ defineEmits<{
 
 <template>
   <!-- Blur -->
-  <div class="subtask">
+  <div class="p-4 bg-[#3a3a3a66] trasnform blur-sm rounded-xl">
     <!-- Flex row -->
-    <div class="container">
-      <div v-if="props.isProject" class="subtask-tags">
+    <div class="flex flex-col justify-between h-full">
+      <div v-if="props.isProject" class="flex">
         <Tags
           :id="props.chore.id"
           :task="props.chore"
@@ -34,7 +34,7 @@ defineEmits<{
         />
       </div>
       <!-- Title and description -->
-      <div class="title-and-description-container">
+      <div class="flex flex-col">
         <!-- Title -->
         <input
           :value="props.chore.title"
@@ -42,7 +42,7 @@ defineEmits<{
           placeholder="Title"
           type="text"
           autofocus
-          class="new-subtask-title"
+          class="border-none bg-transparent text-white text-2xl font-bold w-full focus:outline-none"
           @keyup.ctrl.enter="
             isProject ? $emit('save:task') : $emit('save:project')
           "
@@ -51,7 +51,7 @@ defineEmits<{
         <textarea
           :value="props.chore.description"
           @input="event => $emit('change:description', (event.target as HTMLInputElement).value)"
-          class="new-subtask-description"
+          class="w-full h-12.5 outline-none bg-transparent text-white border-none resize-none"
           placeholder="Description"
           @keyup.ctrl.enter="
             isProject ? $emit('save:task') : $emit('save:project')
@@ -59,10 +59,10 @@ defineEmits<{
         >
         </textarea>
       </div>
-      <div class="options-and-buttons">
-        <div class="delete-container">
+      <div class="flex items-center justify-end">
+        <div class="mr-4">
           <DeleteIcon
-            class="delete-button"
+            class="pointer"
             v-if="!newChore"
             @click="$emit('delete:chore')"
           />
@@ -75,21 +75,21 @@ defineEmits<{
           />
         </div>
         <!-- Estimated Timers and save button -->
-        <div class="buttons-container">
+        <div class="flex flex-col self-end">
           <!-- Buttons -->
-          <div class="buttons">
+          <div class="flex justify-end">
             <!-- Emit the close event -->
             <!-- Cancel -->
-            <button @click="$emit('close:details')" class="cancel-button">Close</button>
+            <button @click="$emit('close:details')" class="cancel-btn mr-2 pointer">Close</button>
             <!-- Save -->
             <button
               v-if="!isProject"
               @click="$emit('save:project')"
-              class="save-button"
+              class="timer-btn save-btn pointer"
             >
               Save!
             </button>
-            <button v-else class="save-button" @click="$emit('save:task')">
+            <button v-else class="save-btn pointer" @click="$emit('save:task')">
               Save!
             </button>
           </div>
@@ -98,127 +98,3 @@ defineEmits<{
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-@mixin btn($color) {
-  background-color: $color;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 3px 0 1px darken($color, 20%);
-  transition: box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-
-  &:active {
-    box-shadow: 0 0 $color;
-  }
-}
-.subtask {
-  padding: 1rem;
-  background-color: rgba(58, 58, 58, 0.7);
-  border-radius: 10px;
-
-  // Outer container
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-
-    .subtask-tags {
-      display: flex;
-    }
-
-    // First container
-    // Title and desc
-    .title-and-description-container {
-      display: flex;
-      flex-direction: column;
-
-      .new-subtask-title {
-        border: none;
-        background: transparent;
-        color: white;
-        font-size: 1.5rem;
-        font-weight: 700;
-        width: 100%;
-
-        &:focus {
-          outline: none;
-        }
-      }
-      .new-subtask-description {
-        width: 100%;
-        height: 50px;
-        outline: none;
-        background-color: transparent;
-        color: white;
-        border: none;
-        resize: none;
-      }
-    }
-
-    // Bottom container
-    // Pomos and buttons
-    .options-and-buttons {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      .delete-container {
-        margin-right: 1rem;
-
-        .delete-button {
-          &:hover,
-          &:focus,
-          &:active {
-            cursor: pointer;
-          }
-        }
-      }
-
-      .buttons-container {
-        display: flex;
-        flex-direction: column;
-        align-self: flex-end;
-
-        width: 150px;
-
-        .estimated {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-bottom: 0.5rem;
-
-          .icon {
-            padding-top: 3px;
-            width: 25px;
-          }
-
-          .text {
-            font-size: 0.75rem;
-          }
-        }
-
-        .buttons {
-          display: flex;
-          justify-content: flex-end;
-          .cancel-button {
-            @include btn(#636363);
-            margin-right: 0.5rem;
-          }
-          .save-button {
-            @include btn(#ed4747);
-          }
-        }
-      }
-    }
-  }
-}
-</style>
