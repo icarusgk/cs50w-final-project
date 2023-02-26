@@ -33,10 +33,10 @@ function login() {
 </script>
 
 <template>
-  <div class="login">
-    <div class="login">
+  <div class="text-center text-white">
+    <div class="text-center">
       <h1>Login</h1>
-      <form @submit.prevent="login()">
+      <form class="mt-4" @submit.prevent="login()">
         <div>
           <input
             v-model="creds.username"
@@ -44,10 +44,10 @@ function login() {
             type="username"
             name="username"
             id="username"
-            class="form-input"
+            class="p-4 bg-[rgba(92,92,92,0.5)] outline-none border-none text-white mb-4 rounded-lg"
           />
           <Transition name="fade">
-            <span v-if="errors.username" class="error-message">
+            <span v-if="errors.username" class="text-vivid-red block">
               {{ errors.username }}
             </span>
           </Transition>
@@ -60,97 +60,34 @@ function login() {
             name="password"
             id="password"
             autocomplete="true"
-            class="form-input"
+            class="p-4 bg-[rgba(92,92,92,0.5)] outline-none border-none text-white mb-4 rounded-lg"
           />
           <Transition name="fade">
-            <span v-if="errors.password" class="error-message">
+            <span v-if="errors.password" class="text-vivid-red block">
               {{ errors.password }}
             </span>
           </Transition>
         </div>
         <div>
-          <input type="submit" value="Submit" id="submit" />
+          <input type="submit" value="Submit" class="py-3 px-16 bg-vivid-red text-white border-none rounded-lg transition-all duration-200 ease-in-out pointer hover:bg-[#ff4b4b9f]" />
         </div>
       </form>
-      <div id="route-to-register">
+      <div class="mt-8">
         <span>Don't have an account yet? </span>
-        <RouterLink to="/register">Register here!</RouterLink>
+        <RouterLink class="text-vivid-red" to="/register">Register here!</RouterLink>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-* {
-  color: white;
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.7s ease;
 }
-.login {
-  text-align: center;
 
-  .login {
-    text-align: center;
-
-    form {
-      margin-top: 1rem;
-    }
-
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: opacity 0.7s ease;
-    }
-
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
-    }
-
-    .error-message {
-      color: rgb(249, 122, 90);
-      display: block;
-    }
-
-    .form-input {
-      padding: 1rem;
-      background-color: rgba(92, 92, 92, 0.5);
-      outline: none;
-      border: none;
-      color: white;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-    }
-
-    #submit {
-      padding: 0.8rem 4rem;
-      background-color: var(--vivid-red);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      transition: background-color 0.2s ease-in-out;
-
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-
-      &:hover {
-        background-color: #ff4b4b9f;
-      }
-    }
-
-    #route-to-register {
-      margin-top: 2rem;
-    }
-  }
-
-  .wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-
-  #route-to-register {
-    margin-top: 2rem;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
