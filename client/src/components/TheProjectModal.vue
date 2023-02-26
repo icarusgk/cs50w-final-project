@@ -50,7 +50,7 @@ function exitModal() {
 </script>
 
 <template>
-  <div class="project-container">
+  <div>
     <!-- Modal -->
     <AppModal :open="open" @exit:modal="exitModal()">
       <!-- Title -->
@@ -58,47 +58,17 @@ function exitModal() {
         <input
           type="text"
           name="title"
-          id="task-input-title"
+          class="w-[95%] border-none bg-transparent text-white font-bold text-[2rem] lg:w-full outline-none"
           maxlength="30"
           v-model="title"
           @keyup.ctrl.enter="saveAndExit()"
         />
       </template>
       <template #delete-icon>
-        <DeleteIcon @click="deleteProject()" class="delete-icon" />
+        <DeleteIcon @click="deleteProject()" class="pointer mr-2.5" />
       </template>
       <!-- Modal Info -->
       <TheProjectModalBody :project="project" />
     </AppModal>
   </div>
 </template>
-
-<style scoped lang="scss">
-#task-input-title {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.delete-icon {
-  margin-right: 10px;
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-@media (max-width: 480px) {
-  #task-input-title {
-    width: 95%;
-  }
-}
-</style>

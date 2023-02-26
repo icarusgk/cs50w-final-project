@@ -7,9 +7,9 @@ defineProps<{
 </script>
 
 <template>
-  <div class="project-modal">
+  <div class="mt-4">
     <!-- Tasks heading -->
-    <span class="task-heading">Tasks</span>
+    <span>Tasks</span>
     <!-- Add tasks button -->
     <div>
       <Subchores
@@ -21,36 +21,3 @@ defineProps<{
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.project-modal {
-  margin-top: 1rem;
-
-  .task-heading {
-    display: block;
-  }
-
-  .task-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0.5rem 0;
-    height: 33px;
-
-    .add-task {
-      padding: 0 1rem;
-    }
-
-    .icon {
-      margin-left: 1rem;
-      margin-top: 2px;
-    }
-
-    .new-subtask {
-      width: 15px;
-      height: 15px;
-      margin-top: 2px;
-      margin-left: 0.5rem;
-    }
-  }
-}
-</style>
