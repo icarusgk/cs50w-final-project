@@ -12,18 +12,18 @@ useFetch('tags', 'get').then((res) => {
 </script>
 
 <template>
-  <div class="tags-view">
-    <div class="go-back">
-      <BackIcon class="button" @click="$router.back()" />
-      <span class="title">Tags</span>
+  <div class="<sm:p-4 py-8 px-16">
+    <div class="flex items-center gap-4 text-white">
+      <BackIcon class="pointer" @click="$router.back()" />
+      <span class="text-white font-extrabold text-5xl">Tags</span>
     </div>
-    <div class="tags-container">
+    <div class="text-white flex flex-wrap gap-2.5 pt-4">
       <div
         v-for="tag in tags"
         v-if="fetched"
         :key="tag.id"
         @click="$router.push(`/tags/${tag.name}`)"
-        class="tag"
+        class="bg-light-gray p-4 rounded-lg font-semibold transition transition-all duration-200 ease-in-out pointer hover:bg-vivid-red"
       >
         <span>#{{ tag.name }}</span>
       </div>
@@ -36,60 +36,3 @@ useFetch('tags', 'get').then((res) => {
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.tags-view {
-  padding: 2rem 4rem;
-
-  .go-back {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    color: white;
-
-    .button {
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-    }
-    .title {
-      color: white;
-      font-size: 3rem;
-      font-weight: 800;
-    }
-  }
-  .tags-container {
-    color: white;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding-top: 1rem;
-
-    .tag {
-      background-color: var(--light-gray);
-      padding: 1rem;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: background-color 0.2s ease-in-out;
-
-      &:hover,
-      &:focus,
-      &:active {
-        cursor: pointer;
-      }
-
-      &:hover {
-        background-color: var(--vivid-red);
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .tags-view {
-    padding: 1rem;
-  }
-}
-</style>
