@@ -25,15 +25,15 @@ watch(open, () => {
 <template>
   <Transition name="slide">
     <div v-if="userTaskId !== 0 && auth.user" style="margin-top: 1rem">
-      <div class="current-task-container">
-        <div @click="open = true" class="container">
-          <div class="info">
+      <div class="flex items-center gap-4">
+        <div @click="open = true" class="w-84 bg-[#333] text-white p-4 rounded-lg font-semibold depth pointer active:shadow-none active:shadow-dark-gray">
+          <div class="flex items-center">
             <TaskInfoIcon />
-            <span>Working on task: {{ task?.title }}</span>
+            <span class="ml-2">Working on task: {{ task?.title }}</span>
           </div>
         </div>
         <Popper hover>
-          <CloseIcon @click="chore.changeCurrentTask(0)" class="close-icon" />
+          <CloseIcon @click="chore.changeCurrentTask(0)" class="pointer" />
           <template #content> Remove current task </template>
         </Popper>
       </div>
@@ -42,10 +42,10 @@ watch(open, () => {
   </Transition>
 </template>
 
-<style scoped lang="scss">
+<style scoped>
 .slide-enter-active,
 .slide-leave-active {
-  transition: opacity 0.7s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .slide-enter-from,
@@ -58,47 +58,5 @@ watch(open, () => {
   border-radius: 10px;
   color: #fff;
   font-weight: bold;
-}
-
-.current-task-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  .container {
-    width: 21rem;
-    background: #333;
-    color: white;
-    padding: 1rem;
-    border-radius: 10px;
-    font-weight: 600;
-    box-shadow: 3px 4px rgb(71, 71, 71);
-    transition: box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-    .info {
-      display: flex;
-      align-items: center;
-
-      span {
-        margin-left: 0.5rem;
-      }
-    }
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-    &:active {
-      box-shadow: 0 0 #333;
-    }
-  }
-
-  .close-icon {
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
 }
 </style>

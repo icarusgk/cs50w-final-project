@@ -118,7 +118,11 @@ export default defineConfig({
           'backdrop-filter': 'blur(11.2px)',
         },
         '.cancel-btn': actionButton('#636363', '#303030'),
-        '.save-btn': actionButton('#ed4747', '#bc1212')
+        '.save-btn': actionButton('#ed4747', '#bc1212'),
+        '.depth': {
+          'box-shadow': '3px 4px rgb(71, 71, 71)',
+          transition: 'box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)',
+        }
       }
       addComponents(buttons)
     }),
