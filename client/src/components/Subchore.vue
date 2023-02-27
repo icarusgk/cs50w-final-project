@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
 const props = defineProps<{
-  chore: ITask;
+  chore?: ITask;
   newChore: boolean;
   isProject: boolean;
   parentNew: boolean;
@@ -27,7 +27,7 @@ defineEmits<{
     <div class="flex flex-col justify-between h-full">
       <div v-if="props.isProject" class="flex">
         <Tags
-          :id="props.chore.id"
+          :id="props.chore?.id"
           :task="props.chore"
           :new="newChore"
           @remove:tag="$emit('remove:tag', $event)"
@@ -37,7 +37,7 @@ defineEmits<{
       <div class="flex flex-col">
         <!-- Title -->
         <input
-          :value="props.chore.title"
+          :value="props.chore?.title"
           @input="event => $emit('change:title', (event.target as HTMLInputElement).value)"
           placeholder="Title"
           type="text"
@@ -49,7 +49,7 @@ defineEmits<{
         />
         <!-- Description -->
         <textarea
-          :value="props.chore.description"
+          :value="props.chore?.description"
           @input="event => $emit('change:description', (event.target as HTMLInputElement).value)"
           class="w-full h-12.5 outline-none bg-transparent text-white border-none resize-none"
           placeholder="Description"

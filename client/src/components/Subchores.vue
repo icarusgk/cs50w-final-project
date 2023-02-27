@@ -2,11 +2,11 @@
 import type { ITask, ISubtask, ITag, IProject } from '@/types';
 
 const props = defineProps<{
-  chores: ITask[];
+  chores?: ITask[];
   isProject: boolean;
   task?: ITask;
   project?: IProject;
-  isNew: boolean;
+  isNew?: boolean;
 }>();
 
 const { task: existingTask, project: existingProject } = toRefs(props);
@@ -356,7 +356,7 @@ function removeTag(tag: ITag) {
       </template>
     </MiniLabel>
     <!-- Add new subtask or task -->
-    <MiniLabel v-if="chores.length === 0" @click="openNewChore" :is-task="true">
+    <MiniLabel v-if="chores?.length === 0" @click="openNewChore" :is-task="true">
       <template #title>
         <span class="mr-4">{{
           isProject ? 'Add task' : 'Add subtask'
