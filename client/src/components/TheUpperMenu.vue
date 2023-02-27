@@ -9,18 +9,18 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
 </script>
 
 <template>
-  <div class="flex justify-between mb-4 lg:mb-1">
+  <div class="flex justify-between mb-4 mx-4 lg:mb-1 lg:mx-16 text-white">
     <AppTitle />
     <ul class="flex text-right list-none mt-2">
       <!-- Four icons -->
       <!-- User -->
-      <li class="inline-block mr-1 pointer">
+      <li class="inline-block mr-0.5 pointer">
         <div class="flex items-center">
           <div class="flex items-center">
             <Popper hover arrow placement="bottom">
-              <div class="flex items-center mr-4" v-if="auth.isAuthed">
+              <div class="flex items-center mr-4 <sm:mr-1" v-if="auth.isAuthed">
                 <UserIcon />
-                <span>{{ auth.user?.username }}</span>
+                <span >{{ auth.user?.username }}</span>
               </div>
               <template #content>
                 <div class="flex flex-col justify-center items-center">

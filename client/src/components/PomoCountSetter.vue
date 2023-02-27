@@ -33,13 +33,13 @@ function setPomos(count: string) {
     <!-- Number -->
     <input
       type="number"
-      class="bg-transparent border-none text-white w-[18%] outline-none font-bold mr-2"
+      class="bg-transparent border-none text-white w-[20%] outline-none font-bold mr-2"
       :min="limits.min"
       :max="limits.max"
       :value="localPomos"
       @input="e => setPomos(((e.target) as HTMLInputElement).value)"
     />
-    <button @click="decreasePomos" class="mr-1.25 py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer">-</button>
-    <button @click="increasePomos" class="py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer">+</button>
+    <button @click="decreasePomos" class="mr-1.25 py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer hover:bg-vivid-red active:bg-[#f27575]">-</button>
+    <button @click="increasePomos" class="py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer hover:bg-vivid-red active:bg-[#f27575]">+</button>
   </div>
 </template>

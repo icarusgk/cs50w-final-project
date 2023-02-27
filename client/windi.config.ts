@@ -88,6 +88,16 @@ export default defineConfig({
           transition: 'box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)',
         }
       }
+      function settingsButton(baseColor: string, padding: string) {
+        return {
+          'background-color': baseColor,
+          'padding': padding,
+          'transition': 'box-shadow 0.1s cubic-bezier(0.075, 0.82, 0.165, 1)',
+          '&:active': {
+            'box-shadow': `0 0 ${baseColor}`
+          }
+        }
+      }
       const buttons = {
         '.timer-btn': {
           padding: '.5rem .8rem',
@@ -113,6 +123,18 @@ export default defineConfig({
           '&:active': {
             'box-shadow': '0 0 #000'
           }
+        },
+        '.back-to-default-btn': {
+          ...settingsButton('#fff', '0.5rem'),
+          'box-shadow': '3px 4px #ccc',
+        },
+        '.new-mode-btn': {
+          ...settingsButton('#fff', '0.8rem'),
+          'box-shadow': '3px 4px #ccc',
+        },
+        '.create-mode-btn': {
+          ...settingsButton('#ff4f5f', '0.8rem'),
+          'box-shadow': '3px 4px #e80015',
         },
         '.modal': {
           'background': 'rgba(136, 136, 136, 0.3)',
@@ -140,5 +162,6 @@ export default defineConfig({
     'pointer': 'hover:cursor-pointer active:cursor-pointer focus:cursor-pointer',
     'responsive-modal': 'fixed left-[5%] right-[5%] w-[90%] h-[90%] top-[3%] overflow-y-scroll sm:overflow-auto md:left-[23%] md:top-1/8 md:w-[600px] md:h-auto lg:absolute lg:top-1/5 lg:z-10 lg:left-[5%] lg:right-0 lg:mx-auto lg:w-[700px] lg:h-auto text-white p-8 rounded-2xl',
     'paginate-btn': 'py-1 px-2 lg:py-2 lg:px-4 bg-[rgb(67,67,67)] text-white ml-3 rounded-lg pointer transition-all duration-100 ease-in-out hover:text-black hover:bg-white active:text-black active:bg-white',
+    'settings-btn': 'border-none rounded-md mt-4 pointer',
   }
 })
