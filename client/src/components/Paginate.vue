@@ -125,14 +125,14 @@ function nextMoveBy(increasedBy: number): void {
 </script>
 
 <template>
-  <div class="container" v-if="props.pages > 1">
+  <div class="flex justify-center mt-4" v-if="props.pages > 1">
     <!-- Previous Button -->
     <div
       @click="
         $emit('prev');
         decreaseCurrentPage();
       "
-      class="paginate-btn action-btn"
+      class="paginate-btn"
     >
       Prev
     </div>
@@ -141,7 +141,7 @@ function nextMoveBy(increasedBy: number): void {
       <!-- Single number 1 -->
       <div
         @click="setCurrentPage(1)"
-        :class="{ active: props.page === 1, 'paginate-btn': true }"
+        :class="{ '!bg-white !text-dark-200': props.page === 1, 'paginate-btn': true }"
       >
         1
       </div>
@@ -157,7 +157,7 @@ function nextMoveBy(increasedBy: number): void {
       <div
         v-for="page in TOTAL_PAGES"
         :class="{
-          active: page + props.added === props.page,
+          '!bg-white !text-dark-200': page + props.added === props.page,
           'paginate-btn': true,
         }"
         @click="setCurrentPage(page + props.added)"
@@ -178,7 +178,7 @@ function nextMoveBy(increasedBy: number): void {
           $emit('set:page', props.pages),
             $emit('set:added', props.pages - (TOTAL_PAGES + 1))
         "
-        :class="{ active: props.page === props.pages, 'paginate-btn': true }"
+        :class="{ '!bg-white !text-dark-200': props.page === props.pages, 'paginate-btn': true }"
       >
         {{ props.pages }}
       </div>
@@ -188,7 +188,7 @@ function nextMoveBy(increasedBy: number): void {
       v-else
       v-for="(_, i) in props.pages"
       @click="setCurrentPage(i + 1)"
-      :class="{ active: i + 1 === props.page }"
+      :class="{ '!bg-white !text-dark-200': i + 1 === props.page }"
       class="paginate-btn"
     >
       {{ i + 1 }}
@@ -205,51 +205,3 @@ function nextMoveBy(increasedBy: number): void {
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.container {
-  display: flex;
-  justify-content: center;
-  margin-top: 1rem;
-
-  .flex {
-    display: flex;
-  }
-
-  .active {
-    background-color: white !important;
-    color: rgb(67, 67, 67) !important;
-  }
-
-  .paginate-btn {
-    padding: 0.5rem 1rem;
-    background-color: rgb(67, 67, 67);
-    color: white;
-    margin-left: 0.75rem;
-    border-radius: 8px;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-
-  .action-btn {
-    transition: all 0.1s ease-in-out;
-    &:hover,
-    &:active,
-    &:active {
-      background-color: var(--white);
-      color: var(--black);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .paginate-btn {
-      padding: 0.25rem 0.55rem;
-    }
-  }
-}
-</style>

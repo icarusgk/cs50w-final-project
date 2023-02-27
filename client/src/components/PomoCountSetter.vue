@@ -29,53 +29,17 @@ function setPomos(count: string) {
 </script>
 
 <template>
-  <div class="timers">
+  <div class="flex justify-center">
     <!-- Number -->
     <input
       type="number"
-      class="estimated-timers"
+      class="bg-transparent border-none text-white w-[20%] outline-none font-bold mr-2"
       :min="limits.min"
       :max="limits.max"
       :value="localPomos"
       @input="e => setPomos(((e.target) as HTMLInputElement).value)"
     />
-    <button @click="decreasePomos" class="minus-icon pomo-icon">-</button>
-    <button @click="increasePomos" class="pomo-icon">+</button>
+    <button @click="decreasePomos" class="mr-1.25 py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer hover:bg-vivid-red active:bg-[#f27575]">-</button>
+    <button @click="increasePomos" class="py-0.5 px-2 border-none outline-none rounded-md bg-lighter-gray text-white pointer hover:bg-vivid-red active:bg-[#f27575]">+</button>
   </div>
 </template>
-
-<style scoped lang="scss">
-.timers {
-  display: flex;
-  justify-content: center;
-
-  .estimated-timers {
-    background: transparent;
-    border: none;
-    color: white;
-    width: 18%;
-    outline: none;
-    font-weight: 700;
-    margin-right: 0.5rem;
-  }
-
-  .minus-icon {
-    margin-right: 5px;
-  }
-
-  .pomo-icon {
-    padding: 2px 7px;
-    border-radius: 4px;
-    border: none;
-    outline: none;
-    background-color: rgba(255, 255, 255, 0.25);
-    color: white;
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-}
-</style>

@@ -98,6 +98,7 @@ function backToDefault() {
       <input
         type="checkbox"
         id="auto-start-pomos"
+        class="mr-4"
         @change="changeAutoStartPomos"
         v-model="auth.user.auto_start_pomos"
       />
@@ -107,34 +108,36 @@ function backToDefault() {
       <input
         type="checkbox"
         id="auto-start-breaks"
+        class="mr-4"
         @change="changeAutoStartBreaks()"
         v-model="auth.user.auto_start_breaks"
       />
       <label for="auto-start-breaks">Auto start breaks</label>
     </div>
     <div v-if="Object.keys(modes).length > 0">
-      <button class="back-to-default-button" @click="backToDefault()">
+      <button class="mb-4 back-to-default-btn settings-btn text-gray-700" @click="backToDefault()">
         Back to default
       </button>
       <p>Change mode:</p>
       <div v-for="mode in modes" :key="mode.name">
         <Popper placement="right" hover>
-          <div class="mode-radio-input">
+          <div class="flex">
             <input
               type="radio"
               id="two"
+              class="mr-4"
               :value="mode.name"
               @change="changeMode(mode.id)"
               v-model="currentMode.name"
             />
             <label :for="mode.name">{{ mode.name }}</label>
-            <div @click="deleteMode(mode.id)" class="delete-icon">
+            <div @click="deleteMode(mode.id)" class="ml-4 pointer">
               <DeleteIcon />
             </div>
           </div>
           <template #content>
             <div>
-              <div class="mode-info">
+              <div class="flex flex-col">
                 <span><strong>Pomo:</strong> {{ mode.pomo }} min</span>
                 <span
                   ><strong>Short Rest:</strong> {{ mode.short_break }} min</span
@@ -150,7 +153,7 @@ function backToDefault() {
     </div>
     <button
       v-if="modes.length < 3"
-      class="new-mode-button"
+      class="new-mode-btn settings-btn text-gray-700"
       @click="showForm = !showForm"
     >
       {{ showForm ? 'Close' : 'Create a new Mode' }}
@@ -161,142 +164,36 @@ function backToDefault() {
         <div class="">
           <span>Name:</span>
           <input
-            class="name-input"
+            class="mt-[2px] h-6 outline-none border-none rounded-md py-[1px] px-[8px] w-40 bg-[rgb(87,87,87)] text-white ml-2"
             v-model="newMode.name"
             type="text"
             placeholder="New mode name"
           />
         </div>
-        <div class="modes">
-          <div class="mode-container">
+        <div class="flex">
+          <div class="flex flex-col">
             <span>Pomo:</span>
-            <input v-model="newMode.pomo" type="number" class="mode-input" />
+            <input v-model="newMode.pomo" type="number" class="<sm:w-4/5 <sm:mr-2 mt-[2px] h-6 outline-none border-none rounded-md py-[1px] px-[8px] bg-[rgb(87,87,87)] text-white mr-4 w-24" />
           </div>
-          <div class="mode-container">
+          <div class="flex flex-col">
             <span>Short rest:</span>
             <input
               v-model="newMode.short_break"
               type="number"
-              class="mode-input"
+              class="<sm:w-4/5 <sm:mr-2 mt-[2px] h-6 outline-none border-none rounded-md py-[1px] px-[8px] bg-[rgb(87,87,87)] text-white mr-4 w-24"
             />
           </div>
-          <div class="mode-container">
+          <div class="flex flex-col">
             <span>Long rest:</span>
             <input
               v-model="newMode.long_break"
               type="number"
-              class="mode-input"
+              class="<sm:w-4/5 <sm:mr-2 mt-[2px] h-6 outline-none border-none rounded-md py-[1px] px-[8px] bg-[rgb(87,87,87)] text-white mr-4 w-24"
             />
           </div>
         </div>
-        <input class="create-mode-button" type="submit" value="Create" />
+        <input class="create-mode-btn settings-btn text-white w-full" type="submit" value="Create" />
       </form>
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-@mixin btn($color, $padding) {
-  border: none;
-  background: $color;
-  border-radius: 10px;
-  margin-top: 1rem;
-  padding: $padding;
-  box-shadow: 0 3px 0 1px darken($color, 20%);
-  transition: box-shadow 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-
-  &:active {
-    box-shadow: 0 0 $color;
-  }
-}
-
-#auto-start-pomos,
-#auto-start-breaks {
-  margin-right: 1rem;
-}
-
-.back-to-default-button {
-  @include btn(white, 0.5rem);
-  margin-bottom: 1rem;
-}
-
-.mode-radio-input {
-  display: flex;
-
-  input[type='radio'] {
-    margin-right: 1rem;
-  }
-
-  .delete-icon {
-    margin-left: 1rem;
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-}
-.mode-info {
-  display: flex;
-  flex-direction: column;
-}
-.new-mode-button {
-  @include btn(white, 0.8rem);
-}
-
-.create-mode-button {
-  @include btn(#ff4f5f, 0.8rem);
-  color: white;
-  width: 100%;
-}
-
-.name-input {
-  margin-top: 2px;
-  height: 1.5rem;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  padding: 1px 8px;
-  width: 10rem;
-  background: rgb(87, 87, 87);
-  color: white;
-  margin-left: 0.5rem;
-}
-.modes {
-  display: flex;
-
-  .mode-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .mode-input {
-    margin-top: 2px;
-    height: 1.5rem;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    padding: 1px 8px;
-    width: 6rem;
-    margin-right: 1rem;
-    background: rgb(87, 87, 87);
-    color: white;
-  }
-}
-
-@media (max-width: 480px) {
-  .modes {
-    .mode-input {
-      width: 80%;
-      margin-right: 0.5rem;
-    }
-  }
-}
-</style>

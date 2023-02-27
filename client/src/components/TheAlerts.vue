@@ -3,73 +3,26 @@ import DoneIcon from './icons/DoneIcon.vue';
 const alerts = useAlertStore();
 </script>
 <template>
-  <div class="alert-container">
+  <div class="fixed overflow-hidden z-15 lg:z-5 top-[5.5rem] right-[-10px]">
     <TransitionGroup name="alerts">
       <div
         v-for="alert in alerts.items"
         :key="alert.id"
-        :class="`alert ${alert.style}`"
+        :class="`w-[150px] p-3 lg:w-[250px] mb-2 lg:py-4 lg:px-6 rounded-lg ${alert.style}`"
       >
         <div class="flex">
-          <div class="close-icon">
+          <div class="flex justify-center items-center mr-2.5 pointer">
             <div @click="alerts.remove(alert.id)">
               <DoneIcon />
             </div>
           </div>
-          <div class="message">{{ alert.message }}</div>
+          <div class="text-[0.9rem] lg:text-base text-white">{{ alert.message }}</div>
         </div>
       </div>
     </TransitionGroup>
   </div>
 </template>
-<style scoped lang="scss">
-.alert-container {
-  position: fixed;
-  overflow: hidden;
-  z-index: 5;
-  top: 5.5rem;
-  right: -10px;
-}
-
-.alert {
-  width: 250px;
-  margin-bottom: 0.5rem;
-  padding: 1rem 1.5rem;
-  border-radius: 10px;
-}
-
-.close-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-.message {
-  color: white;
-}
-
-.error {
-  background-color: rgb(249, 71, 31);
-}
-
-.flex {
-  display: flex;
-}
-
-.success {
-  background-color: rgb(52, 169, 94);
-}
-
-.info {
-  background-color: rgb(0, 140, 255);
-}
+<style scoped>
 .alerts-enter-active,
 .alerts-leave-active {
   transition: all 0.5s cubic-bezier(0.6, 0.2, 0.4, 1);
@@ -80,19 +33,15 @@ const alerts = useAlertStore();
   transform: translateX(1rem);
 }
 
-@media (max-width: 768px) {
-  .alert-container {
-    z-index: 15;
-    .message {
-      font-size: 0.9rem;
-    }
-  }
+.error {
+  background-color: rgb(249, 71, 31);
+}
 
-  .alert {
-    width: 150px;
-    margin-bottom: 0.5rem;
-    padding: 0.75rem;
-    border-radius: 10px;
-  }
+.success {
+  background-color: rgb(52, 169, 94);
+}
+
+.info {
+  background-color: rgb(0, 140, 255);
 }
 </style>

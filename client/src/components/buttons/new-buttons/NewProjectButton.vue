@@ -42,7 +42,7 @@ function saveProject() {
       <input
         type="text"
         name="title"
-        id="new-project-input-title"
+        class="border-none outline-none bg-transparent text-white text-4xl font-bold w-[90%] placeholder-[rgb(190,190,190)]"
         placeholder="New project"
         maxlength="30"
         @keyup.ctrl.enter="saveProject()"
@@ -58,34 +58,3 @@ function saveProject() {
   </AppModal>
 </template>
 
-<style scoped lang="scss">
-#new-project-input-title {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  width: 90%;
-
-  &:focus,
-  &:hover,
-  &:active {
-    outline: none;
-  }
-
-  $placeholderColor: rgb(190, 190, 190);
-
-  &::-webkit-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::-moz-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::-ms-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::placeholder {
-    color: $placeholderColor;
-  }
-}
-</style>

@@ -17,24 +17,25 @@ watch(open, () => {
 </script>
 
 <template>
-  <div class="single-task-info">
-    <div class="tags-and-counters">
-      <div class="tags">
+  <!-- w-[320px] -->
+  <div class="w-full p-4 bg-[#3d3d3d] rounded-lg pointer md:w-[320px] pointer h-min text-white">
+    <div class="flex justify-between">
+      <div class="flex mr-8 h-min">
         <Tags :task="task" :info="true" />
       </div>
-      <div class="counters">
-        <div class="counter-in-container">
+      <div class="flex">
+        <div class="flex items-center mr-2.5">
           <TasksDoneIcon />
-          <span class="single-counter">{{ task.gone_through }}</span>
+          <span class="ml-1.25">{{ task.gone_through }}</span>
         </div>
-        <div>
+        <div class="flex items-center">
           <TotalTasksIcon />
-          <span class="single-counter">{{ task.estimated }}</span>
+          <span class="ml-1.25">{{ task.estimated }}</span>
         </div>
       </div>
     </div>
-    <div class="task-info" @click="open = true">
-      <span class="title">{{ task.title }}</span>
+    <div class="flex flex-col h-[85%] justify-center" @click="open = true">
+      <span class="font-bold">{{ task.title }}</span>
       <span>{{ task.description }}</span>
     </div>
     <TheTaskModal
@@ -45,58 +46,3 @@ watch(open, () => {
     />
   </div>
 </template>
-
-<style scoped lang="scss">
-.single-task-info {
-  width: 320px;
-  background-color: #3d3d3d;
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-
-  .tags-and-counters {
-    display: flex;
-    justify-content: space-between;
-
-    .tags {
-      display: flex;
-      margin-right: 2rem;
-    }
-    .counters {
-      display: flex;
-
-      .counter-in-container {
-        margin-right: 10px;
-      }
-
-      .single-counter {
-        margin-left: 5px;
-      }
-    }
-  }
-
-  .task-info {
-    display: flex;
-    flex-direction: column;
-    height: 85%;
-    justify-content: center;
-    .title {
-      font-weight: 700;
-      font-size: larger;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .single-task-info {
-    height: min-content;
-    width: 100%;
-  }
-}
-</style>

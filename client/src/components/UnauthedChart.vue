@@ -88,12 +88,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="unauthedChart" ref="unauthedChart"></div>
+  <div class="max-w-[760px] my-2 mx-auto" ref="unauthedChart"></div>
 </template>
-
-<style>
-#unauthedChart {
-  max-width: 760px;
-  margin: 35px auto;
-}
-</style>

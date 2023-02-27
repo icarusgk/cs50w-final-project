@@ -72,12 +72,12 @@ onUnmounted(() => {
           @remove:tag="(tag: ITag) => removeTag(tag)"
           @close:modal="$emit('exit:modal')"
         />
-        <div class="buttons">
-          <div class="done-buttons" v-auto-animate>
+        <div class="flex items-baseline">
+          <div class="pointer" v-auto-animate>
             <DoneIcon @click="$emit('toggle:done')" v-if="!props.task.done" />
             <MarkedDoneIcon @click="$emit('toggle:done')" v-else />
           </div>
-          <DeleteIcon @click="deleteTask()" class="delete-icon" />
+          <DeleteIcon @click="deleteTask()" class="my-[0.1rem] mx-2 pointer" />
         </div>
       </template>
       <!-- Title -->
@@ -85,7 +85,7 @@ onUnmounted(() => {
         <input
           type="text"
           name="title"
-          id="task-input-title"
+          class="border-none bg-transparent text-white text-4xl font-bold w-full focus:outline-none"
           @input="(event) => handleInput(event)"
           :value="props.task.title"
           @keyup.ctrl.enter="saveTask()"
@@ -100,58 +100,11 @@ onUnmounted(() => {
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
-        <div class="pomos-done" v-if="width < 480">
-          <span>Pomos done: {{ task.gone_through }}</span>
+        <div class="text-center" v-if="width < 480">
+          <span class="font-semibold text-xl">Pomos done: {{ task.gone_through }}</span>
         </div>
         <SaveButton @click="saveTask()" />
       </template>
     </AppModal>
   </div>
 </template>
-
-<style scoped lang="scss">
-.delete-icon {
-  margin: 0.1rem 0.5rem;
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-.buttons {
-  display: flex;
-  align-items: baseline;
-}
-
-.done-buttons {
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-
-#task-input-title {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  width: 100%;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .pomos-done {
-    text-align: center;
-    span {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-  }
-}
-</style>

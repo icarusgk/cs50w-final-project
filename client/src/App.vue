@@ -36,96 +36,22 @@ watch(
 
 <template>
   <TheSidebar />
-  <div class="body">
-    <div class="menu-and-content" :class="{ blur: modal.isOpened }">
-      <TheUpperMenu class="upper-menu" />
+  <div class="flex ml-0 mb-[140px] lg:ml-[130px] lg:mb-0 relative">
+    <div :class="[{ '<sm:p-4 filter blur-md pointer-events-none duration-150 ease-out': modal.isOpened }, 'w-full flex flex-col']">
+      <TheUpperMenu class="pt-6 py-12 pb-0" />
       <RouterView @vnodeUpdated="modal.close()"></RouterView>
     </div>
     <TheAlerts />
   </div>
 </template>
 
-<style lang="scss">
+<style>
 /* variables */
 @import './assets/base.css';
 
 /* Popper theme */
 @import './assets/popper-theme.css';
 
-/* Fonts */
+/* Lexend font */
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
-* {
-  font-family: 'Lexend', sans-serif;
-}
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type='number'] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-/* Resets */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  transition: filter 0.15s ease-out;
-}
-
-html {
-  background-color: #212121;
-}
-
-.blur {
-  filter: blur(14px);
-  pointer-events: none;
-}
-
-.body {
-  display: flex;
-  margin-left: 130px;
-  position: relative;
-
-  .menu-and-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    .upper-menu {
-      padding: 1.5rem 3rem 0 3rem;
-      color: white;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .body {
-    margin-left: 0;
-    margin-bottom: 140px;
-
-    .menu-and-content {
-      padding: 0.5rem;
-      .upper-menu {
-        padding: 0;
-      }
-    }
-  }
-
-  .blur {
-    filter: blur(60px);
-  }
-
-  * {
-    touch-action: manipulation;
-  }
-}
 </style>
