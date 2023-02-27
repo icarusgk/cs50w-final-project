@@ -135,7 +135,7 @@ function goToTag(tag: string) {
 
 <template>
   <!-- Existing tags -->
-  <div v-auto-animate class="tags-animate-container">
+  <div v-auto-animate class="flex w-full">
     <MiniLabel v-if="task.tags.length === 0 && info" :is-add="true">
       <template #title>
         <span>No tags</span>
@@ -149,7 +149,7 @@ function goToTag(tag: string) {
         <DeleteTagIcon
           v-if="!info"
           @click="deleteTag(tag)"
-          class="delete-tag-icon"
+          class="ml-2"
         />
       </template>
     </MiniLabel>
@@ -161,7 +161,7 @@ function goToTag(tag: string) {
       :is-add="true"
     >
       <template #title>
-        <span class="task-title">Add tag</span>
+        <span class="mr-2">Add tag</span>
       </template>
       <template #icon>
         <AddTagIcon />
@@ -181,23 +181,23 @@ function goToTag(tag: string) {
       </template>
     </MiniLabel>
     <!-- Form -->
-    <div class="form-container" v-if="!newTagVisible">
+    <div v-if="!newTagVisible">
       <Popper placement="bottom" :arrow="true">
         <!-- Input -->
-        <div class="new-tag-container">
+        <div class="flex items-center ml-1.5">
           <input
             type="text"
-            class="new-tag-name-input"
+            class="mt-[2px] h-6 outline-none border-none rounded-[4px] py-[1px] px-[8px] w-24 bg-[rgb(87,87,87)] text-white"
             v-model="newTag"
             @keydown.enter="addTag()"
           />
-          <CloseIcon class="close-icon" @click="newTagVisible = true" />
-          <button @click="addTag()" class="new-tag-button">Add</button>
+          <CloseIcon class="transform scale-40 pointer" @click="newTagVisible = true" />
+          <button @click="addTag()" class="px-0 py-2 border-none pointer">Add</button>
         </div>
         <template #content="{ close }">
           <!-- Pre fetched tags -->
           <div>
-            <span class="add-new-tag-text">Add a new tag:</span>
+            <span class="text-xs">Add a new tag:</span>
             <div
               class="tag-results"
               @click="
@@ -206,12 +206,12 @@ function goToTag(tag: string) {
               "
               v-for="tag in selectedTags.slice(0, 5)"
             >
-              <div class="tag-result">
+              <div class="py-[0.1rem] px-[0.4rem] my-[0.3rem] mx-0 rounded-md pointer">
                 {{ tag.name }}
               </div>
             </div>
             <div
-              class="tag-result"
+              class="py-[0.1rem] px-[0.4rem] my-[0.3rem] mx-0 rounded-md pointer"
               @click="addTag()"
               v-if="selectedTags.length === 0"
             >
@@ -223,75 +223,3 @@ function goToTag(tag: string) {
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.delete-tag-icon {
-  margin-left: 0.5rem;
-}
-
-.task-title {
-  margin-right: 0.5rem;
-}
-
-.tags-animate-container {
-  display: flex;
-  width: 100%;
-}
-
-.new-tag-container {
-  display: flex;
-  align-items: center;
-  margin-left: 6px;
-
-  .new-tag-name-input {
-    margin-top: 2px;
-    height: 1.5rem;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    padding: 1px 8px;
-    width: 6rem;
-    background: rgb(87, 87, 87);
-    color: white;
-  }
-
-  .close-icon {
-    transform: scale(40%);
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-
-  .new-tag-button {
-    padding: 0 0.5rem;
-    border-radius: 4px;
-    border: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      cursor: pointer;
-    }
-  }
-}
-
-.add-new-tag-text {
-  font-size: 0.75rem;
-}
-
-.tag-result {
-  padding: 0.1rem 0.4rem;
-  margin: 0.3rem 0;
-  border-radius: 5px;
-  background-color: rgba(233, 244, 233, 0.1);
-
-  &:hover,
-  &:focus,
-  &:active {
-    cursor: pointer;
-  }
-}
-</style>

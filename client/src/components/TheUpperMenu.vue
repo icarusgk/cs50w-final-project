@@ -49,7 +49,7 @@ watch([() => userOpen.value, () => settingsOpen.value], () => {
     </ul>
     <AppModal :open="settingsOpen" @exit:modal="settingsOpen = false">
       <template #title>
-        <h1>Settings</h1>
+        <span class="font-bold text-4xl">Settings</span>
       </template>
       <TheSettings />
     </AppModal>
