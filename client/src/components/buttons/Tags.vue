@@ -5,7 +5,7 @@ import router from '@/router';
 
 const props = defineProps<{
   id?: number;
-  task: ITask;
+  task?: ITask;
   info?: boolean;
   new?: boolean;
 }>();
@@ -25,8 +25,8 @@ const newTag = ref('');
 // Base all the tags out of the tags in the store
 const allTags = ref(chore.tags);
 
-function removeRepeatedTags(tags: ITag[]) {
-  tags.forEach((taskTag: ITag) => {
+function removeRepeatedTags(tags?: ITag[]) {
+  tags?.forEach((taskTag: ITag) => {
     allTags.value = allTags.value.filter(
       (tag: ITag) => tag.name !== taskTag.name
     );
@@ -34,13 +34,13 @@ function removeRepeatedTags(tags: ITag[]) {
 }
 
 // On opening of the task
-removeRepeatedTags(props.task.tags);
+removeRepeatedTags(props.task?.tags);
 
 // When the task changes
 
 // Watch for changes in the props
 watch(
-  () => props.task.tags,
+  () => props.task?.tags,
   (newTags) => removeRepeatedTags(newTags),
   { deep: true }
 );
@@ -52,19 +52,19 @@ const selectedTags = computed(() => {
 });
 
 const hasNotTag = () =>
-  !props.task.tags.some((tag: ITag) => tag.name === newTag.value);
+  !props.task?.tags.some((tag: ITag) => tag.name === newTag.value);
 
 async function addTag() {
   if (newTag.value) {
     // Push the tag but not upload it
     if (props.new && hasNotTag()) {
-      // Check if newTag is not on props.task.tags
-      props.task.tags.push({ name: newTag.value });
+      // Check if newTag is not on props.task?.tags
+      props.task?.tags.push({ name: newTag.value });
       // if not new
     } else {
       // filter if not in taskTags
       if (
-        !(props.task.tags.filter((tag) => tag.name === newTag.value).length > 0)
+        !(props.task!.tags.filter((tag) => tag.name === newTag.value).length > 0)
       ) {
         // Make the request
         try {
@@ -83,7 +83,7 @@ async function addTag() {
               alert.info('Tag added');
             }
             // response.data will be the tag obj {id, name}
-            props.task.tags.push(response.data?.tag);
+            props.task?.tags.push(response.data?.tag);
           }
         } catch (err) {
           console.log('addTag err', err);
@@ -136,12 +136,12 @@ function goToTag(tag: string) {
 <template>
   <!-- Existing tags -->
   <div v-auto-animate class="flex w-full">
-    <MiniLabel v-if="task.tags.length === 0 && info" :is-add="true">
+    <MiniLabel v-if="task?.tags.length === 0 && info" :is-add="true">
       <template #title>
         <span>No tags</span>
       </template>
     </MiniLabel>
-    <MiniLabel v-else v-for="tag in task.tags" :is-tag="true">
+    <MiniLabel v-else v-for="tag in task?.tags" :is-tag="true">
       <template #title>
         <span @click="goToTag(tag.name)"> #{{ tag.name }} </span>
       </template>
@@ -156,7 +156,7 @@ function goToTag(tag: string) {
 
     <!-- Add tags -->
     <MiniLabel
-      v-if="!info && task.tags.length === 0 && newTagVisible"
+      v-if="!info && task?.tags.length === 0 && newTagVisible"
       @click="newTagVisible = false"
       :is-add="true"
     >
@@ -171,7 +171,7 @@ function goToTag(tag: string) {
     <!-- Replace the button with input -->
     <MiniLabel
       v-if="
-        !info && task.tags.length > 0 && task.tags.length < 3 && newTagVisible
+        !info && task!.tags.length > 0 && task!.tags.length < 3 && newTagVisible
       "
       @click="newTagVisible = false"
       :is-add="true"
