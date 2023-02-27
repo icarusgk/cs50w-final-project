@@ -64,7 +64,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       <input
         type="text"
         name="title"
-        id="new-task-input-title"
+        class="border-none bg-transparent text-white font-bold text-[2rem] w-full outline-none placeholder-[rgb(190,190,190)]"
         placeholder="New task title"
         v-model="initialTask.title"
         @keyup.ctrl.enter="saveTask()"
@@ -84,35 +84,3 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
     </template>
   </AppModal>
 </template>
-
-<style scoped lang="scss">
-#new-task-input-title {
-  border: none;
-  background: transparent;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  width: 100%;
-
-  &:focus,
-  &:hover,
-  &:active {
-    outline: none;
-  }
-
-  $placeholderColor: rgb(190, 190, 190);
-
-  &::-webkit-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::-moz-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::-ms-input-placeholder {
-    color: $placeholderColor;
-  }
-  &::placeholder {
-    color: $placeholderColor;
-  }
-}
-</style>

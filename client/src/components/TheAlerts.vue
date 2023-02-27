@@ -22,7 +22,7 @@ const alerts = useAlertStore();
     </TransitionGroup>
   </div>
 </template>
-<style scoped lang="scss">
+<style scoped>
 .alerts-enter-active,
 .alerts-leave-active {
   transition: all 0.5s cubic-bezier(0.6, 0.2, 0.4, 1);

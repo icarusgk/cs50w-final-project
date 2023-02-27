@@ -55,7 +55,7 @@ async function addToProject(project: IProject) {
 <template>
   <!-- Add to project -->
   <div
-    class="p-2 mt-4 rounded-lg w-full bg-[rgb(58,58,58)]] lg:w-[60%] pointer text-center"
+    class="p-3 mt-4 rounded-lg w-full bg-[rgb(58,58,58)] lg:w-[60%] pointer text-center"
   >
     <Popper arrow placement="bottom">
       <div>
