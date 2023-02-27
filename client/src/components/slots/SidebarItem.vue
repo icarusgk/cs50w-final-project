@@ -1,66 +1,12 @@
 <template>
-  <div class="item">
+  <div class="item group flex items-center <sm:rounded-tl-[10px] <sm:rounded-tr-[10px] w-full <sm:hover:w-full text-white p-4 pl-[1.7rem] relative transition-all duration-200 ease-in-out hover:bg-vivid-red hover:w-[180%] hover:rounded-tr-[10px] hover:rounded-br-[10px]">
     <i>
       <slot name="icon"></slot>
     </i>
-    <div class="title">
+    <div class="title <sm:transition-none <sm:flex-row absolute <sm:opacity-100 <sm:static <sm:visible <sm:transition-none <sm:ml-2 left-16 opacity-0 invisible transition transition ease-in-out duration-500 group-hover:opacity-100 group-hover:visible group-hover:delay-0">
       <h3>
         <slot name="heading"></slot>
       </h3>
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  color: white;
-  padding: 1rem;
-  padding-left: 1.7rem;
-  // This transition is being applied to the background color
-  transition: all 0.2s ease-in-out;
-  position: relative;
-
-  .title {
-    opacity: 0;
-    position: absolute;
-    visibility: hidden;
-    transition: opacity 0.4s, visibility 0s ease-in-out 0.1s;
-    left: 4rem;
-  }
-
-  &:hover {
-    background-color: var(--vivid-red);
-    border-radius: 0 10px 10px 0;
-    width: 180%;
-
-    .title {
-      opacity: 1;
-      visibility: visible;
-      transition-delay: 0s;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .item {
-    // reset the things made on desktop
-    transition: none;
-    flex-direction: row;
-
-    .title {
-      opacity: 1;
-      position: static;
-      visibility: visible;
-      transition: none;
-      margin-left: 0.5rem;
-    }
-
-    &:hover {
-      width: 100%;
-    }
-  }
-}
-</style>
