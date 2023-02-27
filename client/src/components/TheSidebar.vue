@@ -42,7 +42,6 @@
   border-radius: 0 10px 10px 0;
 }
 
-// TODO: Fix mobile view
 @media (max-width: 768px) {
   .router-link-active {
     background-color: var(--vivid-red);
