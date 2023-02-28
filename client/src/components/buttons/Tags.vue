@@ -189,6 +189,7 @@ function goToTag(tag: string) {
             type="text"
             class="mt-[2px] h-6 outline-none border-none rounded-[4px] py-[1px] px-[8px] w-24 bg-[rgb(87,87,87)] text-white"
             v-model="newTag"
+            v-focus
             @keydown.enter="addTag()"
           />
           <CloseIcon class="transform scale-40 pointer" @click="newTagVisible = true" />

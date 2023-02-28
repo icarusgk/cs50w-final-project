@@ -89,6 +89,7 @@ onUnmounted(() => {
           @input="(event) => handleInput(event)"
           :value="props.task.title"
           @keyup.ctrl.enter="saveTask()"
+          v-focus
         />
       </template>
       <!-- Body -->

@@ -47,6 +47,7 @@ function saveProject() {
         maxlength="30"
         @keyup.ctrl.enter="saveProject()"
         v-model="newProject.name"
+        v-focus
       />
     </template>
 

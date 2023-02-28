@@ -62,6 +62,7 @@ function exitModal() {
           maxlength="30"
           v-model="title"
           @keyup.ctrl.enter="saveAndExit()"
+          v-focus
         />
       </template>
       <template #delete-icon>
