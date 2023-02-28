@@ -66,8 +66,9 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
         name="title"
         class="border-none bg-transparent text-white font-bold text-[2rem] w-full outline-none placeholder-[rgb(190,190,190)]"
         placeholder="New task title"
-        v-model="initialTask.title"
         @keyup.ctrl.enter="saveTask()"
+        v-model="initialTask.title"
+        v-focus
       />
     </template>
     <!-- Rest of modal -->
