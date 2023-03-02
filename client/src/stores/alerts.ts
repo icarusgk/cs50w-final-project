@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { v4 as uuid } from 'uuid';
+import { reactive } from 'vue';
 
 export type AlertStyle = 'error' | 'success' | 'info' | 'none';
 
@@ -20,47 +21,38 @@ export interface Alert extends AlertOptions {
   message: string;
 }
 
-export const useAlertStore = defineStore('alerts', {
-  state: () => ({
-    items: [] as Alert[],
-  }),
+export const useAlertStore = defineStore('alerts', () => {
+  const items = reactive<Alert[]>([])
 
-  actions: {
-    notify(message: string, style: AlertStyle, options?: AlertOptions) {
-      options = { ...defaultOptions, style, ...options };
+  function notify(message: string, style: AlertStyle, options?: AlertOptions) {
+    options = { ...defaultOptions, style, ...options };
+    const id = uuid();
 
-      const id = uuid();
+    items.push({ message, id, ...options });
 
-      this.items.push({
-        message,
-        id,
-        ...options,
-      });
+    if (options.timeout) {
+      setTimeout(() => { remove(id) }, options.timeout)
+    }
+  }
 
-      if (options.timeout) {
-        setTimeout(() => {
-          this.remove(id);
-        }, options.timeout);
-      }
-    },
+  function success(message: string, options?: AlertOptions) {
+    notify(message, 'success', options);
+  }
 
-    success(message: string, options?: AlertOptions) {
-      this.notify(message, 'success', options);
-    },
+  function error(message: string, options?: AlertOptions) {
+    notify(message, 'error', options);
+  }
 
-    error(message: string, options?: AlertOptions) {
-      this.notify(message, 'error', options);
-    },
+  function info(message: string, options?: AlertOptions) {
+    notify(message, 'info', options);
+  }
 
-    info(message: string, options?: AlertOptions) {
-      this.notify(message, 'info', options);
-    },
+  function remove(id: string) {
+    const index = items.findIndex((item) => item.id === id);
+    if (index > -1) {
+      items.splice(index, 1);
+    }
+  }
 
-    remove(id: string) {
-      const index = this.items.findIndex((item) => item.id === id);
-      if (index > -1) {
-        this.items.splice(index, 1);
-      }
-    },
-  },
+  return { items, success, error, info }
 });
