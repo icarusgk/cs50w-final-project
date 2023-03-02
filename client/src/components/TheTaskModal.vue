@@ -6,50 +6,39 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-// const emit = defineEmits(['exit', 'toggleDone', 'deleteTask']);
-const emit = defineEmits<{
-  (e: 'exit:modal'): void
-  (e: 'toggle:done'): void
-  (e: 'delete:task'): void
-}>();
+// @ts-ignore
+const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
+const closeModal = inject<() => void>('closeModal');
 
-let tmpNewTitle = '';
-let tmpNewDesc = '';
-let tmpEstimated: number;
-
-const chore = useChoreStore();
-
-// Saves task with PUT method
-function saveTask() {
-  props.task.title = tmpNewTitle !== '' ? tmpNewTitle : props.task.title;
-  props.task.description =
-    tmpNewDesc !== '' ? tmpNewDesc : props.task.description;
-  props.task.estimated =
-    tmpEstimated !== null ? tmpEstimated : props.task.estimated;
-
-  chore.saveTask(props.task);
-
-  emit('exit:modal');
-}
-
-function deleteTask() {
-  emit('delete:task');
-  emit('exit:modal');
-}
-
-function removeTag(tag: ITag) {
-  props.task.tags = props.task.tags.filter((t: ITag) => t.id !== tag.id);
-}
-
-function handleInput(event: any) {
-  tmpNewTitle = event.target.value;
-}
-
-const handleDesc = (desc: any) => (tmpNewDesc = desc);
-
-const handlePomos = (pomos: number) => (tmpEstimated = pomos);
+// This way it prevents from mutating the original object
+// inside props.task by reference
+let localTask = ref<ITask>({ ...props.task });
 
 const width = ref(window.innerWidth);
+
+const isFormPristine = computed(() => {
+  return localTask.value.title === props.task.title
+    && localTask.value.description === props.task.description
+    && localTask.value.estimated === props.task.estimated
+});
+
+function saveTheTask() {
+  saveTask(props.task, { ...localTask.value });
+  closeModal?.();
+}
+
+function deleteTheTask() {
+  deleteTask(props.task);
+  closeModal?.();
+}
+
+function exitWithoutSaving() {
+  // Copy the props again
+  localTask.value.title = props.task.title;
+  localTask.value.description = props.task.description;
+  localTask.value.estimated = props.task.estimated;
+  closeModal?.();
+}
 
 onMounted(() => {
   window.addEventListener('resize', () => (width.value = window.innerWidth));
@@ -63,21 +52,25 @@ onUnmounted(() => {
 <template>
   <div class="task-container">
     <!-- Modal -->
-    <AppModal :open="open" @exit:modal="$emit('exit:modal')" :is-task="true">
+    <AppModal :open="open" @exit:modal="exitWithoutSaving()" :is-task="true">
       <!-- Tags -->
       <template #tags>
         <Tags
-          :task="props.task"
           :id="props.task.id"
-          @remove:tag="(tag: ITag) => removeTag(tag)"
+          :task="props.task"
+          @add:tag="(tag: ITag) => addTag(tag)"
+          @remove:tag="(tag: ITag) => removeTag(tag.id)"
           @close:modal="$emit('exit:modal')"
         />
         <div class="flex items-baseline">
-          <div class="pointer" v-auto-animate>
-            <DoneIcon @click="$emit('toggle:done')" v-if="!props.task.done" />
-            <MarkedDoneIcon @click="$emit('toggle:done')" v-else />
+          <div @click="toggleDone(task)" class="pointer" v-auto-animate>
+            <DoneIcon v-if="!task.done" />
+            <MarkedDoneIcon v-else />
           </div>
-          <DeleteIcon @click="deleteTask()" class="my-[0.1rem] mx-2 pointer" />
+          <DeleteIcon
+            @click="deleteTheTask()"
+            class="my-[0.1rem] mx-2 pointer"
+          />
         </div>
       </template>
       <!-- Title -->
@@ -86,25 +79,26 @@ onUnmounted(() => {
           type="text"
           name="title"
           class="border-none bg-transparent text-white text-4xl font-bold w-full focus:outline-none"
-          @input="(event) => handleInput(event)"
-          :value="props.task.title"
-          @keyup.ctrl.enter="saveTask()"
+          @keyup.ctrl.enter="saveTheTask()"
+          v-model="localTask.title"
           v-focus
         />
       </template>
       <!-- Body -->
       <TheTaskModalBody
-        :task="props.task"
-        @input:description="handleDesc"
-        @change:pomoCount="handlePomos($event)"
-        @save:task="saveTask()"
+        :task="localTask"
+        @input:description="(desc: string) => localTask.description = desc"
+        @change:pomoCount="(pomos: number) => localTask.estimated = pomos"
+        @save:task="saveTheTask()"
       />
       <template #save-button>
         <AddToProjectPopup :taskId="props.task.id" />
         <div class="text-center" v-if="width < 480">
-          <span class="font-semibold text-xl">Pomos done: {{ task.gone_through }}</span>
+          <span class="font-semibold text-xl"
+            >Pomos done: {{ task.gone_through }}</span
+          >
         </div>
-        <SaveButton @click="saveTask()" />
+        <SaveButton :enabled="!isFormPristine" @click="saveTheTask()" />
       </template>
     </AppModal>
   </div>

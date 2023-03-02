@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import Title from '@/components/slots/Title.vue';
-import SingleTaskIcon from '@/components/icons/SingleTaskIcon.vue';
-import TaskInfoIcon from './icons/TaskInfoIcon.vue';
-import Task from '@/components/buttons/Task.vue';
-import Paginate from '@/components/Paginate.vue';
+import type { ITask, ITag } from '@/types';
 
 const chore = useChoreStore();
 
@@ -18,22 +14,62 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
 
 const currentTask = ref();
 
-const setCurrent = (id: number) => (currentTask.value = id);
+function addTag(task: ITask, tag: ITag) {
+  task.tags.push(tag);
+}
 
-// A id debouncer
-watch(currentTask, (prevId, curId) => {
-  if (prevId !== curId) {
-    chore.changeCurrentTask(currentTask.value);
+function removeTag(task: ITask, tagId: number) {
+  task.tags = task.tags.filter((tag: ITag) => tag.id !== tagId);
+}
+
+function saveTask(oldTask: ITask, newTask: ITask) {
+  chore.saveTask(newTask);
+  oldTask = newTask;
+}
+
+async function toggleDone(task: ITask) {
+  const response = await axios.patch(`tasks/${task.id}/`, {
+    obj: 'task',
+    action: 'done',
+  });
+  if (response?.status === 200) {
+    task.done = response.data?.done;
+    chore.fetchProjects();
   }
-});
+}
+function deleteTask(task: ITask) {
+  if (window.confirm('Are you sure you want to delete this task?')) {
+    chore.deleteTask(task);
 
-function setPage(newPage: number) {
-  chore.setTaskPage(newPage);
+    if (
+      chore.taskPagination.page === chore.totalTaskPages &&
+      chore.tasks.length === 1
+    ) {
+      chore.decreaseTaskPagination();
+    }
+  }
 }
 
-function setAdded(newAdded: number) {
-  chore.setTaskAdded(newAdded);
+function setCurrentTask(task: ITask) {
+  currentTask.value = task.id;
 }
+
+provide('taskFunctions', {
+  addTag,
+  removeTag,
+  saveTask,
+  toggleDone,
+  deleteTask,
+  setCurrentTask
+})
+
+
+// // A id debouncer
+// watch(currentTask, (prevId, curId) => {
+//   if (prevId !== curId) {
+//     chore.changeCurrentTask(currentTask.value);
+//   }
+// });
 </script>
 
 <template>
@@ -64,7 +100,6 @@ function setAdded(newAdded: number) {
           v-for="task in tasks"
           :task="task"
           :key="task.id"
-          @set:currentTask="(id: number) => setCurrent(id)"
         />
       </div>
     </div>
@@ -74,8 +109,8 @@ function setAdded(newAdded: number) {
       :page="chore.taskPagination.page"
       :added="chore.taskPagination.added"
       @prev="chore.previousTaskPage"
-      @set:page="(page: number) => setPage(page)"
-      @set:added="(added: number) => setAdded(added)"
+      @set:page="(page: number) => chore.setTaskPage(page)"
+      @set:added="(added: number) => chore.setTaskAdded(added)"
       @next="chore.nextTaskPage"
     />
   </div>

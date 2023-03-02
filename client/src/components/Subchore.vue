@@ -4,7 +4,7 @@ const props = defineProps<{
   chore?: ITask;
   newChore: boolean;
   isProject: boolean;
-  parentNew: boolean;
+  parentNew?: boolean;
 }>();
 
 defineEmits<{

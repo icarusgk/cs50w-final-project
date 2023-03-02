@@ -10,6 +10,8 @@ const props = defineProps<{
   new?: boolean;
 }>();
 
+const { task } = toRefs(props);
+
 const emit = defineEmits<{
   (e: 'add:tag', tag: ITag): void
   (e: 'remove:tag', tag: ITag): void

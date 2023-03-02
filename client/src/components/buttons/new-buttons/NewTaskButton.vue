@@ -38,6 +38,10 @@ function saveTask() {
   }
 }
 
+function addTag(tag: ITag) {
+  initialTask.value.tags.push(tag);
+}
+
 function removeTag(tag: ITag) {
   initialTask.value.tags = initialTask.value.tags.filter(
     (t: ITag) => t.name !== tag.name
@@ -48,7 +52,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
+  <ChoreButton @click="open = auth.isAuthed ? true : false">
     <template #type> Add new task </template>
   </ChoreButton>
   <AppModal :open="open" @exit:modal="resetTask()" :is-task="true">
@@ -56,6 +60,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       <Tags
         :task="initialTask"
         :new="true"
+        @add:tag="(tag: ITag) => addTag(tag)"
         @remove:tag="(tag: ITag) => removeTag(tag)"
       />
     </template>

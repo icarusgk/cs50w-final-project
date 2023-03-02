@@ -1,55 +1,41 @@
 <script setup lang="ts">
-import type { ITask } from '@/types';
+import type { ITag, ITask } from '@/types';
 
 const props = defineProps<{
   task: ITask;
 }>();
 
-defineEmits<{
-  (e: 'set:currentTask', id: number): void
-}>();
+// @ts-ignore
+const { toggleDone, deleteTask, setCurrentTask } = inject('taskFunctions');
+const chore = useModalStore();
 
 const open = ref(false);
-const chore = useChoreStore();
 
 watch(open, () => {
-  useModalStore().toggle();
+  chore.toggle();
 });
 
-async function toggleDone() {
-  const response = await axios.patch(`tasks/${props.task.id}/`, {
-    obj: 'task',
-    action: 'done',
-  });
-  if (response?.status === 200) {
-    props.task.done = response.data?.done;
-    chore.fetchProjects();
-  }
-}
-
-function deleteTask() {
-  if (window.confirm('Are you sure you want to delete this task?')) {
-    chore.deleteTask(props.task);
-
-    if (
-      chore.taskPagination.page === chore.totalTaskPages &&
-      chore.tasks.length === 1
-    ) {
-      chore.decreaseTaskPagination();
-    }
-  }
-}
+const closeModal = () => open.value = false;
+provide('closeModal', closeModal);
 </script>
 
 <template>
   <div class="flex items-center my-2 mb-2">
-    <div @click="toggleDone()" class="pointer mr-4" v-auto-animate>
+    <div @click="toggleDone(task)" class="pointer mr-4" v-auto-animate>
       <DoneIcon v-if="!task.done" />
       <MarkedDoneIcon v-else />
     </div>
     <!-- Name -->
-    <div :class="[{ 'opacity-40': task.done }, 'flex items-center justify-between py-1.5 px-4 bg-vivid-red w-full rounded-lg transition druation-200 ease']">
-      <div @click="$emit('set:currentTask', task.id as number)" class="title-container">
+    <div
+      :class="[
+        'flex items-center justify-between py-1.5 px-4 bg-vivid-red w-full rounded-lg transition duration-200 ease',
+        { 'opacity-40': task.done },
+      ]"
+    >
+      <div
+        @click="setCurrentTask(task)"
+        class="title-container"
+      >
         <Popper hover arrow placement="bottom" openDelay="1000">
           <span class="title pointer">{{ props.task.title }}</span>
           <template #content> Click to set it to current </template>
@@ -61,7 +47,7 @@ function deleteTask() {
             >{{ task.gone_through }} / {{ task.estimated }}</span
           >
         </div>
-        <div class="pointer mr-1" @click="deleteTask()">
+        <div class="pointer mr-1" @click="deleteTask(task)">
           <DeleteIcon />
         </div>
         <div class="pointer" @click="open = true">
@@ -73,8 +59,6 @@ function deleteTask() {
       :task="props.task"
       :open="open"
       @exit:modal="open = false"
-      @toggle:done="toggleDone()"
-      @delete:Task="deleteTask()"
     />
   </div>
 </template>
