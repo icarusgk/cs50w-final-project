@@ -10,30 +10,28 @@ watch(open, () => {
   useModalStore().toggle();
 });
 
-const initialTask = ref<ITask>({
+const taskModel: ITask = {
   tags: [],
   title: '',
   description: '',
   estimated: 1,
   subtasks: [],
-});
+}
 
-const hasTitle = computed(() => initialTask.value.title !== '')
+const initialTask = reactive<ITask>({...taskModel});
+
+const hasTitle = computed(() => initialTask.title !== '')
 
 function resetTask() {
-  initialTask.value = {
-    tags: [],
-    title: '',
-    description: '',
-    estimated: 1,
-    subtasks: [],
-  };
+  Object.assign(initialTask, taskModel);
+  initialTask.tags = [];
+  initialTask.subtasks = [];
   open.value = false;
 }
 
 function saveTask() {
-  if (initialTask.value.title) {
-    chore.addTask(initialTask.value).then(() => chore.fetchTags());
+  if (initialTask.title) {
+    chore.addTask(initialTask).then(() => chore.fetchTags());
     resetTask();
   } else {
     alert.error('Your task must have a title');
@@ -41,16 +39,14 @@ function saveTask() {
 }
 
 function addTag(tag: ITag) {
-  initialTask.value.tags.push(tag);
+  initialTask.tags.push(tag);
 }
 
 function removeTag(tag: ITag) {
-  initialTask.value.tags = initialTask.value.tags.filter(
+  initialTask.tags = initialTask.tags.filter(
     (t: ITag) => t.name !== tag.name
   );
 }
-
-const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
