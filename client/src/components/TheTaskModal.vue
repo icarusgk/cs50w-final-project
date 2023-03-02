@@ -12,18 +12,17 @@ const closeModal = inject<() => void>('closeModal');
 
 // This way it prevents from mutating the original object
 // inside props.task by reference
-let localTask = ref<ITask>({ ...props.task });
-
 const width = ref(window.innerWidth);
+let localTask = reactive<ITask>({ ...props.task });
 
 const isFormPristine = computed(() => {
-  return localTask.value.title === props.task.title
-    && localTask.value.description === props.task.description
-    && localTask.value.estimated === props.task.estimated
+  return localTask.title === props.task.title
+    && localTask.description === props.task.description
+    && localTask.estimated === props.task.estimated
 });
 
 function saveTheTask() {
-  saveTask(props.task, { ...localTask.value });
+  saveTask(props.task, { ...localTask });
   closeModal?.();
 }
 
@@ -34,9 +33,9 @@ function deleteTheTask() {
 
 function exitWithoutSaving() {
   // Copy the props again
-  localTask.value.title = props.task.title;
-  localTask.value.description = props.task.description;
-  localTask.value.estimated = props.task.estimated;
+  localTask.title = props.task.title;
+  localTask.description = props.task.description;
+  localTask.estimated = props.task.estimated;
   closeModal?.();
 }
 
