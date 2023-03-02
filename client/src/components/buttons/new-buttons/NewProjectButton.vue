@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { IProject } from '@/types';
 
+const open = ref(false);
+const auth = useAuthStore();
+const alert = useAlertStore();
+
+
 const newProject = ref<IProject>({
   name: '',
   tasks: [],
 });
 
-const open = ref(false);
-const auth = useAuthStore();
-const alert = useAlertStore();
+const hasTitle = computed(() => newProject.value.name !== '');
 
 watch(open, () => {
   useModalStore().toggle();
@@ -21,6 +24,7 @@ function resetProject() {
   };
   open.value = false;
 }
+
 
 function saveProject() {
   if (newProject.value.name) {
@@ -54,7 +58,7 @@ function saveProject() {
     <!-- Rest of modal -->
     <TheProjectModalBody :project="newProject" :isNew="true" />
     <template #save-button>
-      <SaveButton @click="saveProject()" />
+      <SaveButton :enabled="hasTitle" @click="saveProject()" />
     </template>
   </AppModal>
 </template>
