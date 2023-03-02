@@ -10,6 +10,8 @@ const props = defineProps<{
   new?: boolean;
 }>();
 
+const { task } = toRefs(props);
+
 const emit = defineEmits<{
   (e: 'add:tag', tag: ITag): void
   (e: 'remove:tag', tag: ITag): void
@@ -34,16 +36,14 @@ function removeRepeatedTags(tags: ITag[]) {
 }
 
 // On opening of the task
-removeRepeatedTags(props.task.tags);
+removeRepeatedTags(task.value.tags);
 
 // When the task changes
 
 // Watch for changes in the props
-watch(
-  () => props.task.tags,
-  (newTags) => removeRepeatedTags(newTags),
-  { deep: true }
-);
+watch(() => task.value.tags, (newTags) => {
+  removeRepeatedTags(newTags)
+}, { deep: true });
 
 const selectedTags = computed(() => {
   return allTags.value.filter((tag: ITag) =>
@@ -52,19 +52,20 @@ const selectedTags = computed(() => {
 });
 
 const hasNotTag = () =>
-  !props.task.tags.some((tag: ITag) => tag.name === newTag.value);
+  !task.value.tags.some((tag: ITag) => tag.name === newTag.value);
 
 async function addTag() {
   if (newTag.value) {
     // Push the tag but not upload it
     if (props.new && hasNotTag()) {
-      // Check if newTag is not on props.task.tags
-      props.task.tags.push({ name: newTag.value });
+      // Check if newTag is not on task.value.tags
+      emit('add:tag', { name: newTag.value })
+      // task.value.tags.push({ name: newTag.value });
       // if not new
     } else {
       // filter if not in taskTags
       if (
-        !(props.task.tags.filter((tag) => tag.name === newTag.value).length > 0)
+        !(task.value.tags.filter((tag) => tag.name === newTag.value).length > 0)
       ) {
         // Make the request
         try {
@@ -83,7 +84,7 @@ async function addTag() {
               alert.info('Tag added');
             }
             // response.data will be the tag obj {id, name}
-            props.task.tags.push(response.data?.tag);
+            emit('add:tag', response.data?.tag);
           }
         } catch (err) {
           console.log('addTag err', err);
