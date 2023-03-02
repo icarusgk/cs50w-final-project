@@ -26,6 +26,11 @@ watch(open, () => {
       </div>
     </div>
 
-    <TheProjectModal :project="project" :open="open" @exit:modal="open = false" />
+    <TheProjectModal
+      :project="project"
+      :open="open"
+      @exit:modal="open = false"
+      @update:name="(newName: string) => project.name = newName"
+    />
   </div>
 </template>

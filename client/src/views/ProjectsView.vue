@@ -8,14 +8,6 @@ chore.projectPagination.added = 1;
 chore.fetchProjects();
 
 const projects = computed(() => chore.projects);
-
-function setPage(newPage: number) {
-  chore.setProjectPage(newPage);
-}
-
-function setAdded(newAdded: number) {
-  chore.setProjectAdded(newAdded);
-}
 </script>
 
 <template>
@@ -29,8 +21,8 @@ function setAdded(newAdded: number) {
       :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
-      @set:page="(page: number) => setPage(page)"
-      @set:added="(added: number) => setAdded(added)"
+      @set:page="(page: number) => chore.setProjectPage(page)"
+      @set:added="(added: number) => chore.setProjectAdded(added)"
       @next="chore.nextProjectPage"
     />
     <div v-if="chore.projects.length > 0" class="flex flex-row flex-wrap text-white mt-4 gap-2">
@@ -49,8 +41,8 @@ function setAdded(newAdded: number) {
       :page="chore.projectPagination.page"
       :added="chore.projectPagination.added"
       @prev="chore.previousProjectPage"
-      @set:page="(page: number) => setPage(page)"
-      @set:added="(added: number) => setAdded(added)"
+      @set:page="(page: number) => chore.setProjectPage(page)"
+      @set:added="(added: number) => chore.setProjectAdded(added)"
       @next="chore.nextProjectPage"
     />
   </div>
