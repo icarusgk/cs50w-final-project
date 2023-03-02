@@ -18,6 +18,8 @@ const initialTask = ref<ITask>({
   subtasks: [],
 });
 
+const hasTitle = computed(() => initialTask.value.title !== '')
+
 function resetTask() {
   initialTask.value = {
     tags: [],
@@ -81,12 +83,12 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       :task="initialTask"
       :isNew="true"
       @save:task="saveTask()"
-      @change:pomoCount="handlePomos($event)"
-      @input:description="initialTask.description = $event"
+      @change:pomoCount="(pomos: number) => initialTask.estimated = pomos"
+      @input:description="(desc: string) => initialTask.description = desc"
     />
   <!-- Button -->
     <template #save-button>
-      <SaveButton @click="saveTask()">Save!</SaveButton>
+      <SaveButton :enabled="hasTitle" @click="saveTask()">Save!</SaveButton>
     </template>
   </AppModal>
 </template>
