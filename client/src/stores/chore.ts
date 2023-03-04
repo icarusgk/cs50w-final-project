@@ -4,243 +4,246 @@ import axios from 'axios';
 import { useFetch } from '@/composables/useFetch';
 import { useAlertStore } from './alerts';
 import { useAuthStore } from './auth';
+import { ref, reactive, computed } from 'vue';
 
-export const useChoreStore = defineStore('chores', {
-  state: () => ({
-    tasks: [] as ITask[],
-    projects: [] as IProject[],
-    tags: [] as ITag[],
-    projectPagination: {
-      count: 0,
-      page: 1,
-      added: 1,
-      page_size: 2,
-    },
-    taskPagination: {
-      count: 0,
-      page: 1,
-      added: 1,
-      page_size: 4,
-    },
-    stats: [] as IStat[],
-  }),
-  getters: {
-    totalProjectPages: (state) =>
-      Math.ceil(
-        state.projectPagination.count / state.projectPagination.page_size
-      ),
-    totalTaskPages: (state) =>
-      Math.ceil(state.taskPagination.count / state.taskPagination.page_size),
-  },
-  actions: {
-    decreaseProjectPagination() {
-      this.projectPagination.page -= 1;
-      this.projectPagination.count -= 1;
-      this.projectPagination.added -= 1;
-    },
-    decreaseTaskPagination() {
-      this.taskPagination.page -= 1;
-      this.taskPagination.count -= 1;
-      this.taskPagination.added -= 1;
-    },
-    previousProjectPage() {
-      if (this.projectPagination.page > 1) {
-        this.projectPagination.page--;
-      }
-    },
-    setProjectPage(page: number) {
-      this.projectPagination.page = page;
-    },
-    setProjectAdded(added: number) {
-      this.projectPagination.added = added;
-    },
-    nextProjectPage() {
-      if (this.projectPagination.page < this.totalProjectPages) {
-        this.projectPagination.page++;
-      }
-    },
-    previousTaskPage() {
-      if (this.taskPagination.page > 1) {
-        this.taskPagination.page--;
-      }
-    },
-    setTaskPage(page: number) {
-      this.taskPagination.page = page;
-    },
-    setTaskAdded(added: number) {
-      this.taskPagination.added = added;
-    },
-    nextTaskPage() {
-      if (this.taskPagination.page < this.totalTaskPages) {
-        this.taskPagination.page++;
-      }
-    },
-    // fetchers
-    async fetchModes() {
-      const { status, data } = await useFetch('modes', 'get');
-      if (status === 200) {
-        const modes = JSON.stringify(data);
-        localStorage.setItem('modes', modes);
-      }
-    },
-    async fetchStats() {
-      const { data, status } = await useFetch('stats', 'get');
-      if (status === 200) {
-        this.stats = data;
-      }
-    },
-    async increaseTodayStats() {
-      const date = new Date();
-      date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
+export const useChoreStore = defineStore('chores', () => {
+  const tasks = ref<ITask[]>([]);
+  const projects = ref<IProject[]>([]);
+  const tags = ref<ITag[]>([]);
+  const stats = ref<IStat[]>([]);
 
-      const { data, status } = await useFetch('stats', 'post', {
-        day: date.toISOString().slice(0, 10),
-      });
-      if (status === 201) {
-        let stat = this.stats.find((stat) => stat.id === data.id);
+  const projectPagination = reactive({
+    count: 0,
+    page: 1,
+    added: 1,
+    page_size: 2,
+  });
+  const taskPagination = reactive({
+    count: 0,
+    page: 1,
+    added: 1,
+    page_size: 4,
+  });
 
-        if (stat) {
-          stat.chores_done = data.chores_done;
-        }
-      }
-    },
-    async fetchTasks() {
-      const { page, page_size } = this.taskPagination;
-      const { data, status } = await axios.get('tasks/', {
-        params: { page, page_size },
-      });
+  fetchProjects();
+  fetchTasks();  
+  
+  const totalProjectPages = computed(() => Math.ceil(projectPagination.count / projectPagination.page_size));
+  const totalTaskPages = computed(() => Math.ceil(taskPagination.count / taskPagination.page_size));
 
-      if (status === 200) {
-        this.tasks = data.results;
-        this.taskPagination.count = data.count;
-      }
-    },
-    async fetchProjects() {
-      const { page, page_size } = this.projectPagination;
-      const { data, status } = await axios.get('projects/', {
-        params: { page, page_size },
-      });
+  function decreaseProjectPagination() {
+    projectPagination.page -= 1;
+    projectPagination.count -= 1;
+    projectPagination.added -= 1;
+  }
+  function decreaseTaskPagination() {
+    taskPagination.page -= 1;
+    taskPagination.count -= 1;
+    taskPagination.added -= 1;
+  }
+  function previousProjectPage() {
+    if (projectPagination.page > 1) {
+      projectPagination.page--;
+    }
+  }
+  function setProjectPage(page: number) {
+    projectPagination.page = page;
+  }
+  function setProjectAdded(added: number) {
+    projectPagination.added = added;
+  }
+  function nextProjectPage() {
+    if (projectPagination.page < totalProjectPages.value) {
+      projectPagination.page++;
+    }
+  }
+  function previousTaskPage() {
+    if (taskPagination.page > 1) {
+      taskPagination.page--;
+    }
+  }
+  function setTaskPage(page: number) {
+    taskPagination.page = page;
+  }
+  function setTaskAdded(added: number) {
+    taskPagination.added = added;
+  }
+  function nextTaskPage() {
+    if (taskPagination.page < totalTaskPages.value) {
+      taskPagination.page++;
+    }
+  }
+  async function fetchModes() {
+    const { status, data } = await useFetch('modes', 'get');
+    if (status === 200) {
+      const modes = JSON.stringify(data);
+      localStorage.setItem('modes', modes);
+    }
+  }
+  async function fetchStats() {
+    const { data, status } = await useFetch('stats', 'get');
+    if (status === 200) {
+      stats.value = data;
+    }
+  }
+  async function increaseTodayStats() {
+    const date = new Date();
+    date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
 
-      if (status === 200) {
-        this.projects = data.results;
-        this.projectPagination.count = data.count;
-      }
-    },
-    async fetchTags() {
-      const { data, status } = await useFetch('tags', 'get');
+    const { data, status } = await useFetch('stats', 'post', {
+      day: date.toISOString().slice(0, 10),
+    });
+    if (status === 201) {
+      let stat = stats.value.find((stat) => stat.id === data.id);
 
-      if (status === 200) {
-        return (this.tags = data);
+      if (stat) {
+        stat.chores_done = data.chores_done;
       }
-    },
-    async changeCurrentTask(id: number | undefined) {
-      const { data, status } = await useFetch('currentTask', 'put', { id });
+    }
+  }
+  async function fetchTasks() {
+    const { page, page_size } = taskPagination;
+    const { data, status } = await axios.get('tasks/', {
+      params: { page, page_size }
+    });
 
-      if (status === 200) {
-        useAuthStore().user!.current_task_id = data.id;
+    if (status === 200) {
+      tasks.value = data.results;
+      taskPagination.count = data.count;
+    }
+  }
+  async function fetchProjects() {
+    const { page, page_size } = projectPagination;
+    const { data, status } = await axios.get('projects/', {
+      params: { page, page_size }
+    });
+
+    if (status === 200) {
+      projects.value = data.results;
+      projectPagination.count = data.count;
+    }
+  }
+  async function fetchTags() {
+    const { data, status } = await useFetch('tags', 'get');
+
+    if (status === 200) {
+      return (tags.value = data);
+    }
+  }
+  async function changeCurrentTask(id: number | undefined) {
+    const { data, status } = await useFetch('currentTask', 'put', { id });
+
+    if (status === 200) {
+      useAuthStore().user!.current_task_id = data.id;
+    }
+  }
+  // Fetch all chores from user (request.user in django)
+  function fetchAll() {
+    const auth = useAuthStore();
+    if (auth.isAuthed) {
+      fetchModes();
+      fetchTags();
+    }
+  }
+  // Adds tasks with tags and subtasks
+  async function addTask(task: ITask) {
+    const { status } = await useFetch('tasks', 'post', task);
+    if (status === 201) {
+      useAlertStore().success(`Task ${task.title} created!`);
+      // Send user to the first page
+      taskPagination.page = 1;
+      fetchTasks();
+    }
+  }
+  async function saveTask(task: ITask) {
+    const { status } = await axios.put(`tasks/${task.id}/`, task);
+    if (status === 200) {
+      useAlertStore().success(`'${task.title}' saved!`);
+      fetchTasks();
+    }
+  }
+  async function deleteTask(task: ITask) {
+    const { status } = await useFetch('tasks', 'delete', null, task.id);
+
+    if (status === 204) {
+      // if it is the last
+      if (tasks.value.length === 1 && taskPagination.count === 0) {
+        tasks.value = tasks.value.filter((t: ITask) => t.id !== task.id);
+        taskPagination.page = 1;
+      } else {
+        fetchTasks();
       }
-    },
-    // Fetch all chores from user (request.user in django)
-    fetchAll() {
+
       const auth = useAuthStore();
-      if (auth.isAuthed) {
-        this.fetchModes();
-        this.fetchTags();
-      }
-    },
-    // Adds tasks with tags and subtasks
-    async addTask(task: ITask) {
-      const { status } = await useFetch('tasks', 'post', task);
-      if (status === 201) {
-        useAlertStore().success(`Task ${task.title} created!`);
-        // Send user to the first page
-        this.taskPagination.page = 1;
-        this.fetchTasks();
-      }
-    },
-    async saveTask(task: ITask) {
-      const { status } = await axios.put(`tasks/${task.id}/`, task);
-      if (status === 200) {
-        useAlertStore().success(`'${task.title}' saved!`);
-        this.fetchTasks();
-      }
-    },
-    async deleteTask(task: ITask) {
-      const { status } = await useFetch('tasks', 'delete', null, task.id);
 
-      if (status === 204) {
-        // if it is the last
-        if (this.tasks.length === 1 && this.taskPagination.count === 0) {
-          this.tasks = this.tasks.filter((t: ITask) => t.id !== task.id);
-          this.taskPagination.page = 1;
-        } else {
-          this.fetchTasks();
-        }
+      useAlertStore().info(`Task '${task.title}' deleted`);
 
-        const auth = useAuthStore();
-
-        useAlertStore().info(`Task '${task.title}' deleted`);
-
-        if (task.id === auth.user!.current_task_id) {
-          auth.user!.current_task_id = 0;
-        }
+      if (task.id === auth.user!.current_task_id) {
+        auth.user!.current_task_id = 0;
       }
-    },
-    async addProject(project: IProject) {
-      const { status } = await useFetch('projects', 'post', project);
+    }
+  }
+  async function addProject(project: IProject) {
+    const { status } = await useFetch('projects', 'post', project);
 
-      if (status === 201) {
-        useAlertStore().success(`Project ${project.name} created!`);
-        // Send user to the first page
-        this.projectPagination.page = 1;
-        this.fetchProjects();
+    if (status === 201) {
+      useAlertStore().success(`Project ${project.name} created!`);
+      // Send user to the first page
+      projectPagination.page = 1;
+      fetchProjects();
+    }
+  }
+  async function saveProject(project: IProject, newProjectName: string) {
+    const { status } = await axios.patch(
+      `/projects/${project.id}/modify_title/`,
+      {
+        name: newProjectName,
       }
-    },
-    async saveProject(project: IProject, newProjectName: string) {
-      const { status } = await axios.patch(
-        `/projects/${project.id}/modify_title/`,
+    );
+
+    if (status === 200) {
+      useAlertStore().success('Project saved!');
+    }
+  }
+  async function deleteProject(id: number) {
+    const { status } = await useFetch('projects', 'delete', null, id);
+
+    if (status === 204) {
+      if (projects.value.length === 1 && projectPagination.count === 0) {
+        projects.value = projects.value.filter((p: IProject) => p.id !== id);
+        projectPagination.page = 1;
+      } else {
+        fetchProjects();
+      }
+      useAlertStore().info('Project deleted!');
+    }
+  }
+  async function incrementGoneThrough() {
+    increaseTodayStats();
+    const auth = useAuthStore();
+
+    if (auth.user?.current_task_id) {
+      const { status } = await useFetch(
+        'tasks',
+        'patch',
         {
-          name: newProjectName,
-        }
+          obj: 'task',
+          action: 'increment_gone_through',
+        },
+        auth.user!.current_task_id
       );
 
       if (status === 200) {
-        useAlertStore().success('Project saved!');
+        fetchTasks();
       }
-    },
-    async deleteProject(id: number) {
-      const { status } = await useFetch('projects', 'delete', null, id);
-
-      if (status === 204) {
-        if (this.projects.length === 1 && this.projectPagination.count === 0) {
-          this.projects = this.projects.filter((p: IProject) => p.id !== id);
-          this.projectPagination.page = 1;
-        } else {
-          this.fetchProjects();
-        }
-        useAlertStore().info('Project deleted!');
-      }
-    },
-    async incrementGoneThrough() {
-      this.increaseTodayStats();
-      const auth = useAuthStore();
-
-      if (auth.user?.current_task_id) {
-        const { status } = await useFetch(
-          'tasks',
-          'patch',
-          {
-            obj: 'task',
-            action: 'increment_gone_through',
-          },
-          auth.user!.current_task_id
-        );
-
-        if (status === 200) {
-          this.fetchTasks();
-        }
-      }
-    },
-  },
-  persist: true
-});
+    }
+  }
+  
+  return {
+    tasks, projects, tags, stats, projectPagination, taskPagination, totalProjectPages, totalTaskPages,
+      decreaseProjectPagination, decreaseTaskPagination, previousProjectPage, setProjectPage, setProjectAdded,
+      nextProjectPage, previousTaskPage, setTaskPage, setTaskAdded, nextTaskPage, 
+      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags, changeCurrentTask, fetchAll,
+    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
+  }
+}, { persist: true });
