@@ -10,45 +10,47 @@ watch(open, () => {
   useModalStore().toggle();
 });
 
-const initialTask = ref<ITask>({
+const taskModel: ITask = {
   tags: [],
   title: '',
   description: '',
   estimated: 1,
   subtasks: [],
-});
+}
+
+const initialTask = reactive<ITask>({...taskModel});
+
+const hasTitle = computed(() => initialTask.title !== '')
 
 function resetTask() {
-  initialTask.value = {
-    tags: [],
-    title: '',
-    description: '',
-    estimated: 1,
-    subtasks: [],
-  };
+  Object.assign(initialTask, taskModel);
+  initialTask.tags = [];
+  initialTask.subtasks = [];
   open.value = false;
 }
 
 function saveTask() {
-  if (initialTask.value.title) {
-    chore.addTask(initialTask.value).then(() => chore.fetchTags());
+  if (initialTask.title) {
+    chore.addTask(initialTask).then(() => chore.fetchTags());
     resetTask();
   } else {
     alert.error('Your task must have a title');
   }
 }
 
+function addTag(tag: ITag) {
+  initialTask.tags.push(tag);
+}
+
 function removeTag(tag: ITag) {
-  initialTask.value.tags = initialTask.value.tags.filter(
+  initialTask.tags = initialTask.tags.filter(
     (t: ITag) => t.name !== tag.name
   );
 }
-
-const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
 </script>
 
 <template>
-  <ChoreButton @click="auth.isAuthed ? (open = true) : (open = false)">
+  <ChoreButton @click="open = auth.isAuthed ? true : false">
     <template #type> Add new task </template>
   </ChoreButton>
   <AppModal :open="open" @exit:modal="resetTask()" :is-task="true">
@@ -56,6 +58,7 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       <Tags
         :task="initialTask"
         :new="true"
+        @add:tag="(tag: ITag) => addTag(tag)"
         @remove:tag="(tag: ITag) => removeTag(tag)"
       />
     </template>
@@ -66,8 +69,9 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
         name="title"
         class="border-none bg-transparent text-white font-bold text-[2rem] w-full outline-none placeholder-[rgb(190,190,190)]"
         placeholder="New task title"
-        v-model="initialTask.title"
         @keyup.ctrl.enter="saveTask()"
+        v-model="initialTask.title"
+        v-focus
       />
     </template>
     <!-- Rest of modal -->
@@ -75,12 +79,12 @@ const handlePomos = (pomos: number) => (initialTask.value.estimated = pomos);
       :task="initialTask"
       :isNew="true"
       @save:task="saveTask()"
-      @change:pomoCount="handlePomos($event)"
-      @input:description="initialTask.description = $event"
+      @change:pomoCount="(pomos: number) => initialTask.estimated = pomos"
+      @input:description="(desc: string) => initialTask.description = desc"
     />
   <!-- Button -->
     <template #save-button>
-      <SaveButton @click="saveTask()">Save!</SaveButton>
+      <SaveButton :enabled="hasTitle" @click="saveTask()">Save!</SaveButton>
     </template>
   </AppModal>
 </template>

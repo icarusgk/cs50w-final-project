@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'exit:modal'): void;
-  (e: 'update:title', title: string): void; // TODO: To be used in the future
+  (e: 'update:name', name: string): void;
 }>();
 
 const chore = useChoreStore();
@@ -36,13 +36,13 @@ function deleteProject() {
 
 function saveAndExit() {
   chore.saveProject(props.project, title.value);
-  props.project.name = title.value;
+  emit('update:name', title.value);
   emit('exit:modal');
 }
 
 function exitModal() {
   if (title.value !== props.project.name) {
-    props.project.name = title.value;
+    emit('update:name', title.value);
     chore.saveProject(props.project, title.value);
   }
   emit('exit:modal');
@@ -62,6 +62,7 @@ function exitModal() {
           maxlength="30"
           v-model="title"
           @keyup.ctrl.enter="saveAndExit()"
+          v-focus
         />
       </template>
       <template #delete-icon>

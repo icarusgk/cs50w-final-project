@@ -1,30 +1,32 @@
 <script setup lang="ts">
 import type { IProject } from '@/types';
 
-const newProject = ref<IProject>({
-  name: '',
-  tasks: [],
-});
-
 const open = ref(false);
 const auth = useAuthStore();
 const alert = useAlertStore();
+
+const newProject = reactive<IProject>({
+  name: '',
+  tasks: []
+});
+
+const hasTitle = computed(() => newProject.name !== '');
 
 watch(open, () => {
   useModalStore().toggle();
 });
 
 function resetProject() {
-  newProject.value = {
+  Object.assign(newProject, {
     name: '',
-    tasks: [],
-  };
+    tasks: []
+  })
   open.value = false;
 }
 
 function saveProject() {
-  if (newProject.value.name) {
-    useChoreStore().addProject(newProject.value);
+  if (newProject.name) {
+    useChoreStore().addProject(newProject);
     resetProject();
   } else {
     alert.error('Your project must have a name');
@@ -47,13 +49,14 @@ function saveProject() {
         maxlength="30"
         @keyup.ctrl.enter="saveProject()"
         v-model="newProject.name"
+        v-focus
       />
     </template>
 
     <!-- Rest of modal -->
     <TheProjectModalBody :project="newProject" :isNew="true" />
     <template #save-button>
-      <SaveButton @click="saveProject()" />
+      <SaveButton :enabled="hasTitle" @click="saveProject()" />
     </template>
   </AppModal>
 </template>

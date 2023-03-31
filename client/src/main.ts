@@ -21,6 +21,12 @@ app.use(autoAnimatePlugin);
 
 app.component('Popper', Popper);
 
+app.directive('focus', {
+  mounted(element) {
+    element.focus()
+  }
+})
+
 app.mount('#app');
 
 useChoreStore().fetchAll();
