@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ITask, ISubtask, ITag, IProject } from '@/types';
 
+// Temporarily remove types
+// Will create a better type system
 const props = defineProps<{
   chores?: ITask[];
   isProject: boolean;
@@ -60,10 +62,16 @@ function openNewChore() {
   newChoreOpened.value = true;
 }
 
+function isOpenableChore(chore: ITask | ISubtask): chore is ITask {
+  return (chore as ITask).description !== undefined;
+}
+
 // Open chore details
-function openDetails(chore: ITask) {
+function openDetails(chore: ITask | ISubtask) {
   // Assign the current task details
-  activeChore.chore = chore;
+  if (isOpenableChore(chore)) {
+    activeChore.chore = chore;
+  }
 
   // Close the "details" for a new chore
   if (newChoreOpened.value) {
@@ -389,6 +397,11 @@ function removeTag(tag: ITag) {
       @change:description="
         isProject
           ? (taskModel.description = $event)
+          /* 
+          Type '{ title: string; description: string; }' 
+          is missing the following properties from type 
+          'Task': tags, estimated, subtasks
+          */
           : (subtaskModel.description = $event)
       "
       :chore="isProject ? taskModel : subtaskModel"
