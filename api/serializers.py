@@ -48,10 +48,10 @@ class TaskSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class SubtaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subtask
-        fields = ['id', 'title', 'description', 'done']
+# class SubtaskSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Subtask
+#         fields = ['id', 'title', 'description', 'done']
 
 
 class ProjectSerializer(serializers.ModelSerializer):

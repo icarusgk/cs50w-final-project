@@ -126,10 +126,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        Returns the current user's tasks
+        Returns the current user's parent tasks
         in descending order
         """
-        return self.request.user.tasks.all().filter(in_project=False).order_by('-id')
+        return self.request.user.tasks.all().filter(in_project=False, parent_task=None).order_by('-id')
 
     def retrieve(self, request, pk=None):
         """
