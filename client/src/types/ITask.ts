@@ -4,14 +4,14 @@ import type Project from './IProject';
 
 interface Task extends Subtask {
   id?: number;
-  tags: Tag[];
+  tags?: Tag[];
   title: string;
   description: string;
-  estimated: number;
+  estimated?: number;
   gone_through?: number;
   minutes?: number;
   done?: boolean;
-  subtasks: Subtask[];
+  subtasks?: Task[];
   project_tasks?: Project[];
 }
 
