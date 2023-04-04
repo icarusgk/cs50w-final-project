@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Task, Project, Subtask, Tag, Stats, Mode, User
+from .models import Task, Project, Tag, Stats, Mode, User
 from .serializers import *
 from .utils_api import AuthUtils
 from rest_framework import status
@@ -539,10 +539,10 @@ class TaskTestCase(TestCase):
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
-    subtask = Subtask.objects.get(**subtask_details)
+    subtask = Task.objects.get(**subtask_details)
 
     self.assertEqual(response.json(), {
-      **SubtaskSerializer(subtask).data,
+      **TaskSerializer(subtask).data,
     })
 
 
@@ -553,7 +553,7 @@ class TaskTestCase(TestCase):
       'description': 'Read more about the alternative of refs',
     }
 
-    sub = Subtask.objects.create(task=self.task_1_model, **subtask)
+    sub = Task.objects.create(user=User.objects.first(), parent_task=self.task_1_model, **subtask)
 
     self.assertEqual(self.task_1_model.subtasks.count(), 1)
 
