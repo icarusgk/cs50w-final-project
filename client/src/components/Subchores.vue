@@ -23,7 +23,7 @@ const taskModel = ref<ITask>({
 });
 
 // Initial mold for a subtask
-const subtaskModel = ref<ITask>({
+const subtaskModel = ref({
   title: '',
   description: '',
 });
@@ -163,7 +163,11 @@ async function saveSubtaskToTask() {
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
-      existingTask?.value?.subtasks?.push(subtaskModel.value);
+      existingTask?.value?.subtasks?.push({
+        ...subtaskModel.value,
+        tags: [],
+        estimated: 0
+      });
       alert.info(`${subtaskModel.value.title} added!`);
       resetSubtaskModel();
     }
