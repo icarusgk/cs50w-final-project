@@ -42,19 +42,6 @@ class Task(models.Model):
         return f'Task: {self.title}'
 
 
-# class Subtask(models.Model):
-#     task = models.ForeignKey(
-#         'Task',
-#         related_name='subtasks',
-#         on_delete=models.CASCADE)
-#     title = models.CharField(max_length=50)
-#     description = models.TextField(max_length=255, blank=True)
-#     done = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return f'Subtask: {self.title} - {self.done}'
-
-
 class Project(models.Model):
     name = models.CharField(max_length=30)  
     user = models.ForeignKey(
