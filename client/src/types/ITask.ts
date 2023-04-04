@@ -3,10 +3,10 @@ import type Project from './IProject';
 
 interface Task {
   id?: number;
-  tags?: Tag[];
+  tags: Tag[];
   title: string;
   description: string;
-  estimated?: number;
+  estimated: number;
   gone_through?: number;
   minutes?: number;
   done?: boolean;
