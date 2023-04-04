@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { ITask, ISubtask, ITag, IProject } from '@/types';
+import type { ITask, ITag, IProject } from '@/types';
 
 // Temporarily remove types
 // Will create a better type system
 const props = defineProps<{
-  chores?: ITask[] | ISubtask[];
+  chores?: ITask[];
   isProject: boolean;
   task?: ITask;
   project?: IProject;
@@ -62,16 +62,10 @@ function openNewChore() {
   newChoreOpened.value = true;
 }
 
-function isOpenableChore(chore: ITask | ISubtask): chore is ITask {
-  return (chore as ITask).description !== undefined;
-}
-
 // Open chore details
-function openDetails(chore: ITask | ISubtask) {
+function openDetails(chore: ITask) {
   // Assign the current task details
-  if (isOpenableChore(chore)) {
-    activeChore.chore = chore;
-  }
+    activeChore.chore = chore;  
 
   // Close the "details" for a new chore
   if (newChoreOpened.value) {
@@ -97,7 +91,6 @@ function resetTaskModel() {
     title: '',
     description: '',
     estimated: 1,
-    subtasks: [],
   };
 }
 
@@ -170,7 +163,11 @@ async function saveSubtaskToTask() {
   if (subtaskModel.value.title) {
     // Push subtasks to the new task
     if (!props.isProject && props.isNew) {
-      existingTask?.value?.subtasks.push(subtaskModel.value);
+      existingTask?.value?.subtasks?.push({
+        ...subtaskModel.value,
+        tags: [],
+        estimated: 0
+      });
       alert.info(`${subtaskModel.value.title} added!`);
       resetSubtaskModel();
     }
@@ -183,7 +180,7 @@ async function saveSubtaskToTask() {
         subtask: subtaskModel.value,
       });
       if (response?.status === 201) {
-        existingTask?.value?.subtasks.push(response.data);
+        existingTask?.value?.subtasks?.push(response.data);
         alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
       }
@@ -245,7 +242,7 @@ async function deleteChore() {
         
         if (existingTask?.value?.subtasks) {
           existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
-            (sub: ISubtask) => sub !== activeChore.chore
+            (sub: ITask) => sub !== activeChore.chore
           );
         }
       }
@@ -263,7 +260,7 @@ function removeChore() {
   } else {
     if (existingTask?.value?.subtasks) {
       existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
-        (subtask: ISubtask) => subtask.title !== activeChore.chore?.title
+        (subtask: ITask) => subtask.title !== activeChore.chore?.title
       );
     }
   }
@@ -271,7 +268,7 @@ function removeChore() {
 }
 
 // Toggle done on Chore
-async function toggleChoreDone(chore: ITask | ISubtask) {
+async function toggleChoreDone(chore: ITask) {
   if (props.isProject) {
     try {
       const response = await axios.patch(
@@ -326,14 +323,14 @@ function removeTag(tag: ITag) {
   if (props.isProject) {
     // When a existing chore is opened
     if (activeChore.opened) {
-      activeChore.chore!.tags = activeChore.chore!.tags.filter(
+      activeChore.chore!.tags = activeChore.chore!.tags?.filter(
         (t: ITag) => t.name !== tag.name
       );
       return;
     }
 
     // When a fresh chore is opened, just remove it
-    taskModel.value.tags = taskModel.value.tags.filter(
+    taskModel.value.tags = taskModel.value.tags?.filter(
       (t: ITag) => t.name !== tag.name
     );
   }

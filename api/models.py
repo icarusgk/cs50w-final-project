@@ -36,26 +36,14 @@ class Task(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, related_name='tasks')
     done = models.BooleanField(default=False)
     in_project = models.BooleanField(default=False)
+    parent_task = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.CASCADE, related_name='subtasks')
 
     def __str__(self):
         return f'Task: {self.title}'
 
 
-class Subtask(models.Model):
-    task = models.ForeignKey(
-        'Task',
-        related_name='subtasks',
-        on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    description = models.TextField(max_length=255, blank=True)
-    done = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'Subtask: {self.title} - {self.done}'
-
-
 class Project(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30)  
     user = models.ForeignKey(
         'User',
         on_delete=models.CASCADE,

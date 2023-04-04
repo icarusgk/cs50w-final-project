@@ -48,12 +48,6 @@ class TaskSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class SubtaskSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subtask
-        fields = ['id', 'title', 'description', 'done']
-
-
 class ProjectSerializer(serializers.ModelSerializer):
     def get_fields(self):
         fields = super(ProjectSerializer, self).get_fields()

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Task, Project, Subtask, Tag, Stats, Mode, User
+from .models import Task, Project, Tag, Stats, Mode, User
 import datetime
 
 
@@ -235,16 +235,18 @@ class SubtaskTestCase(TestCase):
       'in_project': True
     })
 
-    self.subtask_1 = Subtask.objects.create(**{
-      'task': self.task,
+    self.subtask_1 = Task.objects.create(**{
+      'user': user,
       'title': 'Pinia',
-      'description': 'Find out more about Pinia'
+      'description': 'Find out more about Pinia',
+      'parent_task': self.task
     })
 
-    self.subtask_2 = Subtask.objects.create(**{
-      'task': self.task,
+    self.subtask_2 = Task.objects.create(**{
+      'user': user,
       'title': 'Router',
-      'description': 'Find out more about Vue Router'
+      'description': 'Find out more about Vue Router',
+      'parent_task': self.task
     })
 
   
