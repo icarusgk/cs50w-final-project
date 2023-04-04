@@ -165,7 +165,8 @@ class TaskViewSet(viewsets.ModelViewSet):
             # Add subtasks
             if subtasks:
                 for subtask in subtasks:
-                    Subtask.objects.create(task=task, **subtask)
+                    # Change to Task object
+                    Task.objects.create(user=request.user, **subtask, parent_task=task)
 
             # Return the newly created task
             return Response(
@@ -232,15 +233,15 @@ class TaskViewSet(viewsets.ModelViewSet):
                 # Create subtask
                 if data['action'] == 'add':
                     subtask = data['subtask']
-                    subtask = Subtask.objects.create(task=task, **subtask)
-                    task.save()
+                    # Replace subtask to Task object
+                    subtask = Task.objects.create(user=request.user, **subtask, parent_task=task)
 
                     return Response(
-                        SubtaskSerializer(subtask).data,
+                        TaskSerializer(subtask).data,
                         status=status.HTTP_201_CREATED)
                 # Remove subtask
                 elif data['action'] == 'remove':
-                    subtask_obj = Subtask.objects.get(id=data['subtask_id'])
+                    subtask_obj = Task.objects.get(id=data['subtask_id'])
                     subtask_obj.delete()
 
                     return Response({"message": "subtask removed"},
@@ -248,8 +249,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                 # Update subtask
                 elif data['action'] == 'update':
                     subtask = data['subtask']
-                    subtask_obj = Subtask.objects.get(id=subtask['id'])
-                    serializer = SubtaskSerializer(subtask_obj, data=subtask)
+                    subtask_obj = Task.objects.get(id=subtask['id'])
+                    serializer = TaskSerializer(subtask_obj, data=subtask)
 
                     if serializer.is_valid():
                         serializer.save()
@@ -257,7 +258,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     return Response({"message": "updated"},
                                     status=status.HTTP_200_OK)
                 elif data['action'] == 'done':
-                    subtask_obj = Subtask.objects.get(id=data['subtask_id'])
+                    subtask_obj = Task.objects.get(id=data['subtask_id'])
 
                     subtask_obj.done = not subtask_obj.done
                     subtask_obj.save()
