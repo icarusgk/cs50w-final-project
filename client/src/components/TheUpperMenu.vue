@@ -24,10 +24,10 @@ watch(settingsOpen, () => {
               </div>
               <template #content>
                 <div class="flex flex-col justify-center items-center">
-                  <div class="p-[0.7rem] m-2 rounded-lg bg-[rgb(92,92,92)] transition duration-150 hover:bg-dark-100 text-white" @click="$router.push('/tags')">
+                  <div @click="$router.push('/tags')" class="p-[0.7rem] m-2 rounded-lg bg-[rgb(92,92,92)] transition duration-150 hover:bg-dark-100 text-white">
                     Manage tags
                   </div>
-                  <button class="py-2 px-4 mb-2 rounded-lg border-none bg-vivid-red text-white font-medium transition duration-100 ease-in pointer hover:bg-[#ff4b4b9f] focus:bg-[#ff4b4b9f] active:bg-[#ff4b4b9f]" @click="auth.logout()">
+                  <button @click="auth.logout()" class="py-2 px-4 mb-2 rounded-lg border-none bg-vivid-red text-white font-medium transition duration-100 ease-in pointer hover:bg-[#ff4b4b9f] focus:bg-[#ff4b4b9f] active:bg-[#ff4b4b9f]">
                     Logout
                   </button>
                 </div>
