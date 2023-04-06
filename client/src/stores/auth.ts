@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import router from '@/router';
-import { useChoreStore } from './chore';
 import { ref } from 'vue';
 import type { IUser } from '@/types';
 
@@ -76,10 +75,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null;
       isAuthed.value = false;
 
-      localStorage.removeItem('timer');
-      localStorage.removeItem('modes');
-
-      useChoreStore().$reset();
+      localStorage.clear();
 
       await router.push('/');
     }

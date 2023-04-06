@@ -540,7 +540,9 @@ class LogoutJWTView(APIView):
             response.delete_cookie('sessionid')
 
             # Delete the refresh token from the session
+            # and the cookies from the request
             request.session = {}
+            request.COOKIES = {}
 
             response.data = { 'message': 'You are logged out' }
             response.status_code = 200
