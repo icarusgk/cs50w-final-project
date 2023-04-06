@@ -536,8 +536,19 @@ class LogoutJWTView(APIView):
         # Check if the user is logged in
         if request.COOKIES.get('sessionid'):
             # Delete the token and the session
-            response.delete_cookie('access_token')
-            response.delete_cookie('sessionid')
+            response.set_cookie(
+                'access_token',
+                '',
+                samesite='None',
+                secure=True
+            )
+
+            response.set_cookie(
+                'sessionid',
+                '',
+                samesite='None',
+                secure=True
+            )
 
             # Delete the refresh token from the session
             # and the cookies from the request
