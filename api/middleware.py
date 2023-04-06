@@ -1,6 +1,16 @@
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.conf import settings
 
+def set_access_token(response, access_token):
+  response.set_cookie(
+    'access_token',
+    access_token,
+    max_age=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+    httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+    samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+    secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE']
+  )
+
 class TokenRefreshMiddleware:
   def __init__(self, get_response):
     self.get_response = get_response
@@ -26,35 +36,20 @@ class TokenRefreshMiddleware:
           else:
             # In case the access token is deleted, set a new one
             request.COOKIES['access_token'] = str(new_tokens.access_token)
-
             response = self.get_response(request)
 
             # Sessionid means the user is logged in
             if request.COOKIES.get('sessionid'):
-              response.set_cookie(
-                'access_token',
-                new_tokens.access_token,
-                max_age=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-                samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
-                secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE']
-              ) 
+              set_access_token(response, new_tokens.access_token)
             # except the AccessToken() call
         except:
           # Set the new cookie on the server
           request.COOKIES['access_token'] = str(new_tokens.access_token)
-
           response = self.get_response(request)
 
           # Set the new cookie on the client
-          response.set_cookie(
-            'access_token',
-            new_tokens.access_token,
-            max_age=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-            httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
-            secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE']
-          )
+          set_access_token(response, new_tokens.access_token)
+
         # except the RefreshToken() call
       except:
         # If the refresh token is no longer valid, logout the user
