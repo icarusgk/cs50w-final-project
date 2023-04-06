@@ -45,7 +45,7 @@ watch(settingsOpen, () => {
         </div>
       </li>
       <!-- Settings -->
-      <li @click="settingsOpen = true" v-if="auth.isAuthed">
+      <li class="pointer" @click="settingsOpen = true" v-if="auth.isAuthed">
         <SettingsIcon />
       </li>
     </ul>
