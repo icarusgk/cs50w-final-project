@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import router from '@/router';
 import { ref } from 'vue';
+import { useAlertStore } from '@/stores/alerts';
 import type { IUser } from '@/types';
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<IUser | null>(null);
   const isAuthed = ref(false);
   const error = ref();
+  const alerts = useAlertStore();
 
   // First is login in, this will not have an error
   async function login(credentials: UserCredentials) {
@@ -27,6 +29,7 @@ export const useAuthStore = defineStore('auth', () => {
         // After the user logs in, we get its user
         await getUser();
         error.value = null;
+        alerts.success('Successfully logged in!');
         // And we push the user to the main / page
         await router.push('/');
       }
@@ -43,6 +46,8 @@ export const useAuthStore = defineStore('auth', () => {
       if (response.status === 200) {
         user.value = response.data;
         isAuthed.value = true;
+      } else {
+        isAuthed.value = false;
       }
     } catch (e) {
       // If refresh token is not longer valid, logout
@@ -68,13 +73,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    if (!isAuthed.value) return;
+
     const response = await axios.post('auth/logout/');
-    console.log(response);
+
     if (response.status === 200) {
       // Reset user state
       user.value = null;
       isAuthed.value = false;
 
+      alerts.info('Logged out!');
       localStorage.clear();
 
       await router.push('/');

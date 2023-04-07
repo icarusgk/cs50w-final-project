@@ -38,6 +38,7 @@ async function toggleDone(task: ITask) {
   }
 }
 function deleteTask(task: ITask) {
+  // TODO: Replace with Dialog
   if (window.confirm('Are you sure you want to delete this task?')) {
     chore.deleteTask(task);
 

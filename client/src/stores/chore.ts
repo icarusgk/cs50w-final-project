@@ -24,9 +24,6 @@ export const useChoreStore = defineStore('chores', () => {
     added: 1,
     page_size: 4,
   });
-
-  fetchProjects();
-  fetchTasks();  
   
   const totalProjectPages = computed(() => Math.ceil(projectPagination.count / projectPagination.page_size));
   const totalTaskPages = computed(() => Math.ceil(taskPagination.count / taskPagination.page_size));
