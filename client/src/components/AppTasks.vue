@@ -19,6 +19,7 @@ function addTag(task: ITask, tag: ITag) {
 }
 
 function removeTag(task: ITask, tagId: number) {
+  console.log(task, tagId);
   task.tags = task.tags.filter((tag: ITag) => tag.id !== tagId);
 }
 
