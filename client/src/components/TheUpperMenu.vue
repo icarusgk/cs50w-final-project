@@ -57,9 +57,3 @@ watch(settingsOpen, () => {
     </AppModal>
   </div>
 </template>
-
-<style scoped>
-.action-btn {
-  @apply py-[0.8rem] px-4 rounded-lg transition duration-250 ease-in-out
-}
-</style>
