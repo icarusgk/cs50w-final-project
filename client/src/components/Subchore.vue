@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ITag, ITask } from '@/types';
+import type { IProject, ITag, ITask } from '@/types';
 const props = defineProps<{
-  chore?: ITask;
-  newChore: boolean;
+  chore: ITask;
+  newChore?: boolean;
   isProject: boolean;
   parentNew?: boolean;
 }>();

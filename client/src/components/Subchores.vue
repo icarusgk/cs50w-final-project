@@ -34,10 +34,10 @@ const newChoreOpened = ref(false);
 
 const activeChore = reactive<{
   opened: boolean;
-  chore: ITask | null;
+  chore: ITask;
 }>({
   opened: false,
-  chore: null,
+  chore: taskModel.value
 });
 
 const tmp = {
@@ -310,7 +310,8 @@ async function toggleChoreDone(chore: ITask) {
 // Close chore details
 function closeDetails() {
   activeChore.opened = false;
-  activeChore.chore = null;
+  resetTaskModel()
+  activeChore.chore = taskModel.value;
 }
 
 // Close new model details and reset it
@@ -401,7 +402,7 @@ function removeTag(tag: ITag) {
           */
           : (subtaskModel.description = $event)
       "
-      :chore="isProject ? taskModel : subtaskModel"
+      :chore="taskModel"
       :newChore="true"
       :key="isProject ? existingProject?.tasks?.length : task?.subtasks?.length"
       :isProject="isProject"
