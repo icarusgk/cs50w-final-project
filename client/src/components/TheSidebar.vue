@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-12 bg-light-gray z-3 bottom-0 bg-[#2f2f2f] lg:w-20 lg:h-full flex lg:flex-col justify-center items-center fixed">
-    <div class="hidden mt-8 flex justify-center lg:block">
+    <div class="hidden mt-8 flex justify-center ml-4 lg:block">
       <img src="../assets/tomato-logo.png" class="w-[70%]" alt="Pomo Logo" />
     </div>
     <div class="flex justify-center items-center w-full lg:flex-col h-full lg:mt-16 lg:justify-between">
