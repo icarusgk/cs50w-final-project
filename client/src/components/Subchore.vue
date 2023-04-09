@@ -2,7 +2,7 @@
 import type { ITag, ITask } from '@/types';
 const props = defineProps<{
   chore: ITask;
-  newChore: boolean;
+  newChore?: boolean;
   isProject: boolean;
   parentNew?: boolean;
 }>();
