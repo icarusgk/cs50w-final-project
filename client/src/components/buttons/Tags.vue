@@ -76,7 +76,7 @@ async function addTag() {
             action: 'add',
             tag_name: newTag.value,
           });
-
+          
           if (response?.status === 201 || response.status === 200) {
             if (response.data?.message === 'new') {
               alert.success('Tag created');
@@ -195,7 +195,7 @@ function goToTag(tag: string) {
             @keydown.enter="addTag()"
           />
           <CloseIcon class="transform scale-40 pointer" @click="newTagVisible = true" />
-          <button @click="addTag()" class="px-0 py-2 border-none pointer">Add</button>
+          <button @click="addTag()" class="px-2 py-1 rounded-md border-none pointer text-black">Add</button>
         </div>
         <template #content="{ close }">
           <!-- Pre fetched tags -->
@@ -203,10 +203,7 @@ function goToTag(tag: string) {
             <span class="text-xs">Add a new tag:</span>
             <div
               class="tag-results"
-              @click="
-                addSelectedTag(tag);
-                close();
-              "
+              @click="addSelectedTag(tag); close();"
               v-for="tag in selectedTags.slice(0, 5)"
             >
               <div class="py-[0.1rem] px-[0.4rem] my-[0.3rem] mx-0 rounded-md pointer">

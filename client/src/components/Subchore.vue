@@ -22,7 +22,7 @@ defineEmits<{
 
 <template>
   <!-- Blur -->
-  <div class="p-4 bg-[#3a3a3a66] trasnform blur-sm rounded-xl">
+  <div class="p-4 bg-[#3a3a3a66] transform rounded-xl">
     <!-- Flex row -->
     <div class="flex flex-col justify-between h-full">
       <div v-if="props.isProject" class="flex">

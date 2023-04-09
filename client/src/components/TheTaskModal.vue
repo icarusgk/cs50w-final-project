@@ -57,8 +57,8 @@ onUnmounted(() => {
         <Tags
           :id="props.task.id"
           :task="props.task"
-          @add:tag="(tag: ITag) => addTag(tag)"
-          @remove:tag="(tag: ITag) => removeTag(tag.id)"
+          @add:tag="(tag: ITag) => addTag(props.task, tag)"
+          @remove:tag="(tag: ITag) => removeTag(props.task, tag.id)"
           @close:modal="$emit('exit:modal')"
         />
         <div class="flex items-baseline">

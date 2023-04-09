@@ -3,7 +3,8 @@ import { createPinia } from 'pinia';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
 import { useChoreStore } from './stores/chore';
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
-import 'virtual:windi.css'
+import 'virtual:uno.css'
+import '@unocss/reset/tailwind-compat.css'
 
 import App from './App.vue';
 import router from './router';
