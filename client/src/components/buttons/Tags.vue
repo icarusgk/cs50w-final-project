@@ -75,7 +75,7 @@ async function addTag() {
             action: 'add',
             tag_name: newTag.value,
           });
-
+          
           if (response?.status === 201 || response.status === 200) {
             if (response.data?.message === 'new') {
               alert.success('Tag created');
@@ -202,10 +202,7 @@ function goToTag(tag: string) {
             <span class="text-xs">Add a new tag:</span>
             <div
               class="tag-results"
-              @click="
-                addSelectedTag(tag);
-                close();
-              "
+              @click="addSelectedTag(tag); close();"
               v-for="tag in selectedTags.slice(0, 5)"
             >
               <div class="py-[0.1rem] px-[0.4rem] my-[0.3rem] mx-0 rounded-md pointer">
