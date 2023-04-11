@@ -40,8 +40,8 @@ async function deleteTag() {
 
 <template>
   <div class="<sm:p-4 py-8 px-16">
-    <div class="flex items-center text-white gap-4">
-      <BackIcon class="pointer" @click="$router.back()" />
+    <div class="flex items-center text-white gap-4 ml-3">
+      <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
     </div>
     <div class="flex items-center justify-between mb-4">
       <span class="text-white font-extrabold text-3xl">#{{ route.params.name }}</span>

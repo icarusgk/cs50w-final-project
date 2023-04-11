@@ -25,11 +25,11 @@ watch(open, () => {
       </div>
       <div class="flex">
         <div class="flex items-center mr-2.5">
-          <TasksDoneIcon />
+          <div class="i-fluent-arrow-clockwise-28-filled" />
           <span class="ml-1.25">{{ task.gone_through }}</span>
         </div>
         <div class="flex items-center">
-          <TotalTasksIcon />
+          <div class="i-fluent-clock-28-filled" />
           <span class="ml-1.25">{{ task.estimated }}</span>
         </div>
       </div>

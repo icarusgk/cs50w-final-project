@@ -13,8 +13,8 @@ useFetch('tags', 'get').then((res) => {
 
 <template>
   <div class="<sm:p-4 py-8 px-16">
-    <div class="flex items-center gap-4 text-white">
-      <BackIcon class="pointer" @click="$router.back()" />
+    <div class="flex items-center gap-4 text-white ml-3">
+      <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
       <span class="text-white font-extrabold text-5xl">Tags</span>
     </div>
     <div class="text-white flex flex-wrap gap-2.5 pt-4">
