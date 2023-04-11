@@ -76,9 +76,9 @@ provide('taskFunctions', {
 <template>
   <div class="mt-2">
     <!-- Tasks Title -->
-    <Title class="pointer" @click="$router.push('/tasks')">
+    <Title class="pointer my-4 mx-3" @click="$router.push('/tasks')">
       <template #icon>
-        <SingleTaskIcon />
+        <div class="i-mdi:clipboard-check-multiple scale-350 mr-3"></div>
       </template>
       <template #type>
         <h1 @click="$router.push('/tasks')">Single Tasks</h1>

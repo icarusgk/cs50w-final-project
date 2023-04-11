@@ -151,7 +151,7 @@ function nextMoveBy(increasedBy: number): void {
         @click="prevMoveBy(TOTAL_PAGES)"
         class="paginate-btn"
       >
-        ...
+        <div class="i-mdi-dots-horizontal align-middle"/>
       </div>
       <!-- 3 pages range -->
       <div
@@ -170,7 +170,7 @@ function nextMoveBy(increasedBy: number): void {
         @click="nextMoveBy(TOTAL_PAGES)"
         class="paginate-btn"
       >
-        ...
+        <div class="i-mdi-dots-horizontal align-middle"/>
       </div>
       <!-- Last page -->
       <div

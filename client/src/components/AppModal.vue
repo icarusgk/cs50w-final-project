@@ -32,7 +32,7 @@ function exit(event: any) {
         </div>
 
         <div @click="$emit('exit:modal')" class="pointer">
-          <CloseIcon />
+          <div class="i-fluent-dismiss-circle-32-filled scale-220" />
         </div>
       </div>
       <slot></slot>

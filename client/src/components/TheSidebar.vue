@@ -8,7 +8,7 @@
         <RouterLink to="/" aria-label="Home">
           <SidebarItem>
             <template #icon>
-              <HomeIcon />
+              <div class="i-fluent-home-48-regular scale-190" />
             </template>
             <template #heading>Home</template>
           </SidebarItem>
@@ -16,7 +16,7 @@
         <RouterLink to="/stats" aria-label="Stats">
           <SidebarItem>
             <template #icon>
-              <StatsIcon />
+              <div class="i-fluent-chart-multiple-24-regular scale-190"></div>
             </template>
             <template #heading>Stats</template>
           </SidebarItem>
@@ -26,7 +26,7 @@
         <RouterLink to="/about" aria-label="About">
           <SidebarItem>
             <template #icon>
-              <AboutIcon />
+              <div class="i-fluent-book-information-24-regular scale-190"></div>
             </template>
             <template #heading>About</template>
           </SidebarItem>
