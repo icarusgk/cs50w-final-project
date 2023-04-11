@@ -12,8 +12,8 @@ const projects = computed(() => chore.projects);
 
 <template>
   <div class="p-2 lg:p-6">
-    <div class="flex items-center gap-4 text-white">
-      <BackIcon class="pointer" @click="$router.back()" />
+    <div class="flex items-center gap-4 text-white ml-3">
+      <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
       <span class="text-white text-5xl font-extrabold">Projects</span>
     </div>
     <Paginate
