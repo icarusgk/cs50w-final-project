@@ -21,9 +21,7 @@ watch(open, () => {
       <div class="title-container">
         <span>{{ project.name }}</span>
       </div>
-      <div @click="open = true" class="mt-0.5 pointer">
-        <TaskInfoIcon />
-      </div>
+      <div @click="open = true" class="i-fluent:info-24-regular scale-135 mt-0.5 pointer" />
     </div>
 
     <TheProjectModal

@@ -131,9 +131,7 @@ function backToDefault() {
               v-model="currentMode.name"
             />
             <label :for="mode.name">{{ mode.name }}</label>
-            <div @click="deleteMode(mode.id)" class="ml-4 pointer">
-              <DeleteIcon />
-            </div>
+            <div @click="deleteMode(mode.id)" class="ml-4 pointer i-fluent-delete-48-filled scale-125 self-center" />
           </div>
           <template #content>
             <div>

@@ -66,7 +66,7 @@ function exitModal() {
         />
       </template>
       <template #delete-icon>
-        <DeleteIcon @click="deleteProject()" class="pointer mr-2.5" />
+        <div @click="deleteProject()" class="i-fluent:delete-20-filled scale-150 pointer mr-5" />
       </template>
       <!-- Modal Info -->
       <TheProjectModalBody :project="project" />

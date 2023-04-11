@@ -9,9 +9,9 @@ watch(settingsOpen, () => {
 </script>
 
 <template>
-  <div class="flex justify-between mb-4 mx-4 lg:mb-1 lg:mx-16 text-white">
+  <div class="flex justify-between mb-4 mx-10 lg:mb-1 lg:mx-16 lg:mb-8 lg:mt-2 text-white">
     <AppTitle />
-    <ul class="flex text-right list-none mt-2">
+    <ul class="flex text-right list-none mt-2 items-center">
       <!-- Four icons -->
       <!-- User -->
       <li class="inline-block mr-0.5 pointer">
@@ -19,7 +19,7 @@ watch(settingsOpen, () => {
           <div class="flex items-center">
             <Popper hover arrow placement="bottom">
               <div class="flex items-center mr-4 <sm:mr-1" v-if="auth.isAuthed">
-                <UserIcon />
+                <div class="i-fluent:person-12-filled scale-230 mr-6 <sm:scale-160 <sm:mr-3" />
                 <span>{{ auth.user?.username }}</span>
               </div>
               <template #content>
@@ -46,7 +46,7 @@ watch(settingsOpen, () => {
       </li>
       <!-- Settings -->
       <li class="pointer" @click="settingsOpen = true" v-if="auth.isAuthed">
-        <SettingsIcon />
+        <div class="i-solar:settings-linear scale-250 ml-3 <sm:scale-170" />
       </li>
     </ul>
     <AppModal :open="settingsOpen" @exit:modal="settingsOpen = false">

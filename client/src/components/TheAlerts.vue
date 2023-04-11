@@ -1,5 +1,4 @@
 <script setup>
-import DoneIcon from './icons/DoneIcon.vue';
 const alerts = useAlertStore();
 </script>
 <template>
@@ -12,9 +11,7 @@ const alerts = useAlertStore();
       >
         <div class="flex">
           <div class="flex justify-center items-center mr-2.5 pointer">
-            <div @click="alerts.remove(alert.id)">
-              <DoneIcon />
-            </div>
+            <div class="i-fluent:checkmark-circle-32-filled scale-130 bg-white" @click="alerts.remove(alert.id)" />
           </div>
           <div class="text-[0.9rem] lg:text-base text-white">{{ alert.message }}</div>
         </div>
