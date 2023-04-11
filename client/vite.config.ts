@@ -25,7 +25,6 @@ export default defineConfig({
             ['default', 'axios'], // import { default as axios } from 'axios',
           ],
           'vue3-popper': [['default', 'Popper']],
-          apexcharts: [['default', 'ApexChart']],
         },
       ],
       dirs: ['./src/stores', './src/composables'],

@@ -16,7 +16,6 @@
   "dependencies": {
     "@formkit/auto-animate": "1.0.0-beta.6",
     "@unocss/reset": "^0.51.0",
-    "apexcharts": "^3.37.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.7",
     "install": "^0.13.0",
@@ -25,7 +24,6 @@
     "uuid": "^9.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
-    "vue3-apexcharts": "^1.4.1",
     "vue3-popper": "^1.5.0",
     "webpack": "^5.75.0"
   },
