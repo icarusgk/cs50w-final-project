@@ -70,7 +70,7 @@ function deleteTask(task: ITask) {
       />
     </div>
     <div class="m-4 flex items-center" v-else>
-      <TaskInfoIcon />
+      <div class="i-fluent-info-12-regular scale-150 ml-3" />
       <span class="ml-4 font-semibold text-2xl">No Tasks</span>
     </div>
   </div>

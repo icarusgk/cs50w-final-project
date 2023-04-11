@@ -28,7 +28,7 @@ watch(open, () => {
       <div class="flex items-center gap-4">
         <div @click="open = true" class="w-84 bg-[#333] text-white p-4 rounded-lg font-semibold depth pointer active:shadow-none active:shadow-dark-gray">
           <div class="flex items-center">
-            <TaskInfoIcon />
+            <div class="i-fluent-info-12-regular scale-150 ml-3" />
             <span class="ml-2">Working on task: {{ task?.title }}</span>
           </div>
         </div>
