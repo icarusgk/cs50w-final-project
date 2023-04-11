@@ -1,4 +1,4 @@
-import { defineConfig, presetWind, presetWebFonts, toEscapedSelector as e  } from 'unocss'
+import { defineConfig, presetWind, presetWebFonts, presetIcons, toEscapedSelector as e  } from 'unocss'
 
 const btnColors = {
   lighterGray: '#4a4a4a',
@@ -176,6 +176,11 @@ export default defineConfig({
       provider: 'google',
       fonts: {
         sans: 'Lexend'
+      }
+    }),
+    presetIcons({
+      extraProperties: {
+        display: 'inline-block'
       }
     })
   ],
