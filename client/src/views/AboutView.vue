@@ -1,5 +1,5 @@
 <template>
-  <div class="m-4 text-white my-8 mx-16">
+  <!-- <div class="m-4 text-white my-8 mx-16">
     <div class="flex items-center -ml-2 mb-4">
       <div class="i-solar-info-square-bold scale-250" />
       <h1 class="ml-4">About</h1>
@@ -98,6 +98,10 @@
         </li>
       </ul>
     </div>
+  </div> -->
+  <div class="flex flex-col h-screen-sm justify-center items-center text-white w-full">
+    <div class="i-material-symbols-construction scale-600 mb-15" />
+    <span class="text-5xl font-bold">WIP</span>
   </div>
 </template>
 
