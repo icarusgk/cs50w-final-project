@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDark, useToggle } from '@vueuse/core';
 const settingsOpen = ref(false);
 const auth = useAuthStore();
 const modal = useModalStore();
@@ -6,6 +7,9 @@ const modal = useModalStore();
 watch(settingsOpen, () => {
   modal.toggle();
 });
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 </script>
 
 <template>
@@ -14,6 +18,8 @@ watch(settingsOpen, () => {
     <ul class="flex text-right list-none mt-2 items-center">
       <!-- Four icons -->
       <!-- User -->
+      <li @click="toggleDark()" v-if="isDark" class="i-fluent-weather-moon-20-regular light:bg-red scale-200 mr-8 pointer"></li>
+      <li @click="toggleDark()" v-else class="i-fluent-weather-sunny-20-regular scale-200 mr-8 pointer"></li>
       <li class="inline-block mr-0.5 pointer">
         <div class="flex items-center">
           <div class="flex items-center">

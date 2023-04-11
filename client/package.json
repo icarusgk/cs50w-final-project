@@ -16,6 +16,7 @@
   "dependencies": {
     "@formkit/auto-animate": "1.0.0-beta.6",
     "@unocss/reset": "^0.51.0",
+    "@vueuse/core": "^9.13.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.7",
     "install": "^0.13.0",
