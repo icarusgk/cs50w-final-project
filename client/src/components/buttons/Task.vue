@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { ITag, ITask } from '@/types';
+import type { ITask } from '@/types';
+import { toggleDone, deleteTask } from '@/utils/taskFns';
 
 const props = defineProps<{
   task: ITask;
 }>();
 
-// @ts-ignore
-const { toggleDone, deleteTask, setCurrentTask } = inject('taskFunctions');
 const chore = useModalStore();
 
 const open = ref(false);
@@ -15,8 +14,6 @@ watch(open, () => {
   chore.toggle();
 });
 
-const closeModal = () => open.value = false;
-provide('closeModal', closeModal);
 </script>
 
 <template>
@@ -33,7 +30,6 @@ provide('closeModal', closeModal);
       ]"
     >
       <div
-        @click="setCurrentTask(task)"
         class="title-container"
       >
         <Popper hover arrow placement="bottom" openDelay="1000">

@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
+import { toggleDone, deleteTask, addTag, removeTag, saveTask } from '@/utils/taskFns';
 
 const props = defineProps<{
   task: ITask;
   open: boolean;
 }>();
 
+const emit = defineEmits<{
+  (e: 'exit:modal'): any
+}>()
+
 // @ts-ignore
-const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
-const closeModal = inject<() => void>('closeModal');
+// const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
 
 // This way it prevents from mutating the original object
 // inside props.task by reference
@@ -23,12 +27,12 @@ const isFormPristine = computed(() => {
 
 function saveTheTask() {
   saveTask(props.task, { ...localTask });
-  closeModal?.();
+  emit('exit:modal');
 }
 
 function deleteTheTask() {
   deleteTask(props.task);
-  closeModal?.();
+  emit('exit:modal');
 }
 
 function exitWithoutSaving() {
@@ -36,7 +40,7 @@ function exitWithoutSaving() {
   localTask.title = props.task.title;
   localTask.description = props.task.description;
   localTask.estimated = props.task.estimated;
-  closeModal?.();
+  emit('exit:modal');
 }
 
 onMounted(() => {

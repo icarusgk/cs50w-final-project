@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { ITask, ITag } from '@/types';
-
 const chore = useChoreStore();
 
 // Back to 1 / 4;
@@ -13,57 +11,6 @@ chore.fetchTasks();
 const tasks = computed(() => chore.tasks.slice(0, 4));
 
 const currentTask = ref();
-
-function addTag(task: ITask, tag: ITag) {
-  task.tags.push(tag);
-}
-
-function removeTag(task: ITask, tagId: number) {
-  task.tags = task.tags.filter((tag: ITag) => tag.id !== tagId);
-}
-
-function saveTask(oldTask: ITask, newTask: ITask) {
-  chore.saveTask(newTask);
-  oldTask = newTask;
-}
-
-async function toggleDone(task: ITask) {
-  const response = await axios.patch(`tasks/${task.id}/`, {
-    obj: 'task',
-    action: 'done',
-  });
-  if (response?.status === 200) {
-    task.done = response.data?.done;
-    chore.fetchProjects();
-  }
-}
-function deleteTask(task: ITask) {
-  // TODO: Replace with Dialog
-  if (window.confirm('Are you sure you want to delete this task?')) {
-    chore.deleteTask(task);
-
-    if (
-      chore.taskPagination.page === chore.totalTaskPages &&
-      chore.tasks.length === 1
-    ) {
-      chore.decreaseTaskPagination();
-    }
-  }
-}
-
-function setCurrentTask(task: ITask) {
-  currentTask.value = task.id;
-}
-
-provide('taskFunctions', {
-  addTag,
-  removeTag,
-  saveTask,
-  toggleDone,
-  deleteTask,
-  setCurrentTask
-})
-
 
 // // A id debouncer
 // watch(currentTask, (prevId, curId) => {
