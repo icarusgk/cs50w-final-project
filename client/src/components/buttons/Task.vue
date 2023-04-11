@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { ITag, ITask } from '@/types';
+import type { ITask } from '@/types';
+import { toggleDone, deleteTask } from '@/utils/taskFns';
 
 const props = defineProps<{
   task: ITask;
 }>();
 
-// @ts-ignore
-const { toggleDone, deleteTask, setCurrentTask } = inject('taskFunctions');
 const chore = useModalStore();
 
 const open = ref(false);
@@ -15,15 +14,13 @@ watch(open, () => {
   chore.toggle();
 });
 
-const closeModal = () => open.value = false;
-provide('closeModal', closeModal);
 </script>
 
 <template>
   <div class="flex items-center my-2 mb-2">
     <div @click="toggleDone(task)" class="pointer mr-4" v-auto-animate>
-      <DoneIcon v-if="!task.done" />
-      <MarkedDoneIcon v-else />
+      <div class="i-fluent:checkmark-circle-32-regular scale-130" v-if="!task.done" />
+      <div class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red" v-else />
     </div>
     <!-- Name -->
     <div
@@ -33,7 +30,6 @@ provide('closeModal', closeModal);
       ]"
     >
       <div
-        @click="setCurrentTask(task)"
         class="title-container"
       >
         <Popper hover arrow placement="bottom" openDelay="1000">
@@ -47,12 +43,8 @@ provide('closeModal', closeModal);
             >{{ task.gone_through }} / {{ task.estimated }}</span
           >
         </div>
-        <div class="pointer mr-1" @click="deleteTask(task)">
-          <DeleteIcon />
-        </div>
-        <div class="pointer" @click="open = true">
-          <TaskInfoIcon />
-        </div>
+        <div class="pointer i-fluent:delete-20-filled scale-135 mr-2" @click="deleteTask(task)" />
+        <div class="pointer i-fluent:info-24-regular scale-135" @click="open = true" />
       </div>
     </div>
     <TheTaskModal

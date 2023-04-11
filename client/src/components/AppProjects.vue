@@ -21,9 +21,9 @@ function setAdded(newAdded: number) {
 <template>
   <div class="mt-2">
     <!-- Projects Title -->
-    <Title class="pointer">
+    <Title class="pointer my-5 mx-3">
       <template #icon>
-        <ProjectIcon />
+        <div class="i-mdi:lightbulb scale-350 mr-3"></div>
       </template>
       <template #type>
         <h1 @click="$router.push('/projects')">Projects</h1>

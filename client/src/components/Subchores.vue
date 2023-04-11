@@ -342,23 +342,23 @@ function removeTag(tag: ITag) {
   <div class="flex flex-wrap my-2 mx-0 gap-2.5" v-auto-animate>
     <!-- Display each subtask list -->
     <MiniLabel v-for="chore in chores" :is-task="true">
+      <template #title>
+        <div @click="openDetails(chore)">{{ chore.title }}</div>
+      </template>
       <template #icon>
-        <TaskInfoIcon @click="openDetails(chore)" v-if="isNew" class="ml-4 mt-0.5" />
+        <div class="ml-4 mt-0.5 i-fluent-info-16-regular scale-150" @click="openDetails(chore)" v-if="isNew" />
         <div v-auto-animate>
           <DoneIcon
             @click="toggleChoreDone(chore)"
             v-if="!chore.done && !isNew"
-            class="ml-4 mt-0.5"
+            class="i-fluent:checkmark-circle-32-regular scale-130 ml-4 mb-0.5"
           />
           <MarkedDoneIcon
             @click="toggleChoreDone(chore)"
             v-if="chore.done"
-            class="ml-4 mt-0.5"
+            class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red ml-4 mb-0.5"
           />
         </div>
-      </template>
-      <template #title>
-        <div @click="openDetails(chore)">{{ chore.title }}</div>
       </template>
     </MiniLabel>
     <!-- Add new subtask or task -->
@@ -369,14 +369,14 @@ function removeTag(tag: ITag) {
         }}</span>
       </template>
       <template #icon>
-        <AddTagIcon class="w-4 h-4 mt-0.5" />
+        <div class="i-fluent-add-circle-16-filled scale-140 mt-1" />
       </template>
     </MiniLabel>
     <!-- Add new subtask or task but just show the icon -->
     <div v-else>
       <MiniLabel @click="openNewChore" :is-task="true">
         <template #icon>
-          <AddTagIcon class="w-4 h-4 mt-0.5" />
+          <div class="i-fluent-add-circle-16-filled scale-140 mt-1" />
         </template>
       </MiniLabel>
     </div>

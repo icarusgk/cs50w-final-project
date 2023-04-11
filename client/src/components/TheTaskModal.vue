@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
+import { toggleDone, deleteTask, addTag, removeTag, saveTask } from '@/utils/taskFns';
 
 const props = defineProps<{
   task: ITask;
   open: boolean;
 }>();
 
+const emit = defineEmits<{
+  (e: 'exit:modal'): any
+}>()
+
 // @ts-ignore
-const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
-const closeModal = inject<() => void>('closeModal');
+// const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
 
 // This way it prevents from mutating the original object
 // inside props.task by reference
@@ -23,12 +27,12 @@ const isFormPristine = computed(() => {
 
 function saveTheTask() {
   saveTask(props.task, { ...localTask });
-  closeModal?.();
+  emit('exit:modal');
 }
 
 function deleteTheTask() {
   deleteTask(props.task);
-  closeModal?.();
+  emit('exit:modal');
 }
 
 function exitWithoutSaving() {
@@ -36,7 +40,7 @@ function exitWithoutSaving() {
   localTask.title = props.task.title;
   localTask.description = props.task.description;
   localTask.estimated = props.task.estimated;
-  closeModal?.();
+  emit('exit:modal');
 }
 
 onMounted(() => {
@@ -61,14 +65,14 @@ onUnmounted(() => {
           @remove:tag="(tag: ITag) => removeTag(props.task, tag.id)"
           @close:modal="$emit('exit:modal')"
         />
-        <div class="flex items-baseline">
-          <div @click="toggleDone(task)" class="pointer" v-auto-animate>
-            <DoneIcon v-if="!task.done" />
-            <MarkedDoneIcon v-else />
+        <div class="flex items-baseline items-center">
+          <div @click="toggleDone(task)" class="pointer mr-1" v-auto-animate>
+            <div class="i-fluent:checkmark-circle-32-regular scale-130" v-if="!task.done" />
+            <div class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red" v-else />
           </div>
-          <DeleteIcon
+          <div
             @click="deleteTheTask()"
-            class="my-[0.1rem] mx-2 pointer"
+            class="my-[0.1rem] mx-2 mr-5 pointer i-fluent:delete-20-filled scale-150"
           />
         </div>
       </template>

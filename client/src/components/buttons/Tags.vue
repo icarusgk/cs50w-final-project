@@ -148,10 +148,10 @@ function goToTag(tag: string) {
         <span @click="goToTag(tag.name)"> #{{ tag.name }} </span>
       </template>
       <template #icon>
-        <DeleteTagIcon
+        <div
           v-if="!info"
           @click="deleteTag(tag)"
-          class="ml-2"
+          class="i-fluent:delete-12-regular scale-120 ml-2"
         />
       </template>
     </MiniLabel>
@@ -166,7 +166,7 @@ function goToTag(tag: string) {
         <span class="mr-2">Add tag</span>
       </template>
       <template #icon>
-        <AddTagIcon />
+        <div class="i-fluent-add-circle-16-filled scale-130" />
       </template>
     </MiniLabel>
 
@@ -179,7 +179,7 @@ function goToTag(tag: string) {
       :is-add="true"
     >
       <template #icon>
-        <AddTagIcon />
+        <div class="i-fluent-add-circle-16-filled scale-130" />
       </template>
     </MiniLabel>
     <!-- Form -->
