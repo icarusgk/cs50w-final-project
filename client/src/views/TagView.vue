@@ -46,8 +46,8 @@ async function deleteTag() {
     <div class="flex items-center justify-between mb-4">
       <span class="text-white font-extrabold text-3xl">#{{ route.params.name }}</span>
       <div @click="deleteTag()" class="flex items-center bg-vivid-red text-white rounded-lg p-[0.7rem] delete-tag pointer">
-        <span class="mr-4">Delete tag</span>
-        <div><DeleteIcon /></div>
+        <div class="i-fluent:delete-12-regular scale-130" />
+        <span class="ml-2">Delete tag</span>
       </div>
     </div>
     <div class="flex flex-wrap gap-4">

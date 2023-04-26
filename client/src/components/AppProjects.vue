@@ -38,7 +38,7 @@ function setAdded(newAdded: number) {
     <!-- Project List Container -->
     <div>
       <div class="flex items-center bg-light-gray w-full p-4 rounded-xl lg:w-4/5" v-if="projects.length === 0">
-        <TaskInfoIcon />
+        <div class="i-fluent-info-12-regular scale-150 ml-3" />
         <span class="ml-4">There are no projects</span>
       </div>
       <!-- List of projects -->
