@@ -5,7 +5,6 @@ const modal = useModalStore();
 
 // Close any previously opened modal
 modal.close();
-
 auth.getUser();
 
 if (auth.isAuthed) {
