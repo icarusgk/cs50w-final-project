@@ -9,7 +9,7 @@ db.sqlite3
 media
 
 .env
-env/
+.pyenv/
 .vscode/
 .obsidian/
 .fleet/
