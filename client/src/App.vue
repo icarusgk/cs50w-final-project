@@ -56,6 +56,9 @@ if (auth.isAuthed) {
 /* Popper theme */
 @import './assets/popper-theme.css';
 
+/* Lexend font */
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 * {
   transition: filter 0.15s ease-out;
 }
