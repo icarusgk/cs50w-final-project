@@ -351,12 +351,12 @@ function removeTag(tag: ITag) {
           <DoneIcon
             @click="toggleChoreDone(chore)"
             v-if="!chore.done && !isNew"
-            class="i-fluent:checkmark-circle-32-regular scale-130 ml-4 mb-0.5"
+            class="i-fluent:checkmark-circle-32-regular scale-130 ml-4 mt-1"
           />
           <MarkedDoneIcon
             @click="toggleChoreDone(chore)"
             v-if="chore.done"
-            class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red ml-4 mb-0.5"
+            class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red ml-4 mt-1"
           />
         </div>
       </template>
