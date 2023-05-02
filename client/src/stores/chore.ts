@@ -6,6 +6,9 @@ import { useAuthStore } from './auth';
 import { ref, reactive, computed } from 'vue';
 
 export const useChoreStore = defineStore('chores', () => {
+  const alert = useAlertStore();
+  const auth = useAuthStore();
+
   const tasks = ref<ITask[]>([]);
   const projects = ref<IProject[]>([]);
   const tags = ref<ITag[]>([]);
@@ -128,12 +131,11 @@ export const useChoreStore = defineStore('chores', () => {
   async function changeCurrentTask(id: number | undefined) {
     const { data, status } = await axios.put('currentTask', { id })
     if (status === 200) {
-      useAuthStore().user!.current_task_id = data.id;
+      auth.user!.current_task_id = data.id;
     }
   }
   // Fetch all chores from user (request.user in django)
   function fetchAll() {
-    const auth = useAuthStore();
     if (auth.isAuthed) {
       fetchModes();
       fetchTags();
@@ -143,7 +145,7 @@ export const useChoreStore = defineStore('chores', () => {
   async function addTask(task: ITask) {
     const { status } = await axios.post('tasks', task);
     if (status === 201) {
-      useAlertStore().success(`Task ${task.title} created!`);
+      alert.success(`Task ${task.title} created!`);
       // Send user to the first page
       taskPagination.page = 1;
       fetchTasks();
@@ -152,7 +154,7 @@ export const useChoreStore = defineStore('chores', () => {
   async function saveTask(task: ITask) {
     const { status } = await axios.put(`tasks/${task.id}`, task);
     if (status === 200) {
-      useAlertStore().success(`'${task.title}' saved!`);
+      alert.success(`'${task.title}' saved!`);
       fetchTasks();
     }
   }
@@ -168,9 +170,7 @@ export const useChoreStore = defineStore('chores', () => {
         fetchTasks();
       }
 
-      const auth = useAuthStore();
-
-      useAlertStore().info(`Task '${task.title}' deleted`);
+      alert.info(`Task '${task.title}' deleted`);
 
       if (task.id === auth.user!.current_task_id) {
         auth.user!.current_task_id = 0;
@@ -181,7 +181,7 @@ export const useChoreStore = defineStore('chores', () => {
     const { status } = await axios.post('projects', project);
 
     if (status === 201) {
-      useAlertStore().success(`Project ${project.name} created!`);
+      alert.success(`Project ${project.name} created!`);
       // Send user to the first page
       projectPagination.page = 1;
       fetchProjects();
@@ -193,7 +193,7 @@ export const useChoreStore = defineStore('chores', () => {
     );
 
     if (status === 200) {
-      useAlertStore().success('Project saved!');
+      alert.success('Project saved!');
     }
   }
   async function deleteProject(id: number) {
@@ -206,12 +206,12 @@ export const useChoreStore = defineStore('chores', () => {
       } else {
         fetchProjects();
       }
-      useAlertStore().info('Project deleted!');
+      alert.info('Project deleted!');
     }
   }
   async function incrementGoneThrough() {
     increaseTodayStats();
-    const auth = useAuthStore();
+    
 
     if (auth.user?.current_task_id) {
       const { status } = await axios.patch(
