@@ -40,7 +40,3 @@ export function deleteTask(task: ITask) {
     }
   }
 }
-
-// export function setCurrentTask(task: ITask) {
-//   currentTask.value = task.id;
-// }
