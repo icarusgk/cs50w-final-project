@@ -1,7 +1,6 @@
 import type { IProject, ITag, ITask, IStat } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { useFetch } from '@/composables/useFetch';
 import { useAlertStore } from './alerts';
 import { useAuthStore } from './auth';
 import { ref, reactive, computed } from 'vue';
