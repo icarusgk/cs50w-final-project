@@ -55,7 +55,6 @@
     "useChoreStore": true,
     "useCssModule": true,
     "useCssVars": true,
-    "useFetch": true,
     "useLink": true,
     "useModalStore": true,
     "useRoute": true,

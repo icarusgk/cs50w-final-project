@@ -13,7 +13,7 @@ type TimerType = {
 // In case the timer object is empty
 export const defaultTimer: TimerType = {
   name: 'Local Default',
-  pomo: 25,
+  pomo: 1,
   short_break: 5,
   long_break: 15,
 };

@@ -71,14 +71,14 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function fetchModes() {
-    const { status, data } = await useFetch('modes', 'get');
+    const { status, data } = await axios.get('modes')
     if (status === 200) {
       const modes = JSON.stringify(data);
       localStorage.setItem('modes', modes);
     }
   }
   async function fetchStats() {
-    const { data, status } = await useFetch('stats', 'get');
+    const { data, status } = await axios.get('stats')
     if (status === 200) {
       stats.value = data;
     }
@@ -87,7 +87,7 @@ export const useChoreStore = defineStore('chores', () => {
     const date = new Date();
     date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
 
-    const { data, status } = await useFetch('stats', 'post', {
+    const { data, status } = await axios.post('stats', {
       day: date.toISOString().slice(0, 10),
     });
     if (status === 201) {
@@ -100,7 +100,7 @@ export const useChoreStore = defineStore('chores', () => {
   }
   async function fetchTasks() {
     const { page, page_size } = taskPagination;
-    const { data, status } = await axios.get('tasks/', {
+    const { data, status } = await axios.get('tasks', {
       params: { page, page_size }
     });
 
@@ -111,7 +111,7 @@ export const useChoreStore = defineStore('chores', () => {
   }
   async function fetchProjects() {
     const { page, page_size } = projectPagination;
-    const { data, status } = await axios.get('projects/', {
+    const { data, status } = await axios.get('projects', {
       params: { page, page_size }
     });
 
@@ -121,15 +121,13 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function fetchTags() {
-    const { data, status } = await useFetch('tags', 'get');
-
+    const { data, status } = await axios.get('tags');
     if (status === 200) {
       return (tags.value = data);
     }
   }
   async function changeCurrentTask(id: number | undefined) {
-    const { data, status } = await useFetch('currentTask', 'put', { id });
-
+    const { data, status } = await axios.put('currentTask', { id })
     if (status === 200) {
       useAuthStore().user!.current_task_id = data.id;
     }
@@ -144,7 +142,7 @@ export const useChoreStore = defineStore('chores', () => {
   }
   // Adds tasks with tags and subtasks
   async function addTask(task: ITask) {
-    const { status } = await useFetch('tasks', 'post', task);
+    const { status } = await axios.post('tasks', task);
     if (status === 201) {
       useAlertStore().success(`Task ${task.title} created!`);
       // Send user to the first page
@@ -153,14 +151,14 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function saveTask(task: ITask) {
-    const { status } = await axios.put(`tasks/${task.id}/`, task);
+    const { status } = await axios.put(`tasks/${task.id}`, task);
     if (status === 200) {
       useAlertStore().success(`'${task.title}' saved!`);
       fetchTasks();
     }
   }
   async function deleteTask(task: ITask) {
-    const { status } = await useFetch('tasks', 'delete', null, task.id);
+    const { status } = await axios.delete(`tasks/${task.id}`)
 
     if (status === 204) {
       // if it is the last
@@ -181,7 +179,7 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function addProject(project: IProject) {
-    const { status } = await useFetch('projects', 'post', project);
+    const { status } = await axios.post('projects', project);
 
     if (status === 201) {
       useAlertStore().success(`Project ${project.name} created!`);
@@ -191,11 +189,8 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function saveProject(project: IProject, newProjectName: string) {
-    const { status } = await axios.patch(
-      `/projects/${project.id}/modify_title/`,
-      {
-        name: newProjectName,
-      }
+    const { status } = await axios.patch( `/projects/${project.id}/modify_title`,
+      { name: newProjectName }
     );
 
     if (status === 200) {
@@ -203,7 +198,7 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function deleteProject(id: number) {
-    const { status } = await useFetch('projects', 'delete', null, id);
+    const { status } = await axios.delete(`projects/${id}`)
 
     if (status === 204) {
       if (projects.value.length === 1 && projectPagination.count === 0) {
@@ -220,14 +215,12 @@ export const useChoreStore = defineStore('chores', () => {
     const auth = useAuthStore();
 
     if (auth.user?.current_task_id) {
-      const { status } = await useFetch(
-        'tasks',
-        'patch',
+      const { status } = await axios.patch(
+        `tasks/${auth.user!.current_task_id}`,
         {
           obj: 'task',
           action: 'increment_gone_through',
         },
-        auth.user!.current_task_id
       );
 
       if (status === 200) {

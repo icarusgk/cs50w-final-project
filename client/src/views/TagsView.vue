@@ -2,10 +2,9 @@
 import type { ITag } from '@/types';
 
 const tags = ref<ITag[]>([]);
-
 const fetched = ref(false);
 
-useFetch('tags', 'get').then((res) => {
+axios.get('tags').then((res) => {
   tags.value = res.data;
   fetched.value = true;
 });

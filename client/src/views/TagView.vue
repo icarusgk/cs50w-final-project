@@ -12,7 +12,7 @@ watchEffect(async () => {
   const urlTag = route.params.name;
 
   if (urlTag) {
-    const { data } = await useFetch(`tagInfo/${urlTag}`, 'get');
+    const { data } = await axios.get(`tagInfo/${urlTag}`);
     tasks.value = data as ITask[];
     fetchedTags.value = true;
   }
@@ -24,7 +24,7 @@ async function deleteTag() {
   const tagFound = chore.tags.find((t: ITag) => t.name === urlTag);
 
   if (window.confirm('Are you sure?')) {
-    const { status } = await useFetch('tags', 'delete', null, tagFound?.id);
+    const { status } = await axios.delete(`tags/${tagFound?.id}`);
     if (status === 204) {
       router.back();
       // Refresh the current tasks, project and tags
