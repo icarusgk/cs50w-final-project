@@ -134,13 +134,7 @@ export const useChoreStore = defineStore('chores', () => {
       auth.user!.current_task_id = data.id;
     }
   }
-  // Fetch all chores from user (request.user in django)
-  function fetchAll() {
-    if (auth.isAuthed) {
-      fetchModes();
-      fetchTags();
-    }
-  }
+
   // Adds tasks with tags and subtasks
   async function addTask(task: ITask) {
     const { status } = await axios.post('tasks', task);
@@ -232,7 +226,7 @@ export const useChoreStore = defineStore('chores', () => {
     tasks, projects, tags, stats, projectPagination, taskPagination, totalProjectPages, totalTaskPages,
       decreaseProjectPagination, decreaseTaskPagination, previousProjectPage, setProjectPage, setProjectAdded,
       nextProjectPage, previousTaskPage, setTaskPage, setTaskAdded, nextTaskPage, 
-      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags, changeCurrentTask, fetchAll,
-    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
+      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags, changeCurrentTask,
+      addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
   }
 }, { persist: true });

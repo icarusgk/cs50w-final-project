@@ -28,6 +28,8 @@ if (auth.isAuthed) {
       }
     }
   );
+  chore.fetchModes();
+  chore.fetchStats();
 }
 </script>
 
