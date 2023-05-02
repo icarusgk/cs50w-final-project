@@ -9,15 +9,6 @@ chore.taskPagination.added = 1;
 chore.fetchTasks();
 
 const tasks = computed(() => chore.tasks.slice(0, 4));
-
-const currentTask = ref();
-
-// // A id debouncer
-// watch(currentTask, (prevId, curId) => {
-//   if (prevId !== curId) {
-//     chore.changeCurrentTask(currentTask.value);
-//   }
-// });
 </script>
 
 <template>

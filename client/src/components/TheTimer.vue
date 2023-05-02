@@ -110,7 +110,7 @@ function setTimer(type: string) {
       <div class="block mt-4 font-bold text-4xl" v-if="timer.done && !timer.ongoing">
         <span>Done!</span>
       </div>
-      <!-- <CurrentTask /> -->
+      <CurrentTask />
     </div>
   </div>
 </template>

@@ -1,21 +1,16 @@
 <script setup lang="ts">
-const task = ref();
 const auth = useAuthStore();
 const chore = useChoreStore();
-const userTaskId = computed(() => auth.user?.current_task_id);
+const task = ref();
 const open = ref(false);
 
-async function getTask(id: any) {
-  const response = await axios.get(`tasks/${id}/`);
-  task.value = response?.data;
-}
-
-watchEffect(() => {
-  if (userTaskId.value !== 0 && auth.user) {
-    getTask(userTaskId.value);
+watchEffect(async () => {
+  const curId = auth.user?.current_task_id;
+  if (curId !== 0 && auth.user) {
+    const response = await axios.get(`tasks/${curId}/`);
+    task.value = response?.data;
   }
 });
-
 // The modal blur
 watch(open, () => {
   useModalStore().toggle();
@@ -24,7 +19,7 @@ watch(open, () => {
 
 <template>
   <Transition name="slide">
-    <div v-if="userTaskId !== 0 && auth.user" style="margin-top: 1rem">
+    <div v-if="auth.user?.current_task_id !== 0 && auth.user && task" style="margin-top: 1rem">
       <div class="flex items-center gap-4">
         <div @click="open = true" class="w-84 bg-[#333] text-white p-4 rounded-lg font-semibold depth pointer active:shadow-none active:shadow-dark-gray">
           <div class="flex items-center">
@@ -33,11 +28,11 @@ watch(open, () => {
           </div>
         </div>
         <Popper hover>
-          <CloseIcon @click="chore.changeCurrentTask(0)" class="pointer" />
+          <div @click="chore.changeCurrentTask(0)" class="pointer i-fluent-dismiss-circle-32-filled scale-220" />
           <template #content> Remove current task </template>
         </Popper>
       </div>
-      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" />
+      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" :key="task.id" />
     </div>
   </Transition>
 </template>
