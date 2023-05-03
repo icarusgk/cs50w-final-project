@@ -1,123 +1,98 @@
 import { defineStore } from 'pinia';
-import dayjs from 'dayjs';
 import { useAuthStore, useChoreStore } from '@/stores';
+import { ref, computed } from 'vue';
+import { toTimer, local } from '@/utils';
+import type { ITimer } from '@/types';
 
-type TimerType = {
-  name: string;
-  pomo: number;
-  short_break: number;
-  long_break: number;
-};
+type TimerType = 'pomo' | 'short' | 'long';
 
 // In case the timer object is empty
-export const defaultTimer: TimerType = {
-  name: 'Local Default',
-  pomo: 1,
-  short_break: 5,
-  long_break: 15,
+export const defaultTimer: ITimer = {
+  id: 0,
+  name: 'Default',
+  pomo: 25,
+  short: 5,
+  long: 15,
 };
 
-const storageTimer = localStorage.getItem('timer');
-const localTimer = storageTimer ? JSON.parse(storageTimer) : defaultTimer;
+// If there isn't a timer on the localstorage, set the defaultTimer
+if (!local.get('timer')) local.set('timer', defaultTimer)
+const localTimer = local.get('timer') as ITimer;
 
-const minutes = (minutes: number) => {
-  return dayjs().set('minutes', minutes).set('seconds', 0);
-};
+export const useTimerStore = defineStore('timer', () => {
+  const auth = useAuthStore();
+  const chore = useChoreStore();
 
-const seconds = (minutes: number) => minutes * 60;
+  let timerId: number | null;
 
-export const useTimerStore = defineStore('timer', {
-  state: () => ({
-    timerId: 0,
-    currentTimer: {
-      timer: minutes(localTimer.pomo),
-      seconds: seconds(localTimer.pomo),
-    },
-    pomo: {
-      timer: minutes(localTimer.pomo),
-      seconds: seconds(localTimer.pomo),
-    },
-    short_break: {
-      timer: minutes(localTimer.short_break),
-      seconds: seconds(localTimer.short_break),
-    },
-    long_break: {
-      timer: minutes(localTimer.long_break),
-      seconds: seconds(localTimer.short_break),
-    },
-    currentMode: localTimer.name,
-    done: false,
-    ongoing: false,
-    current: 'pomo',
-    sessions: 0,
-    auto_start_pomo: useAuthStore().isAuthed
-      ? useAuthStore().user?.auto_start_pomos
-      : false,
-    auto_start_breaks: useAuthStore().isAuthed
-      ? useAuthStore().user?.auto_start_breaks
-      : false,
-  }),
-  getters: {
-    minutes: (state) => state.currentTimer.timer.minute(),
-    seconds: (state) => state.currentTimer.timer.second(),
-    formattedTime: (state) => state.currentTimer.timer.format('mm:ss'),
-  },
-  actions: {
-    setTo(data: TimerType) {
-      const { pomo, short_break, long_break } = data;
-      this.pomo.timer = minutes(pomo);
-      this.pomo.seconds = seconds(pomo);
+  const isRunning = ref(false)
+  const sessions = ref(0)
+  const timerType = ref<TimerType>('pomo')
+  const done = ref(false)
+  
+  const auto_start_pomo = ref(auth.user?.auto_start_pomos || false)
+  const auto_start_breaks = ref(auth.user?.auto_start_breaks || false)
 
-      this.short_break.timer = minutes(short_break);
-      this.short_break.seconds = seconds(short_break);
+  const currentMode = ref<ITimer>({...defaultTimer});
 
-      this.long_break.timer = minutes(long_break);
-      this.long_break.seconds = seconds(long_break);
+  const currentTimer = ref(currentMode.value[timerType.value as keyof ITimer])
+  const activeTimer = ref(toTimer(currentTimer.value as number))
 
-      this.currentMode = data.name;
-    },
-    setNewTimer(data: TimerType) {
-      this.setTo(data);
-      this.currentTimer.timer = minutes(data.pomo);
-      this.currentTimer.seconds = data.pomo;
-      const timer = JSON.stringify(data);
-      localStorage.setItem('timer', timer);
-    },
-    decrementSecond() {
-      this.currentTimer.timer = this.currentTimer.timer.subtract(1, 'second');
-      document.title = `Pomo.do ${this.formattedTime}`;
-    },
-    toggleOngoing() {
-      this.ongoing = !this.ongoing;
-    },
-    setNextTimer() {
-      // set next timer
-      if (this.current === 'short_break' || this.current === 'long_break') {
-        this.setTimer('pomo');
-      } else if (this.current === 'pomo') {
-        useChoreStore().incrementGoneThrough();
-        if (this.sessions === 3) {
-          this.setTimer('long_break');
-          this.sessions = 0;
-        } else {
-          this.setTimer('short_break');
-          this.sessions++;
-        }
+  const displayTimer = computed(() => {
+    return activeTimer.value.format(activeTimer.value.hour() ? 'hh:mm:ss' : 'mm:ss')
+  })
+
+  function startTimer() {
+    if (timerId) return;
+    isRunning.value = true;
+    done.value = false;
+    timerId = window.setInterval(() => {
+      activeTimer.value = activeTimer.value.subtract(1, 'second');
+    }, 1000);
+  }
+
+  // Sets the next timer type based on the current timer type 
+  // and number of completed sessions.
+  function setNextTimer() {
+    if (timerType.value === 'short' || timerType.value === 'long') {
+      setTo('pomo');
+    } else if (timerType.value === 'pomo') {
+      useChoreStore().incrementGoneThrough();
+      if (sessions.value === 3) {
+        setTo('long'); sessions.value = 0;
+      } else {
+        setTo('short'); sessions.value++;
       }
-    },
-    setToDefault() {
-      this.setTo(defaultTimer);
-      this.currentTimer.timer = minutes(defaultTimer.pomo);
-      this.currentTimer.seconds = defaultTimer.pomo;
-      this.current = 'pomo';
-      localStorage.removeItem('timer');
-    },
-    setTimer(name: string) {
-      //  @ts-ignore
-      this.currentTimer.timer = this[name].timer;
-      //  @ts-ignore
-      this.currentTimer.seconds = this[name].seconds;
-      this.current = name;
-    },
-  },
+    }
+  }
+
+  function stopTimer() {
+    if (timerId) clearInterval(timerId);
+    isRunning.value = false;
+    timerId = null;
+  }
+
+  function restartTimer() {
+    stopTimer();
+    activeTimer.value = toTimer(currentTimer.value as number);
+  }
+
+  function setTo(timerMode: TimerType) {
+    stopTimer();
+    timerType.value = timerMode;
+    currentTimer.value = currentMode.value[timerMode as keyof ITimer]
+    activeTimer.value = toTimer(currentTimer.value as number);
+  }
+
+  // From here on, will work with settings
+  function setNewTimer(data: ITimer) {
+    currentMode.value = data;
+  }
+
+  function setToDefault() {
+    currentMode.value = {...localTimer};
+    timerType.value = 'pomo';
+  }
+
+  return { isRunning, done, sessions, timerType, auto_start_pomo, auto_start_breaks, currentMode, currentTimer, activeTimer, displayTimer, startTimer, restartTimer, stopTimer, setTo, setNextTimer, setNewTimer, setToDefault }
 });
