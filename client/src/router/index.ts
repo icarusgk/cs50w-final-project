@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
-import { useChoreStore } from '@/stores/chore';
+import { useAuthStore, useChoreStore } from '@/stores';
 import type { ITag } from '@/types';
 
 const router = createRouter({

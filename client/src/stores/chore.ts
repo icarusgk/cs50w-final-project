@@ -1,8 +1,7 @@
 import type { IProject, ITag, ITask, IStat } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { useAlertStore } from './alerts';
-import { useAuthStore } from './auth';
+import { useAlertStore, useAuthStore } from '@/stores';
 import { ref, reactive, computed } from 'vue';
 
 export const useChoreStore = defineStore('chores', () => {
@@ -128,12 +127,6 @@ export const useChoreStore = defineStore('chores', () => {
       return (tags.value = data);
     }
   }
-  async function changeCurrentTask(id: number | undefined) {
-    const { data, status } = await axios.put('currentTask', { id })
-    if (status === 200) {
-      auth.user!.current_task_id = data.id;
-    }
-  }
 
   // Adds tasks with tags and subtasks
   async function addTask(task: ITask) {
@@ -206,7 +199,6 @@ export const useChoreStore = defineStore('chores', () => {
   async function incrementGoneThrough() {
     increaseTodayStats();
     
-
     if (auth.user?.current_task_id) {
       const { status } = await axios.patch(
         `tasks/${auth.user!.current_task_id}`,
@@ -226,7 +218,7 @@ export const useChoreStore = defineStore('chores', () => {
     tasks, projects, tags, stats, projectPagination, taskPagination, totalProjectPages, totalTaskPages,
       decreaseProjectPagination, decreaseTaskPagination, previousProjectPage, setProjectPage, setProjectAdded,
       nextProjectPage, previousTaskPage, setTaskPage, setTaskAdded, nextTaskPage, 
-      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags, changeCurrentTask,
+      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
       addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
   }
 }, { persist: true });

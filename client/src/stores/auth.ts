@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import router from '@/router';
 import { ref } from 'vue';
-import { useAlertStore } from '@/stores/alerts';
+import { useAlertStore } from '@/stores';
 import type { IUser } from '@/types';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';

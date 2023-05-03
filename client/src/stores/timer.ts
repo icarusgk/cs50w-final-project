@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
-import { useChoreStore } from './chore';
 import dayjs from 'dayjs';
-import { useAuthStore } from './auth';
+import { useAuthStore, useChoreStore } from '@/stores';
 
 type TimerType = {
   name: string;
