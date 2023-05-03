@@ -121,15 +121,15 @@ export default defineConfig({
       ${selector}:active { box-shadow: 0 0 #000; }
       `
     }],
-    [/pomo|stop\-timer\-btn|restart\-timer\-btn|short_break|long_break/, ([], { rawSelector }) => {
+    [/pomo|stop\-timer\-btn|restart\-timer\-btn|short|long/, ([], { rawSelector }) => {
       const selector = e(rawSelector);
       if (rawSelector === 'pomo') {
         return timerButton(selector, '#ed4747', '#f27575');
       }
-      if (rawSelector === 'short_break') {
+      if (rawSelector === 'short') {
         return timerButton(selector, '#1ba7b1', '#22d1dd');
       }
-      if (rawSelector === 'long_break') {
+      if (rawSelector === 'long') {
         return timerButton(selector, '#1eaf58', '#26da6e')
       }
       if (rawSelector === 'stop-timer-btn') {
