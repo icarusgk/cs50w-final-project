@@ -1,8 +1,9 @@
-import type { ITask, ITag } from '@/types';
 import axios from 'axios';
-import { useChoreStore } from '@/stores/chore';
+import type { ITask, ITag } from '@/types';
+import { useChoreStore, useAuthStore } from '@/stores';
 
 const chore = useChoreStore();
+const auth = useAuthStore();
 
 export function addTag(task: ITask, tag: ITag) {
   task.tags.push(tag);
@@ -38,5 +39,12 @@ export function deleteTask(task: ITask) {
     ) {
       chore.decreaseTaskPagination();
     }
+  }
+}
+
+export async function changeCurrentTask(id: number | undefined) {
+  const { data, status } = await axios.put('currentTask', { id })
+  if (status === 200) {
+    auth.user!.current_task_id = data.id;
   }
 }

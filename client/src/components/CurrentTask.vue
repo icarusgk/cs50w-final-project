@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { changeCurrentTask } from '@/utils/taskFns';
 const auth = useAuthStore();
-const chore = useChoreStore();
 const task = ref();
 const open = ref(false);
 
@@ -28,7 +28,7 @@ watch(open, () => {
           </div>
         </div>
         <Popper hover>
-          <div @click="chore.changeCurrentTask(0)" class="pointer i-fluent-dismiss-circle-32-filled scale-220" />
+          <div @click="changeCurrentTask(0)" class="pointer i-fluent-dismiss-circle-32-filled scale-220" />
           <template #content> Remove current task </template>
         </Popper>
       </div>
