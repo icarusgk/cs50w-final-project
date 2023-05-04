@@ -6,4 +6,4 @@ interface IMode {
   long_break: number;
 }
 
-export default IMode;
+export type { IMode };

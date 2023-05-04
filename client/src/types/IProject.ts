@@ -1,10 +1,10 @@
-import type Task from './ITask';
+import type { ITask } from './ITask';
 
-interface Project {
+interface IProject {
   id?: number;
   name: string;
-  tasks?: Task[];
+  tasks?: ITask[];
   user?: number;
 }
 
-export default Project;
+export type { IProject };

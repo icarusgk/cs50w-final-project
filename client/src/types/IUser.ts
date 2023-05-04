@@ -1,4 +1,4 @@
-type User = {
+interface IUser {
   id: number;
   username: string;
   email: string;
@@ -8,4 +8,4 @@ type User = {
   current_task_id: number | null;
 };
 
-export default User;
+export type { IUser };

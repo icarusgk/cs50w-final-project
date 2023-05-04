@@ -1,4 +1,4 @@
-interface TimerType {
+interface ITimer {
   id?: number;
   name: string;
   pomo: number;
@@ -6,4 +6,4 @@ interface TimerType {
   long_break: number;
 };
 
-export default TimerType
+export type { ITimer };
