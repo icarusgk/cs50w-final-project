@@ -2,6 +2,7 @@
 const auth = useAuthStore();
 const chore = useChoreStore();
 const modal = useModalStore();
+const timer = useTimerStore();
 
 // Close any previously opened modal
 modal.close();
@@ -31,6 +32,7 @@ if (auth.isAuthed) {
   chore.fetchModes();
   chore.fetchStats();
 }
+window.onbeforeunload = () => (timer.isRunning ? true : null)
 </script>
 
 <template>
