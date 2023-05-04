@@ -2,8 +2,8 @@ interface TimerType {
   id?: number;
   name: string;
   pomo: number;
-  short: number;
-  long: number;
+  short_break: number;
+  long_break: number;
 };
 
 export default TimerType
