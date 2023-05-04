@@ -320,9 +320,7 @@ Rest of the files inside the `components/` folder
 
 ### 📂 `composables/`
 
-> `useFetch.ts`
-
-An `axios` wrapper, I created this file because I wanted to try Vue [composables](https://vuejs.org/guide/reusability/composables.html).
+WIP
 
 
 ### 📂 `router/`

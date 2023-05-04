@@ -4,4 +4,4 @@ interface IStat {
   chores_done?: number;
 }
 
-export default IStat;
+export type { IStat };

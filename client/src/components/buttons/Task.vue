@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ITask } from '@/types';
-import { toggleDone, deleteTask } from '@/utils/taskFns';
+import { toggleDone, deleteTask, changeCurrentTask } from '@/utils/taskFns';
 
 const modal = useModalStore();
 const chore = useChoreStore();
@@ -19,7 +19,7 @@ watch(open, () => {
 function changeTask(task: ITask) {
   // Debouncer
   if (auth.user?.current_task_id != task.id) {
-    chore.changeCurrentTask(task.id);
+    changeCurrentTask(task.id);
   }
 }
 </script>

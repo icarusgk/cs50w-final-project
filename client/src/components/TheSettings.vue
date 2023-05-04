@@ -1,13 +1,14 @@
-<script setup>
+<script setup lang="ts">
+import type { ITimer } from '@/types';
+import { local } from '@/utils';
+
 const auth = useAuthStore();
 const timer = useTimerStore();
 const alert = useAlertStore();
 
-const modes = ref(JSON.parse(localStorage.getItem('modes') || '[]'));
-const currentMode = ref(JSON.parse(localStorage.getItem('timer') || '{}'));
 const showForm = ref(false);
 
-const newMode = ref({
+const newMode = ref<ITimer>({
   name: '',
   pomo: 25,
   short_break: 5,
@@ -15,16 +16,25 @@ const newMode = ref({
 });
 
 // Live updates
-function changeAutoStartPomos() {
-  axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_pomos: auth.user?.auto_start_pomos,
+async function toggleAutoStartPomos() {
+  const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
+    auto_start_pomos: auth.user?.auto_start_pomos
   });
+
+  if (status === 200 && auth.user) { 
+    auth.user.auto_start_pomos = data.auto_start_pomos;
+    alert.info(`Auto start pomos set to ${!data.auto_start_pomos}`);  }
 }
 
-function changeAutoStartBreaks() {
-  axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_breaks: auth.user?.auto_start_breaks,
-  });
+async function toggleAutoStartBreaks() {
+  const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
+    auto_start_breaks: auth.user?.auto_start_breaks
+  });  
+
+  if (status === 200 && auth.user) {
+    auth.user.auto_start_breaks = data.auto_start_breaks;
+    alert.info(`Auto start breaks set to ${!data.auto_start_breaks}`);
+  }
 }
 
 function resetMode() {
@@ -36,38 +46,32 @@ function resetMode() {
   };
 }
 
-async function changeMode(id) {
-  const { status, data } = await axios.post('currentMode/', {
-    mode_id: id,
+async function changeMode(mode: ITimer) {
+  const { data, status } = await axios.post('currentMode', {
+    mode_id: mode.id,
   });
-
-  if (status === 200) {
-    timer.setNewTimer(data);
-    currentMode.value = data;
-    timer.current = 'pomo';
-  }
+  if (status === 200) timer.setNewTimer(data);
 }
 
-async function deleteMode(id) {
+async function deleteMode(id?: number) {
   const { status } = await axios.delete(`modes/${id}/`);
 
   if (status === 204) {
-    const deletedMode = modes.value.find((mode) => mode.id === id);
-    modes.value = modes.value.filter((mode) => mode.id !== deletedMode.id);
+    const deletedMode = timer.modes.find((mode: ITimer) => mode.id === id);
 
-    localStorage.setItem('modes', JSON.stringify(modes.value));
+    if (deletedMode) {
+      timer.modes = timer.modes.filter((mode: ITimer) => mode.id !== deletedMode.id);
+      local.set('modes', timer.modes);
 
-    const current = JSON.parse(localStorage.getItem('timer'));
-    alert.success('Timer deleted!');
+      const current = local.get('timer')
+      alert.success('Timer deleted!');
 
-    // If the deleted mode was the current one
-    if (current.id === deletedMode.id) {
-      // Successfully sets to default
-      timer.setToDefault();
-      // Reactive current mode
-      // This value gets assigned in chore.ts
-      currentMode.value.name = 'Default';
-    }
+      // If the deleted mode was the current one
+      if (current.id === deletedMode.id) {
+        // Successfully sets to default
+        timer.setToDefault();
+      }
+    }    
   }
 }
 
@@ -75,12 +79,11 @@ async function createMode() {
   const { status, data } = await axios.post('modes/', newMode.value);
 
   if (status === 201) {
-    modes.value.push(data);
-    localStorage.setItem('modes', JSON.stringify(modes.value));
+    timer.modes.push(data);
+    local.set('modes', timer.modes)
 
-    if (!timer.ongoing) {
-      changeMode(data.id);
-    }
+    if (!timer.isRunning) changeMode(data);
+    
     resetMode();
     showForm.value = false;
   }
@@ -88,7 +91,6 @@ async function createMode() {
 
 function backToDefault() {
   timer.setToDefault();
-  currentMode.value.name = 'Default';
 }
 </script>
 
@@ -99,8 +101,8 @@ function backToDefault() {
         type="checkbox"
         id="auto-start-pomos"
         class="mr-4"
-        @change="changeAutoStartPomos"
-        v-model="auth.user.auto_start_pomos"
+        @change="toggleAutoStartPomos()"
+        :checked="auth.user?.auto_start_pomos"
       />
       <label for="auto-start-pomos">Auto start pomos</label>
     </div>
@@ -109,26 +111,26 @@ function backToDefault() {
         type="checkbox"
         id="auto-start-breaks"
         class="mr-4"
-        @change="changeAutoStartBreaks()"
-        v-model="auth.user.auto_start_breaks"
+        @change="toggleAutoStartBreaks()"
+        :checked="auth.user?.auto_start_breaks"
       />
       <label for="auto-start-breaks">Auto start breaks</label>
     </div>
-    <div v-if="Object.keys(modes).length > 0">
+    <div v-if="Object.keys(timer.modes).length > 0">
       <button class="mb-4 back-to-default-btn settings-btn text-gray-700" @click="backToDefault()">
         Back to default
       </button>
       <p>Change mode:</p>
-      <div v-for="mode in modes" :key="mode.name">
+      <div v-for="mode in timer.modes" :key="mode.id">
         <Popper placement="right" hover>
           <div class="flex">
             <input
               type="radio"
               id="two"
               class="mr-4"
-              :value="mode.name"
-              @change="changeMode(mode.id)"
-              v-model="currentMode.name"
+              :value="mode"
+              @change="changeMode(mode)"
+              v-model="timer.currentMode"
             />
             <label :for="mode.name">{{ mode.name }}</label>
             <div @click="deleteMode(mode.id)" class="ml-4 pointer i-fluent-delete-48-filled scale-125 self-center" />
@@ -150,7 +152,7 @@ function backToDefault() {
       </div>
     </div>
     <button
-      v-if="modes.length < 3"
+      v-if="timer.modes.length < 3"
       class="new-mode-btn settings-btn text-gray-700"
       @click="showForm = !showForm"
     >

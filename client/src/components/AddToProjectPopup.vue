@@ -40,9 +40,7 @@ async function addToProject(project: IProject) {
     const response = await axios.patch(`projects/${project.id}/delete_task/`, {
       task_id: props.taskId,
     });
-    console.log(response);
     if (response?.status === 200) {
-      console.log('removed', response.data);
       // Refetch
       chore.fetchProjects();
       // Visual changes

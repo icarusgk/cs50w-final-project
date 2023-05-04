@@ -1,17 +1,17 @@
-import type Tag from './ITag';
-import type Project from './IProject';
+import type { ITag } from './ITag';
+import type { IProject } from './IProject';
 
-interface Task {
+interface ITask {
   id?: number;
-  tags: Tag[];
+  tags: ITag[];
   title: string;
   description: string;
   estimated: number;
   gone_through?: number;
   minutes?: number;
   done?: boolean;
-  subtasks?: Task[];
-  project_tasks?: Project[];
+  subtasks?: ITask[];
+  project_tasks?: IProject[];
 }
 
-export default Task;
+export type { ITask };

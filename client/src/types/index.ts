@@ -1,8 +1,7 @@
-import type IProject from './IProject';
-import type ITask from './ITask';
-import type ITag from './ITag';
-import type IStat from './IStat';
-import type IMode from './IMode';
-import type IUser from './IUser'
-
-export { IProject, ITask, ITag, IStat, IMode, IUser };
+export type { IProject } from './IProject';
+export type { ITask } from './ITask';
+export type { ITag } from './ITag';
+export type { IStat } from './IStat';
+export type { IMode } from './IMode';
+export type { IUser } from './IUser'
+export type { ITimer } from './ITimer';
