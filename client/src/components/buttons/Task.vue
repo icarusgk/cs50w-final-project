@@ -1,19 +1,27 @@
 <script setup lang="ts">
 import type { ITask } from '@/types';
-import { toggleDone, deleteTask } from '@/utils/taskFns';
+import { toggleDone, deleteTask, changeCurrentTask } from '@/utils/taskFns';
+
+const modal = useModalStore();
+const chore = useChoreStore();
+const auth = useAuthStore();
 
 const props = defineProps<{
   task: ITask;
 }>();
 
-const chore = useModalStore();
-
 const open = ref(false);
 
 watch(open, () => {
-  chore.toggle();
+  modal.toggle();
 });
 
+function changeTask(task: ITask) {
+  // Debouncer
+  if (auth.user?.current_task_id != task.id) {
+    changeCurrentTask(task.id);
+  }
+}
 </script>
 
 <template>
@@ -33,7 +41,7 @@ watch(open, () => {
         class="title-container"
       >
         <Popper hover arrow placement="bottom" openDelay="1000">
-          <span class="title pointer">{{ props.task.title }}</span>
+          <span @click="changeTask(task)" class="title pointer">{{ props.task.title }}</span>
           <template #content> Click to set it to current </template>
         </Popper>
       </div>

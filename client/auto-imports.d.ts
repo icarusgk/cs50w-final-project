@@ -56,7 +56,6 @@ declare global {
   const useChoreStore: typeof import('./src/stores/chore')['useChoreStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
-  const useFetch: typeof import('./src/composables/useFetch')['useFetch']
   const useLink: typeof import('vue-router')['useLink']
   const useModalStore: typeof import('./src/stores/modal')['useModalStore']
   const useRoute: typeof import('vue-router')['useRoute']
@@ -127,7 +126,6 @@ declare module 'vue' {
     readonly useChoreStore: UnwrapRef<typeof import('./src/stores/chore')['useChoreStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
-    readonly useFetch: UnwrapRef<typeof import('./src/composables/useFetch')['useFetch']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useModalStore: UnwrapRef<typeof import('./src/stores/modal')['useModalStore']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>

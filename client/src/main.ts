@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue';
-import { useChoreStore } from './stores/chore';
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind-compat.css'
@@ -29,5 +28,3 @@ app.directive('focus', {
 })
 
 app.mount('#app');
-
-useChoreStore().fetchAll();

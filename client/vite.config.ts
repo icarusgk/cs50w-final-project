@@ -27,7 +27,7 @@ export default defineConfig({
           'vue3-popper': [['default', 'Popper']],
         },
       ],
-      dirs: ['./src/stores', './src/composables'],
+      dirs: ['./src/stores'],
       vueTemplate: true,
       dts: 'auto-imports.d.ts',
       eslintrc: {
