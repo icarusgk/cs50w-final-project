@@ -7,7 +7,7 @@ const { startTimer, stopTimer, restartTimer, setTo } = timer;
 const startAudio = new Audio();
 const finishedAudio = new Audio();
 
-type TimerType = 'pomo' | 'short' | 'long';
+type TimerType = 'pomo' | 'short_break' | 'long_break';
 
 watch(() => timer.activeTimer, (newMinutes) => {
   // If current timer (pomo, short,long) ended
@@ -25,7 +25,7 @@ watch(() => timer.activeTimer, (newMinutes) => {
     }
 
     // Auto start breaks
-    if (timer.timerType == 'short' || timer.timerType == 'long') {
+    if (timer.timerType == 'short_break' || timer.timerType == 'long_break') {
       if (timer.auto_start_breaks) {
         startTimer();
       }
@@ -49,8 +49,8 @@ function setTimer(type: TimerType) {
     <!-- Timer buttons -->
     <div class="flex gap-2 mb-8">
       <div class="timer-btn timer-btn-red" @click="setTimer('pomo')">Pomo</div>
-      <div class="timer-btn timer-btn-blue" @click="setTimer('short')">Short Rest</div>
-      <div class="timer-btn timer-btn-green" @click="setTimer('long')">Long Rest</div>
+      <div class="timer-btn timer-btn-blue" @click="setTimer('short_break')">Short Rest</div>
+      <div class="timer-btn timer-btn-green" @click="setTimer('long_break')">Long Rest</div>
     </div>
     <!-- Time -->
     <div>

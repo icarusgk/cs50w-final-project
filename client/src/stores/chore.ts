@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useAlertStore, useAuthStore } from '@/stores';
 import { ref, reactive, computed } from 'vue';
+import { local } from '@/utils'
 
 export const useChoreStore = defineStore('chores', () => {
   const alert = useAlertStore();
@@ -74,8 +75,7 @@ export const useChoreStore = defineStore('chores', () => {
   async function fetchModes() {
     const { status, data } = await axios.get('modes')
     if (status === 200) {
-      const modes = JSON.stringify(data);
-      localStorage.setItem('modes', modes);
+      local.set('modes', data);
     }
   }
   async function fetchStats() {
