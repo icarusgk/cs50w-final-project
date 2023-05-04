@@ -14,7 +14,7 @@ axios.get('tags').then((res) => {
   <div class="<sm:p-4 py-8 px-16">
     <div class="flex items-center gap-4 text-white ml-3">
       <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
-      <span class="text-white font-extrabold text-5xl">Tags</span>
+      <span class="text-white font-extrabold text-5xl ml-2">Tags</span>
     </div>
     <div class="text-white flex flex-wrap gap-2.5 pt-4">
       <div

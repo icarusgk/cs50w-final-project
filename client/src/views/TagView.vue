@@ -40,16 +40,17 @@ async function deleteTag() {
 
 <template>
   <div class="<sm:p-4 py-8 px-16">
-    <div class="flex items-center text-white gap-4 ml-3">
+    <div class="flex items-center text-white gap-4 ml-3 mb-6">
       <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
-    </div>
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-white font-extrabold text-3xl">#{{ route.params.name }}</span>
-      <div @click="deleteTag()" class="flex items-center bg-vivid-red text-white rounded-lg p-[0.7rem] delete-tag pointer">
-        <div class="i-fluent:delete-12-regular scale-130" />
-        <span class="ml-2">Delete tag</span>
+      <div class="flex items-center justify-between w-full">
+        <span class="text-white font-extrabold text-3xl ml-4">#{{ route.params.name }}</span>
+        <div @click="deleteTag()" class="flex items-center bg-vivid-red text-white rounded-lg p-[0.7rem] delete-tag pointer">
+          <div class="i-fluent:delete-12-regular scale-130" />
+          <span class="ml-2">Delete tag</span>
+        </div>
       </div>
     </div>
+    
     <div class="flex flex-wrap gap-4">
       <BaseViewTask
         v-if="fetchedTags"
