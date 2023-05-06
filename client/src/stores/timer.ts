@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useAuthStore, useAlertStore } from '@/stores';
+import { useAlertStore, useChoreStore } from '@/stores';
 import { ref, computed } from 'vue';
 import { toTimer, local } from '@/utils';
 import type { ITimer } from '@/types';
@@ -19,7 +19,6 @@ export const defaultTimer: ITimer = {
 if (!local.get('timer')) local.set('timer', defaultTimer)
 
 export const useTimerStore = defineStore('timer', () => {
-  const auth = useAuthStore();
   const alert = useAlertStore();
 
   let timerId: number | null;
@@ -28,9 +27,6 @@ export const useTimerStore = defineStore('timer', () => {
   const sessions = ref(0)
   const timerType = ref<TimerType>('pomo')
   const done = ref(false)
-
-  const auto_start_pomo = ref(auth.user?.auto_start_pomos || false)
-  const auto_start_breaks = ref(auth.user?.auto_start_breaks || false)
 
   const modes = ref<ITimer[]>(local.get('modes'))
 
@@ -72,6 +68,7 @@ export const useTimerStore = defineStore('timer', () => {
     if (timerId) clearInterval(timerId);
     isRunning.value = false;
     timerId = null;
+    document.title = 'Pomo.do';
   }
 
   function restartTimer() {
@@ -105,5 +102,5 @@ export const useTimerStore = defineStore('timer', () => {
     changeTimer();
   }
 
-  return { isRunning, done, sessions, timerType, auto_start_pomo, auto_start_breaks, modes, currentMode, currentTimer, activeTimer, displayTimer, startTimer, restartTimer, stopTimer, setTo, setNextTimer, setNewTimer, setToDefault }
+  return { isRunning, done, sessions, timerType, modes, currentMode, currentTimer, activeTimer, displayTimer, startTimer, restartTimer, stopTimer, setTo, setNextTimer, setNewTimer, setToDefault }
 });
