@@ -2,6 +2,7 @@
 // import start from '@/assets/start-timer.mp3';
 // import finished from '@/assets/finished-timer.mp3';
 const timer = useTimerStore();
+const auth = useAuthStore();
 const { startTimer, stopTimer, restartTimer, setTo } = timer;
 // New audios to be found
 const startAudio = new Audio();
@@ -12,23 +13,18 @@ type TimerType = 'pomo' | 'short_break' | 'long_break';
 watch(() => timer.activeTimer, (newMinutes) => {
   // If current timer (pomo, short,long) ended
   if (newMinutes.minute() === 0 && newMinutes.second() === 0) {
-    timer.isRunning = false;
-    timer.setNextTimer();
     timer.done = true;
+    stopTimer();
     // finishedAudio.play();
-    // stopTimer();
+    timer.setNextTimer();
     document.title = 'Pomo.do - Done!';
 
-    // // Auto start pomo
-    if (timer.timerType == 'pomo') {
-      timer.auto_start_pomo ? startTimer() : (timer.isRunning = false);
+    if (timer.timerType == 'pomo' && auth.user?.auto_start_pomos) {
+      startTimer();
     }
 
-    // Auto start breaks
-    if (timer.timerType == 'short_break' || timer.timerType == 'long_break') {
-      if (timer.auto_start_breaks) {
-        startTimer();
-      }
+    if ((timer.timerType == 'short_break' || timer.timerType == 'long_break') && auth.user?.auto_start_breaks) {
+      startTimer();
     }
   }
 });

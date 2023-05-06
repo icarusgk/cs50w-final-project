@@ -18,22 +18,22 @@ const newMode = ref<ITimer>({
 // Live updates
 async function toggleAutoStartPomos() {
   const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_pomos: auth.user?.auto_start_pomos
+    auto_start_pomos: !auth.user?.auto_start_pomos
   });
 
   if (status === 200 && auth.user) { 
     auth.user.auto_start_pomos = data.auto_start_pomos;
-    alert.info(`Auto start pomos set to ${!data.auto_start_pomos}`);  }
+    alert.info(`Auto start pomos set to ${data.auto_start_pomos}`);  }
 }
 
 async function toggleAutoStartBreaks() {
   const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_breaks: auth.user?.auto_start_breaks
+    auto_start_breaks: !auth.user?.auto_start_breaks
   });  
 
   if (status === 200 && auth.user) {
     auth.user.auto_start_breaks = data.auto_start_breaks;
-    alert.info(`Auto start breaks set to ${!data.auto_start_breaks}`);
+    alert.info(`Auto start breaks set to ${data.auto_start_breaks}`);
   }
 }
 
