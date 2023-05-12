@@ -152,6 +152,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         subtasks = request.data.get('subtasks')
         tags = request.data.get('tags')
 
+        print(request.data)
+
         if serializer.is_valid():
             task = Task(user=request.user, **serializer.data)
             task.save()
@@ -165,8 +167,10 @@ class TaskViewSet(viewsets.ModelViewSet):
             # Add subtasks
             if subtasks:
                 for subtask in subtasks:
-                    # Change to Task object
-                    Task.objects.create(user=request.user, **subtask, parent_task=task)
+                    task_serializer = TaskSerializer(data=subtask)
+                    if task_serializer.is_valid():
+                        sub = Task(user=request.user, **serializer.data, parent_task=task)
+                        sub.save()
 
             # Return the newly created task
             return Response(
