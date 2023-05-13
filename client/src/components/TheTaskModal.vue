@@ -9,10 +9,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'exit:modal'): any
-}>()
-
-// @ts-ignore
-// const { toggleDone, deleteTask, addTag, removeTag, saveTask } = inject('taskFunctions');
+}>();
 
 // This way it prevents from mutating the original object
 // inside props.task by reference
