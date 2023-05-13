@@ -81,7 +81,7 @@ onUnmounted(() => {
         <input
           type="text"
           name="title"
-          class="border-none bg-transparent text-white text-4xl font-bold w-full focus:outline-none"
+          class="border-none bg-transparent text-white text-4xl font-bold w-full h-full focus:outline-none"
           @keyup.ctrl.enter="saveTheTask()"
           v-model="localTask.title"
           v-focus
