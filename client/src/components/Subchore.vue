@@ -61,12 +61,12 @@ defineEmits<{
       </div>
       <div class="flex items-center justify-end">
         <div class="mr-4">
-          <DeleteIcon
-            class="pointer"
+          <div
+            class="pointer i-fluent:delete-20-filled"
             v-if="!newChore"
             @click="$emit('delete:chore')"
           />
-          <DeleteIcon v-if="newChore && parentNew" @click="$emit('remove:chore')" />
+          <div class="pointer i-fluent:delete-20-filled" v-if="newChore && parentNew" @click="$emit('remove:chore')" />
         </div>
         <div v-if="props.isProject">
           <PomoCountSetter
