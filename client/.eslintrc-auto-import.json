@@ -57,6 +57,7 @@
     "useCssVars": true,
     "useLink": true,
     "useModalStore": true,
+    "usePageStore": true,
     "useRoute": true,
     "useRouter": true,
     "useSlots": true,

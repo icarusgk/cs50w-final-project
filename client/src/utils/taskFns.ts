@@ -1,9 +1,10 @@
 import axios from 'axios';
 import type { ITask, ITag } from '@/types';
-import { useChoreStore, useAuthStore } from '@/stores';
+import { useChoreStore, useAuthStore, usePageStore } from '@/stores';
 
 const chore = useChoreStore();
 const auth = useAuthStore();
+const page = usePageStore();
 
 export function addTag(task: ITask, tag: ITag) {
   task.tags.push(tag);
@@ -28,16 +29,17 @@ export async function toggleDone(task: ITask) {
     chore.fetchProjects();
   }
 }
+
 export function deleteTask(task: ITask) {
   // TODO: Replace with Dialog
   if (window.confirm('Are you sure you want to delete this task?')) {
     chore.deleteTask(task);
 
     if (
-      chore.taskPagination.page === chore.totalTaskPages &&
+      page.taskPagination.page === page.totalTaskPages &&
       chore.tasks.length === 1
     ) {
-      chore.decreaseTaskPagination();
+      page.decreaseTaskPagination();
     }
   }
 }

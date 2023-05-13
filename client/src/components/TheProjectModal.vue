@@ -12,6 +12,7 @@ const emit = defineEmits<{
 }>();
 
 const chore = useChoreStore();
+const page = usePageStore();
 
 const { name: title } = toRefs(props.project);
 
@@ -26,11 +27,11 @@ function deleteProject() {
   emit('exit:modal');
 
   const isLastProjectOnPage =
-    chore.projectPagination.page === chore.totalProjectPages &&
+    page.projectPagination.page === page.totalProjectPages &&
     chore.projects.length === 1;
 
   if (isLastProjectOnPage) {
-    chore.decreaseProjectPagination();
+    page.decreaseProjectPagination();
   }
 }
 

@@ -1,77 +1,20 @@
 import type { IProject, ITag, ITask, IStat } from '@/types';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { useAlertStore, useAuthStore } from '@/stores';
-import { ref, reactive, computed } from 'vue';
+import { useAlertStore, useAuthStore, usePageStore } from '@/stores';
+import { ref } from 'vue';
 import { local } from '@/utils'
 
 export const useChoreStore = defineStore('chores', () => {
   const alert = useAlertStore();
   const auth = useAuthStore();
+  const page = usePageStore();
 
   const tasks = ref<ITask[]>([]);
   const projects = ref<IProject[]>([]);
   const tags = ref<ITag[]>([]);
   const stats = ref<IStat[]>([]);
-
-  const projectPagination = reactive({
-    count: 0,
-    page: 1,
-    added: 1,
-    page_size: 2,
-  });
-  const taskPagination = reactive({
-    count: 0,
-    page: 1,
-    added: 1,
-    page_size: 4,
-  });
   
-  const totalProjectPages = computed(() => Math.ceil(projectPagination.count / projectPagination.page_size));
-  const totalTaskPages = computed(() => Math.ceil(taskPagination.count / taskPagination.page_size));
-
-  function decreaseProjectPagination() {
-    projectPagination.page -= 1;
-    projectPagination.count -= 1;
-    projectPagination.added -= 1;
-  }
-  function decreaseTaskPagination() {
-    taskPagination.page -= 1;
-    taskPagination.count -= 1;
-    taskPagination.added -= 1;
-  }
-  function previousProjectPage() {
-    if (projectPagination.page > 1) {
-      projectPagination.page--;
-    }
-  }
-  function setProjectPage(page: number) {
-    projectPagination.page = page;
-  }
-  function setProjectAdded(added: number) {
-    projectPagination.added = added;
-  }
-  function nextProjectPage() {
-    if (projectPagination.page < totalProjectPages.value) {
-      projectPagination.page++;
-    }
-  }
-  function previousTaskPage() {
-    if (taskPagination.page > 1) {
-      taskPagination.page--;
-    }
-  }
-  function setTaskPage(page: number) {
-    taskPagination.page = page;
-  }
-  function setTaskAdded(added: number) {
-    taskPagination.added = added;
-  }
-  function nextTaskPage() {
-    if (taskPagination.page < totalTaskPages.value) {
-      taskPagination.page++;
-    }
-  }
   async function fetchModes() {
     const { status, data } = await axios.get('modes')
     if (status === 200) {
@@ -100,25 +43,29 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function fetchTasks() {
-    const { page, page_size } = taskPagination;
     const { data, status } = await axios.get('tasks', {
-      params: { page, page_size }
+      params: { 
+        page: page.taskPagination.page,
+        page_size: page.taskPagination.page_size
+      }
     });
 
     if (status === 200) {
       tasks.value = data.results;
-      taskPagination.count = data.count;
+      page.taskPagination.count = data.count;
     }
   }
   async function fetchProjects() {
-    const { page, page_size } = projectPagination;
     const { data, status } = await axios.get('projects', {
-      params: { page, page_size }
+      params: {
+        page: page.projectPagination.page,
+        page_size: page.projectPagination.page_size
+      }
     });
 
     if (status === 200) {
       projects.value = data.results;
-      projectPagination.count = data.count;
+      page.projectPagination.count = data.count;
     }
   }
   async function fetchTags() {
@@ -134,7 +81,7 @@ export const useChoreStore = defineStore('chores', () => {
     if (status === 201) {
       alert.success(`Task ${task.title} created!`);
       // Send user to the first page
-      taskPagination.page = 1;
+      page.taskPagination.page = 1;
       fetchTasks();
     }
   }
@@ -150,9 +97,9 @@ export const useChoreStore = defineStore('chores', () => {
 
     if (status === 204) {
       // if it is the last
-      if (tasks.value.length === 1 && taskPagination.count === 0) {
+      if (tasks.value.length === 1 && page.taskPagination.count === 0) {
         tasks.value = tasks.value.filter((t: ITask) => t.id !== task.id);
-        taskPagination.page = 1;
+        page.taskPagination.page = 1;
       } else {
         fetchTasks();
       }
@@ -170,7 +117,7 @@ export const useChoreStore = defineStore('chores', () => {
     if (status === 201) {
       alert.success(`Project ${project.name} created!`);
       // Send user to the first page
-      projectPagination.page = 1;
+      page.projectPagination.page = 1;
       fetchProjects();
     }
   }
@@ -187,9 +134,9 @@ export const useChoreStore = defineStore('chores', () => {
     const { status } = await axios.delete(`projects/${id}`)
 
     if (status === 204) {
-      if (projects.value.length === 1 && projectPagination.count === 0) {
+      if (projects.value.length === 1 && page.projectPagination.count === 0) {
         projects.value = projects.value.filter((p: IProject) => p.id !== id);
-        projectPagination.page = 1;
+        page.projectPagination.page = 1;
       } else {
         fetchProjects();
       }
@@ -215,10 +162,7 @@ export const useChoreStore = defineStore('chores', () => {
   }
   
   return {
-    tasks, projects, tags, stats, projectPagination, taskPagination, totalProjectPages, totalTaskPages,
-      decreaseProjectPagination, decreaseTaskPagination, previousProjectPage, setProjectPage, setProjectAdded,
-      nextProjectPage, previousTaskPage, setTaskPage, setTaskAdded, nextTaskPage, 
-      fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
+    tasks, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
       addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
   }
 }, { persist: true });

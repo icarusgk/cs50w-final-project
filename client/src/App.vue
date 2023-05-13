@@ -3,6 +3,7 @@ const auth = useAuthStore();
 const chore = useChoreStore();
 const modal = useModalStore();
 const timer = useTimerStore();
+const page = usePageStore();
 
 // Close any previously opened modal
 modal.close();
@@ -12,19 +13,19 @@ auth.getUser();
 if (auth.isAuthed) {
   watch(
     [
-      () => chore.projectPagination.page,
-      () => chore.taskPagination.page,
-      () => chore.projectPagination.page_size,
-      () => chore.taskPagination.page_size,
+      () => page.projectPagination.page,
+      () => page.taskPagination.page,
+      () => page.projectPagination.page_size,
+      () => page.taskPagination.page_size,
     ],
     ([newProjectPage, newTaskPage], [oldProjectPage, oldTaskPage]) => {
       if (
-        chore.projectPagination.count > 1 &&
+        page.projectPagination.count > 1 &&
         newProjectPage !== oldProjectPage
       ) {
         chore.fetchProjects();
       }
-      if (chore.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
+      if (page.taskPagination.count > 1 && newTaskPage !== oldTaskPage) {
         chore.fetchTasks();
       }
     }
