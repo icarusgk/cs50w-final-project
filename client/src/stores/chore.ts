@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useAlertStore, useAuthStore, usePageStore } from '@/stores';
 import { ref } from 'vue';
-import { local } from '@/utils'
+import { useLocal } from '@/utils'
 
 export const useChoreStore = defineStore('chores', () => {
   const alert = useAlertStore();
@@ -18,7 +18,7 @@ export const useChoreStore = defineStore('chores', () => {
   async function fetchModes() {
     const { status, data } = await axios.get('modes')
     if (status === 200) {
-      local.set('modes', data);
+      useLocal.set('modes', data);
     }
   }
   async function fetchStats() {
@@ -74,8 +74,6 @@ export const useChoreStore = defineStore('chores', () => {
       return (tags.value = data);
     }
   }
-
-  // Adds tasks with tags and subtasks
   async function addTask(task: ITask) {
     const { status } = await axios.post('tasks', task);
     if (status === 201) {
@@ -163,6 +161,6 @@ export const useChoreStore = defineStore('chores', () => {
   
   return {
     tasks, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
-      addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
+    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
   }
 }, { persist: true });

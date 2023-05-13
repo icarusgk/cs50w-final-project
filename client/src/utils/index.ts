@@ -7,7 +7,7 @@ export function toTimer(minutes: number) {
   .set('seconds', 0);
 }
 
-export const local = {
+export const useLocal = {
   get(key: string) {
     return JSON.parse(localStorage.getItem(key) as string)
   },
