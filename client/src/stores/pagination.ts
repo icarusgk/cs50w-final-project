@@ -66,5 +66,6 @@ export const usePageStore = defineStore('pagination', {
         this.taskPagination.page++;
       }
     }
-  }
+  },
+  persist: true
 })

@@ -17,15 +17,11 @@ export const useChoreStore = defineStore('chores', () => {
   
   async function fetchModes() {
     const { status, data } = await axios.get('modes')
-    if (status === 200) {
-      useLocal.set('modes', data);
-    }
+    if (status === 200) useLocal.set('modes', data);
   }
   async function fetchStats() {
     const { data, status } = await axios.get('stats')
-    if (status === 200) {
-      stats.value = data;
-    }
+    if (status === 200) stats.value = data;
   }
   async function increaseTodayStats() {
     const date = new Date();
@@ -34,12 +30,11 @@ export const useChoreStore = defineStore('chores', () => {
     const { data, status } = await axios.post('stats', {
       day: date.toISOString().slice(0, 10),
     });
+    
     if (status === 201) {
       let stat = stats.value.find((stat) => stat.id === data.id);
 
-      if (stat) {
-        stat.chores_done = data.chores_done;
-      }
+      if (stat) stat.chores_done = data.chores_done;
     }
   }
   async function fetchTasks() {
@@ -124,9 +119,7 @@ export const useChoreStore = defineStore('chores', () => {
       { name: newProjectName }
     );
 
-    if (status === 200) {
-      alert.success('Project saved!');
-    }
+    if (status === 200) alert.success('Project saved!');
   }
   async function deleteProject(id: number) {
     const { status } = await axios.delete(`projects/${id}`)
@@ -153,9 +146,7 @@ export const useChoreStore = defineStore('chores', () => {
         },
       );
 
-      if (status === 200) {
-        fetchTasks();
-      }
+      if (status === 200) fetchTasks();
     }
   }
   
