@@ -7,6 +7,8 @@ const timer = useTimerStore();
 // Close any previously opened modal
 modal.close();
 
+// This will test the Github action
+
 auth.getUser();
 
 if (auth.isAuthed) {
