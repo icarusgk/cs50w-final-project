@@ -3,20 +3,18 @@ name: Django Testing CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'api/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'api/**'
     
 
 jobs:
   test_project:
     runs-on: ubuntu-latest
-    # If title contains bypass do not run
-    # if: "!contains(github.event.pull_request.title, '[bypass]')"
     
-    # Run if there are changes made to the api directory
-    # if: 'git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} | grep -qE "^backend/"'
-    # if: git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} | grep -qE "^api/"
-    if: "git diff --quiet api/"
     strategy:
       max-parallel: 4
       matrix:
