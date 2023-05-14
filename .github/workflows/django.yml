@@ -11,11 +11,12 @@ jobs:
   test_project:
     runs-on: ubuntu-latest
     # If title contains bypass do not run
-    #if: "!contains(github.event.pull_request.title, '[bypass]')"
+    # if: "!contains(github.event.pull_request.title, '[bypass]')"
     
     # Run if there are changes made to the api directory
     # if: 'git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} | grep -qE "^backend/"'
-    if: git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} | grep -qE "^api/"
+    # if: git diff --name-only ${{ github.base_ref }}..${{ github.head_ref }} | grep -qE "^api/"
+    if: github.event.push && github.event.ref == 'refs/heads/master' && !git diff --quiet api/
     strategy:
       max-parallel: 4
       matrix:
