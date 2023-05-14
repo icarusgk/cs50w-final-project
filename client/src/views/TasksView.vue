@@ -26,7 +26,7 @@ function deleteTask(task: ITask) {
     chore.deleteTask(task);
 
     if (
-      chore.taskPagination.page === chore.totalTaskPages &&
+      page.taskPagination.page === page.totalTaskPages &&
       chore.tasks.length === 1
     ) {
       page.decreaseTaskPagination();
