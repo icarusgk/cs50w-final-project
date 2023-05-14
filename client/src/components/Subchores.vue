@@ -214,15 +214,13 @@ async function deleteChore() {
   if (props.isProject) {
     // Delete task
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(
-        `/projects/${props.project?.id}/delete_task/`,
-        {
-          task_id: activeChore.chore?.id,
-        }
-      );
-      if (response?.status === 204) {
+      const response = await axios.patch(`/projects/${props.project?.id}/delete_task/`, {
+        task_id: activeChore.chore?.id,
+      });
+
+      if (response?.status === 204 && existingProject?.value) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
+        existingProject.value.tasks = existingProject.value.tasks?.filter(
           (task: ITask) => task.id !== activeChore.chore?.id
         );
       }
@@ -253,13 +251,13 @@ async function deleteChore() {
 
 // Remove (visually) chore from parent component
 function removeChore() {
-  if (props.isProject) {
-    existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
+  if (props.isProject && existingProject?.value) {
+    existingProject.value.tasks = existingProject.value.tasks?.filter(
       (task: ITask) => task.title !== activeChore.chore?.title
     );
   } else {
-    if (existingTask?.value?.subtasks) {
-      existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
+    if (existingTask?.value) {
+      existingTask.value.subtasks = existingTask.value.subtasks?.filter(
         (subtask: ITask) => subtask.title !== activeChore.chore?.title
       );
     }
@@ -323,8 +321,8 @@ function closeNew() {
 function removeTag(tag: ITag) {
   if (props.isProject) {
     // When a existing chore is opened
-    if (activeChore.opened) {
-      activeChore.chore!.tags = activeChore.chore!.tags?.filter(
+    if (activeChore) {
+      activeChore.chore.tags = activeChore.chore.tags?.filter(
         (t: ITag) => t.name !== tag.name
       );
       return;

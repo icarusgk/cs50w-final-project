@@ -46,7 +46,7 @@ export function deleteTask(task: ITask) {
 
 export async function changeCurrentTask(id: number | undefined) {
   const { data, status } = await axios.put('currentTask', { id })
-  if (status === 200) {
-    auth.user!.current_task_id = data.id;
+  if (status === 200 && auth.user) {
+    auth.user.current_task_id = data.id;
   }
 }

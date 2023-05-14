@@ -99,8 +99,8 @@ export const useChoreStore = defineStore('chores', () => {
 
       alert.info(`Task '${task.title}' deleted`);
 
-      if (task.id === auth.user!.current_task_id) {
-        auth.user!.current_task_id = 0;
+      if (auth.user && task.id) {
+        auth.user.current_task_id = 0;
       }
     }
   }
@@ -137,14 +137,11 @@ export const useChoreStore = defineStore('chores', () => {
   async function incrementGoneThrough() {
     increaseTodayStats();
     
-    if (auth.user?.current_task_id) {
-      const { status } = await axios.patch(
-        `tasks/${auth.user!.current_task_id}`,
-        {
-          obj: 'task',
-          action: 'increment_gone_through',
-        },
-      );
+    if (auth.user) {
+      const { status } = await axios.patch(`tasks/${auth.user.current_task_id}`, {
+        obj: 'task',
+        action: 'increment_gone_through',
+      });
 
       if (status === 200) fetchTasks();
     }
