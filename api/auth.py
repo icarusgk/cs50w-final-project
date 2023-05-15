@@ -2,6 +2,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import CSRFCheck
 from django.conf import settings
 
+# test api
 # Authenticates the user on each request
 class CustomAuthentication(JWTAuthentication):
   def authenticate(self, request):
