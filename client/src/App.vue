@@ -7,6 +7,8 @@ const timer = useTimerStore();
 // Close any previously opened modal
 modal.close();
 
+// Test
+
 auth.getUser();
 
 if (auth.isAuthed) {
