@@ -214,15 +214,13 @@ async function deleteChore() {
   if (props.isProject) {
     // Delete task
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(
-        `/projects/${props.project?.id}/delete_task/`,
-        {
-          task_id: activeChore.chore?.id,
-        }
-      );
-      if (response?.status === 204) {
+      const response = await axios.patch(`/projects/${props.project?.id}/delete_task/`, {
+        task_id: activeChore.chore?.id,
+      });
+
+      if (response?.status === 204 && existingProject?.value) {
         alert.success(`Task ${activeChore.chore?.title} removed from project!`);
-        existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
+        existingProject.value.tasks = existingProject.value.tasks?.filter(
           (task: ITask) => task.id !== activeChore.chore?.id
         );
       }
@@ -253,13 +251,13 @@ async function deleteChore() {
 
 // Remove (visually) chore from parent component
 function removeChore() {
-  if (props.isProject) {
-    existingProject!.value!.tasks = existingProject?.value?.tasks?.filter(
+  if (props.isProject && existingProject?.value) {
+    existingProject.value.tasks = existingProject.value.tasks?.filter(
       (task: ITask) => task.title !== activeChore.chore?.title
     );
   } else {
-    if (existingTask?.value?.subtasks) {
-      existingTask.value.subtasks = existingTask?.value?.subtasks.filter(
+    if (existingTask?.value) {
+      existingTask.value.subtasks = existingTask.value.subtasks?.filter(
         (subtask: ITask) => subtask.title !== activeChore.chore?.title
       );
     }
@@ -323,8 +321,8 @@ function closeNew() {
 function removeTag(tag: ITag) {
   if (props.isProject) {
     // When a existing chore is opened
-    if (activeChore.opened) {
-      activeChore.chore!.tags = activeChore.chore!.tags?.filter(
+    if (activeChore) {
+      activeChore.chore.tags = activeChore.chore.tags?.filter(
         (t: ITag) => t.name !== tag.name
       );
       return;
@@ -348,12 +346,12 @@ function removeTag(tag: ITag) {
       <template #icon>
         <div class="ml-4 mt-0.5 i-fluent-info-16-regular scale-150" @click="openDetails(chore)" v-if="isNew" />
         <div v-auto-animate>
-          <DoneIcon
+          <div
             @click="toggleChoreDone(chore)"
             v-if="!chore.done && !isNew"
             class="i-fluent:checkmark-circle-32-regular scale-130 ml-4 mt-1"
           />
-          <MarkedDoneIcon
+          <div
             @click="toggleChoreDone(chore)"
             v-if="chore.done"
             class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red ml-4 mt-1"

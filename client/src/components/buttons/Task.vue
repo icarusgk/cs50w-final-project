@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ITask } from '@/types';
-import { toggleDone, deleteTask, changeCurrentTask } from '@/utils/taskFns';
 
 const modal = useModalStore();
 const chore = useChoreStore();
@@ -19,14 +18,14 @@ watch(open, () => {
 function changeTask(task: ITask) {
   // Debouncer
   if (auth.user?.current_task_id != task.id) {
-    changeCurrentTask(task.id);
+    chore.changeCurrentTask(task.id);
   }
 }
 </script>
 
 <template>
   <div class="flex items-center my-2 mb-2">
-    <div @click="toggleDone(task)" class="pointer mr-4" v-auto-animate>
+    <div @click="chore.toggleDone(task)" class="pointer mr-4" v-auto-animate>
       <div class="i-fluent:checkmark-circle-32-regular scale-130" v-if="!task.done" />
       <div class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red" v-else />
     </div>
@@ -51,7 +50,7 @@ function changeTask(task: ITask) {
             >{{ task.gone_through }} / {{ task.estimated }}</span
           >
         </div>
-        <div class="pointer i-fluent:delete-20-filled scale-135 mr-2" @click="deleteTask(task)" />
+        <div class="pointer i-fluent:delete-20-filled scale-135 mr-2" @click="chore.deleteTask(task)" />
         <div class="pointer i-fluent:info-24-regular scale-135" @click="open = true" />
       </div>
     </div>

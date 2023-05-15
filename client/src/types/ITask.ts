@@ -1,7 +1,7 @@
 import type { ITag } from './ITag';
 import type { IProject } from './IProject';
 
-interface ITask {
+export interface ITask {
   id?: number;
   tags: ITag[];
   title: string;
@@ -14,4 +14,3 @@ interface ITask {
   project_tasks?: IProject[];
 }
 
-export type { ITask };

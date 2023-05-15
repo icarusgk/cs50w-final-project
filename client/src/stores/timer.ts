@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useAlertStore, useChoreStore } from '@/stores';
 import { ref, computed } from 'vue';
-import { toTimer, local } from '@/utils';
+import { toTimer, useLocal } from '@/utils';
 import type { ITimer } from '@/types';
 
 type TimerType = 'pomo' | 'short_break' | 'long_break';
@@ -16,7 +16,7 @@ export const defaultTimer: ITimer = {
 };
 
 // If there isn't a timer on the localstorage, set the defaultTimer
-if (!local.get('timer')) local.set('timer', defaultTimer)
+if (!useLocal.get('timer')) useLocal.set('timer', defaultTimer)
 
 export const useTimerStore = defineStore('timer', () => {
   const alert = useAlertStore();
@@ -28,9 +28,9 @@ export const useTimerStore = defineStore('timer', () => {
   const timerType = ref<TimerType>('pomo')
   const done = ref(false)
 
-  const modes = ref<ITimer[]>(local.get('modes'))
+  const modes = ref<ITimer[]>(useLocal.get('modes'))
 
-  const currentMode = ref(local.get('timer') || modes.value[0]);
+  const currentMode = ref(useLocal.get('timer') || modes.value[0]);
 
   const currentTimer = ref(currentMode.value[timerType.value as keyof ITimer])
   const activeTimer = ref(toTimer(currentTimer.value as number))
@@ -77,7 +77,7 @@ export const useTimerStore = defineStore('timer', () => {
   }
 
   function changeTimer(timerMode: TimerType = 'pomo') {
-    local.set('timer', currentMode.value);
+    useLocal.set('timer', currentMode.value);
     currentTimer.value = currentMode.value[timerMode];
     activeTimer.value = toTimer(currentTimer.value as number);
   }

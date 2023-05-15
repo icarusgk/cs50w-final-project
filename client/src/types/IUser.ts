@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
   id: number;
   username: string;
   email: string;
@@ -7,5 +7,3 @@ interface IUser {
   auto_start_breaks: boolean;
   current_task_id: number | null;
 };
-
-export type { IUser };

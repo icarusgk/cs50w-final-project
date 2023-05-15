@@ -2,22 +2,23 @@
 import type { ITask } from '@/types';
 
 const chore = useChoreStore();
+const page = usePageStore();
 
 // Back to 1 / 10
-chore.taskPagination.page = 1;
-chore.taskPagination.page_size = 10;
-chore.taskPagination.added = 1;
+page.taskPagination.page = 1;
+page.taskPagination.page_size = 10;
+page.taskPagination.added = 1;
 
 chore.fetchTasks();
 
 const tasks = computed(() => chore.tasks);
 
 function setPage(newPage: number) {
-  chore.setTaskPage(newPage);
+  page.setTaskPage(newPage);
 }
 
 function setAdded(newAdded: number) {
-  chore.setTaskAdded(newAdded);
+  page.setTaskAdded(newAdded);
 }
 
 function deleteTask(task: ITask) {
@@ -25,10 +26,10 @@ function deleteTask(task: ITask) {
     chore.deleteTask(task);
 
     if (
-      chore.taskPagination.page === chore.totalTaskPages &&
+      page.taskPagination.page === page.totalTaskPages &&
       chore.tasks.length === 1
     ) {
-      chore.decreaseTaskPagination();
+      page.decreaseTaskPagination();
     }
   }
 }
@@ -42,13 +43,13 @@ function deleteTask(task: ITask) {
     </div>
     <Paginate
       class="mt-4"
-      :pages="chore.totalTaskPages"
-      :page="chore.taskPagination.page"
-      :added="chore.taskPagination.added"
-      @prev="chore.previousTaskPage()"
+      :pages="page.totalTaskPages"
+      :page="page.taskPagination.page"
+      :added="page.taskPagination.added"
+      @prev="page.previousTaskPage()"
       @set:page="(page: number) => setPage(page)"
       @set:added="(added: number) => setAdded(added)"
-      @next="chore.nextTaskPage()"
+      @next="page.nextTaskPage()"
     />
     <div v-if="chore.tasks.length > 0">
       <div class="flex flex-wrap gap-4 mt-4">
@@ -60,13 +61,13 @@ function deleteTask(task: ITask) {
         />
       </div>
       <Paginate
-        :pages="chore.totalTaskPages"
-        :page="chore.taskPagination.page"
-        :added="chore.taskPagination.added"
-        @prev="chore.previousTaskPage()"
+        :pages="page.totalTaskPages"
+        :page="page.taskPagination.page"
+        :added="page.taskPagination.added"
+        @prev="page.previousTaskPage()"
         @set:page="(page: number) => setPage(page)"
         @set:added="(added: number) => setAdded(added)"
-        @next="chore.nextTaskPage()"
+        @next="page.nextTaskPage()"
       />
     </div>
     <div class="m-4 flex items-center" v-else>

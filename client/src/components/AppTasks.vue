@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const chore = useChoreStore();
+const page = usePageStore();
 
 // Back to 1 / 4;
-chore.taskPagination.page = 1;
-chore.taskPagination.page_size = 4;
-chore.taskPagination.added = 1;
+page.taskPagination.page = 1;
+page.taskPagination.page_size = 4;
+page.taskPagination.added = 1;
 
 chore.fetchTasks();
 
@@ -22,8 +23,8 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
         <h1 @click="$router.push('/tasks')">Single Tasks</h1>
       </template>
       <template #count>
-        <span v-if="chore.totalTaskPages > 1">
-          Page {{ chore.taskPagination.page }} of {{ chore.totalTaskPages }}
+        <span v-if="page.totalTaskPages > 1">
+          Page {{ page.taskPagination.page }} of {{ page.totalTaskPages }}
         </span>
       </template>
     </Title>
@@ -44,13 +45,13 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
     </div>
     <!-- Pagination -->
     <Paginate
-      :pages="chore.totalTaskPages"
-      :page="chore.taskPagination.page"
-      :added="chore.taskPagination.added"
-      @prev="chore.previousTaskPage"
-      @set:page="(page: number) => chore.setTaskPage(page)"
-      @set:added="(added: number) => chore.setTaskAdded(added)"
-      @next="chore.nextTaskPage"
+      :pages="page.totalTaskPages"
+      :page="page.taskPagination.page"
+      :added="page.taskPagination.added"
+      @prev="page.previousTaskPage"
+      @set:page="(p: number) => page.setTaskPage(p)"
+      @set:added="(added: number) => page.setTaskAdded(added)"
+      @next="page.nextTaskPage"
     />
   </div>
 </template>

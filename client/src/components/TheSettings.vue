@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ITimer } from '@/types';
-import { local } from '@/utils';
+import { useLocal } from '@/utils';
 
 const auth = useAuthStore();
 const timer = useTimerStore();
@@ -61,9 +61,9 @@ async function deleteMode(id?: number) {
 
     if (deletedMode) {
       timer.modes = timer.modes.filter((mode: ITimer) => mode.id !== deletedMode.id);
-      local.set('modes', timer.modes);
+      useLocal.set('modes', timer.modes);
 
-      const current = local.get('timer')
+      const current = useLocal.get('timer')
       alert.success('Timer deleted!');
 
       // If the deleted mode was the current one
@@ -80,7 +80,7 @@ async function createMode() {
 
   if (status === 201) {
     timer.modes.push(data);
-    local.set('modes', timer.modes)
+    useLocal.set('modes', timer.modes)
 
     if (!timer.isRunning) changeMode(data);
     

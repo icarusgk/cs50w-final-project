@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const chore = useChoreStore();
+const page = usePageStore();
 
-chore.projectPagination.page = 1;
-chore.projectPagination.page_size = 10;
-chore.projectPagination.added = 1;
+page.projectPagination.page = 1;
+page.projectPagination.page_size = 10;
+page.projectPagination.added = 1;
 
 chore.fetchProjects();
 
@@ -17,13 +18,13 @@ const projects = computed(() => chore.projects);
       <span class="text-white text-5xl font-extrabold">Projects</span>
     </div>
     <Paginate
-      :pages="chore.totalProjectPages"
-      :page="chore.projectPagination.page"
-      :added="chore.projectPagination.added"
-      @prev="chore.previousProjectPage"
-      @set:page="(page: number) => chore.setProjectPage(page)"
-      @set:added="(added: number) => chore.setProjectAdded(added)"
-      @next="chore.nextProjectPage"
+      :pages="page.totalProjectPages"
+      :page="page.projectPagination.page"
+      :added="page.projectPagination.added"
+      @prev="page.previousProjectPage"
+      @set:page="(p: number) => page.setProjectPage(p)"
+      @set:added="(added: number) => page.setProjectAdded(added)"
+      @next="page.nextProjectPage"
     />
     <div v-if="chore.projects.length > 0" class="flex flex-row flex-wrap text-white mt-4 gap-2">
       <BaseViewProject
@@ -37,13 +38,13 @@ const projects = computed(() => chore.projects);
       <span class="ml-4 font-semibold text-2xl">No Projects</span>
     </div>
     <Paginate
-      :pages="chore.totalProjectPages"
-      :page="chore.projectPagination.page"
-      :added="chore.projectPagination.added"
-      @prev="chore.previousProjectPage"
-      @set:page="(page: number) => chore.setProjectPage(page)"
-      @set:added="(added: number) => chore.setProjectAdded(added)"
-      @next="chore.nextProjectPage"
+      :pages="page.totalProjectPages"
+      :page="page.projectPagination.page"
+      :added="page.projectPagination.added"
+      @prev="page.previousProjectPage"
+      @set:page="(p: number) => page.setProjectPage(p)"
+      @set:added="(added: number) => page.setProjectAdded(added)"
+      @next="page.nextProjectPage"
     />
   </div>
 </template>

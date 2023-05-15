@@ -1,20 +1,21 @@
 <script setup lang="ts">
 const chore = useChoreStore();
+const page = usePageStore();
 
-chore.projectPagination.page = 1;
-chore.projectPagination.page_size = 2;
-chore.projectPagination.added = 1;
+page.projectPagination.page = 1;
+page.projectPagination.page_size = 2;
+page.projectPagination.added = 1;
 
 chore.fetchProjects();
 
 const projects = computed(() => chore.projects.slice(0, 2));
 
 function setPage(newPage: number) {
-  chore.setProjectPage(newPage);
+  page.setProjectPage(newPage);
 }
 
 function setAdded(newAdded: number) {
-  chore.setProjectAdded(newAdded);
+  page.setProjectAdded(newAdded);
 }
 </script>
 
@@ -29,9 +30,9 @@ function setAdded(newAdded: number) {
         <h1 @click="$router.push('/projects')">Projects</h1>
       </template>
       <template #count>
-        <span v-if="chore.totalProjectPages > 1">
-          Page {{ chore.projectPagination.page }} of
-          {{ chore.totalProjectPages }}
+        <span v-if="page.totalProjectPages > 1">
+          Page {{ page.projectPagination.page }} of
+          {{ page.totalProjectPages }}
         </span>
       </template>
     </Title>
@@ -52,13 +53,13 @@ function setAdded(newAdded: number) {
     </div>
     <!-- Paginator -->
     <Paginate
-      :pages="chore.totalProjectPages"
-      :page="chore.projectPagination.page"
-      :added="chore.projectPagination.added"
-      @prev="chore.previousProjectPage()"
+      :pages="page.totalProjectPages"
+      :page="page.projectPagination.page"
+      :added="page.projectPagination.added"
+      @prev="page.previousProjectPage()"
       @set:page="(page: number) => setPage(page)"
       @set:added="(added: number) => setAdded(added)"
-      @next="chore.nextProjectPage()"
+      @next="page.nextProjectPage()"
     />
   </div>
 </template>
