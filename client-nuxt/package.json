@@ -9,8 +9,17 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
     "@unocss/nuxt": "^0.51.13",
     "nuxt": "^3.4.3"
+  },
+  "dependencies": {
+    "@iconify/json": "^2.2.65",
+    "@pinia/nuxt": "^0.4.10",
+    "@unocss/reset": "^0.51.13",
+    "axios": "^1.4.0",
+    "dayjs": "^1.11.7",
+    "uuid": "^9.0.0"
   }
 }

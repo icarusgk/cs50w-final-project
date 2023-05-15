@@ -1,0 +1,37 @@
+:root {
+  --white: #fff;
+  --black: #000;
+  --gray: #636363;
+  --lighter-gray: #4a4a4a;
+  --vivid-red: #ed4747;
+  --light-red: #ff4f5f;
+  --dark-gray: #212121;
+  --light-gray: #2f2f2f;
+  --light-blue: #02b79f;
+  --short-rest: #1ba7b1;
+  --long-rest: #1eaf58;
+}
+
+html {
+  background-color: #212121
+}
+
+@media (max-width: 768px) {
+  * {
+    touch-action: manipulation;
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
