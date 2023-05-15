@@ -12,11 +12,8 @@ const modal = useModalStore();
         <TheUpperMenu class="pt-6 py-12 pb-0" />
         <slot />
       </div>
+      <TheAlerts />
     </div>
   </div>
 </template>
 
-
-<style scoped>
-
-</style>

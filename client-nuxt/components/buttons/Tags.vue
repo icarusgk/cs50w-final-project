@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import axios from 'axios';
 import type { ITag, ITask } from '@/types';
 
-import router from '@/router';
+const router = useRouter();
 
 const props = defineProps<{
   id?: number;

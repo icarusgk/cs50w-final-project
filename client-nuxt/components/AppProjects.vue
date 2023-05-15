@@ -22,7 +22,7 @@ function setAdded(newAdded: number) {
 <template>
   <div class="mt-2">
     <!-- Projects Title -->
-    <Title class="pointer my-5 mx-3">
+    <ChoreTitle class="pointer my-5 mx-3">
       <template #icon>
         <div class="i-mdi:lightbulb scale-350 mr-3"></div>
       </template>
@@ -35,7 +35,7 @@ function setAdded(newAdded: number) {
           {{ page.totalProjectPages }}
         </span>
       </template>
-    </Title>
+    </ChoreTitle>
     <!-- Project List Container -->
     <div>
       <div class="flex items-center bg-light-gray w-full p-4 rounded-xl lg:w-4/5" v-if="projects.length === 0">

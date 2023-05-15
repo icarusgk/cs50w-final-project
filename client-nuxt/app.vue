@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import '@unocss/reset/tailwind.css'
+import '@unocss/reset/tailwind.css';
+import './axios';
 
 const auth = useAuthStore();
 const chore = useChoreStore();
@@ -11,6 +12,8 @@ const page = usePageStore();
 modal.close();
 
 auth.getUser();
+
+useHead({ title: 'Pomo.do' })
 
 if (auth.isAuthed) {
   watch(
