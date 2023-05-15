@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
-import { toggleDone, deleteTask, addTag, removeTag, saveTask } from '@/utils/taskFns';
+import { addTag, removeTag } from '@/utils/taskFns';
+
+const chore = useChoreStore();
 
 const props = defineProps<{
   task: ITask;
@@ -23,12 +25,12 @@ const isFormPristine = computed(() => {
 });
 
 function saveTheTask() {
-  saveTask(props.task, { ...localTask });
+  chore.saveTask(props.task, { ...localTask });
   emit('exit:modal');
 }
 
 function deleteTheTask() {
-  deleteTask(props.task);
+  chore.deleteTask(props.task);
   emit('exit:modal');
 }
 
@@ -40,12 +42,16 @@ function exitWithoutSaving() {
   emit('exit:modal');
 }
 
+function resize() {
+  width.value = window.innerWidth
+}
+
 onMounted(() => {
-  window.addEventListener('resize', () => (width.value = window.innerWidth));
+  window.addEventListener('resize', resize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => (width.value = window.innerWidth));
+  window.removeEventListener('resize', resize);
 });
 </script>
 
@@ -63,7 +69,7 @@ onUnmounted(() => {
           @close:modal="$emit('exit:modal')"
         />
         <div class="flex items-baseline items-center">
-          <div @click="toggleDone(task)" class="pointer mr-1" v-auto-animate>
+          <div @click="chore.toggleDone(task)" class="pointer mr-1" v-auto-animate>
             <div class="i-fluent:checkmark-circle-32-regular scale-130" v-if="!task.done" />
             <div class="i-fluent:checkmark-circle-32-filled scale-130 bg-vivid-red" v-else />
           </div>
@@ -92,11 +98,10 @@ onUnmounted(() => {
         @save:task="saveTheTask()"
       />
       <template #save-button>
-        <AddToProjectPopup :taskId="props.task.id" />
         <div class="text-center" v-if="width < 480">
-          <span class="font-semibold text-xl"
-            >Pomos done: {{ task.gone_through }}</span
-          >
+          <span class="font-semibold text-xl">
+            Pomos done: {{ task.gone_through }}
+          </span>
         </div>
         <SaveButton :enabled="!isFormPristine" @click="saveTheTask()" />
       </template>

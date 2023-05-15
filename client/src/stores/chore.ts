@@ -78,14 +78,14 @@ export const useChoreStore = defineStore('chores', () => {
       fetchTasks();
     }
   }
-  async function saveTask(task: ITask) {
+  async function saveTheTask(task: ITask) {
     const { status } = await axios.put(`tasks/${task.id}`, task);
     if (status === 200) {
       alert.success(`'${task.title}' saved!`);
       fetchTasks();
     }
   }
-  async function deleteTask(task: ITask) {
+  async function deleteTheTask(task: ITask) {
     const { status } = await axios.delete(`tasks/${task.id}`)
 
     if (status === 204) {
@@ -146,9 +146,43 @@ export const useChoreStore = defineStore('chores', () => {
       if (status === 200) fetchTasks();
     }
   }
+  function deleteTask(task: ITask) {
+    // TODO: Replace with Dialog
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      deleteTheTask(task);
+  
+      if (
+        page.taskPagination.page === page.totalTaskPages &&
+        tasks.value.length === 1
+      ) {
+        page.decreaseTaskPagination();
+      }
+    }
+  }
+  async function changeCurrentTask(id: number | undefined) {
+    const { data, status } = await axios.put('currentTask', { id })
+    if (status === 200 && auth.user) {
+      auth.user.current_task_id = data.id;
+    }
+  }
+  async function toggleDone(task: ITask) {
+    const response = await axios.patch(`tasks/${task.id}/`, {
+      obj: 'task',
+      action: 'done',
+    });
+    if (response?.status === 200) {
+      task.done = response.data?.done;
+      fetchProjects();
+    }
+  }
+  function saveTask(oldTask: ITask, newTask: ITask) {
+    saveTheTask(newTask);
+    oldTask = newTask;
+  }
   
   return {
     tasks, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
-    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough
+    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough,
+    changeCurrentTask, toggleDone
   }
 }, { persist: true });

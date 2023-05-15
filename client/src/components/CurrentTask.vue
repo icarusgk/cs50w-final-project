@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { changeCurrentTask } from '@/utils/taskFns';
 const auth = useAuthStore();
+const chore = useChoreStore();
 const task = ref();
 const open = ref(false);
 
 watchEffect(async () => {
-  const curId = auth.user?.current_task_id;
-  if (curId !== 0 && auth.user) {
-    const response = await axios.get(`tasks/${curId}/`);
+  const currentTaskId = auth.user?.current_task_id;
+  
+  if (currentTaskId !== 0 && auth.user) {
+    const response = await axios.get(`tasks/${currentTaskId}/`);
     task.value = response?.data;
   }
 });
@@ -28,7 +29,7 @@ watch(open, () => {
           </div>
         </div>
         <Popper hover>
-          <div @click="changeCurrentTask(0)" class="pointer i-fluent-dismiss-circle-32-filled scale-220" />
+          <div @click="chore.changeCurrentTask(0)" class="pointer i-fluent-dismiss-circle-32-filled scale-220" />
           <template #content> Remove current task </template>
         </Popper>
       </div>
