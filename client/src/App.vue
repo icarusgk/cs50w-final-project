@@ -9,6 +9,8 @@ modal.close();
 
 // Test
 
+// Test more
+
 auth.getUser();
 
 if (auth.isAuthed) {
