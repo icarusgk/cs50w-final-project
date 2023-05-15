@@ -17,7 +17,7 @@ watch(settingsOpen, () => {
       <li class="inline-block mr-0.5 pointer">
         <div class="flex items-center">
           <div class="flex items-center">
-            <Popper hover arrow placement="bottom">
+            <Popper arrow placement="bottom">
               <div class="flex items-center mr-4 <sm:mr-1" v-if="auth.isAuthed">
                 <div class="i-fluent:person-12-filled scale-230 mr-6 <sm:scale-160 <sm:mr-3" />
                 <span>{{ auth.user?.username }}</span>
