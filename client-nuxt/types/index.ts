@@ -5,3 +5,4 @@ export type { IStat } from './IStat';
 export type { IMode } from './IMode';
 export type { IUser } from './IUser'
 export type { ITimer } from './ITimer';
+export type { IPage } from './IPage';

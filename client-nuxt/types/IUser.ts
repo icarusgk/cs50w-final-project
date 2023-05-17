@@ -5,5 +5,5 @@ export interface IUser {
   streak: number;
   auto_start_pomos: boolean;
   auto_start_breaks: boolean;
-  current_task_id: number | null;
+  current_task_id?: number ;
 };
