@@ -6,7 +6,7 @@ type TimerType = 'pomo' | 'short_break' | 'long_break';
 export const defaultTimer: ITimer = {
   id: 0,
   name: 'Default',
-  pomo: 1,
+  pomo: 25,
   short_break: 5,
   long_break: 15,
 };
