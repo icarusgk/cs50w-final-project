@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'exit:modal'): any
+  (e: 'newTask', task: ITask): any
 }>();
 
 // This way it prevents from mutating the original object
@@ -27,6 +28,7 @@ const isFormPristine = computed(() => {
 function saveTheTask() {
   chore.saveTask(props.task, { ...localTask });
   emit('exit:modal');
+  emit('newTask', { ...localTask });
 }
 
 function deleteTheTask() {
