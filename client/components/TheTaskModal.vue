@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
-import { addTag, removeTag } from '@/utils/taskFns';
 
 const chore = useChoreStore();
 
@@ -42,6 +41,14 @@ function exitWithoutSaving() {
   localTask.description = props.task.description;
   localTask.estimated = props.task.estimated;
   emit('exit:modal');
+}
+
+function addTag(task: ITask, tag: ITag) {
+  task.tags.push(tag);
+}
+
+function removeTag(task: ITask, tagId?: number) {
+  task.tags = task.tags.filter((tag: ITag) => tag.id !== tagId);
 }
 
 function resize() {
