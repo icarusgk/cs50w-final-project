@@ -1,6 +1,4 @@
-import { defineStore } from 'pinia';
-import { v4 as uuid } from 'uuid';
-import { reactive } from 'vue';
+import { nanoid } from 'nanoid';
 
 export type AlertStyle = 'error' | 'success' | 'info' | 'none';
 
@@ -26,7 +24,7 @@ export const useAlertStore = defineStore('alerts', () => {
 
   function notify(message: string, style: AlertStyle, options?: AlertOptions) {
     options = { ...defaultOptions, style, ...options };
-    const id = uuid();
+    const id = nanoid();
 
     items.push({ message, id, ...options });
 
