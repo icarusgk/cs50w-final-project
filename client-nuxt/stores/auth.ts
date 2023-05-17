@@ -1,15 +1,9 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+
 import { ref } from 'vue';
 import { useAlertStore } from '@/stores';
 import type { IUser } from '@/types';
 import { useRouter } from 'nuxt/app';
-
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/';
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-axios.defaults.withCredentials = true;
-
-
 
 type UserCredentials = {
   username: string;
@@ -27,8 +21,8 @@ export const useAuthStore = defineStore('auth', () => {
   // First is login in, this will not have an error
   async function login(credentials: UserCredentials) {
     try {
-      const response = await axios.post('auth/login/', credentials);
-      if (response.status === 200) {
+      const { status } = await useRawFetch('auth/login/', { method: 'POST', body: credentials });
+      if (status === 200) {
         // After the user logs in, we get its user
         await getUser();
         error.value = null;
@@ -44,10 +38,10 @@ export const useAuthStore = defineStore('auth', () => {
   // Runs at start
   async function getUser() {
     try {
-      const response = await axios.get('me/');
+      const { _data, status } = await useRawFetch<IUser>('me/');
 
-      if (response.status === 200) {
-        user.value = response.data;
+      if (status === 200 && _data) {
+        user.value = _data;
         isAuthed.value = true;
       } else {
         isAuthed.value = false;
@@ -61,7 +55,10 @@ export const useAuthStore = defineStore('auth', () => {
   async function register(credentials: UserCredentials) {
     error.value = null;
     try {
-      const response = await axios.post('auth/register/', credentials);
+      const response = await useRawFetch('auth/register/', {
+        method: 'post',
+        body: { credentials }
+      });
       if (response.status === 201) {
         // If the user is created, log him in
         login({
@@ -78,7 +75,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     if (!isAuthed.value) return;
 
-    const response = await axios.post('auth/logout/');
+    const response = await useRawFetch('auth/logout/', { method: 'post' });
 
     if (response.status === 200) {
       // Reset user state

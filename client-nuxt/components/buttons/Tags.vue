@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios';
 import type { ITag, ITask } from '@/types';
 
 const router = useRouter();
@@ -36,6 +35,7 @@ function removeRepeatedTags(tags: ITag[]) {
   });
 }
 
+
 // On opening of the task
 removeRepeatedTags(task.value.tags);
 
@@ -71,21 +71,24 @@ async function addTag() {
         // Make the request
         try {
           // Add the new tag to the existing task
-          const response = await axios.patch(`tasks/${props.id}/`, {
-            obj: 'tag',
-            action: 'add',
-            tag_name: newTag.value,
+          const { _data, status } = await useRawFetch<{ message: string, tag: ITag }>(`tasks/${props.id}/`, {
+            method: 'PATCH',
+            body: {
+              obj: 'tag',
+              action: 'add',
+              tag_name: newTag.value,
+            }
           });
           
-          if (response?.status === 201 || response.status === 200) {
-            if (response.data?.message === 'new') {
+          if ((status === 201 || status === 200) && _data) {
+            if (_data?.message === 'new') {
               alert.success('Tag created');
-              chore.tags.push(response.data?.tag);
+              chore.tags.push(_data?.tag);
             } else {
               alert.info('Tag added');
             }
             // response.data will be the tag obj {id, name}
-            emit('add:tag', response.data?.tag);
+            emit('add:tag', _data?.tag);
           }
         } catch (err) {
           console.log('addTag err', err);
@@ -102,10 +105,13 @@ async function deleteTag(tag: ITag) {
   if (!props.new) {
     // Ask for confirmation
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(`tasks/${props.id}/`, {
-        obj: 'tag',
-        action: 'remove',
-        tag_id: tag.id,
+      const response = await useRawFetch(`tasks/${props.id}/`, {
+        method: 'PATCH',
+        body: {
+          obj: 'tag',
+          action: 'remove',
+          tag_id: tag.id,
+        }
       });
       if (response?.status === 200) {
         // emit the deletion of the tag

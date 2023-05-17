@@ -1,9 +1,4 @@
-import type { IProject, ITag, ITask, IStat } from '@/types';
-import { defineStore } from 'pinia';
-import axios from 'axios';
-import { useAlertStore, useAuthStore, usePageStore } from '@/stores';
-import { ref } from 'vue';
-import { useLocal } from '@/utils'
+import type { IProject, ITag, ITask, IStat, IPage, IMode } from '@/types';
 
 export const useChoreStore = defineStore('chores', () => {
   const alert = useAlertStore();
@@ -16,61 +11,63 @@ export const useChoreStore = defineStore('chores', () => {
   const stats = ref<IStat[]>([]);
   
   async function fetchModes() {
-    const { status, data } = await axios.get('modes')
-    if (status === 200) useLocal.set('modes', data);
+    const { status, _data } = await useRawFetch<IMode[]>('modes');
+    if (status === 200) useLocal.set('modes', _data);
   }
   async function fetchStats() {
-    const { data, status } = await axios.get('stats')
-    if (status === 200) stats.value = data;
+    const { _data, status } = await useRawFetch<IStat[]>('stats');
+    if (status === 200 && _data) stats.value = _data;
   }
   async function increaseTodayStats() {
     const date = new Date();
     date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
 
-    const { data, status } = await axios.post('stats', {
-      day: date.toISOString().slice(0, 10),
+    const { _data, status } = await useRawFetch<IStat>('stats', {
+      method: 'post',
+      body: { day: date.toISOString().slice(0, 10), }
     });
     
-    if (status === 201) {
-      let stat = stats.value.find((stat) => stat.id === data.id);
+    if (status === 201 && _data) {
+      let stat = stats.value.find((stat) => stat.id === _data.id);
 
-      if (stat) stat.chores_done = data.chores_done;
+      if (stat) stat.chores_done = _data.chores_done;
     }
   }
   async function fetchTasks() {
-    const { data, status } = await axios.get('tasks', {
-      params: { 
+    const { _data, status } = await useRawFetch<IPage<ITask>>('tasks', {
+      params: {
         page: page.taskPagination.page,
         page_size: page.taskPagination.page_size
       }
     });
 
-    if (status === 200) {
-      tasks.value = data.results;
-      page.taskPagination.count = data.count;
+    if (status === 200 && _data) {
+      tasks.value = _data.results;
+      page.taskPagination.count = _data.count;
     }
   }
   async function fetchProjects() {
-    const { data, status } = await axios.get('projects', {
+    const { _data, status } = await useRawFetch<IPage<IProject>>('projects', {
       params: {
         page: page.projectPagination.page,
         page_size: page.projectPagination.page_size
       }
     });
 
-    if (status === 200) {
-      projects.value = data.results;
-      page.projectPagination.count = data.count;
+    if (status === 200 && _data) {
+      projects.value = _data.results;
+      page.projectPagination.count = _data.count;
     }
   }
   async function fetchTags() {
-    const { data, status } = await axios.get('tags');
-    if (status === 200) {
-      return (tags.value = data);
+    
+    const { _data, status } = await useRawFetch<ITag[]>('tags');
+    if (status === 200 && _data) {
+      return (tags.value = _data);
     }
   }
   async function addTask(task: ITask) {
-    const { status } = await axios.post('tasks', task);
+    const { status } = await useRawFetch('tasks', { method: 'post', body: task });
     if (status === 201) {
       alert.success(`Task ${task.title} created!`);
       // Send user to the first page
@@ -79,14 +76,14 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function saveTheTask(task: ITask) {
-    const { status } = await axios.put(`tasks/${task.id}`, task);
+    const { status } = await useRawFetch(`tasks/${task.id}`, { method: 'put', body: task });
     if (status === 200) {
       alert.success(`'${task.title}' saved!`);
       fetchTasks();
     }
   }
   async function deleteTheTask(task: ITask) {
-    const { status } = await axios.delete(`tasks/${task.id}`)
+    const { status } = await useRawFetch(`tasks/${task.id}`, { method: 'delete' })
 
     if (status === 204) {
       // if it is the last
@@ -105,7 +102,7 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function addProject(project: IProject) {
-    const { status } = await axios.post('projects', project);
+    const { status } = await useRawFetch('projects', { method: 'post', body: project});
 
     if (status === 201) {
       alert.success(`Project ${project.name} created!`);
@@ -115,14 +112,14 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function saveProject(project: IProject, newProjectName: string) {
-    const { status } = await axios.patch( `/projects/${project.id}/modify_title`,
-      { name: newProjectName }
+    const { status } = await useRawFetch( `/projects/${project.id}/modify_title`,
+      { method: 'PATCH', body: { name: newProjectName } }
     );
 
     if (status === 200) alert.success('Project saved!');
   }
   async function deleteProject(id: number) {
-    const { status } = await axios.delete(`projects/${id}`)
+    const { status } = await useRawFetch(`projects/${id}`, { method: 'delete' });
 
     if (status === 204) {
       if (projects.value.length === 1 && page.projectPagination.count === 0) {
@@ -138,9 +135,8 @@ export const useChoreStore = defineStore('chores', () => {
     increaseTodayStats();
     
     if (auth.user) {
-      const { status } = await axios.patch(`tasks/${auth.user.current_task_id}`, {
-        obj: 'task',
-        action: 'increment_gone_through',
+      const { status } = await useRawFetch(`tasks/${auth.user.current_task_id}`, {
+        method: 'PATCH', body: { obj: 'task', action: 'increment_gone_through', }
       });
 
       if (status === 200) fetchTasks();
@@ -160,18 +156,18 @@ export const useChoreStore = defineStore('chores', () => {
     }
   }
   async function changeCurrentTask(id: number | undefined) {
-    const { data, status } = await axios.put('currentTask', { id })
+    const { _data, status } = await useRawFetch<ITask>('currentTask', { method: 'PUT', body: { id } })
     if (status === 200 && auth.user) {
-      auth.user.current_task_id = data.id;
+      auth.user.current_task_id = _data?.id;
     }
   }
   async function toggleDone(task: ITask) {
-    const response = await axios.patch(`tasks/${task.id}/`, {
-      obj: 'task',
-      action: 'done',
-    });
-    if (response?.status === 200) {
-      task.done = response.data?.done;
+    const { _data, status } = await useRawFetch<ITask>(`tasks/${task.id}/`, {
+      method: 'PATCH', body: { obj: 'task', action: 'done' }
+    })
+
+    if (status === 200 && _data) {
+      task.done = _data?.done;
       fetchProjects();
     }
   }

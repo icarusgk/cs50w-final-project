@@ -32,10 +32,7 @@ const subtaskModel = ref({
 // or a subtask in a task
 const newChoreOpened = ref(false);
 
-const activeChore = reactive<{
-  opened: boolean;
-  chore: ITask;
-}>({
+const activeChore = reactive<{ opened: boolean; chore: ITask;}>({
   opened: false,
   chore: taskModel.value
 });
@@ -110,15 +107,13 @@ async function addTaskToProject() {
     // LIVE
     if (props.isProject && !props.isNew) {
       try {
-        const response = await axios.patch(
-          `projects/${props.project?.id}/add_new_task/`,
-          {
-            task: taskModel.value,
-          }
-        );
-        if (response?.status === 201) {
+        const { _data, status } = await useRawFetch<ITask>(`projects/${props.project?.id}/add_new_task/`, {
+          method: 'PATCH', body: { task: taskModel.value }
+        });
+
+        if (status === 201 && _data) {          
           // Returns a task inside the project
-          existingProject?.value?.tasks?.push(response.data);
+          existingProject?.value?.tasks?.push(_data);
           alert.success(`Task ${taskModel.value.title} saved!`);
           // Reset and close
           closeNew();
@@ -129,6 +124,7 @@ async function addTaskToProject() {
     }
   }
 
+  // TODO: fix this calling
   // If an existing task has to be updated
   if (activeChore.chore && !newChoreOpened.value) {
     activeChore.chore.title =
@@ -139,10 +135,10 @@ async function addTaskToProject() {
       tmp.estimated !== 0 ? tmp.estimated : activeChore.chore.estimated;
 
     // Make the api call
-    const response = await axios
-      .patch(`projects/${props.project?.id}/update_task/`, {
-        subtask: activeChore.chore,
-      })
+    const response = await useRawFetch(`projects/${props.project?.id}/update_task/`, {
+      method: 'PATCH',
+      body: { subtask: activeChore.chore, }  
+    })
       .catch((err) => console.log(err));
 
     if (response?.status === 200) {
@@ -174,13 +170,15 @@ async function saveSubtaskToTask() {
     // Add subtasks to an existing task
     else if (!props.isProject && !props.isNew) {
       // Make the API call
-      const response = await axios.patch(`tasks/${props.task?.id}/`, {
+      const { _data, status } = await useRawFetch<ITask>(`tasks/${props.task?.id}/`, {
+        method: 'PATCH', body: {
         obj: 'subtask',
         action: 'add',
         subtask: subtaskModel.value,
+      }
       });
-      if (response?.status === 201) {
-        existingTask?.value?.subtasks?.push(response.data);
+      if (status === 201 && _data) {
+        existingTask?.value?.subtasks?.push(_data);
         alert.success(`${subtaskModel.value.title} saved!`);
         resetSubtaskModel();
       }
@@ -196,10 +194,13 @@ async function saveSubtaskToTask() {
         tmp.desc !== '' ? tmp.desc : activeChore.chore.description;
 
       // Make the api call
-      const response = await axios.patch(`/tasks/${props.task?.id}/`, {
-        obj: 'subtask',
-        action: 'update',
-        subtask: activeChore.chore,
+      const response = await useRawFetch(`/tasks/${props.task?.id}/`, {
+        method: 'PATCH',
+        body: {
+          obj: 'subtask',
+          action: 'update',
+          subtask: activeChore.chore,
+        }
       });
       if (response?.status === 200) {
         alert.success(`Subtask ${activeChore.chore.title} saved!`);
@@ -214,8 +215,8 @@ async function deleteChore() {
   if (props.isProject) {
     // Delete task
     if (window.confirm('Are you sure?')) {
-      const response = await axios.patch(`/projects/${props.project?.id}/delete_task/`, {
-        task_id: activeChore.chore?.id,
+      const response = await useRawFetch(`/projects/${props.project?.id}/delete_task/`, {
+        method: 'PATCH', body: { task_id: activeChore.chore?.id }
       });
 
       if (response?.status === 204 && existingProject?.value) {
@@ -228,10 +229,13 @@ async function deleteChore() {
   } else {
     if (window.confirm('Are you sure?')) {
       // If subtask
-      const response = await axios.patch(`/tasks/${props.task?.id}/`, {
-        obj: 'subtask',
-        action: 'remove',
-        subtask_id: activeChore.chore?.id,
+      const response = await useRawFetch(`/tasks/${props.task?.id}/`, {
+        method: 'PATCH', 
+        body: {
+          obj: 'subtask',
+          action: 'remove',
+          subtask_id: activeChore.chore?.id,
+        }
       });
 
       if (response?.status === 204) {
@@ -269,35 +273,31 @@ function removeChore() {
 async function toggleChoreDone(chore: ITask) {
   if (props.isProject) {
     try {
-      const response = await axios.patch(
-        `projects/${props.project?.id}/task_done/`,
-        {
-          task_id: chore.id,
-        }
-      );
-      if (response?.status === 200) {
-        chore.done = response.data.done;
+      const { _data, status } = await useRawFetch<ITask>(`projects/${props.project?.id}/task_done/`, {
+        method: 'PATCH', body: { task_id: chore.id, }
+      });
+      if (status === 200) {
+        chore.done = _data?.done;
         // Visual changes
-        let project_task = useChoreStore().tasks.find(
-          (task: ITask) => task.id === chore.id
-        );
 
-        if (project_task) {
-          project_task.done = response.data.done;
-        }
+        let project_task = useChoreStore().tasks.find((task: ITask) => task.id === chore.id);
+        if (project_task) project_task.done = _data?.done;
       }
     } catch (err) {
       console.log('task done update err', err);
     }
   } else {
     try {
-      const response = await axios.patch(`tasks/${props.task?.id}/`, {
-        obj: 'subtask',
-        action: 'done',
-        subtask_id: chore.id,
+      const { _data, status } = await useRawFetch<ITask>(`tasks/${props.task?.id}/`, {
+        method: 'PATCH',
+        body: {
+          obj: 'subtask',
+          action: 'done',
+          subtask_id: chore.id,
+        }
       });
-      if (response?.status === 200) {
-        chore.done = response.data.done;
+      if (status === 200) {
+        chore.done = _data?.done;
       }
     } catch (err) {
       console.log('subtask done update err', err);

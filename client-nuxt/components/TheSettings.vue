@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ITimer } from '@/types';
+import type { ITimer, IUser, IMode } from '@/types';
 import { useLocal } from '@/utils';
 
 const auth = useAuthStore();
@@ -17,23 +17,23 @@ const newMode = ref<ITimer>({
 
 // Live updates
 async function toggleAutoStartPomos() {
-  const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_pomos: !auth.user?.auto_start_pomos
+  const { _data, status } = await useRawFetch<IUser>(`users/${auth.user?.id}/`, {
+    method: "PATCH", body: { auto_start_pomos: !auth.user?.auto_start_pomos }
   });
 
-  if (status === 200 && auth.user) { 
-    auth.user.auto_start_pomos = data.auto_start_pomos;
-    alert.info(`Auto start pomos set to ${data.auto_start_pomos}`);  }
+  if (status === 200 && auth.user && _data) { 
+    auth.user.auto_start_pomos = _data.auto_start_pomos;
+    alert.info(`Auto start pomos set to ${_data.auto_start_pomos}`);  }
 }
 
 async function toggleAutoStartBreaks() {
-  const { data, status } = await axios.patch(`users/${auth.user?.id}/`, {
-    auto_start_breaks: !auth.user?.auto_start_breaks
+  const { _data, status } = await useRawFetch<IUser>(`users/${auth.user?.id}/`, {
+    method: 'PATCH', body: { auto_start_breaks: !auth.user?.auto_start_breaks }
   });  
 
-  if (status === 200 && auth.user) {
-    auth.user.auto_start_breaks = data.auto_start_breaks;
-    alert.info(`Auto start breaks set to ${data.auto_start_breaks}`);
+  if (status === 200 && auth.user && _data) {
+    auth.user.auto_start_breaks = _data.auto_start_breaks;
+    alert.info(`Auto start breaks set to ${_data.auto_start_breaks}`);
   }
 }
 
@@ -47,14 +47,14 @@ function resetMode() {
 }
 
 async function changeMode(mode: ITimer) {
-  const { data, status } = await axios.post('currentMode', {
-    mode_id: mode.id,
+  const { _data, status } = await useRawFetch<ITimer>('currentMode', {
+    method: 'post', body: { mode_id: mode.id }
   });
-  if (status === 200) timer.setNewTimer(data);
+  if (status === 200 && _data) timer.setNewTimer(_data);
 }
 
 async function deleteMode(id?: number) {
-  const { status } = await axios.delete(`modes/${id}/`);
+  const { status } = await useRawFetch(`modes/${id}/`, { method: 'delete' });
 
   if (status === 204) {
     const deletedMode = timer.modes.find((mode: ITimer) => mode.id === id);
@@ -76,13 +76,13 @@ async function deleteMode(id?: number) {
 }
 
 async function createMode() {
-  const { status, data } = await axios.post('modes/', newMode.value);
+  const { _data, status } = await useRawFetch<IMode>('modes/', { method: 'post', body: newMode.value });
 
-  if (status === 201) {
-    timer.modes.push(data);
+  if (status === 201 && _data) {
+    timer.modes.push(_data);
     useLocal.set('modes', timer.modes)
 
-    if (!timer.isRunning) changeMode(data);
+    if (!timer.isRunning) changeMode(_data);
     
     resetMode();
     showForm.value = false;

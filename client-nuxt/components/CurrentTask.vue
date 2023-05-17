@@ -1,17 +1,22 @@
 <script setup lang="ts">
+import { ITask } from '~/types';
 const auth = useAuthStore();
 const chore = useChoreStore();
-const task = ref();
+
+const task = ref<ITask>();
 const open = ref(false);
 
 watchEffect(async () => {
   const currentTaskId = auth.user?.current_task_id;
   
   if (currentTaskId !== 0 && auth.user) {
-    const response = await axios.get(`tasks/${currentTaskId}/`);
-    task.value = response?.data;
+    const { _data } = await useRawFetch<ITask>(`tasks/${currentTaskId}/`);    
+    task.value = _data;
   }
 });
+function updateLocal(updatedTask: ITask) {
+  task.value = updatedTask;
+}
 // The modal blur
 watch(open, () => {
   useModalStore().toggle();
@@ -33,7 +38,7 @@ watch(open, () => {
           <template #content> Remove current task </template>
         </Popper>
       </div>
-      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" :key="task.id" />
+      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" @newTask="updateLocal" :key="task.id" />
     </div>
   </Transition>
 </template>
