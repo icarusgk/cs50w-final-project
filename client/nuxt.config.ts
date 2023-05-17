@@ -11,5 +11,10 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false }],
   devtools: {
     enabled: true
+  },
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NUXT_PUBLIC_API_BASE
+    }
   }
 });
