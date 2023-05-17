@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import '@unocss/reset/tailwind.css';
-import './axios';
-
 const auth = useAuthStore();
 const chore = useChoreStore();
 const modal = useModalStore();
