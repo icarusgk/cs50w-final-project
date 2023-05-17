@@ -1,7 +1,3 @@
-import { defineStore } from 'pinia';
-import { useAlertStore, useChoreStore } from '@/stores';
-import { ref, computed } from 'vue';
-import { toTimer, useLocal } from '@/utils';
 import type { ITimer } from '@/types';
 
 type TimerType = 'pomo' | 'short_break' | 'long_break';
@@ -10,7 +6,7 @@ type TimerType = 'pomo' | 'short_break' | 'long_break';
 export const defaultTimer: ITimer = {
   id: 0,
   name: 'Default',
-  pomo: 25,
+  pomo: 1,
   short_break: 5,
   long_break: 15,
 };
