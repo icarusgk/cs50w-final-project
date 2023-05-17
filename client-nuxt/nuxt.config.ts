@@ -3,13 +3,13 @@ export default defineNuxtConfig({
   modules: ["@unocss/nuxt", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   ssr: false,
   imports: {
-    dirs: ['./stores'],
+    dirs: ["./stores"],
+  },
+  pinia: {
+    autoImports: ["defineStore", "storeToRefs"],
   },
   components: [{ path: '~/components', pathPrefix: false }],
   devtools: {
     enabled: true
   }
 });
-
-
-
