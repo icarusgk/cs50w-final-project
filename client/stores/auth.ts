@@ -1,9 +1,4 @@
-import { defineStore } from 'pinia';
-
-import { ref } from 'vue';
-import { useAlertStore } from '@/stores';
 import type { IUser } from '@/types';
-import { useRouter } from 'nuxt/app';
 
 type UserCredentials = {
   username: string;

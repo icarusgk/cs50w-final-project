@@ -95,28 +95,20 @@ function backToDefault() {
 </script>
 
 <template>
-  <div>
-    <div>
-      <input
-        type="checkbox"
-        id="auto-start-pomos"
-        class="mr-4"
-        @change="toggleAutoStartPomos()"
-        :checked="auth.user?.auto_start_pomos"
-      />
-      <label for="auto-start-pomos">Auto start pomos</label>
-    </div>
-    <div>
-      <input
-        type="checkbox"
-        id="auto-start-breaks"
-        class="mr-4"
-        @change="toggleAutoStartBreaks()"
-        :checked="auth.user?.auto_start_breaks"
-      />
-      <label for="auto-start-breaks">Auto start breaks</label>
-    </div>
-    <div v-if="Object.keys(timer.modes).length > 0">
+  <div class="mt-4">
+    <CheckBox
+      id="auto-start-pomos"
+      label="Auto start pomos"
+      :checked="auth.user?.auto_start_pomos"
+      @change="toggleAutoStartPomos()"
+    />
+    <CheckBox 
+      id="auto-start-breaks"
+      label="Auto start breaks"
+      :checked="auth.user?.auto_start_breaks"
+      @change="toggleAutoStartBreaks()"
+    />
+    <!-- <div v-if="Object.keys(timer.modes).length > 0">
       <button class="mb-4 back-to-default-btn settings-btn text-gray-700" @click="backToDefault()">
         Back to default
       </button>
@@ -194,6 +186,6 @@ function backToDefault() {
         </div>
         <input class="create-mode-btn settings-btn text-white w-full" type="submit" value="Create" />
       </form>
-    </div>
+    </div> -->
   </div>
 </template>

@@ -133,13 +133,17 @@ export const useChoreStore = defineStore('chores', () => {
   }
   async function incrementGoneThrough() {
     increaseTodayStats();
-    
-    if (auth.user) {
-      const { status } = await useRawFetch(`tasks/${auth.user.current_task_id}`, {
-        method: 'PATCH', body: { obj: 'task', action: 'increment_gone_through', }
-      });
 
-      if (status === 200) fetchTasks();
+    if (auth.user) {
+      const currentTaskId = auth.user.current_task_id;
+      
+      if (currentTaskId !== 0) {
+        const { status } = await useRawFetch(`tasks/${currentTaskId}`, {
+          method: 'PATCH', body: { obj: 'task', action: 'increment_gone_through', }
+        });
+  
+        if (status === 200) fetchTasks();
+      }
     }
   }
   function deleteTask(task: ITask) {

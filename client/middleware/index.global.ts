@@ -15,7 +15,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
     const tags = await chore.fetchTags();
 
-    if (!tags.find((t: ITag) => t.name === tag)) {
+    if (tags && !tags.find((t: ITag) => t.name === tag)) {
       alert.error(`There is no tag named ${tag}`, );
       return { name: 'tags' };
     }
