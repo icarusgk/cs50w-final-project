@@ -8,24 +8,29 @@ const chore = useChoreStore();
 const tasks = ref<ITask[]>([]);
 const fetchedTags = ref(false);
 
-watchEffect(async () => {
-  const urlTag = route.params.name;  
+const urlTag = route.params.name;
 
+watchEffect(async () => {
   if (urlTag) {
     const { _data } = await useRawFetch<ITask[]>(`tagInfo/${urlTag}`);
+
     if (_data) tasks.value = _data;
     fetchedTags.value = true;
   }
 });
 
+function deleteTask(task: ITask) {
+  tasks.value = tasks.value.filter((t: ITask) => t.id !== task.id);
+  if (tasks.value.length === 0) router.back();
+}
+
 async function deleteTag() {
   const urlTag = route.params.name;
-
   const tagFound = chore.tags.find((t: ITag) => t.name === urlTag);
 
   if (window.confirm('Are you sure?')) {
     const { status } = await useRawFetch(`tags/${tagFound?.id}`, {
-      method: 'PATCH'
+      method: 'delete'
     });
     if (status === 204) {
       router.back();
@@ -36,6 +41,12 @@ async function deleteTag() {
       }
       chore.fetchTags();
     }
+  }
+}
+
+function removeTaskFromTag(task: ITask, tag?: ITag) {
+  if (tag?.name === urlTag) {
+    deleteTask(task);
   }
 }
 </script>
@@ -59,6 +70,8 @@ async function deleteTag() {
         v-for="task in tasks"
         :task="task"
         :key="task.id"
+        @delete:task="deleteTask"
+        @remove:tag="removeTaskFromTag"
       />
       <div v-else>
         <span class="text-white text-xl">Loading...</span>

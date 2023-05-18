@@ -1,7 +1,3 @@
-import { defineStore } from 'pinia';
-import { useAlertStore, useChoreStore } from '@/stores';
-import { ref, computed } from 'vue';
-import { toTimer, useLocal } from '@/utils';
 import type { ITimer } from '@/types';
 
 type TimerType = 'pomo' | 'short_break' | 'long_break';

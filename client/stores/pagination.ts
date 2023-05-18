@@ -1,5 +1,3 @@
-import { defineStore } from "pinia";
-
 export const usePageStore = defineStore('pagination', {
   state: () => ({
     projectPagination: {
