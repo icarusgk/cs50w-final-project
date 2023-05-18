@@ -10,7 +10,9 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'exit:modal'): any
+  (e: 'delete:task', task: ITask): any
   (e: 'newTask', task: ITask): any
+  (e: 'remove:tag', task: ITask, tag?: ITag): any
 }>();
 
 // This way it prevents from mutating the original object
@@ -32,7 +34,7 @@ function saveTheTask() {
 
 function deleteTheTask() {
   chore.deleteTask(props.task);
-  emit('exit:modal');
+  emit('delete:task', props.task);
 }
 
 function exitWithoutSaving() {
@@ -47,8 +49,10 @@ function addTag(task: ITask, tag: ITag) {
   task.tags.push(tag);
 }
 
-function removeTag(task: ITask, tagId?: number) {
-  task.tags = task.tags.filter((tag: ITag) => tag.id !== tagId);
+function removeTag(task: ITask, tag?: ITag) {
+  task.tags = task.tags.filter((t: ITag) => t.id !== tag?.id);
+  emit('remove:tag', task, tag);
+  emit('exit:modal');
 }
 
 function resize() {
@@ -74,7 +78,7 @@ onUnmounted(() => {
           :id="props.task.id"
           :task="props.task"
           @add:tag="(tag: ITag) => addTag(props.task, tag)"
-          @remove:tag="(tag: ITag) => removeTag(props.task, tag.id)"
+          @remove:tag="(tag: ITag) => removeTag(props.task, tag)"
           @close:modal="$emit('exit:modal')"
         />
         <div class="flex items-baseline items-center">
