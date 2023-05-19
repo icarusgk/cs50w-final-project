@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
-
-const chore = useChoreStore();
-
 const props = defineProps<{
   task: ITask;
   open: boolean;
@@ -14,6 +11,8 @@ const emit = defineEmits<{
   (e: 'newTask', task: ITask): any
   (e: 'remove:tag', task: ITask, tag?: ITag): any
 }>();
+
+const chore = useChoreStore();
 
 // This way it prevents from mutating the original object
 // inside props.task by reference
@@ -45,6 +44,13 @@ function exitWithoutSaving() {
   emit('exit:modal');
 }
 
+function exitModal() {
+  if (!isFormPristine.value) {
+    if (!window.confirm('Are you sure? You have unsaved changes.')) return;
+  }
+  exitWithoutSaving();
+}
+
 function addTag(task: ITask, tag: ITag) {
   task.tags.push(tag);
 }
@@ -71,7 +77,7 @@ onUnmounted(() => {
 <template>
   <div class="task-container">
     <!-- Modal -->
-    <AppModal :open="open" @exit:modal="exitWithoutSaving()" :is-task="true">
+    <AppModal :open="open" @exit:modal="exitModal" :is-task="true">
       <!-- Tags -->
       <template #tags>
         <Tags

@@ -314,14 +314,21 @@ function closeDetails() {
 
 // Close new model details and reset it
 function closeNew() {
-  newChoreOpened.value = false;
-  props.isProject ? resetTaskModel() : resetSubtaskModel();
+  const hasTitle = props.isProject ? taskModel.value.title : subtaskModel.value.title;
+  const hasDesc = props.isProject ? taskModel.value.description : subtaskModel.value.description;
+
+  if (hasTitle || hasDesc) {
+    if (window.confirm('Are you sure?')) {
+      newChoreOpened.value = false;
+      props.isProject ? resetTaskModel() : resetSubtaskModel();
+    }
+  }
 }
 
 function removeTag(tag: ITag) {
   if (props.isProject) {
-    // When a existing chore is opened
-    if (activeChore) {
+    // When an existing chore is opened
+    if (activeChore.opened) {
       activeChore.chore.tags = activeChore.chore.tags?.filter(
         (t: ITag) => t.name !== tag.name
       );
@@ -387,19 +394,8 @@ function removeTag(tag: ITag) {
       @save:project="saveSubtaskToTask()"
       @save:task="addTaskToProject()"
       @remove:tag="removeTag($event)"
-      @change:title="
-        isProject ? (taskModel.title = $event) : (subtaskModel.title = $event)
-      "
-      @change:description="
-        isProject
-          ? (taskModel.description = $event)
-          /* 
-          Type '{ title: string; description: string; }' 
-          is missing the following properties from type 
-          'Task': tags, estimated, subtasks
-          */
-          : (subtaskModel.description = $event)
-      "
+      @change:title="isProject ? (taskModel.title = $event) : (subtaskModel.title = $event)"
+      @change:description="isProject ? (taskModel.description = $event) : (subtaskModel.description = $event)"
       :chore="taskModel"
       :newChore="true"
       :key="isProject ? existingProject?.tasks?.length : task?.subtasks?.length"
