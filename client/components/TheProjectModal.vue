@@ -16,6 +16,8 @@ const page = usePageStore();
 
 const { name: title } = toRefs(props.project);
 
+const isTitlePristine = computed(() => title.value === props.project.name)
+
 function deleteProject() {
   const shouldDelete = window.confirm('Are you sure?');
 
@@ -36,24 +38,20 @@ function deleteProject() {
 }
 
 function saveAndExit() {
-  chore.saveProject(props.project, title.value);
+  chore.saveNewProjectTitle(props.project, title.value);
   emit('update:name', title.value);
   emit('exit:modal');
 }
 
-function exitModal() {
-  if (title.value !== props.project.name) {
-    emit('update:name', title.value);
-    chore.saveProject(props.project, title.value);
-  }
-  emit('exit:modal');
+function checkAndSave() {
+  isTitlePristine.value ? emit('exit:modal') : saveAndExit();
 }
 </script>
 
 <template>
   <div>
     <!-- Modal -->
-    <AppModal :open="open" @exit:modal="exitModal()">
+    <AppModal :open="open" @exit:modal="checkAndSave()">
       <!-- Title -->
       <template #title>
         <input
@@ -62,7 +60,7 @@ function exitModal() {
           class="w-[95%] border-none bg-transparent text-white font-bold text-[2rem] lg:w-full outline-none"
           maxlength="30"
           v-model="title"
-          @keyup.ctrl.enter="saveAndExit()"
+          @keyup.ctrl.enter="checkAndSave()"
           v-focus
         />
       </template>

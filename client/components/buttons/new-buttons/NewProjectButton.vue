@@ -24,6 +24,16 @@ function resetProject() {
   open.value = false;
 }
 
+function exitModal() {
+  const hasName = newProject.name;
+  const hasTasks = newProject.tasks && newProject.tasks?.length > 0;
+  
+  if (hasName || hasTasks) {
+    if (!window.confirm('Are you sure?')) return;
+  }
+  resetProject();
+}
+
 function saveProject() {
   if (newProject.name) {
     useChoreStore().addProject(newProject);
@@ -39,7 +49,7 @@ function saveProject() {
     <template #type> Add new project </template>
   </ChoreButton>
 
-  <AppModal :open="open" @exit:modal="resetProject()">
+  <AppModal :open="open" @exit:modal="exitModal()">
     <template #title>
       <input
         type="text"

@@ -111,7 +111,7 @@ export const useChoreStore = defineStore('chores', () => {
       fetchProjects();
     }
   }
-  async function saveProject(project: IProject, newProjectName: string) {
+  async function saveNewProjectTitle(project: IProject, newProjectName: string) {
     const { status } = await useRawFetch( `/projects/${project.id}/modify_title`,
       { method: 'PATCH', body: { name: newProjectName } }
     );
@@ -182,7 +182,7 @@ export const useChoreStore = defineStore('chores', () => {
   
   return {
     tasks, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
-    addTask, saveTask, deleteTask, addProject, saveProject, deleteProject, incrementGoneThrough,
+    addTask, saveTask, deleteTask, addProject, saveNewProjectTitle, deleteProject, incrementGoneThrough,
     changeCurrentTask, toggleDone
   }
 }, { persist: true });

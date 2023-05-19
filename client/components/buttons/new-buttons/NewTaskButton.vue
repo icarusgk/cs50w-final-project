@@ -29,6 +29,18 @@ function resetTask() {
   open.value = false;
 }
 
+function exitModal() {
+  const hasTags = initialTask.tags?.length > 0;
+  const hasTitle = initialTask.title;
+  const hasDesc = initialTask.description;
+  const hasSubtasks = initialTask.subtasks && initialTask.subtasks?.length > 0;
+  
+  if (hasTags || hasTitle || hasDesc || hasSubtasks) {
+    if (!window.confirm('Are you sure?')) return;
+  }
+  resetTask();
+}
+
 function saveTask() {
   if (initialTask.title) {
     chore.addTask(initialTask).then(() => chore.fetchTags());
@@ -53,7 +65,7 @@ function removeTag(tag: ITag) {
   <ChoreButton @click="open = auth.isAuthed ? true : false">
     <template #type> Add new task </template>
   </ChoreButton>
-  <AppModal :open="open" @exit:modal="resetTask()" :is-task="true">
+  <AppModal :open="open" @exit:modal="exitModal" :is-task="true">
     <template #tags>
       <Tags
         :task="initialTask"

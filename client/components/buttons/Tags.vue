@@ -202,7 +202,7 @@ function goToTag(tag: string) {
             @keydown.enter="addTag()"
           />
           <div class="pointer i-fluent-dismiss-circle-12-filled scale-120 mx-2" @click="newTagVisible = true" />
-          <button @click="addTag()" class="px-2 py-1 rounded-md border-none pointer text-black">Add</button>
+          <button @click="addTag()" class="px-2 py-0.5 rounded-md border-none pointer text-black bg-white">Add</button>
         </div>
         <template #content="{ close }">
           <!-- Pre fetched tags -->
