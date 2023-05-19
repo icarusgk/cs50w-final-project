@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   open: Boolean;
   isTask?: Boolean;
 }>();
@@ -9,8 +9,11 @@ const emit = defineEmits<{
 }>();
 
 function exit(event: any) {
-  if (event.key === 'Escape') emit('exit:modal');
+  if (event.key === 'Escape' && props.open) emit('exit:modal');
 }
+
+onMounted(() => window.addEventListener('keyup', exit))
+onUnmounted(() => window.removeEventListener('keyup', exit))
 </script>
 
 <template>
