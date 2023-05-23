@@ -9,16 +9,16 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.4.6",
+    "@nuxt/devtools": "^0.5.3",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
-    "@types/node": "^18",
+    "@types/node": "^18.16.14",
     "@unocss/nuxt": "^0.51.13",
-    "nuxt": "^3.5.0"
+    "nuxt": "^3.5.1"
   },
   "dependencies": {
     "@formkit/auto-animate": "1.0.0-beta.6",
-    "@iconify/json": "^2.2.65",
-    "@pinia/nuxt": "^0.4.10",
+    "@iconify/json": "^2.2.68",
+    "@pinia/nuxt": "^0.4.11",
     "@unocss/reset": "^0.51.13",
     "dayjs": "^1.11.7",
     "nanoid": "^4.0.2",
