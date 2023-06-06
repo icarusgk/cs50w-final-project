@@ -5,7 +5,7 @@ const modal = useModalStore();
 <template>
   <div>
     <TheSidebar />
-    <div class="flex ml-0 mb-[140px] lg:ml-[130px] lg:mb-0 relative">
+    <div class="flex ml-0 mb-[140px] lg:ml-[130px] lg:mb-0 relative lg:h-screen">
       <div :class="[{ '<sm:p-4 filter blur-md pointer-events-none duration-150 ease-out': modal.isOpened },
           'w-full flex flex-col',]"
       >

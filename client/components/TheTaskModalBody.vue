@@ -27,19 +27,19 @@ defineEmits<{
       </textarea>
     </div>
     <!-- Subtasks -->
-    <div class="my-4 mx-0">
-      <h2>Subtasks</h2>
+    <!-- <div class="my-4 mx-0">
+      <h2>Subtasks</h2> -->
       <!-- Add subtask button -->
-      <div>
+      <!-- <div> -->
         <!-- Subtasks list -->
-        <Subchores
+        <!-- <Subchores
           :is-project="false"
           :chores="task.subtasks"
           :task="task"
           :isNew="isNew"
-        />
-      </div>
-    </div>
+        /> -->
+      <!-- </div> -->
+    <!-- </div> -->
     <!-- Bottom container -->
     <div class="flex flex-col">
       <!-- Estimated Pomos -->

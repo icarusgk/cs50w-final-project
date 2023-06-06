@@ -58,7 +58,7 @@ function setTimer(type: TimerType) {
       >
         Start!
       </button>
-      <button @click="stopTimer()" v-else class="stop-timer-btn">Stop!</button>
+      <button @click="stopTimer()" v-else class="stop-timer-btn">Pause!</button>
       <button
         @click="restartTimer()"
         v-if="timer.isRunning"

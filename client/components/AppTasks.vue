@@ -20,10 +20,10 @@ const tasks = computed(() => chore.tasks.slice(0, 4));
     
     <ChoreTitle class="pointer my-4 mx-3" @click="router.push('/tasks')">
       <template #icon>
-        <div class="i-mdi:clipboard-check-multiple scale-350 mr-3"></div>
+        <div class="i-mdi:clipboard-check-multiple scale-300 mr-3"></div>
       </template>
       <template #type>
-        <h1 @click="router.push('/tasks')">Single Tasks</h1>
+        <h1 @click="router.push('/tasks')">Your Tasks</h1>
       </template>
       <template #count>
         <span v-if="page.totalTaskPages > 1">
