@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const auth = useAuthStore();
+
+const timer = useTimerStore();
+useSeoMeta({
+  title: timer.isRunning ? `Pomo.do - ${timer.displayTimer}` :'Pomo.do' 
+})
 </script>
 
 <template>
