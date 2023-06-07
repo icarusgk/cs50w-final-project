@@ -9,11 +9,10 @@ const props = defineProps<{
   task: ITask;
 }>();
 
-const open = ref(false);
-
-watch(open, () => {
-  modal.toggle();
-});
+function setTask() {
+  modal.content = props.task;
+  modal.isOpened = true;
+}
 
 function changeTask(task: ITask) {
   // Debouncer
@@ -31,10 +30,8 @@ function changeTask(task: ITask) {
     </div>
     <!-- Name -->
     <div
-      :class="[
-        'flex items-center justify-between py-1.5 px-4 bg-vivid-red w-full rounded-lg transition duration-200 ease',
-        { 'opacity-40': task.done },
-      ]"
+      class="flex items-center justify-between py-1.5 px-4 bg-vivid-red w-full rounded-lg transition duration-200 ease"
+      :class="{ 'opacity-40': task.done }"
     >
       <div
         class="title-container"
@@ -50,14 +47,9 @@ function changeTask(task: ITask) {
             >{{ task.gone_through }} / {{ task.estimated }}</span
           >
         </div>
-        <div class="pointer i-fluent:delete-20-filled scale-135 mr-2" @click="chore.deleteTask(task)" />
-        <div class="pointer i-fluent:info-24-regular scale-135" @click="open = true" />
+        <div @click="chore.deleteTask(task)" class="pointer i-fluent:delete-20-filled scale-135 mr-2" />
+        <div @click="setTask()" class="pointer i-fluent:info-24-regular scale-135" />
       </div>
     </div>
-    <TheTaskModal
-      :task="props.task"
-      :open="open"
-      @exit:modal="open = false"
-    />
   </div>
 </template>

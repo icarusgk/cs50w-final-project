@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import type { ITag, ITask } from '@/types';
 
-const open = ref(false);
 const chore = useChoreStore();
 const auth = useAuthStore();
 const alert = useAlertStore();
-
-watch(open, () => {
-  useModalStore().toggle();
-});
+const modal = useModalStore();
 
 const taskModel: ITask = {
   tags: [],
@@ -26,7 +22,7 @@ function resetTask() {
   Object.assign(initialTask, taskModel);
   initialTask.tags = [];
   initialTask.subtasks = [];
-  open.value = false;
+  modal.isOpenedNew = false;
 }
 
 function exitModal() {
@@ -62,10 +58,10 @@ function removeTag(tag: ITag) {
 </script>
 
 <template>
-  <ChoreButton @click="open = auth.isAuthed ? true : false">
+  <ChoreButton @click="modal.isOpenedNew = auth.isAuthed ? true : false">
     <template #type> Add new task </template>
   </ChoreButton>
-  <AppModal :open="open" @exit:modal="exitModal" :is-task="true">
+  <AppModal :open="modal.isOpenedNew" @exit:modal="exitModal" :is-task="true">
     <template #tags>
       <Tags
         :task="initialTask"

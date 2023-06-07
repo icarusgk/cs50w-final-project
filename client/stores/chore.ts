@@ -6,6 +6,7 @@ export const useChoreStore = defineStore('chores', () => {
   const page = usePageStore();
 
   const tasks = ref<ITask[]>([]);
+  const currentTask = ref<ITask | null>();
   const projects = ref<IProject[]>([]);
   const tags = ref<ITag[]>([]);
   const stats = ref<IStat[]>([]);
@@ -172,16 +173,23 @@ export const useChoreStore = defineStore('chores', () => {
 
     if (status === 200 && _data) {
       task.done = _data?.done;
+      if (task.done && task.id === currentTask.value?.id) {
+        currentTask.value = null;
+        changeCurrentTask(0);
+      }
       fetchProjects();
     }
   }
   function saveTask(oldTask: ITask, newTask: ITask) {
     saveTheTask(newTask);
+    if (newTask.id === currentTask.value?.id) {
+      currentTask.value = newTask;
+    }
     oldTask = newTask;
   }
   
   return {
-    tasks, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
+    tasks, currentTask, projects, tags, stats, fetchModes, fetchStats, increaseTodayStats, fetchTasks, fetchProjects, fetchTags,
     addTask, saveTask, deleteTask, addProject, saveNewProjectTitle, deleteProject, incrementGoneThrough,
     changeCurrentTask, toggleDone
   }
