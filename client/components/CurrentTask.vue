@@ -2,9 +2,9 @@
 import { ITask } from '~/types';
 const auth = useAuthStore();
 const chore = useChoreStore();
+const modal = useModalStore();
 
-const task = ref<ITask>();
-const open = ref(false);
+const { currentTask: task } = storeToRefs(chore)
 
 watchEffect(async () => {
   const currentTaskId = auth.user?.current_task_id;
@@ -14,20 +14,21 @@ watchEffect(async () => {
     task.value = _data;
   }
 });
+
+function setTask() {
+  modal.content = task.value as ITask;
+  modal.open();
+}
 function updateLocal(updatedTask: ITask) {
   task.value = updatedTask;
 }
-// The modal blur
-watch(open, () => {
-  useModalStore().toggle();
-});
 </script>
 
 <template>
   <Transition name="slide">
     <div v-if="auth.user?.current_task_id !== 0 && auth.user && task" style="margin-top: 1rem">
       <div class="flex items-center gap-4">
-        <div @click="open = true" class="w-84 bg-[#333] text-white p-4 rounded-lg font-semibold depth pointer active:shadow-none active:shadow-dark-gray">
+        <div @click="setTask()" class="w-84 bg-[#333] text-white p-4 rounded-lg font-semibold depth pointer active:shadow-none active:shadow-dark-gray">
           <div class="flex items-center">
             <div class="i-fluent-info-12-regular scale-150 ml-3" />
             <span class="ml-2">Working on task: {{ task?.title }}</span>
@@ -38,7 +39,6 @@ watch(open, () => {
           <template #content> Remove current task </template>
         </Popper>
       </div>
-      <TheTaskModal :open="open" :task="task" @exit:modal="open = false" @newTask="updateLocal" :key="task.id" />
     </div>
   </Transition>
 </template>

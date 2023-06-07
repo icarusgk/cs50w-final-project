@@ -3,6 +3,7 @@ import type { ITask } from '@/types';
 
 const chore = useChoreStore();
 const page = usePageStore();
+const router = useRouter();
 
 // Back to 1 / 10
 page.taskPagination.page = 1;
@@ -38,7 +39,7 @@ function deleteTask(task: ITask) {
 <template>
   <div class="p-2 lg:p-6 text-white">
     <div class="flex items-center text-white gap-4 ml-3">
-      <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="$router.back()" />
+      <div class="pointer i-bi-arrow-left-square-fill scale-250" @click="router.back()" />
       <span class="font-extrabold text-5xl">Tasks</span>
     </div>
     <Paginate

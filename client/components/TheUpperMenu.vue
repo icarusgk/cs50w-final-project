@@ -1,16 +1,33 @@
 <script setup lang="ts">
-const settingsOpen = ref(false);
 const auth = useAuthStore();
 const modal = useModalStore();
+const timer = useTimerStore();
 
-watch(settingsOpen, () => {
-  modal.toggle();
-});
+const route = useRoute();
+const router = useRouter();
+
+const settingsOpen = ref(false);
+
+const isHome = computed(() => route.path === '/');
+
+watch(settingsOpen, () => modal.toggle());
 </script>
 
 <template>
   <div class="flex justify-between mb-4 mx-10 lg:mb-1 lg:mx-16 lg:mb-8 lg:mt-2 text-white">
-    <AppTitle />
+    <div class="flex items-center">
+      <AppTitle />
+      <div v-if="!isHome" class="flex items-center">
+        <span class="text-2xl font-bold ml-12 mr-4">
+          {{ timer.displayTimer }}
+        </span>
+        <button v-if="!timer.isRunning" @click="timer.startTimer()" class="bg-vivid-red white mx-2 p-2 rounded-md">Start</button>
+        <div v-else class="flex">
+          <button class="bg-blue-5 mx-1 p-2 rounded-md" @click="timer.stopTimer()">Pause</button>
+          <button class="bg-orange-500 mx-1 p-2 rounded-md" @click="timer.restartTimer()">Restart</button>
+        </div>
+      </div>
+    </div>
     <ul class="flex text-right list-none mt-2 items-center">
       <!-- Four icons -->
       <!-- User -->
@@ -24,7 +41,7 @@ watch(settingsOpen, () => {
               </div>
               <template #content>
                 <div class="flex flex-col justify-center items-center">
-                  <div @click="$router.push('/tags')" class="p-[0.7rem] m-2 rounded-lg bg-[rgb(92,92,92)] transition duration-150 hover:bg-dark-100 text-white">
+                  <div @click="router.push('/tags')" class="p-[0.7rem] m-2 rounded-lg bg-[rgb(92,92,92)] transition duration-150 hover:bg-dark-100 text-white">
                     Manage tags
                   </div>
                   <button @click="auth.logout()" class="py-2 px-4 mb-2 rounded-lg border-none bg-vivid-red text-white font-medium transition duration-100 ease-in pointer hover:bg-[#ff4b4b9f] focus:bg-[#ff4b4b9f] active:bg-[#ff4b4b9f]">
@@ -35,10 +52,10 @@ watch(settingsOpen, () => {
             </Popper>
           </div>
           <div v-if="!auth.isAuthed" class="flex gap-4">
-            <div @click="$router.push('/login')">
+            <div @click="router.push('/login')">
               <span class="action-btn hover:bg-[rgb(60,60,60)]">Login</span>
             </div>
-            <div @click="$router.push('/register')">
+            <div @click="router.push('/register')">
               <span class="action-btn bg-[rgb(60,60,60)] hover:bg-vivid-red">Register</span>
             </div>
           </div>

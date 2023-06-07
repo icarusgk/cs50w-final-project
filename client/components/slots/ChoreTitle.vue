@@ -5,7 +5,7 @@
       <slot name="icon"></slot>
     </div>
     <!-- Title -->
-    <div class="flex justify-between items-center w-5/6">
+    <div class="flex justify-between items-center w-105">
     <div class="font-semibold xs:text-2xl sm:text-3xl">
         <slot name="type"></slot>
       </div>

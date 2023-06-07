@@ -1,3 +1,10 @@
+<script setup>
+const timer = useTimerStore();
+useSeoMeta({
+  title: timer.isRunning ? `Pomo.do - ${timer.displayTimer}` :'Pomo.do' 
+})
+</script>
+
 <template>
   <!-- <div class="m-4 text-white my-8 mx-16">
     <div class="flex items-center -ml-2 mb-4">

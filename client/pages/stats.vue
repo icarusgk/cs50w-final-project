@@ -1,3 +1,10 @@
+<script setup>
+const timer = useTimerStore();
+useSeoMeta({
+  title: timer.isRunning ? `Pomo.do - ${timer.displayTimer}` :'Pomo.do' 
+})
+</script>
+
 <template>
   <div class="flex flex-col h-screen-sm justify-center items-center text-white w-full">
     <!-- <h1 v-if="auth.isAuthed">Stats</h1>
